@@ -11,9 +11,13 @@ class HomeScreen extends StatelessWidget {
   }
   void jsonSeilize(){
     var data = jsonDecode(rawJson);
-    var func  = htmlFormToFlutter[data[0]['type']];
-    exec(func);
+     var func  = htmlFormToFlutter[data[0]['type']];
+
   }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
