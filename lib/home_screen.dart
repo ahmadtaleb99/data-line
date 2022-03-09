@@ -17,6 +17,49 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: Text('person add'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Name'
+                        ),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Age'
+                        ),
+                      ),
+                      Row(children: [Text('Ismarried'), Checkbox(value: false,onChanged: (value){
+
+                      })],)
+                    ],
+                  ),
+                  actions: <Widget>[
+                    Center(
+                      child: ElevatedButton(
+                        child: Text('Add New Person'),
+                        onPressed: () {
+                          Navigator.of(dialogContext)
+                              .pop(); // Dismiss alert dialog
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+
+      ),
         appBar: AppBar(),
         body: Container(
             child: Column(children: [
