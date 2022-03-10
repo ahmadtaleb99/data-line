@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DrawTextArea extends StatelessWidget {
   const DrawTextArea({Key? key,required this.minLength,required this.maxLength,required this.label}) : super(key: key);
@@ -11,10 +12,14 @@ class DrawTextArea extends StatelessWidget {
       onChanged: (description){
 
       },
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(maxLength),
+      ],
       minLines: minLength,
       maxLines: maxLength,
       textDirection: TextDirection.ltr,
       decoration: InputDecoration(
+        counterText: 'asd',
     label:  Text(label),
         contentPadding: EdgeInsets.all(12),
         fillColor: Colors.white,

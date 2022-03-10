@@ -4,3 +4,11 @@ part of 'form__bloc.dart';
 abstract class FormEvent {}
 
 class FormRequested extends FormEvent{}
+
+
+class CheckboxGroupValueChanged extends FormEvent { DrawCheckbox
+
+drawCheckbox;
+
+CheckboxGroupValueChanged(this.drawCheckbox);
+}

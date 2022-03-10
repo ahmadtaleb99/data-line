@@ -21,6 +21,7 @@ class FormRepository {
       var type  = _htmlFormToFlutters(formElement['type']);
       type!.setParameters(formElement);
       itemsToDraw.add(type);
+
     }
 
     return itemsToDraw;
@@ -31,9 +32,10 @@ class FormRepository {
   Future<List<Widget>> getFormElements() async {
     await Future.delayed(Duration(seconds: 2));
     List<Widget> formElementList = [];
-    _jsonSerialize().forEach((element) {
-      formElementList.add(element.drawFormElement());
-    });
+    for(var element in _jsonSerialize()){
+      formElementList.add(element.drawFormElement()) ;
+    }
+
     return formElementList;
   }
   IForm ? _htmlFormToFlutters(String type){

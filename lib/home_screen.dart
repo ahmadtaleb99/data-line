@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/DrawCheckbox.dart';
 
 import 'logic/form__bloc.dart';
 
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                           children:[
 
                             Text(''),
-                            ...state.formElements
+                            state.formElements[index]
                           ]
                         );
                       }),
@@ -59,7 +60,10 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 if (_key.currentState!.validate()) {}
               },
-              child: Text('asd'))
+              child: Text('asd')),
+                  DrawCheckbox(label: 'hello',validator: (value){
+                    return value == false ? 'valid' : 'not valid';
+                  },)
             ]),
           ),
         ));
