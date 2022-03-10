@@ -10,7 +10,6 @@ part 'person_state.dart';
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
   PersonBloc() : super(PersonInitial()) {
     on<PersonIsMarriedToggled>((event, emit) {
-      emit()
     });
   }
 }

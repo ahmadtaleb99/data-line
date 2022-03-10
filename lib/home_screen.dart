@@ -2,86 +2,62 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_builder_test/FormBuilder.dart';
-import 'package:form_builder_test/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'dynamic form/IFormDropList.dart';
-import 'dynamic form/IFormTextField.dart';
-import 'dynamic form/formable.dart';
+import 'logic/form__bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  var list = FormBuilder().jsonSeilize();
+  // var list = FormRepository().jsonSeilize();
+
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        showDialog<void>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext dialogContext) {
-                return AlertDialog(
-                  title: Text('person add'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Name'
-                        ),
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Age'
-                        ),
-                      ),
-                      Row(children: [Text('Ismarried'), Checkbox(value: false,onChanged: (value){
-
-                      })],)
-                    ],
-                  ),
-                  actions: <Widget>[
-                    Center(
-                      child: ElevatedButton(
-                        child: Text('Add New Person'),
-                        onPressed: () {
-                          Navigator.of(dialogContext)
-                              .pop(); // Dismiss alert dialog
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.read<FormBloc>().add(FormRequested());
           },
-
-      ),
+        ),
         appBar: AppBar(),
-        body: Container(
-            child: Column(children: [
-          ElevatedButton(
+        body: Form(
+          key: _key,
+          child: Center(
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center ,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+        ElevatedButton(onPressed: () {}, child: Text('hit me ')),
+        BlocBuilder<FormBloc, BlocFormState>(
+            builder: (context, state) {
+              if (state is FormLoading)
+                return CircularProgressIndicator();
+              else if (state is FormLoaded)
+                return Expanded(
+                  child: ListView.builder(
+                      itemCount: state.formElements.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
+                          children: state.formElements,
+                        );
+                      }),
+                );
+              else
+                return Text('somthing wen wrong ');
+            },
+        ),
+        ElevatedButton(
               onPressed: () {
-                print(list[2].drawFormElement());
+                if (_key.currentState!.validate()) {}
               },
-              child: Text('hit me ')),
-          Expanded(
-            child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      list[index].drawFormElement(),
-                      Text(index.toString(),style: TextStyle(
-                        color: Colors.black
-                      ),)
-                    ],
-                  );
-                }),
+              child: Text('asd'))
+            ]),
           ),
-        ])));
+        ));
   }
 }
