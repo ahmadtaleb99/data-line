@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormRepository.dart';
 import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
+import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import  'package:meta/meta.dart';
 
 part 'validation__event.dart';
@@ -28,6 +29,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       var child  = group.children.firstWhere((element) => element.id == event.id );
       child.isChecked = event.newIsChecked;
       emit(state.copyWith(drawCheckboxGroup: group));
+    });
+
+
+    on<ParentDropListChanged>((event, emit) {
+        // var lists = _formRepository.getChildDropDowns(event.drawDropDownButton.)
     });
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/logic/validation__bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DrawDropDownButton extends StatelessWidget {
   const DrawDropDownButton(
@@ -27,8 +29,8 @@ class DrawDropDownButton extends StatelessWidget {
 
     return DropdownButtonFormField<dynamic>(
 
-        hint: Text(prompt), items: relatedToParent ? [DropdownMenuItem(child: Container(),)] : items, onChanged: (strig) {
-
+        hint: Text(prompt), items: relatedToParent ? [DropdownMenuItem(child: Container(),)] : items, onChanged: (value) {
+          context.read<ValidationBloc>().add(ParentDropListChanged(drawDropDownButton: this, parent: value));
     });
   }
 }

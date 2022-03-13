@@ -18,3 +18,14 @@ class CheckboxGroupValueChanged extends ValidationEvent {
   });
 
 }
+
+class ParentDropListChanged extends ValidationEvent {
+
+  DrawDropDownButton drawDropDownButton ;
+  String parent;
+
+  ParentDropListChanged({
+    required this.drawDropDownButton,
+    required this.parent,
+  });
+}
