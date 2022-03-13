@@ -19,7 +19,8 @@ class IFormDropList implements IForm {
         reqired: _parameters['required'],
         isHidden: _parameters['isHidden'],
         isReadOnly: _parameters['isReadOnly'],
-        prompt: _parameters['prompt'], items: itemsList,);
+        prompt: _parameters['prompt'], items: itemsList, relatedToParent: _parameters['relatedListCheckbox'],
+     parentName :  _parameters['relatedListFieldName'] ?? null,);
   }
 
   @override

@@ -10,7 +10,7 @@ class DrawDropDownButton extends StatelessWidget {
       required this.isHidden,
       required this.isReadOnly,
       required this.prompt,
-      required this.items})
+      required this.items, required this.relatedToParent, this.parentName})
       : super(key: key);
   final String label;
   final bool deactivated;
@@ -18,13 +18,16 @@ class DrawDropDownButton extends StatelessWidget {
   final bool isHidden;
   final bool isReadOnly;
   final String prompt;
+  final String ? parentName;
+  final bool relatedToParent;
+
   final List<DropdownMenuItem> items;
   @override
   Widget build(BuildContext context) {
 
     return DropdownButtonFormField<dynamic>(
 
-        hint: Text(prompt), items: items, onChanged: (strig) {
+        hint: Text(prompt), items: relatedToParent ? [DropdownMenuItem(child: Container(),)] : items, onChanged: (strig) {
 
     });
   }
