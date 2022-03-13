@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -21,6 +23,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             context.read<FormBloc>().add(FormRequested());
           },
+          child: Text('load'),
         ),
         appBar: AppBar(),
         body: Form(
@@ -60,7 +63,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 if (_key.currentState!.validate()) {}
               },
-              child: Text('asd')),
+              child: Text('submit form ')),
                   DrawCheckbox(label: 'hello',validator: (value){
                     return value == false ? 'valid' : 'not valid';
                   },)

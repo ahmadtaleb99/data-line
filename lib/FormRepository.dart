@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 
+import 'Widgets/DrawChecboxGroup.dart';
 import 'constants.dart';
 import 'dynamic form/IFormDropList.dart';
 import 'dynamic form/IFormEmail.dart';
@@ -13,6 +15,7 @@ import 'dynamic form/formable.dart';
 
 class FormRepository {
 
+  List<Widget> _formElementList = [];
 
   List<IForm> _jsonSerialize()  {
     List<IForm> itemsToDraw = [];
@@ -31,13 +34,22 @@ class FormRepository {
 
   Future<List<Widget>> getFormElements() async {
     await Future.delayed(Duration(seconds: 2));
-    List<Widget> formElementList = [];
     for(var element in _jsonSerialize()){
-      formElementList.add(element.drawFormElement()) ;
+      this._formElementList.add(element.drawFormElement()) ;
     }
 
-    return formElementList;
+    return _formElementList;
   }
+
+  DrawCheckboxGroup getCheckBoxGroup (String name) {
+
+    return _formElementList.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == name) as DrawCheckboxGroup;
+  }
+
+
+
+
+
   IForm ? _htmlFormToFlutters(String type){
     switch (type){
       case 'select':

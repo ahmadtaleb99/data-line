@@ -11,9 +11,12 @@ class IFormCheckBoxGroup implements IForm {
   dynamic _parametrs;
   @override
   Widget drawFormElement() {
+    print(_parametrs);
     for (var checkBox in _parametrs['values']) {
       var item = DrawCheckboxGroupItem(
         label: checkBox['label'],
+        groupName: _parametrs['name'],
+        id: checkBox['value'],
       );
       itemsList.add(item);
     }
@@ -24,12 +27,12 @@ class IFormCheckBoxGroup implements IForm {
         label: _parametrs['label'],
         minMaxCheckbox: _parametrs['minMaxCheckbox'],
         maxCheckedAllowed: _parametrs['checkboxMaxValue'],
-        minCheckedAllowed: _parametrs['checkboxMinValue'],
+        minCheckedAllowed: _parametrs['checkboxMinValue'], name: _parametrs['name']
       );
     return DrawCheckboxGroup(
       children: itemsList,
       label: _parametrs['label'],
-      minMaxCheckbox: _parametrs['minMaxCheckbox'],
+      minMaxCheckbox: _parametrs['minMaxCheckbox'], name: _parametrs['name'],
     );
   }
 
