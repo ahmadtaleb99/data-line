@@ -34,7 +34,7 @@ class FormRepository {
 
 
   Future<List<Widget>> getFormElements() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(milliseconds: 1));
     for(var element in _jsonSerialize()){
       this._formElementList.add(element.drawFormElement()) ;
     }
@@ -48,9 +48,9 @@ class FormRepository {
   }
 
 
-  List<DrawDropDownButton> getChildDropDowns (String name) {
+  List<DrawDropDownButton> getChildrenSelectsFor (String name) {
 
-    return _formElementList.where((element) => element is DrawDropDownButton && element.parentName == name) as List<DrawDropDownButton> ;
+    return _formElementList.where((element) => element is DrawDropDownButton && (element.relatedToParent == true && element.parentName == name)).toList().cast()  ;
   }
 
 
