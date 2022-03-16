@@ -15,12 +15,8 @@ class ValidationState   {
   ValidationState({
     this.drawCheckboxGroup,
     this.drawDropDownButton,
-<<<<<<< HEAD
-    this.childItems = const [DropDownItemWidget(value: '', status: '')],
     this.childLists =  const [],
-=======
       this.childItems = const [DropDownItemWidget(value: 's', status: '')],
->>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
   });
 
   ValidationState copyWith({

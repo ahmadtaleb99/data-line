@@ -41,7 +41,8 @@ class DrawChildList extends StatelessWidget {
 
         return DropdownButtonFormField<dynamic>(
             hint: Text(prompt),
-            items:   _buildItems([]),
+            value: state.childLists.firstWhere((element) => element.name == this.name).name,
+            items:   state.childLists.isEmpty ? _buildItems([]) : _buildItems(state.childLists.first.items),
             onChanged: (value) {
             });
       },

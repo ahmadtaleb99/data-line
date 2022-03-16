@@ -34,30 +34,21 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       emit(state.copyWith(drawCheckboxGroup: group));
     });
 
-<<<<<<< HEAD
-    on<ParentDropListChanged>((event, emit) {
-      var childLists =
-=======
     on<ParentDropListChanged>((event, emit)  {
       var lists =
->>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
           _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
-      for (var value in childLists) {
-        print('child list name ::: ${value.name} ');
-      }
+
 
       print(' event to bloc ');
       List<DropDownItemWidget> newlist = [];
-<<<<<<< HEAD
-      for (var childList in childLists) {
-        newlist = childList.items
-=======
-      for (var childList in lists) {
-        newlist =    childList.items
->>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
-            .where((element) => element.parent == event.parent)
-            .toList();
+      List<DrawChildList> anewlist = [];
 
+      for (var childList in lists) {
+       var chil = childList;
+       chil.items = chil.items.where((element) => element.parent == event.parent)
+           .toList();
+
+         anewlist.add(chil);
         for (var value in newlist) {
           print(
               'before state emitting ::: ${value.value} parent: ${value.parent}');
@@ -66,14 +57,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         //   print('before state emitting ::: ${value.value} parent: ${value.parent}');
         // }
 
-        for (var value in childList.items) {
-          print(
-              'before state emitting ::: ${value.value} parent: ${value.parent}');
-        }
       }
-      emit(state.copyWith(childLists: childLists));
-
-      print(' in bloc ::: $childLists');
+          emit(state.copyWith(childLists: anewlist ));
     });
   }
 }
