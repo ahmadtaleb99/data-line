@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
+import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
@@ -48,9 +49,9 @@ class FormRepository {
   }
 
 
-  List<DrawDropDownButton> getChildrenSelectsFor (String name) {
+  List<DrawChildList> getChildrenSelectsFor (String name) {
 
-    return _formElementList.where((element) => element is DrawDropDownButton && (element.relatedToParent == true && element.parentName == name)).toList().cast()  ;
+    return _formElementList.where((element) => element is DrawChildList && (  element.parentName == name)).toList().cast()  ;
   }
 
 

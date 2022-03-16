@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormRepository.dart';
 import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
+import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
 import 'package:meta/meta.dart';
@@ -34,24 +35,35 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     });
 
     on<ParentDropListChanged>((event, emit) {
-      var lists =
+      var childLists =
           _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+      for (var value in childLists) {
+        print('child list name ::: ${value.name} ');
+      }
 
+      print(' event to bloc ');
       List<DropDownItemWidget> newlist = [];
-      for (var childList in lists) {
-        emit(state.copyWith(
-            childItems: [DropDownItemWidget(value: '', status: '')]));
-        newlist =    childList.items
+      for (var childList in childLists) {
+        newlist = childList.items
             .where((element) => element.parent == event.parent)
             .toList();
 
-        debugPrint('b4 state : ${newlist.toString()}');
+        for (var value in newlist) {
+          print(
+              'before state emitting ::: ${value.value} parent: ${value.parent}');
+        }
+        // for(var value in newlist){
+        //   print('before state emitting ::: ${value.value} parent: ${value.parent}');
+        // }
 
-        emit(state.copyWith(
-            childItems: newlist));
-            print('emmitted state : '+newlist.toString());
-
+        for (var value in childList.items) {
+          print(
+              'before state emitting ::: ${value.value} parent: ${value.parent}');
+        }
       }
+      emit(state.copyWith(childLists: childLists));
+
+      print(' in bloc ::: $childLists');
     });
   }
 }

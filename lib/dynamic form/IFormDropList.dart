@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
@@ -15,6 +16,17 @@ class IFormDropList implements IForm {
             value: menuItem['value'], status: menuItem['status']);
       itemsList.add(item);
     }
+    if(_parameters['relatedListCheckbox']) {
+      return DrawChildList(
+        label: _parameters['label'],
+        deactivated: _parameters['deactivate'],
+        required: _parameters['required'],
+        isHidden: _parameters['isHidden'],
+        name: _parameters['name'],
+        isReadOnly: _parameters['isReadOnly'],
+        prompt: _parameters['prompt'], items: itemsList,
+        parentName :  _parameters['relatedListFieldName']);
+    } else
     return DrawDropDownButton(
         label: _parameters['label'],
         deactivated: _parameters['deactivate'],

@@ -42,6 +42,7 @@ class DrawCheckboxGroup extends StatelessWidget {
             ),
             BlocBuilder<ValidationBloc, ValidationState>(
               builder: (context, state) {
+                print('state');
                 var children;
                 if(state.drawCheckboxGroup != null && state.drawCheckboxGroup!.name == this.name)
                   children = state.drawCheckboxGroup?.children ;
