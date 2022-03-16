@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         child: Text('submit form ')),
                     DrawCheckbox(label: 'hello', validator: (value) {
                       return value == false ? 'valid' : 'not valid';
-                    },)
+                    },),
                   ]),
             ),
           ),

@@ -34,8 +34,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       emit(state.copyWith(drawCheckboxGroup: group));
     });
 
+<<<<<<< HEAD
     on<ParentDropListChanged>((event, emit) {
       var childLists =
+=======
+    on<ParentDropListChanged>((event, emit)  {
+      var lists =
+>>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
           _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
       for (var value in childLists) {
         print('child list name ::: ${value.name} ');
@@ -43,8 +48,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
       print(' event to bloc ');
       List<DropDownItemWidget> newlist = [];
+<<<<<<< HEAD
       for (var childList in childLists) {
         newlist = childList.items
+=======
+      for (var childList in lists) {
+        newlist =    childList.items
+>>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
             .where((element) => element.parent == event.parent)
             .toList();
 

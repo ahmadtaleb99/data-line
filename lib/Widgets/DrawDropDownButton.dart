@@ -37,7 +37,13 @@ class DrawDropDownButton extends StatelessWidget {
 
         return DropdownButtonFormField<dynamic>(
             hint: Text(prompt),
+<<<<<<< HEAD
             items:  _buildItems(items),
+=======
+            items: (relatedToParent && state.childItems.isNotEmpty)
+                ? _buildItems(state.childItems)
+                : _buildItems(items),
+>>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
             onChanged: (value) {
                 context.read<ValidationBloc>().add(ParentDropListChanged(
                     drawDropDownButton: this, parent: value.toString()));
@@ -52,6 +58,11 @@ class DrawDropDownButton extends StatelessWidget {
 
 List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
   List<DropdownMenuItem<dynamic>>? list = [];
+<<<<<<< HEAD
+=======
+
+  print('iteemsss to draw  ${items.toString()}');
+>>>>>>> 7037a0d9cebffc12ee8c46ffc459c863c5cdb42f
   for (var item in items) {
     list.add(DropdownMenuItem(child: Text(item.value),value: item.value,));
   }
