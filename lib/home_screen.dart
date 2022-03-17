@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                         else if (state is FormLoaded)
                           return Expanded(
 
-                            child: ListView.builder(
+                            child: ListView.separated(
                               padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                               addAutomaticKeepAlives: true,
                               cacheExtent: 40,
@@ -60,12 +60,13 @@ class HomeScreen extends StatelessWidget {
                                           .center,
 
                                       children: [
-
+                                        state.formElements[index],
                                         Text(''),
-                                        state.formElements[index]
                                       ]
                                   );
-                                }),
+                                }, separatorBuilder: (BuildContext context, int index) {
+                                return SizedBox(height: 20,);
+                            },),
                           );
                         else
                           return Text('somthing wen wrong ');

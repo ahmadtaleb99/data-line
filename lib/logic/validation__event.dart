@@ -29,3 +29,15 @@ class ParentDropListChanged extends ValidationEvent {
     required this.parent,
   });
 }
+
+
+class childDropDownChanged extends ValidationEvent {
+
+  DrawChildList childList ;
+  String value;
+
+  childDropDownChanged({
+    required this.childList,
+    required this.value,
+  });
+}

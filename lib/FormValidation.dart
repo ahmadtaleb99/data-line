@@ -44,9 +44,9 @@ mixin FormValidation{
           }
           else return 'number must be between  ${expression.value} and  ${expression.value2}';
         case Operators.LESS:
-          return  number < expression.value ? null : 'number should be more than ${expression.value}';
+          return  number < expression.value ? null : 'number should be less than ${expression.value}';
         case Operators.MORE:
-          return  number > expression.value ? null : 'number should be less than ${expression.value}';
+          return  number > expression.value ? null : 'number should be more than ${expression.value}';
         case Operators.EQUAL:
           return  number != expression.value ? null : 'number should be equal to ${expression.value}';
       }

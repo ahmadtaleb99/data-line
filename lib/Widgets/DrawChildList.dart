@@ -50,9 +50,13 @@ class DrawChildList extends StatelessWidget{
             // value: state.childList != null && state.childList!.name == this.name ? state.childList!.value : null,
             // items:   state.childList != null && state.childList!.name == this.name ? _buildItems(state.childList!.items)
             items: list != null  ?   _buildItems(list.items) : _buildItems([]),
-            value: list!= null ? list.value : null
+            value: value ?? null
             ,onChanged: (value) {
-            });
+
+                        context.read<ValidationBloc>().add(childDropDownChanged(value: value, childList: this));
+        }
+
+        );
       },
     );
   }
@@ -85,11 +89,9 @@ class DrawChildList extends StatelessWidget{
 
 List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
   if(items.isEmpty)
-    return [DropdownMenuItem(child: Text('.value'),value:' item.value')];
+    return [DropdownMenuItem(child: Text(''),value:' item.value')];
   List<DropdownMenuItem<dynamic>>? list = [];
-  print('iteemsss to draw  ${items.toString()}');
   for (var item in items) {
-    print('item to draw : : ${item.value}');
     list.add(DropdownMenuItem(child: Text(item.value),value: item.value,));
   }
   return list;
