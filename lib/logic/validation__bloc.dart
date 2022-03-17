@@ -21,44 +21,65 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
 
   ValidationBloc(this._formRepository) : super(ValidationState()) {
-    on<CheckboxGroupValueChanged>((event, emit) {
-      var group = _formRepository.getCheckBoxGroup(event.groupName);
-      if (event.newIsChecked == true)
-        group.checksNumber++;
-      else
-        group.checksNumber--;
-
-      var child =
-          group.children.firstWhere((element) => element.id == event.id);
-      child.isChecked = event.newIsChecked;
-      emit(state.copyWith(drawCheckboxGroup: group));
-    });
-
-    on<ParentDropListChanged>((event, emit)  {
-      var lists =
-          _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+    on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
+    on<ParentDropListChanged>(_onParentDropListChanged1);
+  }
 
 
-      print(' event to bloc ');
-      List<DropDownItemWidget> newlist = [];
-      List<DrawChildList> anewlist = [];
 
-      for (var childList in lists) {
-       var chil = childList;
-       chil.items = chil.items.where((element) => element.parent == event.parent)
-           .toList();
 
-         anewlist.add(chil);
-        for (var value in newlist) {
-          print(
-              'before state emitting ::: ${value.value} parent: ${value.parent}');
+
+  void _onCheckboxGroupValueChanged (CheckboxGroupValueChanged event, Emitter <ValidationState> emit){
+    var group = _formRepository.getCheckBoxGroup(event.groupName);
+    if (event.newIsChecked == true)
+      group.checksNumber++;
+    else
+      group.checksNumber--;
+
+    var child =
+    group.children.firstWhere((element) => element.id == event.id);
+    child.isChecked = event.newIsChecked;
+    emit(state.copyWith(drawCheckboxGroup: group));
+  }
+  void _onParentDropListChanged (ParentDropListChanged event, Emitter <ValidationState> emit){
+    var childLists =
+    _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+
+      for(var childList in childLists){
+
+        DrawChildList ch = childList.copyWith();
+        ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
+        print(ch.items.toString()+ ' 21301392103210838012308120832180');
+        for(var c in ch.items) print( ' ${c.value}  21444444');
+        ch.value = ch.items.first.value;
+
+        emit(state.copyWith(childList: ch));
+      }
+  }
+  void _onParentDropListChanged1 (ParentDropListChanged event, Emitter <ValidationState> emit){
+    var childLists =
+      _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+        for(var c in childLists){
+          print(c.name);
         }
-        // for(var value in newlist){
-        //   print('before state emitting ::: ${value.value} parent: ${value.parent}');
-        // }
+      List<DrawChildList>    list = List.from(state.childLists!)  ?? [];
+      for(var childList in childLists){
+
+        DrawChildList ch = childList.copyWith();
+
+        ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
+
+        ch.value = ch.items.first.value;
+            list.add(ch);
 
       }
-          emit(state.copyWith(childLists: anewlist ));
-    });
+    for(var c in list){
+      print(c.toString()+'state list ');
+    }
+    emit(state.copyWith(childLists: list));
+
   }
+
+
+
 }

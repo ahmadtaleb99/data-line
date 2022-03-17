@@ -4,19 +4,21 @@ part of 'validation__bloc.dart';
 
 @immutable
 
-class ValidationState   {
+class ValidationState{
 
   DrawCheckboxGroup ?  drawCheckboxGroup;
   DrawDropDownButton ?  drawDropDownButton;
   List<DropDownItemWidget>  childItems ;
-  List<DrawChildList>  childLists ;
+  List<DrawChildList> ?   childLists ;
+  DrawChildList ? childList ;
 
 
   ValidationState({
     this.drawCheckboxGroup,
     this.drawDropDownButton,
-    this.childLists =  const [],
-      this.childItems = const [DropDownItemWidget(value: 's', status: '')],
+    this.childList,
+    this.childLists  = const [],
+      this.childItems = const [],
   });
 
   ValidationState copyWith({
@@ -24,13 +26,18 @@ class ValidationState   {
     DrawDropDownButton? drawDropDownButton,
     List<DropDownItemWidget>? childItems,
     List<DrawChildList>? childLists,
+    DrawChildList? childList,
   }) {
     return ValidationState(
       drawCheckboxGroup: drawCheckboxGroup ?? this.drawCheckboxGroup,
       drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
       childItems: childItems ?? this.childItems,
       childLists: childLists ?? this.childLists,
+      childList: childList ?? this.childList,
     );
   }
+
+
+
 
 }

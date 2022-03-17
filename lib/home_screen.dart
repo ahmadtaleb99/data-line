@@ -49,6 +49,8 @@ class HomeScreen extends StatelessWidget {
                         else if (state is FormLoaded)
                           return Expanded(
                             child: ListView.builder(
+                              addAutomaticKeepAlives: true,
+                              cacheExtent: 40,
                                 itemCount: state.formElements.length,
                                 itemBuilder: (context, index) {
                                   return Column(
