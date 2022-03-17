@@ -59,10 +59,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   void _onParentDropListChanged1 (ParentDropListChanged event, Emitter <ValidationState> emit){
     var childLists =
       _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+      event.drawDropDownButton.value = event.parent;
         for(var c in childLists){
           print(c.name);
         }
-      List<DrawChildList>    list = List.from(state.childLists!)  ?? [];
+      List<DrawChildList>    list = List.from(state.childLists!);
       for(var childList in childLists){
 
         DrawChildList ch = childList.copyWith();

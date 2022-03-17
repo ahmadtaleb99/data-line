@@ -20,6 +20,7 @@ class DrawDropDownButton extends StatelessWidget {
       required this.name})
       : super(key: key);
   final String label;
+   String ?  value;
   final bool deactivated;
   final bool required;
   final bool isHidden;
@@ -35,17 +36,30 @@ class DrawDropDownButton extends StatelessWidget {
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
 
-        return DropdownButtonFormField<dynamic>(
-            hint: Text(prompt),
+        return Container(
+          child: Center(
+            child: DropdownButtonFormField<dynamic>(
 
-            items:  _buildItems(items),
-            onChanged: (value) {
-                context.read<ValidationBloc>().add(ParentDropListChanged(
-                    drawDropDownButton: this, parent: value.toString()));
-                print(value.toString() + ' eveeent ');
+              decoration: InputDecoration(
+                alignLabelWithHint: false,
+                label: Text(label)
+              ),
+              validator: (value){
+                if(value == null)
+                  return '  required';
+              },
 
+                hint: Text(prompt),
+                          value: value ?? null,
+                items:  _buildItems(items),
+                onChanged: (value) {
+                    context.read<ValidationBloc>().add(ParentDropListChanged(
+                        drawDropDownButton: this, parent: value.toString()));
+                    print(value.toString() + ' eveeent ');
 
-            });
+                }),
+          ),
+        );
       },
     );
   }

@@ -8,7 +8,12 @@ class DrawEmailTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+      validator: (value){
+        if(required)
+          if(value == null){
+            return label+' is required';
+          }
+      },
       decoration: InputDecoration(
           label: Text(label)
       ),

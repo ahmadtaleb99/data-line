@@ -48,7 +48,9 @@ class HomeScreen extends StatelessWidget {
                           return CircularProgressIndicator();
                         else if (state is FormLoaded)
                           return Expanded(
+
                             child: ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                               addAutomaticKeepAlives: true,
                               cacheExtent: 40,
                                 itemCount: state.formElements.length,
