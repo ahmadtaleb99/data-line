@@ -12,7 +12,7 @@ class IFormTextArea implements IForm{
 
   @override
   Widget drawFormElement({parameters}) {
-    return DrawTextArea(minLength: _parameters['minlength'], maxLength: _parameters['maxlength'], label: _parameters['label']);
+    return DrawTextArea(minLength: _parameters['minlength'], maxLength: _parameters['maxlength'], label: _parameters['label'], required: _parameters['required'],);
   }
 
   @override

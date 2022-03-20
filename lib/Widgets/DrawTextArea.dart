@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DrawTextArea extends StatelessWidget {
-  const DrawTextArea({Key? key,required this.minLength,required this.maxLength,required this.label}) : super(key: key);
+import '../FormValidation.dart';
+
+class DrawTextArea extends StatelessWidget with FormValidation {
+  const DrawTextArea({Key? key,required this.minLength,required this.maxLength,required this.label, required this.required}) : super(key: key);
     final int minLength;
     final int maxLength;
     final String label;
+    final bool required;
   @override
   Widget build(BuildContext context) {
-    return   TextField(
+    return   TextFormField(
       onChanged: (description){
 
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value){
+        if(required && value!.isEmpty)
+          return '$label is required';
+
+        return validateTextArea(value!, minLength, maxLength);
       },
       inputFormatters: [
         LengthLimitingTextInputFormatter(maxLength),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/FormValidation.dart';
 
-class DrawEmailTextField extends StatelessWidget {
+class DrawEmailTextField extends StatelessWidget with FormValidation {
   const DrawEmailTextField({Key? key, required this.label, required this.required}) : super(key: key);
   final String label;
   final bool required;
@@ -10,8 +11,12 @@ class DrawEmailTextField extends StatelessWidget {
     return TextFormField(
       validator: (value){
         if(required)
-          if(value == null){
+          if(value!.isEmpty){
             return label+' is required';
+          }
+
+         if(!isValidEmail(value!)){
+              return 'must be a valid email ';
           }
       },
       decoration: InputDecoration(

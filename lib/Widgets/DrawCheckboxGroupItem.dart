@@ -16,42 +16,41 @@ class DrawCheckboxGroupItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label),
         FormField<bool>(
           validator: validator,
           builder: (FormFieldState<bool> fieldState) {
 
-            return Expanded(
-              child: Column(
-                children: [
-                  BlocBuilder<ValidationBloc, ValidationState>(
+            return Column(
+              children: [
+                BlocBuilder<ValidationBloc, ValidationState>(
   builder: (context, state) {
     return  Checkbox(
-                    value: isChecked ?? false  ,
-                    onChanged: (value) {      debugPrint(this.groupName);
+                  value: isChecked ?? false  ,
+                  onChanged: (value) {      debugPrint(this.groupName);
 
 
-                    context.read<ValidationBloc>().add(CheckboxGroupValueChanged(id: this.id,newIsChecked: value!, groupName: this.groupName));
-                    },
-                  );
+                  context.read<ValidationBloc>().add(CheckboxGroupValueChanged(id: this.id,newIsChecked: value!, groupName: this.groupName));
+                  },
+                );
   },
 ),
 
 
-                  if (fieldState.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 10),
-                      child: Text(
-                        fieldState.errorText!,
-                        style: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 13,
-                            color: Colors.red[700],
-                            height: 0.5),
-                      ),
-                    )],
-              ),
+                if (fieldState.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, top: 10),
+                    child: Text(
+                      fieldState.errorText!,
+                      style: TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontSize: 13,
+                          color: Colors.red[700],
+                          height: 0.5),
+                    ),
+                  )],
             );
           },
         )

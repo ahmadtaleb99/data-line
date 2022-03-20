@@ -20,7 +20,7 @@ part 'validation__state.dart';
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
 
-  ValidationBloc(this._formRepository) : super(ValidationState()) {
+  ValidationBloc(this._formRepository) : super(ValidationState(childsMap: {})) {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<ParentDropListChanged>(_onParentDropListChanged1);
     on<childDropDownChanged>(_onchildDropDownChanged);
@@ -65,25 +65,35 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         for(var c in childLists){
           print(c.name);
         }
+        var map = state.childsMap;
       List<DrawChildList>    list = List.from(state.childLists!);
       for(var childList in childLists){
+        emit(state);
 
         DrawChildList ch = childList.copyWith();
 
         ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
+        map[ch.name]=ch;
+        for(var c in ch.items){
+          print('items to be added to list : ${c.value}   ');
+        }
 
-        ch.value = null;
             list.add(ch);
+        emit(state.copyWith(childLists: list,childsMap: map ));
 
       }
     for(var c in list){
       print(c.toString()+'state list ');
     }
-    emit(state.copyWith(childLists: list));
 
   }
   void _onchildDropDownChanged (childDropDownChanged event, Emitter <ValidationState> emit){
-      event.childList.value = event.value;
+      var map = state.childsMap;
+      var ch = map[event.childList.name];
+      ch!.value = event.value;
+      map[event.childList.name] = ch ;
+
+      emit(state.copyWith(childsMap: map));
   }
 
 

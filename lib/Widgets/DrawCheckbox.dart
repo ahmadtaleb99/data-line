@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DrawCheckbox extends StatelessWidget {
+class DrawCheckbox extends StatelessWidget  {
   const DrawCheckbox({Key? key, required this.label, this.validator}) : super(key: key);
   final String label;
   final String? Function(bool?)? validator;

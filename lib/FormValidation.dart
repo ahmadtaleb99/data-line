@@ -32,9 +32,18 @@ mixin FormValidation{
 
 
 
+  String? validateTextArea(String text,int minText,int maxText) {
 
 
-  String? validateNumber(int number,Expression expression) {
+      if(text.length < minText || text.length > maxText ){
+        return 'must be between $minText and $maxText character';
+      }
+
+      else return null;
+    }
+
+
+    String? validateNumber(int number,Expression expression) {
 
 
       switch(expression.operator){

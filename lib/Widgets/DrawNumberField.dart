@@ -18,7 +18,7 @@ class DrawNumberField extends StatelessWidget with FormValidation {
           if(number!.isEmpty)
             return 'required';
 
-         return validateNumber(int.parse(number!), expression);
+         return validateNumber(int.parse(number), expression);
         }
         catch (e){
         return 'must be a number';

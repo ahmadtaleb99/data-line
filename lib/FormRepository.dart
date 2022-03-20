@@ -35,9 +35,10 @@ class FormRepository {
 
 
   Future<List<Widget>> getFormElements() async {
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(seconds: 1));
     for(var element in _jsonSerialize()){
       this._formElementList.add(element.drawFormElement()) ;
+      this._formElementList.add(SizedBox(height: 36,)) ;
     }
 
     return _formElementList;
