@@ -9,6 +9,9 @@ class DrawEmailTextField extends StatelessWidget with FormValidation {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.emailAddress,
+
       validator: (value){
         if(required)
           if(value!.isEmpty){

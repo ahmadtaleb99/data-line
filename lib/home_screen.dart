@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
            return   ElevatedButton(
                onPressed: () {
                  if (_key.currentState!.validate()) {
-
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));
                  }
                },
                child: Text('submit form '));
@@ -71,9 +71,9 @@ class HomeScreen extends StatelessWidget {
                                   horizontal: 20),
                               child: Column(
                                 children:
-                                state.formElements
+                                state.formElements,
 
-                                ,
+
                               ),
                             );
                           else

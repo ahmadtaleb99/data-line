@@ -60,7 +60,7 @@ class DrawChildList extends StatelessWidget{
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 16,bottom: 10),
-                  child: Text(label,style: TextStyle(fontSize: 18),),
+                  child: Text('$label - ${list == null ? 'Country ' : list?.items.first.parent}',style: TextStyle(fontSize: 18),),
                 ),
               SizedBox(height: 5,),
               Container(
@@ -82,6 +82,13 @@ class DrawChildList extends StatelessWidget{
                   padding: const EdgeInsets.all(0.0),
                   child: Center(
                     child: DropdownButton<dynamic>(
+                        onTap: () {
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        },
                         underline: Container(),
                         icon: Padding(
                           padding: const EdgeInsets.only(left: 99),

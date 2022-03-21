@@ -12,7 +12,8 @@ class DrawNumberField extends StatelessWidget with FormValidation {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.number,
       validator: (number){
         try{
           if(number!.isEmpty)

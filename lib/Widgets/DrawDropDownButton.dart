@@ -77,6 +77,14 @@ class DrawDropDownButton extends StatelessWidget {
                             padding: const EdgeInsets.all(0.0),
                             child: Center(
                               child: DropdownButton<dynamic>(
+
+                                  onTap: () {
+                                    FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                    if (!currentFocus.hasPrimaryFocus) {
+                                      currentFocus.unfocus();
+                                    }
+                                  },
                                   underline: Container(),
                                   icon: Padding(
                                     padding: const EdgeInsets.only(left: 99),

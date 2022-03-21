@@ -15,7 +15,9 @@ class DrawTextArea extends StatelessWidget with FormValidation {
       onChanged: (description){
 
       },
+
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.text,
       validator: (value){
         if(required && value!.isEmpty)
           return '$label is required';
@@ -29,7 +31,6 @@ class DrawTextArea extends StatelessWidget with FormValidation {
       maxLines: maxLength,
       textDirection: TextDirection.ltr,
       decoration: InputDecoration(
-        counterText: 'asd',
     label:  Text(label),
         contentPadding: EdgeInsets.all(12),
         fillColor: Colors.white,
