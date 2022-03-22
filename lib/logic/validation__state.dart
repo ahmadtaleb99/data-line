@@ -3,8 +3,8 @@
 part of 'validation__bloc.dart';
 
 @immutable
-enum Status {initial,loading,sucess,failure}
-class ValidationState{
+enum Status {initial,loading,success,failure}
+class ValidationState {
   Status status;
   DrawCheckboxGroup ?  drawCheckboxGroup;
   DrawDropDownButton ?  drawDropDownButton;
@@ -53,6 +53,10 @@ class ValidationState{
       childsMap: childsMap ?? this.childsMap
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [formElements,drawCheckboxGroup,radioGroup,childsMap,childLists,drawDropDownButton];
 
 
 

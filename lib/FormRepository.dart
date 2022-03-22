@@ -75,6 +75,7 @@ class FormRepository {
     switch (type){
       case 'select':
         return IFormDropList();
+
       case 'text':
         return IFormTextField();
 

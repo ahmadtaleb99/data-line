@@ -18,13 +18,13 @@ class DrawRadioItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormBloc, BlocFormState>(
+    return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
         return RadioListTile(value: value,
             title: Text(label),
             groupValue: groupValue, onChanged: (value) {
               print(value);
-              context.read<FormBloc>().add(RadioGroupValueChanged1(
+              context.read<ValidationBloc>().add(RadioGroupValueChanged(
                   value: value.toString(),
                   groupName: this.parent,
                   id: this.value));

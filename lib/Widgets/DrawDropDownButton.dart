@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/testable.dart';
 
 import 'DropDownItemWidget.dart';
 
-class DrawDropDownButton extends StatelessWidget {
+class DrawDropDownButton extends IDrawable {
   DrawDropDownButton(
       {Key? key,
       required this.label,
@@ -21,7 +22,11 @@ class DrawDropDownButton extends StatelessWidget {
       this.parentName,
       required this.name,
       this.validator})
-      : super(key: key);
+      : (label: label,
+  visible: visible, required: required,
+  showIfValueSelected: showIfValueSelected,
+  showIfFieldValue: showIfFieldValue,
+  showIfIsRequired: showIfIsRequired) ;
   final String label;
   String? value;
   final bool deactivated;

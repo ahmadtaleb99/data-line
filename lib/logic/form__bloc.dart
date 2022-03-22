@@ -101,8 +101,7 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
  }
 
  Future<void> _onRadioGroupValueChanged (RadioGroupValueChanged1 event, Emitter <BlocFormState> emit) async {
-   var currentState = state as FormLoaded;
-   var radioGroup = _formRepository.getRadioGroup(event.groupName);
+    var radioGroup = _formRepository.getRadioGroup(event.groupName);
    var child = radioGroup.children.firstWhere((element) => element.value == event.id);
    for(var child in radioGroup.children){
      child.groupValue = event.value;

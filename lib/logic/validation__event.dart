@@ -20,6 +20,15 @@ class CheckboxGroupValueChanged extends ValidationEvent {
 }
 
 
+class StateFormRequested extends ValidationEvent {
+  int formId;
+
+  StateFormRequested({
+    required this.formId,
+  });
+
+}
+
 
 class RadioGroupValueChanged extends ValidationEvent{
   String value;

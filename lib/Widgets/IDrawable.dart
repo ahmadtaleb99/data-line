@@ -1,18 +1,25 @@
 
-class IDrawable {
+import 'package:flutter/cupertino.dart';
 
-  // final bool required1;
-  // final bool visible;
-  // final bool  showIfValueSelected;
-  // final String ? showIfFieldValue;
-  // final bool ?  showIfRequired;
-  //
-  // const IDrawable({
-  //   required this.required1,
-  //   required this.visible,
-  //   required this.showIfValueSelected,
-  //   this.showIfFieldValue,
-  //   this.showIfRequired,
-  // });
+abstract class IDrawable extends StatelessWidget {
+
+
+  final String label;
+  final bool required;
+  bool visible;
+  final bool showIfValueSelected;
+  final String ? showIfFieldValue;
+  final bool ? showIfIsRequired;
+
+
+  IDrawable({
+    required this.label,
+    required this.visible,
+    required this.required,
+    required this.showIfValueSelected,
+    required this.showIfFieldValue,
+    required this.showIfIsRequired,
+  }) ;
+
 }
 

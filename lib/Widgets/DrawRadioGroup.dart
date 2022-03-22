@@ -31,9 +31,10 @@ class DrawRadioGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormBloc, BlocFormState>(
+
+    return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
-        if(state is FormLoaded) {
+        {
           var children;
           if (state.radioGroup != null) children = state.radioGroup!.children;
 

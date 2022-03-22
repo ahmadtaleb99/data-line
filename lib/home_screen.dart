@@ -21,28 +21,29 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton:  BlocBuilder<FormBloc, BlocFormState>(
+        floatingActionButton:  BlocBuilder<ValidationBloc, ValidationState>(
 
         builder: (context, state) {
-          if(state is FormInitial)
+          if(state.status == Status.initial)
             return Row(
               children: [
                 FloatingActionButton(
                   onPressed: () {
-                    context.read<FormBloc>().add(FormRequested(formId: 0));
+                    context.read<ValidationBloc>().add(StateFormRequested(formId: 0));
                   },
                   child: Text('load form 1 '),
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    context.read<FormBloc>().add(FormRequested(formId: 1));
+                    context.read<ValidationBloc>().add(StateFormRequested(formId: 1));
                   },
                   child: Text('load form 2 '),
                 ),
               ],
             );
-          else  if(state is FormLoaded)
-           return   ElevatedButton(
+          else            if(state.status == Status.success)
+
+            return   ElevatedButton(
                onPressed: () {
                  if (_key.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));
@@ -76,8 +77,8 @@ class HomeScreen extends StatelessWidget {
 
                           if (state.status == Status.loading)
                             return CircularProgressIndicator();
-                          else if (state.status == Status.sucess) {
-                            print(state.formElements?[1].visible);
+                          else if (state.status == Status.success) {
+                            print(state.formElements![1].visible);
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
