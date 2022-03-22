@@ -16,7 +16,7 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
   FormBloc( this._formRepository) : super(FormInitial()) {
     on<FormRequested>((event, emit) async {
       emit(FormLoading());
-     var formElements = await  _formRepository.getFormElements();
+     var formElements = await  _formRepository.LoadFormElements(event.formId);
      emit(FormLoaded(formElements: formElements));
     });
   }

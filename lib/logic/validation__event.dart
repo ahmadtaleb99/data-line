@@ -19,6 +19,20 @@ class CheckboxGroupValueChanged extends ValidationEvent {
 
 }
 
+
+
+class RadioGroupValueChanged extends ValidationEvent{
+  String value;
+  String groupName;
+  String id;
+
+  RadioGroupValueChanged({
+    required this.value,
+    required this.groupName,
+    required this.id,
+  });
+}
+
 class ParentDropListChanged extends ValidationEvent {
 
   DrawDropDownButton drawDropDownButton ;

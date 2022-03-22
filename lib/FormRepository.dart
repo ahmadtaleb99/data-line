@@ -4,11 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
+import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 
 import 'Widgets/DrawChecboxGroup.dart';
+import 'Widgets/DrawRadioGroup.dart';
 import 'constants.dart';
 import 'dynamic form/IFormDropList.dart';
 import 'dynamic form/IFormEmail.dart';
@@ -19,9 +22,15 @@ class FormRepository {
 
   List<Widget> _formElementList = [];
 
-  List<IForm> _jsonSerialize()  {
+  List<Widget> get formElementList => _formElementList;
+
+  List<IForm> _jsonSerialize(int formID)  {
     List<IForm> itemsToDraw = [];
-    var data = jsonDecode(rawJson);
+    var data ;
+    if(formID == 0)
+  data = jsonDecode(rawJson);
+    else if (formID == 1)
+       data = jsonDecode(rawJson1);
     for(var formElement in data ){
       var type  = _htmlFormToFlutters(formElement['type']);
       type!.setParameters(formElement);
@@ -34,11 +43,11 @@ class FormRepository {
 
 
 
-  Future<List<Widget>> getFormElements() async {
+  Future<List<Widget>> LoadFormElements(int formId) async {
     await Future.delayed(Duration(seconds: 1));
-    for(var element in _jsonSerialize()){
+    for(var element in _jsonSerialize(formId)){
+      print(element);
       this._formElementList.add(element.drawFormElement()) ;
-      this._formElementList.add(SizedBox(height: 36,)) ;
     }
 
     return _formElementList;
@@ -47,6 +56,11 @@ class FormRepository {
   DrawCheckboxGroup getCheckBoxGroup (String name) {
 
     return _formElementList.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == name) as DrawCheckboxGroup;
+  }
+
+  DrawRadioGroup getRadioGroup (String name) {
+
+    return _formElementList.firstWhere((element) => (element is DrawRadioGroup) && element.name == name) as DrawRadioGroup;
   }
 
 
@@ -71,6 +85,9 @@ class FormRepository {
 
       case 'email':
         return IFormEmail();
+
+      case 'radio-group':
+        return IFormDrawRadioGroup();
 
       case 'checkbox-group':
         return IFormCheckBoxGroup();

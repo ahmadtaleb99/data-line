@@ -24,10 +24,7 @@ class DrawCheckboxGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
-      builder: (context, state) {
-
-        return FormField<bool>(
+    return  FormField<bool>(
 
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
@@ -41,15 +38,23 @@ class DrawCheckboxGroup extends StatelessWidget {
               return null;
           },
           builder: (FormFieldState<bool> fieldState) {
-            return Column(
-              children: [
-                Text(label),
-                SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                  onTap: () => print("tapped!"),
-                  child: BlocBuilder<ValidationBloc, ValidationState>(
+            return GestureDetector(
+                onTap: () =>  fieldState.validate(),
+              child: Column(
+                children: [
+                  Text(label),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BlocBuilder<ValidationBloc, ValidationState>(
+                    buildWhen: (previous, current) {
+                   if(previous != current && current.drawCheckboxGroup!.name == this.name){
+                     fieldState.validate();
+                          return true;
+
+                   }
+                   return false;
+                    },
                     builder: (context, state) {
 
                       print('state');
@@ -58,34 +63,33 @@ class DrawCheckboxGroup extends StatelessWidget {
                           state.drawCheckboxGroup!.name == this.name) {
                         {
                           children = state.drawCheckboxGroup?.children;
-                          (fieldState.activate());
 
                         }
                       }
 
-                      return Column(children: children ?? this.children);
+                      return GestureDetector(onTap: () => fieldState.validate() ,child: Column(children: children ?? this.children));
+
                     },
                   ),
-                ),
-                if (fieldState.hasError)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, top: 10),
-                    child: Text(
-                      fieldState.errorText!,
-                      style: TextStyle(
-                          fontStyle: FontStyle.normal,
-                          fontSize: 13,
-                          color: Colors.red[700],
-                          height: 0.5),
-                    ),
-                  )
-              ],
+                  if (fieldState.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, top: 10),
+                      child: Text(
+                        fieldState.errorText!,
+                        style: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            fontSize: 13,
+                            color: Colors.red[700],
+                            height: 0.5),
+                      ),
+                    )
+                ],
 
+              ),
             );
           },
 
         );
-      },
-    );
+
   }
 }

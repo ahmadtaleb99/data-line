@@ -22,6 +22,7 @@ class DrawCheckboxGroupItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool? _value = false;
     return FormField<bool>(
+
       validator: validator,
       builder: (FormFieldState<bool> fieldState) {
         return Column(
@@ -37,6 +38,7 @@ class DrawCheckboxGroupItem extends StatelessWidget {
                         id: this.id,
                         newIsChecked: value!,
                         groupName: this.groupName));
+
 
                   },
                 );

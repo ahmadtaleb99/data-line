@@ -8,14 +8,18 @@ class ValidationState{
 
   DrawCheckboxGroup ?  drawCheckboxGroup;
   DrawDropDownButton ?  drawDropDownButton;
+  DrawRadioGroup  ? radioGroup;
   List<DropDownItemWidget>  childItems ;
   List<DrawChildList> ?   childLists ;
+  List ? formElements;
   DrawChildList ? childList ;
   Map<String,DrawChildList>  childsMap;
 
   ValidationState({
     this.drawCheckboxGroup,
+    this.formElements,
     this.drawDropDownButton,
+    this.radioGroup,
     this.childList,
     required this.childsMap ,
     this.childLists  = const [],
@@ -23,18 +27,24 @@ class ValidationState{
   });
 
   ValidationState copyWith({
+    List? formElements,
+
     DrawCheckboxGroup? drawCheckboxGroup,
     DrawDropDownButton? drawDropDownButton,
+    DrawRadioGroup  ? radioGroup,
+
     List<DropDownItemWidget>? childItems,
-    List<DrawChildList>? childLists,
+    List<DrawChildList>?  childLists,
     DrawChildList? childList,
     Map<String,DrawChildList> ? childsMap
 
   }) {
     return ValidationState(
+      formElements: formElements ?? this.formElements,
       drawCheckboxGroup: drawCheckboxGroup ?? this.drawCheckboxGroup,
       drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
-      childItems: childItems ?? this.childItems,
+        radioGroup: radioGroup ?? this.radioGroup,
+        childItems: childItems ?? this.childItems,
       childLists: childLists ?? this.childLists,
       childList: childList ?? this.childList,
       childsMap: childsMap ?? this.childsMap

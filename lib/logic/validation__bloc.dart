@@ -11,6 +11,7 @@ import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
+import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
 import 'package:meta/meta.dart';
 
@@ -24,6 +25,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<ParentDropListChanged>(_onParentDropListChanged1);
     on<childDropDownChanged>(_onchildDropDownChanged);
+    on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
+
   }
 
 
@@ -96,5 +99,26 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       emit(state.copyWith(childsMap: map));
   }
 
+  void _onRadioGroupValueChanged (RadioGroupValueChanged event, Emitter <ValidationState> emit) {
+            var radioGroup = _formRepository.getRadioGroup(event.groupName);
+            var child = radioGroup.children.firstWhere((element) => element.value == event.id);
+                    for(var child in radioGroup.children){
+                      child.groupValue = event.value;
+                    }
 
-}
+                    var formElements = _formRepository.formElementList as List<dynamic>;
+                    for(var formElement in formElements)
+                      {
+                          if(formElement.showIfValueSelected && formElement.showIfFieldValue == event.value)
+                            formElement.visible = true;
+                          else   formElement.visible = false;
+
+
+                      }
+
+                    emit(state.copyWith(formElements: formElements));
+  }
+
+
+
+  }

@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors
 
 import 'dart:convert';
 
@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/DrawCheckbox.dart';
+import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
 
 import 'logic/form__bloc.dart';
 import 'logic/validation__bloc.dart';
@@ -24,11 +25,21 @@ class HomeScreen extends StatelessWidget {
 
         builder: (context, state) {
           if(state is FormInitial)
-            return FloatingActionButton(
-              onPressed: () {
-                context.read<FormBloc>().add(FormRequested());
-              },
-              child: Text('load'),
+            return Row(
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    context.read<FormBloc>().add(FormRequested(formId: 0));
+                  },
+                  child: Text('load form 1 '),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    context.read<FormBloc>().add(FormRequested(formId: 1));
+                  },
+                  child: Text('load form 2 '),
+                ),
+              ],
             );
           else  if(state is FormLoaded)
            return   ElevatedButton(

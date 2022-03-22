@@ -39,7 +39,7 @@ class DrawDropDownButton extends StatelessWidget {
       builder: (context, state) {
         return FormField<dynamic>(
             validator: (value) {
-              if(this.value == null) {
+              if(this.value == null ) {
                 return 'required';
               } else return null;
             },

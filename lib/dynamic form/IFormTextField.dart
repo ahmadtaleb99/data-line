@@ -12,7 +12,12 @@ class IFormTextField implements IForm{
 
   @override
   Widget drawFormElement({parameters}) {
-    return DrawTextField(label: _parameters['label'], required: _parameters['required']);
+    print(_parameters['showIfLogicCheckbox']);
+    return DrawTextField(label: _parameters['label'], required: _parameters['required'],
+      showIfValueSelected: _parameters['showIfLogicCheckbox'],
+      showIfFieldValue: _parameters['showIfFieldValue'] ?? null ,
+      showIfIsRequired: _parameters['showIfLogicCheckbox'] ?? null,
+        visible: (_parameters['showIfLogicCheckbox'] != null && _parameters['showIfLogicCheckbox'] == true ) ? false : true  );
   }
 
   @override
