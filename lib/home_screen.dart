@@ -71,23 +71,21 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      BlocBuilder<FormBloc, BlocFormState>(
+                      BlocBuilder<ValidationBloc, ValidationState>(
                         builder: (context, state) {
 
-                          if (state is FormLoading)
+                          if (state.status == Status.loading)
                             return CircularProgressIndicator();
-                          else if (state is FormLoaded)
+                          else if (state.status == Status.sucess) {
+                            print(state.formElements?[1].visible);
                             return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
-                                children:
-                                state.formElements,
-
-
+                                children: state.formElements!.cast(),
                               ),
                             );
-                          else
+                          } else
                             return Container();
                         },
                       ),

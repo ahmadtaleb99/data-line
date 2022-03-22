@@ -14,6 +14,8 @@ class DrawDropDownButton extends StatelessWidget {
       required this.isHidden,
       required this.isReadOnly,
       required this.prompt,
+        this.showIfValueSelected = false,
+        this.visible = false,
       required this.items,
       required this.relatedToParent,
       this.parentName,
@@ -25,7 +27,9 @@ class DrawDropDownButton extends StatelessWidget {
   final bool deactivated;
   final bool required;
   final bool isHidden;
+   bool visible;
   final bool isReadOnly;
+  bool ? showIfValueSelected = false ;
   final String prompt;
   final String name;
   final String? parentName;

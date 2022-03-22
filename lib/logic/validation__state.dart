@@ -3,9 +3,9 @@
 part of 'validation__bloc.dart';
 
 @immutable
-
+enum Status {initial,loading,sucess,failure}
 class ValidationState{
-
+  Status status;
   DrawCheckboxGroup ?  drawCheckboxGroup;
   DrawDropDownButton ?  drawDropDownButton;
   DrawRadioGroup  ? radioGroup;
@@ -18,6 +18,7 @@ class ValidationState{
   ValidationState({
     this.drawCheckboxGroup,
     this.formElements,
+    this.status = Status.initial,
     this.drawDropDownButton,
     this.radioGroup,
     this.childList,
@@ -28,6 +29,7 @@ class ValidationState{
 
   ValidationState copyWith({
     List? formElements,
+    Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,
     DrawDropDownButton? drawDropDownButton,
@@ -45,6 +47,7 @@ class ValidationState{
       drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
         radioGroup: radioGroup ?? this.radioGroup,
         childItems: childItems ?? this.childItems,
+        status: status ?? this.status,
       childLists: childLists ?? this.childLists,
       childList: childList ?? this.childList,
       childsMap: childsMap ?? this.childsMap

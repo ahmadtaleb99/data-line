@@ -3,27 +3,67 @@
 part of 'form__bloc.dart';
 
 @immutable
-abstract class BlocFormState {}
+abstract class BlocFormState  extends Equatable{}
 
-class FormInitial extends BlocFormState {}
+class FormInitial extends BlocFormState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
 
-class FormLoading extends BlocFormState {}
+class FormLoading extends BlocFormState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
 
 
 class FormLoaded extends BlocFormState {
-  List<Widget> formElements;
+  DrawCheckboxGroup ?  drawCheckboxGroup;
+  DrawDropDownButton ?  drawDropDownButton;
+  DrawRadioGroup  ? radioGroup;
+  List<DropDownItemWidget>  childItems ;
+  List<DrawChildList> ?   childLists ;
+  List ? formElements;
+  Map<String,DrawChildList>  childsMap;
 
   FormLoaded({
-    required this.formElements,
+    this.drawCheckboxGroup,
+    this.formElements,
+    this.drawDropDownButton,
+    this.radioGroup,
+    required this.childsMap ,
+    this.childLists  = const [],
+    this.childItems = const [],
   });
 
-  FormLoaded copyWith({
-    List<Widget>? formElements,
-    List<DrawCheckboxGroup>? group,
+   FormLoaded copyWith({
+    List? formElements,
+
+    DrawCheckboxGroup? drawCheckboxGroup,
+    DrawDropDownButton? drawDropDownButton,
+    DrawRadioGroup  ? radioGroup,
+
+    List<DropDownItemWidget>? childItems,
+    List<DrawChildList>?  childLists,
+    DrawChildList? childList,
+    Map<String,DrawChildList> ? childsMap
+
   }) {
     return FormLoaded(
-      formElements: formElements ?? this.formElements,
+        formElements: formElements ?? this.formElements,
+        drawCheckboxGroup: drawCheckboxGroup ?? this.drawCheckboxGroup,
+        drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
+        radioGroup: radioGroup ?? this.radioGroup,
+        childItems: childItems ?? this.childItems,
+        childLists: childLists ?? this.childLists,
+        childsMap: childsMap ?? this.childsMap
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
 }
 
