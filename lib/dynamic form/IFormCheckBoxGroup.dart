@@ -36,7 +36,7 @@ class IFormCheckBoxGroup implements IForm {
         minCheckedAllowed: _parametrs['checkboxMinValue'],
         isReadOnly: _parametrs['isReadOnly'],
         isHidden: _parametrs['isHidden'],
-        deactivated: _parametrs['deactivated'],
+        deactivated: _parametrs['deactivated'], other: _parametrs['other'],
       );
     return DrawCheckboxGroup(
       children: itemsList,
@@ -49,7 +49,7 @@ class IFormCheckBoxGroup implements IForm {
       name: _parametrs['name'],
       isReadOnly: _parametrs['isReadOnly'],
       isHidden: _parametrs['isHidden'],
-      deactivated: _parametrs['deactivated'],
+      deactivated: _parametrs['deactivated'],other: _parametrs['other'],
     );
   }
 

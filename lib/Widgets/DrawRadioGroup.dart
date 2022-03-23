@@ -6,6 +6,7 @@ import 'package:form_builder_test/logic/form__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
 import 'DrawRadioItem.dart';
+import 'DrawTextField.dart';
 
 class DrawRadioGroup extends IDrawable {
 
@@ -32,6 +33,7 @@ class DrawRadioGroup extends IDrawable {
    final bool required;
    final bool other;
    bool ? visible ;
+   bool ? isOtherVisisble ;
    final List<DrawRadioItem> children;
    final bool  showIfValueSelected;
    final String ? showIfFieldValue;
@@ -52,7 +54,22 @@ class DrawRadioGroup extends IDrawable {
         return Column(
           children: [
             Text(label),
-            ...children
+            ...children,
+          if(other == true)  Visibility(
+              maintainSize: false,
+              maintainState: true,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 23),
+                child: DrawTextField(
+                    label: 'other',
+                    visible: isOtherVisisble ?? true,
+                    required: required,
+                    name: name,
+                    showIfValueSelected: showIfValueSelected,
+                    showIfFieldValue: showIfFieldValue,
+                    showIfIsRequired: showIfIsRequired),
+              ),
+            )
 
           ],
         );

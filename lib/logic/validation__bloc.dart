@@ -103,9 +103,10 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       var list  = event.childList as DrawMultiSelect;
       ch.selectedValues = list.selectedValues;
     }
+    map[ch!.name] = ch;
 
 
-    map[event.childList.name] = ch!;
+    map[event.childList.name] = ch;
 
     emit(state.copyWith(childsMap: map));
   }
@@ -119,16 +120,20 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       child.groupValue = event.value;
     }
 
+
+    var formElements =  _checkRelatedFields(event.value);
+    emit(state.copyWith(formElements: formElements,status: Status.success));
+  }
+
+  List<IDrawable>?  _checkRelatedFields(String value) {
     var formElements = _formRepository.formElementList as List<IDrawable>;
     for (var formElement in formElements) {
       if (formElement.showIfValueSelected &&
-          formElement.showIfFieldValue == event.value)
+          formElement.showIfFieldValue == value)
         formElement.visible = true;
       else
         formElement.visible = false;
     }
-
-    emit(state.copyWith(formElements: formElements,status: Status.success));
   }
 }
 

@@ -79,7 +79,7 @@ class DrawChildList extends IDrawable {
 
         return FormField<dynamic>(
             validator: (value) {
-              if (this.value == null || this.value!.isEmpty  )
+              if (list?.value == null )
                 return 'required';
               else
                 return null;
@@ -139,6 +139,7 @@ class DrawChildList extends IDrawable {
                                 items: itemsToBuild.isEmpty ? _buildItems([]) : _buildItems(itemsToBuild)  ,
                                 value: list != null ? list.value : null,
                                 onChanged: (value) {
+                                  if(itemsToBuild.isNotEmpty)
                                   context
                                       .read<ValidationBloc>()
                                       .add(childDropDownChanged(value: value, childList: this));

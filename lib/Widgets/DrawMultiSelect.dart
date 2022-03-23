@@ -146,7 +146,8 @@ class DrawMultiSelect extends IDrawable {
                               initialValue: [],
                               onConfirm: (values) {
                                 selectedValues = values;
-                               context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
+                                if(itemsToBuild.isNotEmpty)
+                                  context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
                               },
                             )
                           ),

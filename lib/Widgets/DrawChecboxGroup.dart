@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
+import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
 import 'IDrawable.dart';
 
 class DrawCheckboxGroup extends IDrawable {
-  DrawCheckboxGroup({
+  DrawCheckboxGroup( {
     Key? key,
     required this.children,
     required this.minMaxCheckbox,
@@ -16,6 +17,7 @@ class DrawCheckboxGroup extends IDrawable {
     required this.label,
     this.visible,
     required this.required,
+    required this.other,
     required this.name,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
@@ -23,8 +25,6 @@ class DrawCheckboxGroup extends IDrawable {
     required this.deactivated,
     required this.isHidden,
     required this.isReadOnly,
-
-
   }) : super(
             key: key,
             label: label,
@@ -46,6 +46,7 @@ class DrawCheckboxGroup extends IDrawable {
   final bool isReadOnly;
   final bool? showIfIsRequired;
   final bool showIfValueSelected;
+  final bool other;
   final String? showIfFieldValue;
   final bool minMaxCheckbox;
   final int? minCheckedAllowed;
@@ -96,7 +97,10 @@ class DrawCheckboxGroup extends IDrawable {
 
                   return GestureDetector(
                       onTap: () => fieldState.validate(),
-                      child: Column(children: children ?? this.children));
+                      child: Column(children: [
+                        ...children ?? this.children,
+
+                      ]));
                 },
               ),
               if (fieldState.hasError)

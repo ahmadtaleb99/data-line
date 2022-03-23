@@ -1,6 +1,6 @@
 import 'Widgets/DrawNumberField.dart';
 class Expression {
-  final Operators operator;
+  final Operator operator;
   final int value;
   final int? value2;
 
@@ -16,16 +16,26 @@ class Expression {
 
 final OperatorsValues = EnumValues(
     {
-      "more": Operators.MORE,
-      "less": Operators.LESS,
-      "equal": Operators.EQUAL,
-      "between": Operators.BETWEEN,
+      "more": Operator.MORE,
+      "less": Operator.LESS,
+      "equal": Operator.EQUAL,
+      "between": Operator.BETWEEN,
+
+    }
+);
+
+final fileTypeEnumValues = EnumValues(
+    {
+      "Image": FileTypeEnum.IMAGE,
+      "Audio": FileTypeEnum.AUDIO,
+      "Video": FileTypeEnum.VIDEO,
+      "Text": FileTypeEnum.TEXT
 
     }
 );
 
 class EnumValues<T> {
-  Map<String, T>? map;
+  Map<String, T> ? map;
   Map<T, String>? reverseMap;
 
   EnumValues(this.map);
@@ -38,4 +48,5 @@ class EnumValues<T> {
   }
 }
 
-enum Operators {MORE,LESS,EQUAL,BETWEEN}
+enum Operator {MORE,LESS,EQUAL,BETWEEN}
+enum FileTypeEnum {IMAGE,TEXT,VIDEO,AUDIO}

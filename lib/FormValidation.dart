@@ -47,16 +47,16 @@ mixin FormValidation{
 
 
       switch(expression.operator){
-        case Operators.BETWEEN:
+        case Operator.BETWEEN:
           if(number >= expression.value && number <= expression.value2!){
             return null;
           }
           else return 'number must be between  ${expression.value} and  ${expression.value2}';
-        case Operators.LESS:
+        case Operator.LESS:
           return  number < expression.value ? null : 'number should be less than ${expression.value}';
-        case Operators.MORE:
+        case Operator.MORE:
           return  number > expression.value ? null : 'number should be more than ${expression.value}';
-        case Operators.EQUAL:
+        case Operator.EQUAL:
           return  number != expression.value ? null : 'number should be equal to ${expression.value}';
       }
 

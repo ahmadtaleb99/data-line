@@ -8,6 +8,7 @@ import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
+import 'package:form_builder_test/dynamic%20form/IFormFilePicker.dart';
 import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 
@@ -90,6 +91,9 @@ class FormRepository {
 
       case 'radio-group':
         return IFormDrawRadioGroup();
+
+      case 'file':
+        return IFormFilePicker();
 
       case 'checkbox-group':
         return IFormCheckBoxGroup();
