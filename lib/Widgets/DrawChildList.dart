@@ -69,10 +69,13 @@ class DrawChildList extends IDrawable {
         var parent = state.formElements!.firstWhere((element) => element.name == this.parentName);
         String parentListLabel = parent.label;
         DrawChildList? list;
-        if (state.childsMap != null && state.childsMap.isNotEmpty)
+        List<DropDownItemWidget> itemsToBuild;
+        if (state.childsMap != null && state.childsMap.isNotEmpty){
           list = state.childsMap[this.name] as DrawChildList;
+          itemsToBuild = list.items;
+        }
+        else itemsToBuild = [];
 
-        if (list != null) print('ahmad testtttt ${list.items}');
 
         return FormField<dynamic>(
             validator: (value) {
@@ -88,7 +91,7 @@ class DrawChildList extends IDrawable {
                     Padding(
                       padding: const EdgeInsets.only(left: 16, bottom: 10),
                       child: Text(
-                        '$label - '
+                        '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
                         ,style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -116,7 +119,30 @@ class DrawChildList extends IDrawable {
                           padding: const EdgeInsets.all(0.0),
                           child: Center(
                             child:
-                                 _buildDropdownButton(context, list)
+                            DropdownButton<dynamic>(
+                                onTap: () {
+                                  FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                  if (!currentFocus.hasPrimaryFocus) {
+                                    currentFocus.unfocus();
+                                  }
+                                },
+                                underline: Container(),
+                                icon: Padding(
+                                  padding: const EdgeInsets.only(left: 99),
+                                  child: Icon(Icons.arrow_drop_down),
+                                ),
+                                hint: Text(prompt),
+                                disabledHint: Text(prompt),
+                                // value: state.childList != null && state.childList!.name == this.name ? state.childList!.value : null,
+                                // items:   state.childList != null && state.childList!.name == this.name ? _buildItems(state.childList!.items)
+                                items: itemsToBuild.isEmpty ? _buildItems([]) : _buildItems(itemsToBuild)  ,
+                                value: list != null ? list.value : null,
+                                onChanged: (value) {
+                                  context
+                                      .read<ValidationBloc>()
+                                      .add(childDropDownChanged(value: value, childList: this));
+                                })
                           ),
                         ),
                       ),
@@ -139,33 +165,7 @@ class DrawChildList extends IDrawable {
     );
   }
 
-  DropdownButton<dynamic> _buildDropdownButton(BuildContext context,
-      DrawChildList? list) {
-    return DropdownButton<dynamic>(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
 
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        underline: Container(),
-        icon: Padding(
-          padding: const EdgeInsets.only(left: 99),
-          child: Icon(Icons.arrow_drop_down),
-        ),
-        hint: Text(prompt),
-        disabledHint: Text(prompt),
-        // value: state.childList != null && state.childList!.name == this.name ? state.childList!.value : null,
-        // items:   state.childList != null && state.childList!.name == this.name ? _buildItems(state.childList!.items)
-        items: list != null ? _buildItems(list.items) : _buildItems([]),
-        value: list != null ? list.value : null,
-        onChanged: (value) {
-          context
-              .read<ValidationBloc>()
-              .add(childDropDownChanged(value: value, childList: this));
-        });
-  }
 
   DrawChildList copyWith({String? label,
     String? value,
@@ -213,39 +213,7 @@ class DrawChildList extends IDrawable {
     return list;
   }
 
-  List<MultiSelectItem<String>> _buildItemsMulti(
 
-      List<DropDownItemWidget> items) {
-    List<MultiSelectItem<String>> list = [];
-    if (items.isEmpty)
-{
-  return [];
-}
-    print('iteemsss to draw  ${items.toString()}');
-    for (var item in items) {
-      list.add(MultiSelectItem(item.value, item.value));
-    }
-    return list;
-  }
 
- Widget _buildMultiSelectDialogField( DrawChildList? state,IDrawable parentList) {
 
-        return MultiSelectDialogField<String>(
-          dialogHeight: state != null ? null : 5 ,
-          dialogWidth:  state != null ? null : 5,
-        chipDisplay: MultiSelectChipDisplay.none(),
-          selectedItemsTextStyle: TextStyle(color: Colors.black),
-          buttonIcon: Icon(Icons.arrow_drop_down),
-          decoration: BoxDecoration(),
-          title:  state != null ? Text(label) : Text('Please Select a ${parentList.label}'),
-          buttonText: Text(prompt),
-          listType: MultiSelectListType.CHIP,
-
-          items: state != null ? _buildItemsMulti(state.items) : _buildItemsMulti([]),
-          initialValue: [],
-          onConfirm: (values) {
-            this.value = values.first;
-          },
-        );
-  }
 }

@@ -1,3 +1,4 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
@@ -64,10 +65,12 @@ class DrawMultiSelect extends IDrawable {
       builder: (context, state) {
       print('1 ${state.formElements?.first.name}');
       print('2 ${this.parentName}');
-        // var parentList = state.formElements!.firstWhere((element) => element.name == this.parentName);
-        // String parentListLabel = parentList.label;
+
         DrawMultiSelect? list;
       List<DropDownItemWidget> itemsToBuild;
+      var parentList;
+      String parentListLabel ='nu';
+
       if(!relatedToParent) {
         print('fat1q $name');
         itemsToBuild = this.items;
@@ -75,6 +78,8 @@ class DrawMultiSelect extends IDrawable {
         print('test passed ');
       }
       else {
+         parentList = state.formElements!.firstWhereOrNull((element) => element.name == this.parentName);
+         parentListLabel = parentList.label;
         print('fat2 $name');
           if (state.childsMap != null && state.childsMap.isNotEmpty) {
             list = state.childsMap[this.name] as DrawMultiSelect;
@@ -96,9 +101,9 @@ class DrawMultiSelect extends IDrawable {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 16, bottom: 10),
-                      child: Text(''
-                        // '$label - ${list == null ? ' ${parentListLabel}' : list.items.first.parent} '
-                        // ,style: TextStyle(fontSize: 18),
+                      child: Text(
+                        '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
+                        ,style: TextStyle(fontSize: 18),
                       ),
                     ),
                     SizedBox(
@@ -126,18 +131,18 @@ class DrawMultiSelect extends IDrawable {
                           child: Center(
                             child: MultiSelectDialogField<String>(
 
-                              dialogHeight: list != null ? null : 5 ,
-                              dialogWidth:  list != null ? null : 5,
+                              dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
+                              dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
                               chipDisplay: MultiSelectChipDisplay.none(),
                               selectedItemsTextStyle: TextStyle(color: Colors.black),
                               buttonIcon: Icon(Icons.arrow_drop_down),
                               decoration: BoxDecoration(),
-                              title:  list != null ? Text(label) : Text('Please Select a '),
+                                title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
                               buttonText: Text(prompt),
                               listType: MultiSelectListType.CHIP,
 
                               // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                              items: _buildItemsMulti(this.items) ,
+                              items: _buildItemsMulti(itemsToBuild) ,
                               initialValue: [],
                               onConfirm: (values) {
                                 selectedValues = values;
