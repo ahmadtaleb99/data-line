@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 
-class DrawEmailTextField extends StatelessWidget with FormValidation {
-  const DrawEmailTextField({Key? key, required this.label, required this.required}) : super(key: key);
+class DrawEmailTextField extends IDrawable with FormValidation {
+   DrawEmailTextField({  Key ? key,
+    required this.label,
+     this.visible,
+    required this.required,
+    required this.name,
+    required this.showIfValueSelected,
+    required this.showIfFieldValue,
+    required this.showIfIsRequired,
+  }) : super(label: label,key: key,
+      name: name,
+      visible: visible, required: required,
+      showIfValueSelected: showIfValueSelected,
+      showIfFieldValue: showIfFieldValue,
+      showIfIsRequired: showIfIsRequired) ;
+
+
+
   final String label;
+  final String name;
   final bool required;
-
+  bool?  visible;
+  final bool showIfValueSelected;
+  final String ? showIfFieldValue;
+  final bool ? showIfIsRequired;
   @override
   Widget build(BuildContext context) {
     return TextFormField(

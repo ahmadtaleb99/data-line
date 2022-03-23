@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/logic/form__bloc.dart';
 
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
 import 'DrawRadioItem.dart';
 
-class DrawRadioGroup extends StatelessWidget {
-  final String label;
-  final String value;
-  final String name;
-  final bool required;
-  final bool other;
-   bool ? visible;
-  final List<DrawRadioItem> children;
-  final bool  showIfValueSelected;
-  final String ? showIfFieldValue;
+class DrawRadioGroup extends IDrawable {
+
 
    DrawRadioGroup({
-
+    Key ? key,
     required this.label,
     required this.name,
      this.visible,
     required this.value,
     required this.required,
     required this.other,
-    required this.children, required this.showIfValueSelected, this.showIfFieldValue,
-  });
+    required this.children, required this.showIfValueSelected, this.showIfFieldValue,this.showIfIsRequired,
+  }) : super(label: label,key: key,
+  name: name,
+  visible: visible, required: required,
+  showIfValueSelected: showIfValueSelected,
+  showIfFieldValue: showIfFieldValue,
+  showIfIsRequired: showIfIsRequired) ;
+
+   final String label;
+   final String value;
+   final String name;
+   final bool required;
+   final bool other;
+   bool ? visible ;
+   final List<DrawRadioItem> children;
+   final bool  showIfValueSelected;
+   final String ? showIfFieldValue;
+   final bool ? showIfIsRequired;
 
 
   @override

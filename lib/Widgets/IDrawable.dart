@@ -6,7 +6,7 @@ abstract class IDrawable extends StatelessWidget {
   final String label;
   final String name;
   final bool required;
-  bool visible;
+  bool ? visible;
   final bool showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;

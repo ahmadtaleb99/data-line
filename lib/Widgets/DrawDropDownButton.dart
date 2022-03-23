@@ -18,7 +18,7 @@ class DrawDropDownButton extends IDrawable {
   final bool required;
   final bool isHidden;
   final bool multiple;
-  bool visible;
+  bool  ? visible;
   final bool isReadOnly;
   final bool? showIfIsRequired;
   final bool showIfValueSelected;

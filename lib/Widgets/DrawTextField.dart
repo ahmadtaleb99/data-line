@@ -24,7 +24,7 @@ class DrawTextField extends  IDrawable {
   final String label;
   final String name;
   final bool required;
-  bool visible;
+  bool?  visible;
   final bool showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
@@ -34,7 +34,7 @@ class DrawTextField extends  IDrawable {
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
         return Visibility(
-          visible: visible,
+          visible: visible ?? true,
           maintainState: true,
           maintainSize: false,
           child: TextFormField(

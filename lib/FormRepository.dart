@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
+import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
@@ -64,9 +65,9 @@ class FormRepository {
   }
 
 
-  List<DrawChildList> getChildrenSelectsFor (String name) {
+  List<IDrawable> getChildrenSelectsFor (String name) {
 
-    return _formElementList.where((element) => element is DrawChildList && (  element.parentName == name)).toList().cast()  ;
+    return _formElementList.where((element) => element is DrawChildList  ||  element is DrawMultiSelect &&  (  element.parentName == name)).toList().cast()  ;
   }
 
 

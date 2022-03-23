@@ -11,6 +11,7 @@ import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
+import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
@@ -34,7 +35,15 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       StateFormRequested event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(status: Status.loading));
     var formElements = await _formRepository.LoadFormElements(event.formId);
-    emit(state.copyWith(status: Status.success, formElements: formElements));
+    Map<String, IDrawable>? map = {};
+    // for(var formElement in formElements) {
+    //   if(formElement is DrawChildList || formElement is DrawMultiSelect  ){
+    //   map[formElement.name] = formElement;
+    //   }
+    // }
+
+    print(map.toString());
+    emit(state.copyWith(status: Status.success, formElements: formElements,childsMap: map));
   }
 
   void _onCheckboxGroupValueChanged(
@@ -50,59 +59,53 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith(drawCheckboxGroup: group));
   }
 
-  void _onParentDropListChanged(
-      ParentDropListChanged event, Emitter<ValidationState> emit) {
+
+
+  void _onParentDropListChanged1(ParentDropListChanged event, Emitter<ValidationState> emit) {
+
+
     var childLists =
-        _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+    _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
 
-    for (var childList in childLists) {
-      DrawChildList ch = childList.copyWith();
-      ch.items =
-          ch.items.where((element) => element.parent == event.parent).toList();
-      print(ch.items.toString() + ' 21301392103210838012308120832180');
-      for (var c in ch.items) print(' ${c.value}  21444444');
-      ch.value = ch.items.first.value;
-
-      emit(state.copyWith(childList: ch));
-    }
-  }
-
-  void _onParentDropListChanged1(
-      ParentDropListChanged event, Emitter<ValidationState> emit) {
-    var childLists =
-        _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
     event.drawDropDownButton.value = event.parent;
-    for (var c in childLists) {
-      print(c.name);
-    }
+
     var map = state.childsMap;
-    List<DrawChildList> list = List.from(state.childLists!);
     for (var childList in childLists) {
       emit(state);
+      var ch;
+      if(childList is DrawChildList)
+       ch = childList.copyWith();
 
-      DrawChildList ch = childList.copyWith();
+      if(childList is DrawMultiSelect)
+         ch = childList.copyWith();
 
-      ch.items =
-          ch.items.where((element) => element.parent == event.parent).toList();
+      ch.items =  ch.items.where((element) => element.parent == event.parent).toList();
       map[ch.name] = ch;
-      for (var c in ch.items) {
-        print('items to be added to list : ${c.value}   ');
-      }
 
-      list.add(ch);
-      emit(state.copyWith(childLists: list, childsMap: map));
+
+      emit(state.copyWith( childsMap: map));
     }
-    for (var c in list) {
-      print(c.toString() + 'state list ');
-    }
+
+
+
   }
 
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
     var map = state.childsMap;
     var ch = map[event.childList.name];
-    ch!.value = event.value;
-    map[event.childList.name] = ch;
+    if (ch is DrawChildList){
+      ch.value = event.value;
+
+    }
+
+    else  if (ch is DrawMultiSelect){
+      var list  = event.childList as DrawMultiSelect;
+      ch.selectedValues = list.selectedValues;
+    }
+
+
+    map[event.childList.name] = ch!;
 
     emit(state.copyWith(childsMap: map));
   }
@@ -128,3 +131,15 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith(formElements: formElements,status: Status.success));
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+

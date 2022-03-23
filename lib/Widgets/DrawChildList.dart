@@ -43,7 +43,7 @@ class DrawChildList extends IDrawable {
   final bool required;
   final bool isHidden;
   final bool multiple;
-  bool visible;
+  bool ? visible;
   final bool isReadOnly;
   final bool? showIfIsRequired;
   final bool showIfValueSelected;
@@ -59,24 +59,24 @@ class DrawChildList extends IDrawable {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ValidationBloc, ValidationState>(
-      buildWhen: (p, current) {
-        for (var kza in current.childLists!) {
-          if (kza.name == this.name) return true;
-        }
-        return false;
-      },
+      // buildWhen: (p, current) {
+      //   for (var kza in current.childLists!) {
+      //     if (kza.name == this.name) return true;
+      //   }
+      //   return false;
+      // },
       builder: (context, state) {
-        DrawDropDownButton parent = state.formElements!.firstWhere(( element) => element.name == parentName );
-        String _parentName = parent.name;
+        var parent = state.formElements!.firstWhere((element) => element.name == this.parentName);
+        String parentListLabel = parent.label;
         DrawChildList? list;
         if (state.childsMap != null && state.childsMap.isNotEmpty)
-          list = state.childsMap[this.name];
+          list = state.childsMap[this.name] as DrawChildList;
 
-        if (list != null) print('ahmad testtttt ${list.value}');
+        if (list != null) print('ahmad testtttt ${list.items}');
 
         return FormField<dynamic>(
             validator: (value) {
-              if (list != null && list.value == null)
+              if (this.value == null || this.value!.isEmpty  )
                 return 'required';
               else
                 return null;
@@ -88,7 +88,7 @@ class DrawChildList extends IDrawable {
                     Padding(
                       padding: const EdgeInsets.only(left: 16, bottom: 10),
                       child: Text(
-                        '$label ${list == null ? '- $_parentName' : list.items.first.value}'
+                        '$label - '
                         ,style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -115,9 +115,8 @@ class DrawChildList extends IDrawable {
                         child: Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Center(
-                            child: !multiple
-                                ? _buildDropdownButton(context, list)
-                                : _buildMultiSelectDialogField(list),
+                            child:
+                                 _buildDropdownButton(context, list)
                           ),
                         ),
                       ),
@@ -229,16 +228,16 @@ class DrawChildList extends IDrawable {
     return list;
   }
 
- Widget _buildMultiSelectDialogField( DrawChildList? state) {
+ Widget _buildMultiSelectDialogField( DrawChildList? state,IDrawable parentList) {
 
         return MultiSelectDialogField<String>(
-          dialogHeight: state != null ? null : 10 ,
-          dialogWidth:  state != null ? null : 10,
+          dialogHeight: state != null ? null : 5 ,
+          dialogWidth:  state != null ? null : 5,
         chipDisplay: MultiSelectChipDisplay.none(),
           selectedItemsTextStyle: TextStyle(color: Colors.black),
           buttonIcon: Icon(Icons.arrow_drop_down),
           decoration: BoxDecoration(),
-          title:  state != null ? Text(label) : Text('Please Select a '),
+          title:  state != null ? Text(label) : Text('Please Select a ${parentList.label}'),
           buttonText: Text(prompt),
           listType: MultiSelectListType.CHIP,
 

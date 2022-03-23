@@ -3,19 +3,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawCheckboxGroup extends StatelessWidget {
-  DrawCheckboxGroup({Key? key,
+import 'IDrawable.dart';
+
+class DrawCheckboxGroup extends IDrawable {
+  DrawCheckboxGroup({
+    Key? key,
     required this.children,
-    required this.label,
     required this.minMaxCheckbox,
     this.minCheckedAllowed,
-    this.maxCheckedAllowed, required this.name, this.validator})
+    this.maxCheckedAllowed,
+    this.validator,
+    required this.label,
+    this.visible,
+    required this.required,
+    required this.name,
+    required this.showIfValueSelected,
+    required this.showIfFieldValue,
+    required this.showIfIsRequired,
+    required this.deactivated,
+    required this.isHidden,
+    required this.isReadOnly,
 
 
-      : super(key: key);
+  }) : super(
+            key: key,
+            label: label,
+            name: name,
+            visible: visible,
+            required: required,
+            showIfValueSelected: showIfValueSelected,
+            showIfFieldValue: showIfFieldValue,
+            showIfIsRequired: showIfIsRequired);
+
   final List<DrawCheckboxGroupItem> children;
+  String? value;
   final String label;
   final String name;
+  final bool deactivated;
+  final bool required;
+  final bool isHidden;
+  bool? visible;
+  final bool isReadOnly;
+  final bool? showIfIsRequired;
+  final bool showIfValueSelected;
+  final String? showIfFieldValue;
   final bool minMaxCheckbox;
   final int? minCheckedAllowed;
   final int? maxCheckedAllowed;
@@ -24,72 +55,66 @@ class DrawCheckboxGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  FormField<bool>(
-
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            if (minMaxCheckbox == true) {
-              if (checksNumber > maxCheckedAllowed! ||
-                  checksNumber < minCheckedAllowed!) {
-                return 'you must choose at least  $minCheckedAllowed and no more than $maxCheckedAllowed';
-              }
-            }
-            else
-              return null;
-          },
-          builder: (FormFieldState<bool> fieldState) {
-            return GestureDetector(
-                onTap: () =>  fieldState.validate(),
-              child: Column(
-                children: [
-                  Text(label),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  BlocBuilder<ValidationBloc, ValidationState>(
-                    buildWhen: (previous, current) {
-                   if(previous != current && current.drawCheckboxGroup!.name == this.name){
-                     fieldState.validate();
-                          return true;
-
-                   }
-                   return false;
-                    },
-                    builder: (context, state) {
-
-                      print('state');
-                      var children;
-                      if (state.drawCheckboxGroup != null &&
-                          state.drawCheckboxGroup!.name == this.name) {
-                        {
-                          children = state.drawCheckboxGroup?.children;
-
-                        }
-                      }
-
-                      return GestureDetector(onTap: () => fieldState.validate() ,child: Column(children: children ?? this.children));
-
-                    },
-                  ),
-                  if (fieldState.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 10),
-                      child: Text(
-                        fieldState.errorText!,
-                        style: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 13,
-                            color: Colors.red[700],
-                            height: 0.5),
-                      ),
-                    )
-                ],
-
+    return FormField<bool>(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (minMaxCheckbox == true) {
+          if (checksNumber > maxCheckedAllowed! ||
+              checksNumber < minCheckedAllowed!) {
+            return 'you must choose at least  $minCheckedAllowed and no more than $maxCheckedAllowed';
+          }
+        } else
+          return null;
+      },
+      builder: (FormFieldState<bool> fieldState) {
+        return GestureDetector(
+          onTap: () => fieldState.validate(),
+          child: Column(
+            children: [
+              Text(label),
+              SizedBox(
+                height: 10,
               ),
-            );
-          },
+              BlocBuilder<ValidationBloc, ValidationState>(
+                buildWhen: (previous, current) {
+                  if (previous != current &&
+                      current.drawCheckboxGroup!.name == this.name) {
+                    fieldState.validate();
+                    return true;
+                  }
+                  return false;
+                },
+                builder: (context, state) {
+                  print('state');
+                  var children;
+                  if (state.drawCheckboxGroup != null &&
+                      state.drawCheckboxGroup!.name == this.name) {
+                    {
+                      children = state.drawCheckboxGroup?.children;
+                    }
+                  }
 
+                  return GestureDetector(
+                      onTap: () => fieldState.validate(),
+                      child: Column(children: children ?? this.children));
+                },
+              ),
+              if (fieldState.hasError)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 10),
+                  child: Text(
+                    fieldState.errorText!,
+                    style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 13,
+                        color: Colors.red[700],
+                        height: 0.5),
+                  ),
+                )
+            ],
+          ),
         );
-
+      },
+    );
   }
 }

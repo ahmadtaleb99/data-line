@@ -56,7 +56,7 @@ class ParentDropListChanged extends ValidationEvent {
 
 class childDropDownChanged extends ValidationEvent {
 
-  DrawChildList childList ;
+  IDrawable childList ;
   String value;
 
   childDropDownChanged({

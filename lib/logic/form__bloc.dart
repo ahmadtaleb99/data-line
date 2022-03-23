@@ -49,47 +49,47 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
  }
 
  void _onParentDropListChanged (ParentDropListChanged1 event, Emitter <BlocFormState> emit){
-   var childLists =
-   _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
-
-   for(var childList in childLists){
-
-     DrawChildList ch = childList.copyWith();
-     ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
-     print(ch.items.toString()+ ' 21301392103210838012308120832180');
-     for(var c in ch.items) print( ' ${c.value}  21444444');
-     ch.value = ch.items.first.value;
-
-     emit((state as FormLoaded).copyWith(childList: ch));
-   }
+   // var childLists =
+   // _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+   //
+   // for(var childList in childLists){
+   //
+   //   DrawChildList ch = childList.copyWith();
+   //   ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
+   //   print(ch.items.toString()+ ' 21301392103210838012308120832180');
+   //   for(var c in ch.items) print( ' ${c.value}  21444444');
+   //   ch.value = ch.items.first.value;
+   //
+   //   emit((state as FormLoaded).copyWith(childList: ch));
+   // }
  }
  void _onParentDropListChanged1 (ParentDropListChanged1 event, Emitter <BlocFormState> emit){
-   var childLists =
-   _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
-   event.drawDropDownButton.value = event.parent;
-   for(var c in childLists){
-     print(c.name);
-   }
-   var map = (state as FormLoaded).childsMap;
-   List<DrawChildList>    list = List.from((state as FormLoaded).childLists!);
-   for(var childList in childLists){
-     emit((state as FormLoaded));
-
-     DrawChildList ch = childList.copyWith();
-
-     ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
-     map[ch.name]=ch;
-     for(var c in ch.items){
-       print('items to be added to list : ${c.value}   ');
-     }
-
-     list.add(ch);
-     emit((state as FormLoaded).copyWith(childLists: list,childsMap: map ));
-
-   }
-   for(var c in list){
-     print(c.toString()+'state list ');
-   }
+   // var childLists =
+   // _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+   // event.drawDropDownButton.value = event.parent;
+   // for(var c in childLists){
+   //   print(c.name);
+   // }
+   // var map = (state as FormLoaded).childsMap;
+   // List<DrawChildList>    list = List.from((state as FormLoaded).childLists!);
+   // for(var childList in childLists){
+   //   emit((state as FormLoaded));
+   //
+   //   DrawChildList ch = childList.copyWith();
+   //
+   //   ch.items  = ch.items.where((element) => element.parent == event.parent).toList();
+   //   map[ch.name]=ch;
+   //   for(var c in ch.items){
+   //     print('items to be added to list : ${c.value}   ');
+   //   }
+   //
+   //   list.add(ch);
+   //   emit((state as FormLoaded).copyWith(childLists: list,childsMap: map ));
+   //
+   // }
+   // for(var c in list){
+   //   print(c.toString()+'state list ');
+   // }
 
  }
  void _onchildDropDownChanged (childDropDownChanged1 event, Emitter <BlocFormState> emit){
