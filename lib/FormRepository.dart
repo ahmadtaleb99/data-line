@@ -20,9 +20,9 @@ import 'dynamic form/formable.dart';
 
 class FormRepository {
 
-  List<Widget> _formElementList = [];
+  List<IDrawable> _formElementList = [];
 
-  List<Widget> get formElementList => _formElementList;
+  List<IDrawable> get formElementList => _formElementList;
 
   List<IForm> _jsonSerialize(int formID)  {
     List<IForm> itemsToDraw = [];
@@ -43,7 +43,7 @@ class FormRepository {
 
 
 
-  Future<List<Widget>> LoadFormElements(int formId) async {
+  Future<List<IDrawable>> LoadFormElements(int formId) async {
     await Future.delayed(Duration(seconds: 1));
     for(var element in _jsonSerialize(formId)){
       print(element);

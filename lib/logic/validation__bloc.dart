@@ -13,6 +13,7 @@ import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:meta/meta.dart';
 
 part 'validation__event.dart';
@@ -115,7 +116,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       child.groupValue = event.value;
     }
 
-    var formElements = _formRepository.formElementList as List<dynamic>;
+    var formElements = _formRepository.formElementList as List<IDrawable>;
     for (var formElement in formElements) {
       if (formElement.showIfValueSelected &&
           formElement.showIfFieldValue == event.value)

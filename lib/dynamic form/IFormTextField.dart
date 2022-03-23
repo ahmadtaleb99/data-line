@@ -17,7 +17,7 @@ class IFormTextField implements IForm{
       showIfValueSelected: _parameters['showIfLogicCheckbox'],
       showIfFieldValue: _parameters['showIfFieldValue'] ?? null ,
       showIfIsRequired: _parameters['showIfLogicCheckbox'] ?? null,
-        visible: (_parameters['showIfLogicCheckbox'] != null && _parameters['showIfLogicCheckbox'] == true ) ? false : true  );
+        visible: (_parameters['showIfLogicCheckbox'] != null && _parameters['showIfLogicCheckbox'] == true ) ? false : true, name: _parameters['name'],  );
   }
 
   @override

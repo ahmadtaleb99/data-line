@@ -1,5 +1,6 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawTextArea.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
 class IFormTextArea implements IForm{
@@ -11,7 +12,7 @@ class IFormTextArea implements IForm{
 
 
   @override
-  Widget drawFormElement({parameters}) {
+  IDrawable drawFormElement({parameters}) {
     return DrawTextArea(minLength: _parameters['minlength'], maxLength: _parameters['maxlength'], label: _parameters['label'], required: _parameters['required'],);
   }
 

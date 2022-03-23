@@ -1,5 +1,6 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawEmailTextField.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
 class IFormEmail implements IForm{
@@ -11,7 +12,7 @@ class IFormEmail implements IForm{
 
 
   @override
-  Widget drawFormElement({parameters}) {
+  IDrawable drawFormElement({parameters}) {
 
     return DrawEmailTextField(label: _parameters['label'], required: _parameters['required']);
   }

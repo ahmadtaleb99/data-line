@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/logic/form__bloc.dart';
 
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawRadioItem extends StatelessWidget {
+class DrawRadioItem extends IDrawable {
   final String label;
   final String value;
   final String parent;

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/testable.dart';
 import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
@@ -31,32 +32,32 @@ class DrawDropDownButton extends IDrawable {
   final String? Function(dynamic)? validator;
   List<DropDownItemWidget> items;
 
-  DrawDropDownButton(
-      {Key? key,
-      required this.label,
-      required this.showIfIsRequired,
-      required this.deactivated,
-      required this.required,
-      required this.isHidden,
-      required this.isReadOnly,
-      required this.prompt,
-      required this.multiple,
-      required this.showIfValueSelected,
-      required this.showIfFieldValue,
-      this.visible = false,
-      required this.items,
-      required this.relatedToParent,
-      this.parentName,
-      required this.name,
-      this.validator})
+  DrawDropDownButton({Key? key,
+    required this.label,
+    required this.showIfIsRequired,
+    required this.deactivated,
+    required this.required,
+    required this.isHidden,
+    required this.isReadOnly,
+    required this.prompt,
+    required this.multiple,
+    required this.showIfValueSelected,
+    required this.showIfFieldValue,
+    this.visible = false,
+    required this.items,
+    required this.relatedToParent,
+    this.parentName,
+    required this.name,
+    this.validator})
       : super(
-            key: key,
-            label: label,
-            visible: visible,
-            required: required,
-            showIfValueSelected: showIfValueSelected,
-            showIfFieldValue: showIfFieldValue,
-            showIfIsRequired: showIfIsRequired);
+      key: key,
+      name: name,
+      label: label,
+      visible: visible,
+      required: required,
+      showIfValueSelected: showIfValueSelected,
+      showIfFieldValue: showIfFieldValue,
+      showIfIsRequired: showIfIsRequired);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,8 @@ class DrawDropDownButton extends IDrawable {
               } else
                 return null;
             },
-            builder: (FormFieldState<dynamic> fieldState) => Column(
+            builder: (FormFieldState<dynamic> fieldState) =>
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
@@ -103,8 +105,8 @@ class DrawDropDownButton extends IDrawable {
                             padding: const EdgeInsets.all(0.0),
                             child: Center(
                                 child: !multiple
-                                    ? buildDropdownButton(context)
-                                    : buildMultiSelectDialogField()),
+                                    ? _buildDropdownButton(context)
+                                    : _buildMultiSelectDialogField()),
                           ),
                         )),
                     if (fieldState.hasError)
@@ -125,25 +127,8 @@ class DrawDropDownButton extends IDrawable {
     );
   }
 
-  MultiSelectDialogField<String> buildMultiSelectDialogField() {
-    return MultiSelectDialogField<String>(
-      buttonIcon:  Icon(Icons.arrow_drop_down),
-      decoration: BoxDecoration(
 
-
-      ),
-      title: Text(label),
-
-
-            buttonText: Text(prompt),
-            listType: MultiSelectListType.CHIP,
-      items: _buildItemsMulti(items),
-      initialValue: [],
-      onConfirm: (value) {},
-    );
-  }
-
-  DropdownButton<dynamic> buildDropdownButton(BuildContext context) {
+  DropdownButton<dynamic> _buildDropdownButton(BuildContext context) {
     return DropdownButton<dynamic>(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -167,27 +152,54 @@ class DrawDropDownButton extends IDrawable {
           print(value.toString() + ' eveeent ');
         });
   }
-}
 
-List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
-  List<DropdownMenuItem<dynamic>>? list = [];
+  List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
+    List<DropdownMenuItem<dynamic>>? list = [];
 
-  print('iteemsss to draw  ${items.toString()}');
-  for (var item in items) {
-    list.add(DropdownMenuItem(
-      child: Text(item.value),
-      value: item.value,
-    ));
+    print('iteemsss to draw  ${items.toString()}');
+    for (var item in items) {
+      list.add(DropdownMenuItem(
+        child: Text(item.value),
+        value: item.value,
+      ));
+    }
+    return list;
   }
-  return list;
-}
 
-List<MultiSelectItem<String>> _buildItemsMulti(List<DropDownItemWidget> items) {
-  List<MultiSelectItem<String>> list = [];
+  List<MultiSelectItem<String>> _buildItemsMulti(
+      List<DropDownItemWidget> items) {
+    List<MultiSelectItem<String>> list = [];
 
-  print('iteemsss to draw  ${items.toString()}');
-  for (var item in items) {
-    list.add(MultiSelectItem(item.value, item.value));
+    print('iteemsss to draw  ${items.toString()}');
+    for (var item in items) {
+      list.add(MultiSelectItem(item.value, item.value));
+    }
+    return list;
   }
-  return list;
+  MultiSelectDialogField<String> _buildMultiSelectDialogField() {
+    return MultiSelectDialogField<String>(
+
+      chipDisplay: MultiSelectChipDisplay.none(),
+      selectedItemsTextStyle: TextStyle(
+          color: Colors.black
+      ),
+      buttonIcon: Icon(Icons.arrow_drop_down),
+      decoration: BoxDecoration(
+
+
+      ),
+      title: Text(label),
+
+
+      buttonText: Text(prompt),
+      listType: MultiSelectListType.CHIP,
+      items: _buildItemsMulti(items),
+      initialValue: [],
+      onConfirm: (values) {
+        this.value = values.first;
+      },
+    );
+  }
+
+
 }

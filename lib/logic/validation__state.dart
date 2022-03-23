@@ -11,7 +11,7 @@ class ValidationState {
   DrawRadioGroup  ? radioGroup;
   List<DropDownItemWidget>  childItems ;
   List<DrawChildList> ?   childLists ;
-  List ? formElements;
+  List<IDrawable> ? formElements;
   DrawChildList ? childList ;
   Map<String,DrawChildList>  childsMap;
 
@@ -28,7 +28,7 @@ class ValidationState {
   });
 
   ValidationState copyWith({
-    List? formElements,
+    List<IDrawable>? formElements,
     Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,

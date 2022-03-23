@@ -10,16 +10,19 @@ class DrawTextField extends  IDrawable {
     required this.label,
     required this.visible,
     required this.required,
+    required this.name,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
   }) : super(label: label,key: key,
+      name: name,
       visible: visible, required: required,
       showIfValueSelected: showIfValueSelected,
       showIfFieldValue: showIfFieldValue,
       showIfIsRequired: showIfIsRequired) ;
 
   final String label;
+  final String name;
   final bool required;
   bool visible;
   final bool showIfValueSelected;

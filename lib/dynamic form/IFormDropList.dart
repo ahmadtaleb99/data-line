@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
 class IFormDropList implements IForm {
@@ -10,7 +11,7 @@ class IFormDropList implements IForm {
   List<DropDownItemWidget> itemsList = [];
 
   @override
-  Widget drawFormElement({parameters}) {
+  IDrawable drawFormElement({parameters}) {
     for (var menuItem in _parameters['values']) {
       DropDownItemWidget item = DropDownItemWidget(
           parent: menuItem['parent'],
@@ -28,7 +29,9 @@ class IFormDropList implements IForm {
           isReadOnly: _parameters['isReadOnly'],
           prompt: _parameters['prompt'],
           items: itemsList,
-          parentName: _parameters['relatedListFieldName']);
+          parentName: _parameters['relatedListFieldName'],   showIfIsRequired: _parameters['showIfIsRequired'],
+        showIfFieldValue: _parameters['showIfFieldValue'],
+        showIfValueSelected: _parameters['showIfLogicCheckbox'], multiple: _parameters['multiple']);
     } else
       return DrawDropDownButton(
         name: _parameters['name'],
