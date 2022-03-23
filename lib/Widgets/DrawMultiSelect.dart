@@ -69,16 +69,19 @@ class DrawMultiSelect extends IDrawable {
         DrawMultiSelect? list;
       List<DropDownItemWidget> itemsToBuild;
       if(!relatedToParent) {
+        print('fat1q $name');
         itemsToBuild = this.items;
         print(this.items);
         print('test passed ');
       }
-      else if (state.childsMap != null && state.childsMap.isNotEmpty)
-          {
+      else {
+        print('fat2 $name');
+          if (state.childsMap != null && state.childsMap.isNotEmpty) {
             list = state.childsMap[this.name] as DrawMultiSelect;
-             itemsToBuild = list.items;
-          }  else itemsToBuild = [];
-
+            itemsToBuild = list.items;
+          } else
+            itemsToBuild = [];
+        }
 
         return FormField<dynamic>(
             validator: (value) {
