@@ -6,13 +6,14 @@ import 'IDrawable.dart';
 class DrawTextField extends  IDrawable {
 
   DrawTextField({
+    Key ? key,
     required this.label,
     required this.visible,
     required this.required,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
-  }) : super(label: label,
+  }) : super(label: label,key: key,
       visible: visible, required: required,
       showIfValueSelected: showIfValueSelected,
       showIfFieldValue: showIfFieldValue,

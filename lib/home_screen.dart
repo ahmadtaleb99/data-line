@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/DrawCheckbox.dart';
 import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
+import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'logic/form__bloc.dart';
 import 'logic/validation__bloc.dart';
@@ -72,6 +74,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      MultiSelectDialogField<String>(items: [MultiSelectItem('value', 'label')], initialValue: [' '], onConfirm: (value){},),
                       BlocBuilder<ValidationBloc, ValidationState>(
                         builder: (context, state) {
 

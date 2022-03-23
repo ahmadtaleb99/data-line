@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 abstract class IDrawable extends StatelessWidget {
 
-
   final String label;
   final bool required;
   bool visible;
@@ -13,13 +12,14 @@ abstract class IDrawable extends StatelessWidget {
 
 
   IDrawable({
+  Key? key,
     required this.label,
     required this.visible,
     required this.required,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
-  }) ;
+  }) : super(key: key) ;
 
 }
 
