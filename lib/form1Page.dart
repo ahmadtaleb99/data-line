@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'logic/validation__bloc.dart';
 
 class Form1Page extends StatelessWidget {
-  const ({Key? key}) : super(key: key);
+  const Form1Page ({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,6 @@ class Form1Page extends StatelessWidget {
 
   ]),
   ),
-  ),,
-    );
+    ));
   }
 }

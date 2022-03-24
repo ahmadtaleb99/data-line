@@ -29,13 +29,13 @@ class HomeScreen extends StatelessWidget {
           if(state.status == Status.initial)
             return Row(
               children: [
-                FloatingActionButton(
+                ElevatedButton(
                   onPressed: () {
                     context.read<ValidationBloc>().add(StateFormRequested(formId: 0));
                   },
                   child: Text('load form 1 '),
                 ),
-                FloatingActionButton(
+                ElevatedButton(
                   onPressed: () {
                     context.read<ValidationBloc>().add(StateFormRequested(formId: 1));
                   },
