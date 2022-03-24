@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      MultiSelectDialogField<String>(items: [MultiSelectItem('value', 'label')], initialValue: [' '], onConfirm: (value){},),
+                      SizedBox(height: 20,),
                       BlocBuilder<ValidationBloc, ValidationState>(
                         builder: (context, state) {
 
@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                             print(state.formElements![1].visible);
                             return Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                                  const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                               child: Column(
                                 children: state.formElements!.cast(),
                               ),
@@ -94,6 +94,8 @@ class HomeScreen extends StatelessWidget {
                             return Container();
                         },
                       ),
+                      SizedBox(height: 30  ,),
+
 
 
                     ]),

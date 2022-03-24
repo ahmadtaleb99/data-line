@@ -29,22 +29,25 @@ class DrawEmailTextField extends IDrawable with FormValidation {
   final bool ? showIfIsRequired;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: TextInputType.emailAddress,
+    return Padding(
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        keyboardType: TextInputType.emailAddress,
 
-      validator: (value){
-        if(required)
-          if(value!.isEmpty){
-            return label+' is required';
-          }
+        validator: (value){
+          if(required)
+            if(value!.isEmpty){
+              return label+' is required';
+            }
 
-         if(!isValidEmail(value!)){
-              return 'must be a valid email ';
-          }
-      },
-      decoration: InputDecoration(
-          label: Text(label)
+           if(!isValidEmail(value!)){
+                return 'must be a valid email ';
+            }
+        },
+        decoration: InputDecoration(
+            label: Text(label)
+        ),
       ),
     );
   }

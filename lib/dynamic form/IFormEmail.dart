@@ -13,6 +13,8 @@ class IFormEmail implements IForm {
       showIfIsRequired: _parameters['showIfIsRequired'],
       showIfFieldValue: _parameters['showIfFieldValue'],
       showIfValueSelected: _parameters['showIfLogicCheckbox'], name: _parameters['name'],
+      visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
     );
 
   }

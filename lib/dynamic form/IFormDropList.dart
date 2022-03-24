@@ -36,6 +36,8 @@ class IFormDropList implements IForm {
         showIfValueSelected: _parameters['showIfLogicCheckbox'],
         multiple: _parameters['multiple'],
         relatedToParent: _parameters['relatedListCheckbox'],
+        visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
       );
     }
     if (_parameters['relatedListCheckbox']) {
@@ -52,7 +54,11 @@ class IFormDropList implements IForm {
           showIfIsRequired: _parameters['showIfIsRequired'],
           showIfFieldValue: _parameters['showIfFieldValue'],
           showIfValueSelected: _parameters['showIfLogicCheckbox'],
-          multiple: _parameters['multiple']);
+          multiple: _parameters['multiple'],
+        visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
+      );
+
     } else
       return DrawDropDownButton(
         name: _parameters['name'],
@@ -69,7 +75,9 @@ class IFormDropList implements IForm {
         showIfFieldValue: _parameters['showIfFieldValue'],
         showIfValueSelected: _parameters['showIfLogicCheckbox'],
         multiple: _parameters['multiple'],
-      );
+    visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
+    );
   }
 
   @override

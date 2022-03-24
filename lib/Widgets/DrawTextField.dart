@@ -31,29 +31,33 @@ class DrawTextField extends  IDrawable {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
-      builder: (context, state) {
-        return Visibility(
-          visible: visible ?? true,
-          maintainState: true,
-          maintainSize: false,
-          child: TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if (required || (showIfIsRequired!= null && showIfIsRequired == true)) {
-                if (value!.isEmpty) {
-                  return label + ' is required';
+    return Padding(
+
+      padding: this.visible == true ?   const EdgeInsets.only(top: 20) :  const EdgeInsets.only(top: 0),
+      child: BlocBuilder<ValidationBloc, ValidationState>(
+        builder: (context, state) {
+          return Visibility(
+            visible: visible ?? true,
+            maintainState: true,
+            maintainSize: false,
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (required || (showIfIsRequired!= null && showIfIsRequired == true)) {
+                  if (value!.isEmpty) {
+                    return label + ' is required';
+                  }
                 }
-              }
-              else
-                return null;
-            },
-            decoration: InputDecoration(
-                label: Text(label)
+                else
+                  return null;
+              },
+              decoration: InputDecoration(
+                  label: Text(label)
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

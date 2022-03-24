@@ -119,7 +119,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }
-
+    radioGroup.value = event.value;
+    if(event.value == 'other'){
+      radioGroup.isOtherSelected= true;
+  }
+    else  radioGroup.isOtherSelected= false;
 
     var formElements =  _checkRelatedFields(event.value);
     emit(state.copyWith(formElements: formElements,status: Status.success));

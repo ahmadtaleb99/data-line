@@ -34,19 +34,22 @@ class DrawNumberField extends IDrawable with FormValidation {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: TextInputType.number,
-      validator: (number) {
-        try {
-          if (number!.isEmpty) return 'required';
+    return Padding(
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        keyboardType: TextInputType.number,
+        validator: (number) {
+          try {
+            if (number!.isEmpty) return 'required';
 
-          return validateNumber(int.parse(number), expression);
-        } catch (e) {
-          return 'must be a number';
-        }
-      },
-      decoration: InputDecoration(label: Text(label)),
+            return validateNumber(int.parse(number), expression);
+          } catch (e) {
+            return 'must be a number';
+          }
+        },
+        decoration: InputDecoration(label: Text(label)),
+      ),
     );
   }
 }

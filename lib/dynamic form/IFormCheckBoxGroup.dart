@@ -9,52 +9,57 @@ import 'formable.dart';
 class IFormCheckBoxGroup implements IForm {
   List<DrawCheckboxGroupItem> itemsList = [];
 
-  dynamic _parametrs;
+  dynamic _parameters;
   @override
   IDrawable drawFormElement() {
-    print(_parametrs);
-    for (var checkBox in _parametrs['values']) {
+    print(_parameters);
+    for (var checkBox in _parameters['values']) {
       var item = DrawCheckboxGroupItem(
         label: checkBox['label'],
-        groupName: _parametrs['name'],
+        groupName: _parameters['name'],
         id: checkBox['value'],
       );
       itemsList.add(item);
     }
 
-    if (_parametrs['minMaxCheckbox'] == true)
+    if (_parameters['minMaxCheckbox'] == true)
       return DrawCheckboxGroup(
-        label: _parametrs['label'],
-        required: _parametrs['required'],
-        showIfIsRequired: _parametrs['showIfIsRequired'],
-        showIfFieldValue: _parametrs['showIfFieldValue'],
-        showIfValueSelected: _parametrs['showIfLogicCheckbox'],
-        name: _parametrs['name'],
+        label: _parameters['label'],
+        required: _parameters['required'],
+        showIfIsRequired: _parameters['showIfIsRequired'],
+        showIfFieldValue: _parameters['showIfFieldValue'],
+        showIfValueSelected: _parameters['showIfLogicCheckbox'],
+        name: _parameters['name'],
         children: itemsList,
-        minMaxCheckbox: _parametrs['minMaxCheckbox'],
-        maxCheckedAllowed: _parametrs['checkboxMaxValue'],
-        minCheckedAllowed: _parametrs['checkboxMinValue'],
-        isReadOnly: _parametrs['isReadOnly'],
-        isHidden: _parametrs['isHidden'],
-        deactivated: _parametrs['deactivated'], other: _parametrs['other'],
+        minMaxCheckbox: _parameters['minMaxCheckbox'],
+        maxCheckedAllowed: _parameters['checkboxMaxValue'],
+        minCheckedAllowed: _parameters['checkboxMinValue'],
+        isReadOnly: _parameters['isReadOnly'],
+        visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
+        isHidden: _parameters['isHidden'],
+        deactivated: _parameters['deactivate'],
+        other:  false ,
       );
     return DrawCheckboxGroup(
       children: itemsList,
-      minMaxCheckbox: _parametrs['minMaxCheckbox'],
-      label: _parametrs['label'],
-      required: _parametrs['required'],
-      showIfIsRequired: _parametrs['showIfIsRequired'],
-      showIfFieldValue: _parametrs['showIfFieldValue'],
-      showIfValueSelected: _parametrs['showIfLogicCheckbox'],
-      name: _parametrs['name'],
-      isReadOnly: _parametrs['isReadOnly'],
-      isHidden: _parametrs['isHidden'],
-      deactivated: _parametrs['deactivated'],other: _parametrs['other'],
+      minMaxCheckbox: _parameters['minMaxCheckbox'],
+      label: _parameters['label'],
+      required: _parameters['required'],
+      showIfIsRequired: _parameters['showIfIsRequired'],
+      showIfFieldValue: _parameters['showIfFieldValue'],
+      showIfValueSelected: _parameters['showIfLogicCheckbox'],
+      name: _parameters['name'],
+      isReadOnly: _parameters['isReadOnly'],
+      visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
+      isHidden: _parameters['isHidden'],
+      deactivated: _parameters['deactivated'],other: _parameters['other'],
     );
   }
 
   @override
   void setParameters(parametrs) {
-    _parametrs = parametrs;
+    _parameters = parametrs;
   }
 }

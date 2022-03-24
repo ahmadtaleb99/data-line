@@ -17,8 +17,10 @@ class IFormDrawRadioGroup implements IForm{
       children.add(newRadio);
 
     }
+    if(_parameters['other']==true) children.add(            DrawRadioItem(label: 'other', value: 'other', parent: _parameters['name']),);
+
     return DrawRadioGroup(label: _parameters['label'], name: _parameters['name'],
-        value: ' ', required: _parameters['required'], other: _parameters['other'],
+       required: _parameters['required'], other: _parameters['other'],
         showIfValueSelected: false,
         showIfIsRequired: _parameters['showIfIsRequired'],
         showIfFieldValue: _parameters['showIfFieldValue'],

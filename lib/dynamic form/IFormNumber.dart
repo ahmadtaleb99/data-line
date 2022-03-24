@@ -18,6 +18,8 @@ class IFormNumber implements IForm {
       required: _parameters['required'],
       showIfIsRequired: _parameters['showIfIsRequired'],
       showIfFieldValue: _parameters['showIfFieldValue'],
+      visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+
       showIfValueSelected: _parameters['showIfLogicCheckbox'], name: _parameters['name'],
       expression: Expression(
           operator: OperatorsValues.map![_parameters['operator']]!,

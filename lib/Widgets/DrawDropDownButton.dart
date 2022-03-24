@@ -61,69 +61,72 @@ class DrawDropDownButton extends IDrawable {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
-      builder: (context, state) {
-        return FormField<dynamic>(
-            validator: (value) {
-              if (this.value == null) {
-                return 'required';
-              } else
-                return null;
-            },
-            builder: (FormFieldState<dynamic> fieldState) =>
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, bottom: 10),
-                      child: Text(
-                        label,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                        width: double.infinity,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.black38,
-                                  width: 3), //border of dropdown button
-                              borderRadius: BorderRadius.circular(
-                                  50), //border raiuds of dropdown button
-                              boxShadow: <BoxShadow>[
-                                //apply shadow on Dropdown button
-                                BoxShadow(
-                                    color: Color.fromRGBO(
-                                        0, 0, 0, 0.57), //shadow for button
-                                    blurRadius: 5) //blur radius of shadow
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Center(
-                                child: !multiple
-                                    ? _buildDropdownButton(context)
-                                    : _buildMultiSelectDialogField()),
-                          ),
-                        )),
-                    if (fieldState.hasError)
+    return Padding(
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      child: BlocBuilder<ValidationBloc, ValidationState>(
+        builder: (context, state) {
+          return FormField<dynamic>(
+              validator: (value) {
+                if (this.value == null) {
+                  return 'required';
+                } else
+                  return null;
+              },
+              builder: (FormFieldState<dynamic> fieldState) =>
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 15),
+                        padding: const EdgeInsets.only(left: 16, bottom: 10),
                         child: Text(
-                          fieldState.errorText!,
-                          style: TextStyle(
-                              fontStyle: FontStyle.normal,
-                              fontSize: 13,
-                              color: Colors.red[700],
-                              height: 0.5),
+                          label,
+                          style: TextStyle(fontSize: 18),
                         ),
-                      )
-                  ],
-                ));
-      },
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                          width: double.infinity,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.black38,
+                                    width: 3), //border of dropdown button
+                                borderRadius: BorderRadius.circular(
+                                    50), //border raiuds of dropdown button
+                                boxShadow: <BoxShadow>[
+                                  //apply shadow on Dropdown button
+                                  BoxShadow(
+                                      color: Color.fromRGBO(
+                                          0, 0, 0, 0.57), //shadow for button
+                                      blurRadius: 5) //blur radius of shadow
+                                ]),
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Center(
+                                  child: !multiple
+                                      ? _buildDropdownButton(context)
+                                      : _buildMultiSelectDialogField()),
+                            ),
+                          )),
+                      if (fieldState.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, top: 15),
+                          child: Text(
+                            fieldState.errorText!,
+                            style: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13,
+                                color: Colors.red[700],
+                                height: 0.5),
+                          ),
+                        )
+                    ],
+                  ));
+        },
+      ),
     );
   }
 

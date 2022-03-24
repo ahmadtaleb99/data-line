@@ -42,75 +42,78 @@ class DrawFilePicker extends  IDrawable {
   PlatformFile ?  _pickedFile;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
-      builder: (context, state) {
-        return Visibility(
-          visible:   visible!,
-          maintainState: true,
-          maintainSize: false,
-          child: FormField<PlatformFile>(
+    return Padding(
+      padding: this.visible == true ?   const EdgeInsets.only(top: 10) :  const EdgeInsets.only(top: 10),
+      child: BlocBuilder<ValidationBloc, ValidationState>(
+        builder: (context, state) {
+          return Visibility(
+            visible:   visible!,
+            maintainState: true,
+            maintainSize: false,
+            child: FormField<PlatformFile>(
 
-            validator: (file) {
-              if(file==null )
-                return 'required';
+              validator: (file) {
+                if(file==null )
+                  return 'required';
 
-              if(_pickedFile!.size /1000000 > maxFileSize )
-                return 'file can\'t be larger than $maxFileSize MB';
-              else return null;
+                if(_pickedFile!.size /1000000 > maxFileSize )
+                  return 'file can\'t be larger than $maxFileSize MB';
+                else return null;
 
-            },
-           builder: (FormFieldState<PlatformFile> fieldState) {
+              },
+             builder: (FormFieldState<PlatformFile> fieldState) {
 
-             return Column(
-               children: [
-                 Container(
+               return Column(
+                 children: [
+                   Container(
 
-                   width: double.infinity,
-                   child: ElevatedButton(
-                     style: ElevatedButton.styleFrom(
-                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                     width: double.infinity,
+                     child: ElevatedButton(
+                       style: ElevatedButton.styleFrom(
+                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                       ),
+                       onPressed: () async {
+                         FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.video);
+
+                         if (result != null) {
+                           _pickedFile = result.files.single;
+                           print(_pickedFile!.size /1000000);
+                           fieldState.didChange(_pickedFile);
+                         } else {
+                           // User canceled the picker
+                         }
+                       },
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                         children: [
+                           Text(label,style: TextStyle(
+                               fontSize: 20
+                           ),),
+                           Icon(Icons.upload)
+                         ],
+                       ),
+
                      ),
-                     onPressed: () async {
-                       FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.video);
-
-                       if (result != null) {
-                         _pickedFile = result.files.single;
-                         print(_pickedFile!.size /1000000);
-                         fieldState.didChange(_pickedFile);
-                       } else {
-                         // User canceled the picker
-                       }
-                     },
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                       children: [
-                         Text(label,style: TextStyle(
-                             fontSize: 20
-                         ),),
-                         Icon(Icons.upload)
-                       ],
-                     ),
-
                    ),
-                 ),
-                 if (fieldState.hasError)
-                   Padding(
-                     padding: const EdgeInsets.only(left: 8, top: 10),
-                     child: Text(
-                       fieldState.errorText!,
-                       style: TextStyle(
-                           fontStyle: FontStyle.normal,
-                           fontSize: 13,
-                           color: Colors.red[700],
-                           height: 0.5),
-                     ),
-                   )
-               ],
-             );
-           },
-          )
-        );
-      },
+                   if (fieldState.hasError)
+                     Padding(
+                       padding: const EdgeInsets.only(left: 8, top: 10),
+                       child: Text(
+                         fieldState.errorText!,
+                         style: TextStyle(
+                             fontStyle: FontStyle.normal,
+                             fontSize: 13,
+                             color: Colors.red[700],
+                             height: 0.5),
+                       ),
+                     )
+                 ],
+               );
+             },
+            )
+          );
+        },
+      ),
     );
   }
 

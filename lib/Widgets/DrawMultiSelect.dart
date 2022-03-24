@@ -60,115 +60,118 @@ class DrawMultiSelect extends IDrawable {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
+    return Padding(
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      child: BlocBuilder<ValidationBloc, ValidationState>(
 
-      builder: (context, state) {
-      print('1 ${state.formElements?.first.name}');
-      print('2 ${this.parentName}');
+        builder: (context, state) {
+        print('1 ${state.formElements?.first.name}');
+        print('2 ${this.parentName}');
 
-        DrawMultiSelect? list;
-      List<DropDownItemWidget> itemsToBuild;
-      var parentList;
-      String parentListLabel ='nu';
+          DrawMultiSelect? list;
+        List<DropDownItemWidget> itemsToBuild;
+        var parentList;
+        String parentListLabel ='nu';
 
-      if(!relatedToParent) {
-        print('fat1q $name');
-        itemsToBuild = this.items;
-        print(this.items);
-        print('test passed ');
-      }
-      else {
-         parentList = state.formElements!.firstWhereOrNull((element) => element.name == this.parentName);
-         parentListLabel = parentList.label;
-        print('fat2 $name');
-          if (state.childsMap != null && state.childsMap.isNotEmpty) {
-            list = state.childsMap[this.name] as DrawMultiSelect;
-            itemsToBuild = list.items;
-          } else
-            itemsToBuild = [];
+        if(!relatedToParent) {
+          print('fat1q $name');
+          itemsToBuild = this.items;
+          print(this.items);
+          print('test passed ');
         }
+        else {
+           parentList = state.formElements!.firstWhereOrNull((element) => element.name == this.parentName);
+           parentListLabel = parentList.label;
+          print('fat2 $name');
+            if (state.childsMap != null && state.childsMap.isNotEmpty) {
+              list = state.childsMap[this.name] as DrawMultiSelect;
+              itemsToBuild = list.items;
+            } else
+              itemsToBuild = [];
+          }
 
-        return FormField<dynamic>(
-            validator: (value) {
-              if (this.selectedValues == null   )
-                return 'required';
-              else
-                return null;
-            },
-            builder: (FormFieldState<dynamic> fieldState) =>
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, bottom: 10),
-                      child: Text(
-                        '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
-                        ,style: TextStyle(fontSize: 18),
+          return FormField<dynamic>(
+              validator: (value) {
+                if (this.selectedValues == null   )
+                  return 'required';
+                else
+                  return null;
+              },
+              builder: (FormFieldState<dynamic> fieldState) =>
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, bottom: 10),
+                        child: Text(
+                          '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
+                          ,style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: Colors.black38,
-                                width: 3), //border of dropdown button
-                            borderRadius: BorderRadius.circular(
-                                50), //border raiuds of dropdown button
-                            boxShadow: <BoxShadow>[
-                              //apply shadow on Dropdown button
-                              BoxShadow(
-                                  color: Color.fromRGBO(
-                                      0, 0, 0, 0.57), //shadow for button
-                                  blurRadius: 5) //blur radius of shadow
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Center(
-                            child: MultiSelectDialogField<String>(
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: Center(
+                              child: MultiSelectDialogField<String>(
 
-                              dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
-                              dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
-                              chipDisplay: MultiSelectChipDisplay.none(),
-                              selectedItemsTextStyle: TextStyle(color: Colors.black),
-                              buttonIcon: Icon(Icons.arrow_drop_down),
-                              decoration: BoxDecoration(),
-                                title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
-                              buttonText: Text(prompt),
-                              listType: MultiSelectListType.CHIP,
+                                dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
+                                dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
+                                chipDisplay: MultiSelectChipDisplay.none(),
+                                selectedItemsTextStyle: TextStyle(color: Colors.black),
+                                buttonIcon: Icon(Icons.arrow_drop_down),
+                                decoration: BoxDecoration(),
+                                  title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
+                                buttonText: Text(prompt),
+                                listType: MultiSelectListType.CHIP,
 
-                              // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                              items: _buildItemsMulti(itemsToBuild) ,
-                              initialValue: [],
-                              onConfirm: (values) {
-                                selectedValues = values;
-                                if(itemsToBuild.isNotEmpty)
-                                  context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
-                              },
-                            )
+                                // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
+                                items: _buildItemsMulti(itemsToBuild) ,
+                                initialValue: [],
+                                onConfirm: (values) {
+                                  selectedValues = values;
+                                  if(itemsToBuild.isNotEmpty)
+                                    context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
+                                },
+                              )
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    if (fieldState.hasError)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 15),
-                        child: Text(
-                          fieldState.errorText!,
-                          style: TextStyle(
-                              fontStyle: FontStyle.normal,
-                              fontSize: 13,
-                              color: Colors.red[700],
-                              height: 0.5),
-                        ),
-                      )
-                  ],
-                ));
-      },
+                      if (fieldState.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, top: 15),
+                          child: Text(
+                            fieldState.errorText!,
+                            style: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13,
+                                color: Colors.red[700],
+                                height: 0.5),
+                          ),
+                        )
+                    ],
+                  ));
+        },
+      ),
     );
   }
 
