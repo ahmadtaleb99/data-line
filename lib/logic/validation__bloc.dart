@@ -66,25 +66,27 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
     var childLists =
     _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
-
+    print(childLists.toString()+ ' children for ${event.parent}');
     event.drawDropDownButton.value = event.parent;
 
     var map = state.childsMap;
     for (var childList in childLists) {
-      emit(state);
       var ch;
       if(childList is DrawChildList)
        ch = childList.copyWith();
 
-      if(childList is DrawMultiSelect)
+     else if(childList is DrawMultiSelect)
          ch = childList.copyWith();
 
+
       ch.items =  ch.items.where((element) => element.parent == event.parent).toList();
+      print(ch.items! );
       map[ch.name] = ch;
-
-
-      emit(state.copyWith( childsMap: map));
     }
+
+    print(map.toString()+ '  chil   ');
+
+    emit(state.copyWith( childsMap: map));
 
 
 
@@ -92,11 +94,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
+
+
+
     var map = state.childsMap;
     var ch = map[event.childList.name];
     if (ch is DrawChildList){
       ch.value = event.value;
-
     }
 
     else  if (ch is DrawMultiSelect){
@@ -106,7 +110,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     map[ch!.name] = ch;
 
 
-    map[event.childList.name] = ch;
 
     emit(state.copyWith(childsMap: map));
   }

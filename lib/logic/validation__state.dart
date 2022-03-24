@@ -6,14 +6,17 @@ part of 'validation__bloc.dart';
 enum Status {initial,loading,success,failure}
 class ValidationState {
   Status status;
-  DrawCheckboxGroup ?  drawCheckboxGroup;
-  DrawDropDownButton ?  drawDropDownButton;
-  DrawRadioGroup  ? radioGroup;
-  List<DropDownItemWidget>  childItems ;
-  List<DrawChildList> ?   childLists ;
+  DrawCheckboxGroup ? drawCheckboxGroup;
+  DrawDropDownButton ? drawDropDownButton;
+  DrawRadioGroup ? radioGroup;
+  List<DropDownItemWidget> childItems;
+
+  List<DrawChildList> ? childLists;
+
   List<IDrawable> ? formElements;
-  DrawChildList ? childList ;
-  Map<String,IDrawable>  childsMap;
+  DrawChildList ? childList;
+
+  Map<String, IDrawable> childsMap;
 
   ValidationState({
     this.drawCheckboxGroup,
@@ -22,9 +25,9 @@ class ValidationState {
     this.drawDropDownButton,
     this.radioGroup,
     this.childList,
-    required this.childsMap ,
-    this.childLists  = const [],
-      this.childItems = const [],
+    required this.childsMap,
+    this.childLists = const [],
+    this.childItems = const [],
   });
 
   ValidationState copyWith({
@@ -33,32 +36,28 @@ class ValidationState {
 
     DrawCheckboxGroup? drawCheckboxGroup,
     DrawDropDownButton? drawDropDownButton,
-    DrawRadioGroup  ? radioGroup,
+    DrawRadioGroup ? radioGroup,
 
     List<DropDownItemWidget>? childItems,
-    List<DrawChildList>?  childLists,
+    List<DrawChildList>? childLists,
     DrawChildList? childList,
-    Map<String,IDrawable> ? childsMap
+    Map<String, IDrawable> ? childsMap
 
   }) {
     return ValidationState(
-      formElements: formElements ?? this.formElements,
-      drawCheckboxGroup: drawCheckboxGroup ?? this.drawCheckboxGroup,
-      drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
+        formElements: formElements ?? this.formElements,
+        drawCheckboxGroup: drawCheckboxGroup ?? this.drawCheckboxGroup,
+        drawDropDownButton: drawDropDownButton ?? this.drawDropDownButton,
         radioGroup: radioGroup ?? this.radioGroup,
         childItems: childItems ?? this.childItems,
         status: status ?? this.status,
-      childLists: childLists ?? this.childLists,
-      childList: childList ?? this.childList,
-      childsMap: childsMap ?? this.childsMap
+        childLists: childLists ?? this.childLists,
+        childList: childList ?? this.childList,
+        childsMap: childsMap ?? this.childsMap
     );
   }
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => [formElements,drawCheckboxGroup,radioGroup,childsMap,childLists,drawDropDownButton];
-
-
+// List<Object?> get props => [formElements,drawCheckboxGroup,radioGroup,childsMap,childLists,drawDropDownButton];
 
 
 }

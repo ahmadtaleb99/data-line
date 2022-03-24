@@ -32,6 +32,7 @@ class DrawRadioItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
+
         return RadioListTile(value: value,
             title: Text(label),
             groupValue: groupValue, onChanged: (value) {

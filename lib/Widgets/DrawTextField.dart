@@ -38,7 +38,7 @@ class DrawTextField extends  IDrawable {
         builder: (context, state) {
           return Visibility(
             visible: visible ?? true,
-            maintainState: true,
+            maintainState: falseg,
             maintainSize: false,
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,

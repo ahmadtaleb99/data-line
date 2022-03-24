@@ -17,20 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: RepositoryProvider(
-        create: (context) => FormRepository(),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => FormBloc(context.read<FormRepository>()),
-            ),
-            BlocProvider(
-              create: (context) => ValidationBloc(context.read<FormRepository>()),
-            ),
-          ],
-          child: HomeScreen(),
+    return RepositoryProvider(
+      create: (context) => FormRepository(),
+      child: BlocProvider(
+        create: (context) => ValidationBloc(context.read<FormRepository>()),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeScreen(),
         ),
       ),
     );

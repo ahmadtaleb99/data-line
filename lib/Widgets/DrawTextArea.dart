@@ -36,7 +36,7 @@ class DrawTextArea extends IDrawable with FormValidation {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true ?   const EdgeInsets.only(top: 40) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
         onChanged: (description) {},
         autovalidateMode: AutovalidateMode.onUserInteraction,

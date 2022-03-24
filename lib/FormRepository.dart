@@ -46,6 +46,7 @@ class FormRepository {
 
 
   Future<List<IDrawable>> LoadFormElements(int formId) async {
+    this._formElementList = [];
     await Future.delayed(Duration(seconds: 1));
     for(var element in _jsonSerialize(formId)){
       print(element);
@@ -68,7 +69,7 @@ class FormRepository {
 
   List<IDrawable> getChildrenSelectsFor (String name) {
 
-    return _formElementList.where((element) => element is DrawChildList  ||  element is DrawMultiSelect &&  (  element.parentName == name)).toList().cast()  ;
+    return _formElementList.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
   }
 
 

@@ -61,18 +61,16 @@ class DrawChildList extends IDrawable {
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
       child: BlocBuilder<ValidationBloc, ValidationState>(
-        // buildWhen: (p, current) {
-        //   for (var kza in current.childLists!) {
-        //     if (kza.name == this.name) return true;
-        //   }
-        //   return false;
-        // },
+
+
+
+
         builder: (context, state) {
           var parent = state.formElements!.firstWhere((element) => element.name == this.parentName);
           String parentListLabel = parent.label;
           DrawChildList? list;
           List<DropDownItemWidget> itemsToBuild;
-          if (state.childsMap != null && state.childsMap.isNotEmpty){
+          if (state.childsMap != null && state.childsMap.isNotEmpty && state.childsMap[this.name] != null){
             list = state.childsMap[this.name] as DrawChildList;
             itemsToBuild = list.items;
           }

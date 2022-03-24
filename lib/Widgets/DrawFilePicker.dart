@@ -48,7 +48,7 @@ class DrawFilePicker extends  IDrawable {
         builder: (context, state) {
           return Visibility(
             visible:   visible!,
-            maintainState: true,
+            maintainState: false,
             maintainSize: false,
             child: FormField<PlatformFile>(
 
@@ -73,7 +73,7 @@ class DrawFilePicker extends  IDrawable {
                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                        ),
                        onPressed: () async {
-                         FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.video);
+                         FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
 
                          if (result != null) {
                            _pickedFile = result.files.single;

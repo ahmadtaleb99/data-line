@@ -81,7 +81,7 @@ class DrawCheckboxGroup extends IDrawable {
                 BlocBuilder<ValidationBloc, ValidationState>(
                   buildWhen: (previous, current) {
                     if (previous != current &&
-                        current.drawCheckboxGroup!.name == this.name) {
+                       current.drawCheckboxGroup != null &&  current.drawCheckboxGroup!.name == this.name) {
                       fieldState.validate();
                       return true;
                     }

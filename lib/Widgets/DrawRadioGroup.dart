@@ -58,6 +58,7 @@ class DrawRadioGroup extends IDrawable {
             children: [
               BlocBuilder<ValidationBloc, ValidationState>(
                 builder: (context, state) {
+
                   {
                     var children;
                     if (state.radioGroup != null) children = state.radioGroup!.children;
