@@ -29,6 +29,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<ParentDropListChanged>(_onParentDropListChanged1);
     on<childDropDownChanged>(_onchildDropDownChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
+    on<MultiSelectItemRemoved>(_onMultiSelectItemRemoved);
   }
 
   Future<void> _onStateFormRequested(
@@ -141,6 +142,21 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       else
         formElement.visible = false;
     }
+  }
+
+
+
+
+
+
+
+  void _onMultiSelectItemRemoved(MultiSelectItemRemoved event, Emitter<ValidationState> emit) {
+
+    var map = state.childsMap;
+    var select = map[event.selectName] as  DrawMultiSelect;
+      select.selectedValues!.removeWhere((element) => element == event.item);
+      map[select.name] = select;
+      emit(state.copyWith(childsMap: map));
   }
 }
 

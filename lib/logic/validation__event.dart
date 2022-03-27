@@ -19,7 +19,15 @@ class CheckboxGroupValueChanged extends ValidationEvent {
 
 }
 
+class MultiSelectItemRemoved extends ValidationEvent {
+      String item;
+      String selectName;
 
+      MultiSelectItemRemoved({
+    required this.item,
+    required this.selectName,
+  });
+}
 class StateFormRequested extends ValidationEvent {
   int formId;
 

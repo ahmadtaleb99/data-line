@@ -36,11 +36,15 @@ class DrawTextField extends  IDrawable {
       padding: this.visible == true ?   const EdgeInsets.only(top: 20) :  const EdgeInsets.only(top: 0),
       child: BlocBuilder<ValidationBloc, ValidationState>(
         builder: (context, state) {
-          return Visibility(
-            visible: visible ?? true,
-            maintainState: falseg,
-            maintainSize: false,
-            child: TextFormField(
+          return AnimatedSwitcher(
+            reverseDuration: Duration(seconds: 0),
+            transitionBuilder: (Widget child,Animation<double> animation) =>
+              SlideTransition(position: Tween<Offset>(
+                begin: Offset(0,-1),end: Offset(0,0)
+              ).animate(animation),
+              child: child,),
+            duration: Duration(milliseconds: 400),
+            child: visible! ? TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
                 if (required || (showIfIsRequired!= null && showIfIsRequired == true)) {
@@ -54,7 +58,7 @@ class DrawTextField extends  IDrawable {
               decoration: InputDecoration(
                   label: Text(label)
               ),
-            ),
+            ) : Container()
           );
         },
       ),

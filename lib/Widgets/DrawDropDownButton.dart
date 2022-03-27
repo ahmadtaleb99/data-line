@@ -90,19 +90,13 @@ class DrawDropDownButton extends IDrawable {
                           width: double.infinity,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.black38,
-                                    width: 3), //border of dropdown button
-                                borderRadius: BorderRadius.circular(
-                                    50), //border raiuds of dropdown button
-                                boxShadow: <BoxShadow>[
-                                  //apply shadow on Dropdown button
-                                  BoxShadow(
-                                      color: Color.fromRGBO(
-                                          0, 0, 0, 0.57), //shadow for button
-                                      blurRadius: 5) //blur radius of shadow
-                                ]),
+                            color: Colors.blue.withOpacity(0.1),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          border: Border.all(
+          color: Colors.blue,
+          width: 2,
+          ),
+          ),
                             child: Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Center(

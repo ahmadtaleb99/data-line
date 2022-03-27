@@ -72,21 +72,20 @@ class DrawRadioGroup extends IDrawable {
                     children: [
                       Text(label),
                       ...children,
-                      if(other == true)  Visibility(
-                        maintainSize: false,
-                        maintainState: true,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 1),
-                          child: DrawTextField(
-                              label: 'other',
-                              visible: isOtherSelected ?? false,
-                              required: required,
-                              name: name,
-                              showIfValueSelected: showIfValueSelected,
-                              showIfFieldValue: showIfFieldValue,
-                              showIfIsRequired: showIfIsRequired),
-                        ),
-                      )
+                      if(isOtherSelected == true)
+                        children.last.subTitle = Visibility(
+                          maintainSize: false,
+                          maintainState: true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 1),
+                            child: Visibility(
+                              visible: isOtherSelected!,
+                              child: TextField(
+                     ),
+                            ),
+                          ),
+                        )
+
 
                     ],
                   );

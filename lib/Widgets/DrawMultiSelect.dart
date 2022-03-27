@@ -1,4 +1,5 @@
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
@@ -83,11 +84,14 @@ class DrawMultiSelect extends IDrawable {
            parentList = state.formElements!.firstWhereOrNull((element) => element.name == this.parentName);
            parentListLabel = parentList.label;
           print('fat2 $name');
-            if (state.childsMap != null && state.childsMap.isNotEmpty) {
+            if (state.childsMap != null && state.childsMap.isNotEmpty &&  state.childsMap[this.name] != null ) {
               list = state.childsMap[this.name] as DrawMultiSelect;
               itemsToBuild = list.items;
             } else
-              itemsToBuild = [];
+              {
+                list = null;
+                itemsToBuild = [];
+              }
           }
 
           return FormField<dynamic>(
@@ -113,46 +117,44 @@ class DrawMultiSelect extends IDrawable {
                       ),
                       Container(
                         width: double.infinity,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.black38,
-                                  width: 3), //border of dropdown button
-                              borderRadius: BorderRadius.circular(
-                                  50), //border raiuds of dropdown button
-                              boxShadow: <BoxShadow>[
-                                //apply shadow on Dropdown button
-                                BoxShadow(
-                                    color: Color.fromRGBO(
-                                        0, 0, 0, 0.57), //shadow for button
-                                    blurRadius: 5) //blur radius of shadow
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Center(
-                              child: MultiSelectDialogField<String>(
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Center(
+                            child: MultiSelectDialogField<String>(
 
-                                dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
-                                dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
-                                chipDisplay: MultiSelectChipDisplay.none(),
-                                selectedItemsTextStyle: TextStyle(color: Colors.black),
-                                buttonIcon: Icon(Icons.arrow_drop_down),
-                                decoration: BoxDecoration(),
-                                  title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
-                                buttonText: Text(prompt),
-                                listType: MultiSelectListType.CHIP,
-
-                                // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                                items: _buildItemsMulti(itemsToBuild) ,
-                                initialValue: [],
-                                onConfirm: (values) {
-                                  selectedValues = values;
-                                  if(itemsToBuild.isNotEmpty)
-                                    context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
+                              chipDisplay: MultiSelectChipDisplay(
+                                alignment: Alignment.topCenter,
+                                onTap: (value){
+                                  context.read<ValidationBloc>().add(MultiSelectItemRemoved(item: value, selectName: this.name));
+                                  print(value);
                                 },
-                              )
-                            ),
+                              ),
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
+                              dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
+                                selectedItemsTextStyle: TextStyle(color: Colors.black),
+                              buttonIcon: Icon(Icons.arrow_drop_down),
+                              decoration: BoxDecoration(
+          color: Colors.blue.withOpacity(0.1),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          border: Border.all(
+          color: Colors.blue,
+          width: 2,
+          ),
+          ),
+                                title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
+                              buttonText: Text(prompt),
+                              listType: MultiSelectListType.CHIP,
+
+                              // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
+                              items: _buildItemsMulti(itemsToBuild) ,
+                              initialValue:list?.selectedValues ?? null,
+                              onConfirm: (values) {
+                                selectedValues = values;
+                                if(itemsToBuild.isNotEmpty && relatedToParent)
+                                  context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
+                              },
+                            )
                           ),
                         ),
                       ),
