@@ -13,18 +13,24 @@ class IFormDrawRadioGroup implements IForm{
   IDrawable drawFormElement() {
     List<DrawRadioItem> children = [];
     for (var radio in _parameters['values']){
-      var newRadio = DrawRadioItem(label: radio['label'], value: radio['value'], parent:_parameters['name'],);
+      var newRadio = DrawRadioItem(label: radio['label'], value: radio['value'], parent:_parameters['name'],hasOther: false,);
       children.add(newRadio);
 
     }
-    if(_parameters['other']==true) children.add(            DrawRadioItem(label: 'other', value: 'other', parent: _parameters['name']),);
+    if(_parameters['other']==true) children.add(   DrawRadioItem(label: 'other', value: 'other',
+        parent: _parameters['name'],
+    hasOther:  true,
+    ),
+    );
 
     return DrawRadioGroup(label: _parameters['label'], name: _parameters['name'],
        required: _parameters['required'], other: _parameters['other'],
         showIfValueSelected: false,
+
         showIfIsRequired: _parameters['showIfIsRequired'],
         showIfFieldValue: _parameters['showIfFieldValue'],
         children: children);
+
   }
 
   @override

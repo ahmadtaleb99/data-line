@@ -16,6 +16,7 @@ class DrawRadioGroup extends IDrawable {
     required this.label,
     required this.name,
      this.visible,
+     this.isOtherSelected = false,
      this.value= null,
     required this.required,
     required this.other,
@@ -68,23 +69,29 @@ class DrawRadioGroup extends IDrawable {
                       children = this.children;
                     }
                   }
+                  if(other == true)
+                    children.last.titleWidget = isOtherSelected! ? AnimatedSwitcher(
+                      reverseDuration: Duration(seconds: 0),
+                      transitionBuilder: (Widget child,Animation<double> animation) =>
+                          FadeTransition(opacity: animation,child: child,),
+                      duration: Duration(milliseconds: 555),
+
+                      child:isOtherSelected! ? TextFormField(
+                        validator: (value){
+                          if (value!.isEmpty) return 'other is required';
+                        },
+                        autofocus: true,
+                      ) : Container()
+                    ) : Text('other');
+
+
+
                   return Column(
                     children: [
                       Text(label),
                       ...children,
-                      if(isOtherSelected == true)
-                        children.last.subTitle = Visibility(
-                          maintainSize: false,
-                          maintainState: true,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 1),
-                            child: Visibility(
-                              visible: isOtherSelected!,
-                              child: TextField(
-                     ),
-                            ),
-                          ),
-                        )
+
+
 
 
                     ],

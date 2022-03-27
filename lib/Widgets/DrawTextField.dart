@@ -37,14 +37,16 @@ class DrawTextField extends  IDrawable {
       child: BlocBuilder<ValidationBloc, ValidationState>(
         builder: (context, state) {
           return AnimatedSwitcher(
-            reverseDuration: Duration(seconds: 0),
             transitionBuilder: (Widget child,Animation<double> animation) =>
               SlideTransition(position: Tween<Offset>(
                 begin: Offset(0,-1),end: Offset(0,0)
               ).animate(animation),
               child: child,),
             duration: Duration(milliseconds: 400),
+              reverseDuration: Duration(milliseconds: 222),
+
             child: visible! ? TextFormField(
+              autofocus: true,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
                 if (required || (showIfIsRequired!= null && showIfIsRequired == true)) {

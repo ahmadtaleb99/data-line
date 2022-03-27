@@ -18,16 +18,20 @@ class DrawRadioItem extends StatelessWidget {
     this.showIfFieldValue,
     this.showIfIsRequired,
     this.groupValue,
+    required this.hasOther,
     required this.value,
     required this.parent, this.subTitle,
   }) : super(key: key);
 
   final String label;
   final String? name;
+
   final bool? showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
-   Widget? subTitle;
+   Widget?    subTitle;
+   Widget?    titleWidget;
+   bool hasOther;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class DrawRadioItem extends StatelessWidget {
         return RadioListTile(
                 contentPadding: EdgeInsets.all(5),
             value: value,
-            title: Text(label),
+            title: titleWidget ?? Text(label),
             groupValue: groupValue,
             onChanged: (value) {
               print(value);
@@ -49,7 +53,7 @@ class DrawRadioItem extends StatelessWidget {
                   );
 
             },
-          subtitle: subTitle,
+          subtitle:   subTitle  ,
             );
       },
     );

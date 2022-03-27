@@ -10,33 +10,34 @@ import 'DrawChildList.dart';
 import 'DropDownItemWidget.dart';
 
 class DrawMultiSelect extends IDrawable {
-  DrawMultiSelect( {Key? key,
-    this.visible = false,
-    required this.label,
-    required this.showIfIsRequired,
-    required this.deactivated,
-    required this.required,
-    required this.relatedToParent,
-    required this.isHidden,
-    required this.isReadOnly,
-    required this.prompt,
-    required this.items,
-    required this.multiple,
-     this.selectedValues,
-    required this.showIfValueSelected,
-    required this.showIfFieldValue,
-    this.parentName,
-    required this.name,
-    this.validator})
+  DrawMultiSelect(
+      {Key? key,
+      this.visible = false,
+      required this.label,
+      required this.showIfIsRequired,
+      required this.deactivated,
+      required this.required,
+      required this.relatedToParent,
+      required this.isHidden,
+      required this.isReadOnly,
+      required this.prompt,
+      required this.items,
+      required this.multiple,
+      this.selectedValues =const [],
+      required this.showIfValueSelected,
+      required this.showIfFieldValue,
+      this.parentName,
+      required this.name,
+      this.validator})
       : super(
-      key: key,
-      label: label,
-      name: name,
-      visible: visible,
-      required: required,
-      showIfValueSelected: showIfValueSelected,
-      showIfFieldValue: showIfFieldValue,
-      showIfIsRequired: showIfIsRequired);
+            key: key,
+            label: label,
+            name: name,
+            visible: visible,
+            required: required,
+            showIfValueSelected: showIfValueSelected,
+            showIfFieldValue: showIfFieldValue,
+            showIfIsRequired: showIfIsRequired);
 
   String? value;
   final String label;
@@ -44,8 +45,8 @@ class DrawMultiSelect extends IDrawable {
   final bool required;
   final bool isHidden;
   final bool multiple;
-  bool ? visible;
-  List<String> ? selectedValues;
+  bool? visible;
+  List<String>? selectedValues;
   final bool isReadOnly;
   final bool relatedToParent;
   final bool? showIfIsRequired;
@@ -62,54 +63,55 @@ class DrawMultiSelect extends IDrawable {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true
+          ? const EdgeInsets.only(top: 30)
+          : const EdgeInsets.only(top: 0),
       child: BlocBuilder<ValidationBloc, ValidationState>(
-
         builder: (context, state) {
-        print('1 ${state.formElements?.first.name}');
-        print('2 ${this.parentName}');
+          print('1 ${state.formElements?.first.name}');
+          print('2 ${this.parentName}');
 
           DrawMultiSelect? list;
-        List<DropDownItemWidget> itemsToBuild;
-        var parentList;
-        String parentListLabel ='nu';
+          List<DropDownItemWidget> itemsToBuild;
+          var parentList;
+          String parentListLabel = 'nu';
 
-        if(!relatedToParent) {
-          print('fat1q $name');
-          itemsToBuild = this.items;
-          print(this.items);
-          print('test passed ');
-        }
-        else {
-           parentList = state.formElements!.firstWhereOrNull((element) => element.name == this.parentName);
-           parentListLabel = parentList.label;
-          print('fat2 $name');
-            if (state.childsMap != null && state.childsMap.isNotEmpty &&  state.childsMap[this.name] != null ) {
+          if (!relatedToParent) {
+            print('fat1q $name');
+            itemsToBuild = this.items;
+            print(this.items);
+            print('test passed ');
+          } else {
+            parentList = state.formElements!
+                .firstWhereOrNull((element) => element.name == this.parentName);
+            parentListLabel = parentList.label;
+            print('fat2 $name');
+            if (state.childsMap != null &&
+                state.childsMap.isNotEmpty &&
+                state.childsMap[this.name] != null) {
               list = state.childsMap[this.name] as DrawMultiSelect;
               itemsToBuild = list.items;
-            } else
-              {
-                list = null;
-                itemsToBuild = [];
-              }
+            } else {
+              list = null;
+              itemsToBuild = [];
+            }
           }
 
           return FormField<dynamic>(
               validator: (value) {
-                if (this.selectedValues == null   )
+                if (this.selectedValues == null)
                   return 'required';
                 else
                   return null;
               },
-              builder: (FormFieldState<dynamic> fieldState) =>
-                  Column(
+              builder: (FormFieldState<dynamic> fieldState) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 16, bottom: 10),
                         child: Text(
-                          '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
-                          ,style: TextStyle(fontSize: 18),
+                          '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} ',
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
                       SizedBox(
@@ -120,44 +122,55 @@ class DrawMultiSelect extends IDrawable {
                         child: Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Center(
-                            child: MultiSelectDialogField<String>(
+                              child: MultiSelectDialogField<String>(
 
-                              chipDisplay: MultiSelectChipDisplay(
-                                alignment: Alignment.topCenter,
-                                onTap: (value){
-                                  context.read<ValidationBloc>().add(MultiSelectItemRemoved(item: value, selectName: this.name));
-                                  print(value);
-                                },
-                              ),
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              dialogHeight: itemsToBuild.isEmpty  ? 5 : null ,
-                              dialogWidth:  itemsToBuild.isEmpty ? 5 : null,
-                                selectedItemsTextStyle: TextStyle(color: Colors.black),
-                              buttonIcon: Icon(Icons.arrow_drop_down),
-                              decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.1),
-          borderRadius: BorderRadius.all(Radius.circular(40)),
-          border: Border.all(
-          color: Colors.blue,
-          width: 2,
-          ),
-          ),
-                                title:  itemsToBuild.isEmpty  ? Text('Please Select a $parentListLabel') :Text(label) ,
-                              buttonText: Text(prompt),
-                              listType: MultiSelectListType.CHIP,
-
-                              // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                              items: _buildItemsMulti(itemsToBuild) ,
-                              initialValue:list?.selectedValues ?? null,
-                              onConfirm: (values) {
-                                selectedValues = values;
-                                if(itemsToBuild.isNotEmpty && relatedToParent)
-                                  context.read<ValidationBloc>().add(childDropDownChanged(childList: this, value: ''));
+                            chipDisplay: MultiSelectChipDisplay(
+                              alignment: Alignment.topCenter,
+                              onTap: (value) {
+                                context.read<ValidationBloc>().add(
+                                    MultiSelectItemRemoved(
+                                        item: value,
+                                        selectName: this.name));
+                                print(value);
                               },
-                            )
-                          ),
+                            ),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            dialogHeight: itemsToBuild.isEmpty ? 5 : null,
+                            dialogWidth: itemsToBuild.isEmpty ? 5 : null,
+                            selectedItemsTextStyle:
+                                TextStyle(color: Colors.black),
+                            buttonIcon: Icon(Icons.arrow_drop_down),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40)),
+                            ),
+                            title: itemsToBuild.isEmpty
+                                ? Text('Please Select a $parentListLabel')
+                                : Text(label),
+                            buttonText: Text(prompt),
+                            listType: MultiSelectListType.CHIP,
+
+                            // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
+                            items: _buildItemsMulti(itemsToBuild),
+                            initialValue: list?.selectedValues ?? null,
+                            onConfirm: (values) {
+                              selectedValues = values;
+                              if (itemsToBuild.isNotEmpty &&
+                                  relatedToParent)
+                                context.read<ValidationBloc>().add(
+                                    childDropDownChanged(
+                                        childList: this, value: ''));
+                            },
+                          )),
                         ),
                       ),
+
+
+
+
+
                       if (fieldState.hasError)
                         Padding(
                           padding: const EdgeInsets.only(left: 8, top: 15),
@@ -177,13 +190,10 @@ class DrawMultiSelect extends IDrawable {
     );
   }
 
-
   List<MultiSelectItem<String>> _buildItemsMulti(
-
       List<DropDownItemWidget> items) {
     List<MultiSelectItem<String>> list = [];
-    if (items.isEmpty)
-    {
+    if (items.isEmpty) {
       return [];
     }
     print('iteemsss to draw  ${items.toString()}');
