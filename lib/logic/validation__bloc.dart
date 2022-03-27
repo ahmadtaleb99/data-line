@@ -154,7 +154,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
     var map = state.childsMap;
     var select =  event.select;
-      select.selectedValues.removeWhere((element) => element == event.item);
+      select.selectedValues.remove(event.item);
       map[select.name] = select;
       emit(state.copyWith(childsMap: map));
   }

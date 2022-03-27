@@ -23,7 +23,7 @@ class DrawMultiSelect extends IDrawable {
       required this.prompt,
       required this.items,
       required this.multiple,
-      this.selectedValues =const [],
+      this.selectedValues = const [],
       required this.showIfValueSelected,
       required this.showIfFieldValue,
       this.parentName,
@@ -118,62 +118,56 @@ class DrawMultiSelect extends IDrawable {
                       SizedBox(
                         height: 5,
                       ),
-                      Container(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Center(
-                              child: MultiSelectDialogField<String>(
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Center(
+                            child: MultiSelectDialogField<String>(
+                              searchable: true,
+                              decoration: BoxDecoration(
 
-                            chipDisplay: MultiSelectChipDisplay(
-                              alignment: Alignment.topCenter,
-                              onTap: (value) {
-                                context.read<ValidationBloc>().add(
-                                    MultiSelectItemRemoved(
-                                        item: value,
-                                        select: this,
-                                        selectName: this.name));
-                                print(value);
+                                color: Colors.blue.withOpacity(0.1),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(40)),
+                              ),
+                              chipDisplay: MultiSelectChipDisplay(
+
+                                alignment: Alignment.topCenter,
+                                onTap: (value) {
+                                  context.read<ValidationBloc>().add(
+                                      MultiSelectItemRemoved(
+                                          item: value,
+                                          select: this,
+                                          selectName: this.name));
+                                  print(value);
+                                },
+                              ),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              dialogHeight: itemsToBuild.isEmpty ? 5 : null,
+                              dialogWidth: itemsToBuild.isEmpty ? 5 : null,
+                              selectedItemsTextStyle:
+                                  TextStyle(color: Colors.black),
+                              buttonIcon: Icon(Icons.arrow_drop_down),
+
+                              title: itemsToBuild.isEmpty
+                                  ? Text('Please Select a $parentListLabel')
+                                  : Text(label),
+                              buttonText: Text(prompt),
+                              listType: MultiSelectListType.CHIP,
+
+                              // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
+                              items: _buildItemsMulti(itemsToBuild),
+                              initialValue: list?.selectedValues ?? null,
+                              onConfirm: (values) {
+                                fieldState.didChange(values);
+                                selectedValues = values;
+                                if (itemsToBuild.isNotEmpty && relatedToParent)
+                                  context.read<ValidationBloc>().add(
+                                      childDropDownChanged(
+                                          childList: this, value: ''));
                               },
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            dialogHeight: itemsToBuild.isEmpty ? 5 : null,
-                            dialogWidth: itemsToBuild.isEmpty ? 5 : null,
-                            selectedItemsTextStyle:
-                                TextStyle(color: Colors.black),
-                            buttonIcon: Icon(Icons.arrow_drop_down),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40)),
-                            ),
-                            title: itemsToBuild.isEmpty
-                                ? Text('Please Select a $parentListLabel')
-                                : Text(label),
-                            buttonText: Text(prompt),
-                            listType: MultiSelectListType.CHIP,
-
-                            // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                            items: _buildItemsMulti(itemsToBuild),
-                            initialValue: list?.selectedValues ?? null,
-                            onConfirm: (values) {
-                              fieldState.didChange(values);
-                              selectedValues = values;
-                              if (itemsToBuild.isNotEmpty &&
-                                  relatedToParent)
-                                context.read<ValidationBloc>().add(
-                                    childDropDownChanged(
-                                        childList: this, value: ''));
-                            },
-                          )),
-                        ),
+                            )),
                       ),
-
-
-
-
-
                       if (fieldState.hasError)
                         Padding(
                           padding: const EdgeInsets.only(left: 8, top: 15),
