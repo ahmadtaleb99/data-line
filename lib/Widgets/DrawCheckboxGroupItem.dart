@@ -28,6 +28,14 @@ class DrawCheckboxGroupItem extends StatelessWidget {
         return Column(
           children: [
             BlocBuilder<ValidationBloc, ValidationState>(
+              buildWhen: (previous, current) {
+                if (previous != current &&
+                    current.drawCheckboxGroup != null &&  current.drawCheckboxGroup!.name == this.groupName) {
+                  fieldState.validate();
+                  return true;
+                }
+                return false;
+              },
               builder: (context, state) {
                 return CheckboxListTile(
                   title:   Text(label),

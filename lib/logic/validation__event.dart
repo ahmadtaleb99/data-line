@@ -22,10 +22,12 @@ class CheckboxGroupValueChanged extends ValidationEvent {
 class MultiSelectItemRemoved extends ValidationEvent {
       String item;
       String selectName;
+      DrawMultiSelect select;
 
       MultiSelectItemRemoved({
     required this.item,
     required this.selectName,
+    required this.select,
   });
 }
 class StateFormRequested extends ValidationEvent {

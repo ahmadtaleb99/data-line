@@ -51,7 +51,7 @@ class DrawFilePicker extends  IDrawable {
             maintainState: false,
             maintainSize: false,
             child: FormField<PlatformFile>(
-
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (file) {
                 if(file==null )
                   return 'required';
@@ -82,6 +82,8 @@ class DrawFilePicker extends  IDrawable {
                          } else {
                            // User canceled the picker
                          }
+                         fieldState.validate();
+
                        },
                        child: Row(
                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -153,8 +153,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   void _onMultiSelectItemRemoved(MultiSelectItemRemoved event, Emitter<ValidationState> emit) {
 
     var map = state.childsMap;
-    var select = map[event.selectName] as  DrawMultiSelect;
-      select.selectedValues!.removeWhere((element) => element == event.item);
+    var select =  event.select;
+      select.selectedValues.removeWhere((element) => element == event.item);
       map[select.name] = select;
       emit(state.copyWith(childsMap: map));
   }

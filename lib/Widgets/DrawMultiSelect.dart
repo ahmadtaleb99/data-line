@@ -46,7 +46,7 @@ class DrawMultiSelect extends IDrawable {
   final bool isHidden;
   final bool multiple;
   bool? visible;
-  List<String>? selectedValues;
+  List<String> selectedValues;
   final bool isReadOnly;
   final bool relatedToParent;
   final bool? showIfIsRequired;
@@ -99,11 +99,12 @@ class DrawMultiSelect extends IDrawable {
 
           return FormField<dynamic>(
               validator: (value) {
-                if (this.selectedValues == null)
+                if (this.selectedValues.isEmpty)
                   return 'required';
                 else
                   return null;
               },
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               builder: (FormFieldState<dynamic> fieldState) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -130,6 +131,7 @@ class DrawMultiSelect extends IDrawable {
                                 context.read<ValidationBloc>().add(
                                     MultiSelectItemRemoved(
                                         item: value,
+                                        select: this,
                                         selectName: this.name));
                                 print(value);
                               },
@@ -156,6 +158,7 @@ class DrawMultiSelect extends IDrawable {
                             items: _buildItemsMulti(itemsToBuild),
                             initialValue: list?.selectedValues ?? null,
                             onConfirm: (values) {
+                              fieldState.didChange(values);
                               selectedValues = values;
                               if (itemsToBuild.isNotEmpty &&
                                   relatedToParent)
