@@ -17,6 +17,9 @@ class DrawFilePicker extends  FormElement {
     this.validator,
     required this.required,
     required this.name,
+    required this.deactivate,
+    required this.isHidden,
+    required this.isReadOnly,
     required this.maxFileSize,
     required this.fileType,
     required this.showIfValueSelected,
@@ -34,6 +37,9 @@ class DrawFilePicker extends  FormElement {
   final bool required;
   bool?  visible;
   final bool showIfValueSelected;
+  final bool deactivate;
+  final bool isReadOnly;
+  final bool isHidden;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
   final int maxFileSize;

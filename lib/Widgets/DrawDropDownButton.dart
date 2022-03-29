@@ -10,11 +10,11 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
-import 'DropDownItemWidget.dart';
+import '../dynamic form/DropDownItem.dart';
 
-class DrawDropDownButton extends FormElement {
+class DrawDropDown extends FormElement {
   final String label;
-  final bool deactivated;
+  final bool deactivate;
   final bool required;
   final bool isHidden;
   final bool multiple;
@@ -30,12 +30,12 @@ class DrawDropDownButton extends FormElement {
   final String? parentName;
   final bool relatedToParent;
   final String? Function(dynamic)? validator;
-  List<DropDownItemWidget> items;
+  List<DropDownItem> items;
 
-  DrawDropDownButton({Key? key,
+  DrawDropDown({Key? key,
     required this.label,
     required this.showIfIsRequired,
-    required this.deactivated,
+    required this.deactivate,
     required this.required,
     required this.isHidden,
     required this.isReadOnly,
@@ -150,7 +150,7 @@ class DrawDropDownButton extends FormElement {
         });
   }
 
-  List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
+  List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItem> items) {
     List<DropdownMenuItem<dynamic>>? list = [];
 
     print('iteemsss to draw  ${items.toString()}');
@@ -164,7 +164,7 @@ class DrawDropDownButton extends FormElement {
   }
 
   List<MultiSelectItem<String>> _buildItemsMulti(
-      List<DropDownItemWidget> items) {
+      List<DropDownItem> items) {
     List<MultiSelectItem<String>> list = [];
 
     print('iteemsss to draw  ${items.toString()}');

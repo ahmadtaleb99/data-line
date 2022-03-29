@@ -7,7 +7,7 @@ import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 
-import 'formable.dart';
+import 'IFormModel.dart';
 
 class IFormCheckBoxGroup implements IFormModel {
   List<DrawCheckboxGroupItem> itemsList = [];
@@ -54,7 +54,7 @@ class IFormCheckBoxGroup implements IFormModel {
   });
 
 
-  factory IFormCheckBoxGroup.FromJson({ required Map<String,dynamic>  parameters}) {
+  factory IFormCheckBoxGroup.fromJson(parameters) {
     return IFormCheckBoxGroup(
       label: parameters['label'],
       required: parameters['required'],
@@ -70,7 +70,7 @@ class IFormCheckBoxGroup implements IFormModel {
       minCheckedAllowed: parameters['minMaxCheckbox'] ? parameters['checkboxMinValue'] : null ,
       maxCheckedAllowed: parameters['minMaxCheckbox'] ? parameters['checkboxMaxValue'] : null,
         other: parameters['other'],
-      values: List<CheckboxItem>.from(parameters['values']).map((e) => CheckboxItem.FromJson(e , parameters['name'])).toList()
+      values: List<CheckboxItem>.from(parameters['values'].map((e) => CheckboxItem.FromJson(e , parameters['name'])).toList())
 
     );
   }
@@ -80,7 +80,7 @@ class IFormCheckBoxGroup implements IFormModel {
 
 
   @override
-  FormElement formElementFromJson() {
+  FormElement getFormElement() {
 
 
     for (var checkBox in this.values) {

@@ -2,47 +2,63 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
 
-import 'formable.dart';
 
+@HiveType(typeId: 1)
 class IFormDrawRadioGroup implements IFormModel {
+  @HiveField(1)
   List<RadioItem> values;
+
+  @HiveField(1)
   String label;
+  @HiveField(2)
   String name;
+  @HiveField(3)
   bool deactivate;
+  @HiveField(4)
   bool isHidden;
+  @HiveField(5)
   bool required;
+  @HiveField(6)
   bool isReadOnly;
+  @HiveField(7)
   bool? visible;
+  @HiveField(8)
   bool showIfValueSelected;
+  @HiveField(9)
   String? showIfFieldValue;
+  @HiveField(10)
   bool? showIfIsRequired;
+  @HiveField(11)
   bool other;
 
-  factory IFormDrawRadioGroup.FromJson({ required Map<String,dynamic>  parameters}) {
+  factory IFormDrawRadioGroup.fromJson(parameters) {
     return IFormDrawRadioGroup(
         label: parameters['label'],
         required: parameters['required'],
         showIfIsRequired: parameters['showIfIsRequired'],
         showIfFieldValue: parameters['showIfFieldValue'],
-        isHidden: parameters['isHidden'],
+          isHidden: parameters['isHidden'],
         isReadOnly: parameters['isReadOnly'],
         showIfValueSelected: parameters['showIfLogicCheckbox'],
         name: parameters['name'],
         visible: parameters['showIfLogicCheckbox'] == true ? false : true,
         deactivate: parameters['deactivate'],
         other: parameters['other'],
-        values: List<RadioItem>.from(parameters['values']).map((e) => RadioItem.fromJson(e , parameters['name'])).toList()
+        values: List<RadioItem>.from(parameters['values'].map((e) => RadioItem.fromJson(e , parameters['name'])).toList()
 
-    );
+    ));
   }
 
 
 
 
   @override
-  FormElement formElementFromJson() {
+  FormElement getFormElement() {
     List<DrawRadioItem> children = [];
     for (var radio in this.values) {
       var newRadio = DrawRadioItem(

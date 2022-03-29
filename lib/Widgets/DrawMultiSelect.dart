@@ -7,7 +7,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'DrawChildList.dart';
-import 'DropDownItemWidget.dart';
+import '../dynamic form/DropDownItem.dart';
 
 class DrawMultiSelect extends FormElement {
   DrawMultiSelect(
@@ -15,7 +15,7 @@ class DrawMultiSelect extends FormElement {
       this.visible = false,
       required this.label,
       required this.showIfIsRequired,
-      required this.deactivated,
+      required this.deactivate,
       required this.required,
       required this.relatedToParent,
       required this.isHidden,
@@ -41,7 +41,7 @@ class DrawMultiSelect extends FormElement {
 
   String? value;
   final String label;
-  final bool deactivated;
+  final bool deactivate;
   final bool required;
   final bool isHidden;
   final bool multiple;
@@ -58,7 +58,7 @@ class DrawMultiSelect extends FormElement {
   final String? parentName;
   final String? Function(dynamic)? validator;
 
-  List<DropDownItemWidget> items;
+  List<DropDownItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class DrawMultiSelect extends FormElement {
           print('2 ${this.parentName}');
 
           DrawMultiSelect? list;
-          List<DropDownItemWidget> itemsToBuild;
+          List<DropDownItem> itemsToBuild;
           var parentList;
           String parentListLabel = 'nu';
 
@@ -188,7 +188,7 @@ class DrawMultiSelect extends FormElement {
   }
 
   List<MultiSelectItem<String>> _buildItemsMulti(
-      List<DropDownItemWidget> items) {
+      List<DropDownItem> items) {
     List<MultiSelectItem<String>> list = [];
     if (items.isEmpty) {
       return [];
@@ -217,12 +217,12 @@ class DrawMultiSelect extends FormElement {
     String? name,
     String? parentName,
     String? Function(dynamic)? validator,
-    List<DropDownItemWidget>? items,
+    List<DropDownItem>? items,
     List<MultiSelectItem<String>>? list,
   }) {
     return DrawMultiSelect(
       label: label ?? this.label,
-      deactivated: deactivated ?? this.deactivated,
+      deactivate: deactivated ?? this.deactivate,
       required: required ?? this.required,
       isHidden: isHidden ?? this.isHidden,
       multiple: multiple ?? this.multiple,

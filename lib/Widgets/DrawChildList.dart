@@ -8,7 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'DrawChecboxGroup.dart';
-import 'DropDownItemWidget.dart';
+import '../dynamic form/DropDownItem.dart';
 import 'IDrawable.dart';
 
 
@@ -17,7 +17,7 @@ class DrawChildList extends FormElement {
     this.visible = false,
     required this.label,
     required this.showIfIsRequired,
-    required this.deactivated,
+    required this.deactivate,
     required this.required,
     required this.isHidden,
     required this.isReadOnly,
@@ -41,7 +41,7 @@ class DrawChildList extends FormElement {
 
   String? value;
   final String label;
-  final bool deactivated;
+  final bool deactivate;
   final bool required;
   final bool isHidden;
   final bool multiple;
@@ -56,7 +56,7 @@ class DrawChildList extends FormElement {
   final String? parentName;
   final String? Function(dynamic)? validator;
 
-  List<DropDownItemWidget> items;
+  List<DropDownItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class DrawChildList extends FormElement {
           var parent = state.formElements!.firstWhere((element) => element.name == this.parentName);
           String parentListLabel = parent.label;
           DrawChildList? list;
-          List<DropDownItemWidget> itemsToBuild;
+          List<DropDownItem> itemsToBuild;
           if (state.childsMap != null && state.childsMap.isNotEmpty && state.childsMap[this.name] != null){
             list = state.childsMap[this.name] as DrawChildList;
             itemsToBuild = list.items;
@@ -174,11 +174,11 @@ class DrawChildList extends FormElement {
     String? prompt,
     String? name,
     String? parentName,
-    List<DropDownItemWidget>? items,
+    List<DropDownItem>? items,
     bool? multiple}) {
     return DrawChildList(
       label: label ?? this.label,
-      deactivated: deactivated ?? this.deactivated,
+      deactivate: deactivated ?? this.deactivate,
       required: required ?? this.required,
       isHidden: isHidden ?? this.isHidden,
       isReadOnly: isReadOnly ?? this.isReadOnly,
@@ -193,7 +193,7 @@ class DrawChildList extends FormElement {
     );
   }
 
-  List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItemWidget> items) {
+  List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItem> items) {
     if (items.isEmpty)
       return [
         DropdownMenuItem(

@@ -3,29 +3,70 @@ import 'package:form_builder_test/Widgets/DrawEmailTextField.dart';
 import 'package:form_builder_test/Widgets/DrawNumberField.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/formable.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 
 import '../Expression.dart';
 
 class IFormNumber implements IFormModel {
   dynamic _parameters;
 
+
+  String label;
+  String name;
+  bool deactivate;
+  bool isHidden;
+  bool required;
+  bool isReadOnly;
+  bool? visible;
+  bool showIfValueSelected;
+  String? showIfFieldValue;
+  bool? showIfIsRequired;
+  Expression expression;
+
+  IFormNumber({
+    required this.label,
+    required this.name,
+    required this.deactivate,
+    required this.isHidden,
+    required this.required,
+    required this.isReadOnly,
+    this.visible,
+    required this.showIfValueSelected,
+    this.showIfFieldValue,
+    this.showIfIsRequired,
+    required this.expression,
+  }) ;
+
+  factory IFormNumber.fromJson(json) {
+    return IFormNumber(
+      label: json['label'],
+      required: json['required'],
+      showIfIsRequired: json['showIfIsRequired'],
+      showIfFieldValue: json['showIfFieldValue'],
+      isHidden: json['isHidden'],
+      isReadOnly: json['isReadOnly'],
+      showIfValueSelected: json['showIfLogicCheckbox'],
+      name: json['name'],
+      visible: json['showIfLogicCheckbox'] == true ? false : true,
+      deactivate: json['deactivate'], expression: Expression(
+        operator: OperatorsValues.map![json['operator']]!,
+        value: json['expressionsValue'],
+
+        value2: json['expressionsValue2'] ?? null));
+  }
   @override
-  FormElement formElementFromJson({parameters}) {
+  FormElement getFormElement({parameters}) {
     print(_parameters);
     return DrawNumberField(
-      label: _parameters['label'],
-      required: _parameters['required'],
-      showIfIsRequired: _parameters['showIfIsRequired'],
-      showIfFieldValue: _parameters['showIfFieldValue'],
-      visible:  _parameters['showIfLogicCheckbox'] == true  ? false : true,
+      label:  this.label,
+      required: this.required,
+      showIfIsRequired:  this.showIfIsRequired,
+      showIfFieldValue:  this.showIfFieldValue,
+      visible:   this.visible,
 
-      showIfValueSelected: _parameters['showIfLogicCheckbox'], name: _parameters['name'],
-      expression: Expression(
-          operator: OperatorsValues.map![_parameters['operator']]!,
-          value: _parameters['expressionsValue'],
-
-          value2: _parameters['expressionsValue2'] ?? null),
+      showIfValueSelected:  this.showIfValueSelected,
+      name:  this.name,
+      expression:  this.expression,
     );
   }
 
@@ -39,4 +80,6 @@ class IFormNumber implements IFormModel {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }
+
+
 }

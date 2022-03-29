@@ -1,5 +1,5 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/formable.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 
 class CheckboxItem implements IFormModel{
   String label;
@@ -25,7 +25,7 @@ class CheckboxItem implements IFormModel{
   }
 
   @override
-  FormElement formElementFromJson() {
+  FormElement getFormElement() {
     throw UnimplementedError();
   }
 

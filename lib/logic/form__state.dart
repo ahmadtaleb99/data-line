@@ -20,9 +20,9 @@ class FormLoading extends BlocFormState {
 
 class FormLoaded extends BlocFormState {
   DrawCheckboxGroup ?  drawCheckboxGroup;
-  DrawDropDownButton ?  drawDropDownButton;
+  DrawDropDown ?  drawDropDownButton;
   DrawRadioGroup  ? radioGroup;
-  List<DropDownItemWidget>  childItems ;
+  List<DropDownItem>  childItems ;
   List<DrawChildList> ?   childLists ;
   List ? formElements;
   Map<String,DrawChildList>  childsMap;
@@ -41,10 +41,10 @@ class FormLoaded extends BlocFormState {
     List? formElements,
 
     DrawCheckboxGroup? drawCheckboxGroup,
-    DrawDropDownButton? drawDropDownButton,
+    DrawDropDown? drawDropDownButton,
     DrawRadioGroup  ? radioGroup,
 
-    List<DropDownItemWidget>? childItems,
+    List<DropDownItem>? childItems,
     List<DrawChildList>?  childLists,
     DrawChildList? childList,
     Map<String,DrawChildList> ? childsMap

@@ -7,9 +7,9 @@ enum Status {initial,loading,success,failure}
 class ValidationState {
   Status status;
   DrawCheckboxGroup ? drawCheckboxGroup;
-  DrawDropDownButton ? drawDropDownButton;
+  DrawDropDown ? drawDropDownButton;
   DrawRadioGroup ? radioGroup;
-  List<DropDownItemWidget> childItems;
+  List<DropDownItem> childItems;
 
   List<DrawChildList> ? childLists;
 
@@ -35,10 +35,10 @@ class ValidationState {
     Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,
-    DrawDropDownButton? drawDropDownButton,
+    DrawDropDown? drawDropDownButton,
     DrawRadioGroup ? radioGroup,
 
-    List<DropDownItemWidget>? childItems,
+    List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,
     DrawChildList? childList,
     Map<String, FormElement> ? childsMap

@@ -1,7 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawEmailTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/formable.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 
 class IFormEmail implements IFormModel {
   String label;
@@ -32,7 +32,7 @@ class IFormEmail implements IFormModel {
 
 
 
-  factory IFormEmail.FromJson({parameters}) {
+  factory IFormEmail.fromJson(parameters) {
     return IFormEmail(
       label: parameters['label'],
       required: parameters['required'],
@@ -48,7 +48,7 @@ class IFormEmail implements IFormModel {
   }
 
   @override
-  FormElement formElementFromJson({parameters}) {
+  FormElement getFormElement({parameters}) {
     return DrawEmailTextField(
       label: this.label,
       required: this.required,
