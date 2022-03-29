@@ -7,12 +7,12 @@ import 'package:form_builder_test/Widgets/DropDownItemWidget.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
-class IFormDropList implements IForm {
+class IFormDropList implements IFormModel {
   dynamic _parameters;
   List<DropDownItemWidget> itemsList = [];
 
   @override
-  IDrawable drawFormElement({parameters}) {
+  FormElement formElementFromJson({parameters}) {
     for (var menuItem in _parameters['values']) {
       DropDownItemWidget item = DropDownItemWidget(
           parent: menuItem['parent'],
@@ -83,5 +83,11 @@ class IFormDropList implements IForm {
   @override
   void setParameters(parametrs) {
     _parameters = parametrs;
+  }
+
+  @override
+  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+    // TODO: implement fomrElementtoJson
+    throw UnimplementedError();
   }
 }

@@ -3,11 +3,11 @@ import 'package:form_builder_test/Widgets/DrawTextArea.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
-class IFormTextArea implements IForm {
+class IFormTextArea implements IFormModel {
   dynamic _parameters;
 
   @override
-  IDrawable drawFormElement({parameters}) {
+  FormElement formElementFromJson({parameters}) {
     return DrawTextArea(
       minLength: _parameters['minlength'],
       maxLength: _parameters['maxlength'],
@@ -22,5 +22,11 @@ class IFormTextArea implements IForm {
   @override
   void setParameters(parametrs) {
     _parameters = parametrs;
+  }
+
+  @override
+  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+    // TODO: implement fomrElementtoJson
+    throw UnimplementedError();
   }
 }

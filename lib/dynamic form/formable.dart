@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 
-abstract class IForm {
+abstract class IFormModel {
   void setParameters(dynamic parametrs);
 
-  IDrawable drawFormElement ();
+  FormElement formElementFromJson ();
+  Map<String,dynamic> fomrElementtoJson (FormElement formElement);
 
 }

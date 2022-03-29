@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-abstract class IDrawable extends StatelessWidget {
+abstract class FormElement extends StatelessWidget {
 
   final String label;
   final String name;
@@ -12,7 +12,7 @@ abstract class IDrawable extends StatelessWidget {
   final bool ? showIfIsRequired;
 
 
-  IDrawable({
+  FormElement({
   Key? key,
     required this.label,
     required this.name,

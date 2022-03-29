@@ -3,7 +3,7 @@ import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/formable.dart';
 
-class IFormTextField implements IForm{
+class IFormTextField implements IFormModel{
   dynamic _parameters;
 
 
@@ -12,7 +12,7 @@ class IFormTextField implements IForm{
 
 
   @override
-  IDrawable drawFormElement({parameters}) {
+  FormElement formElementFromJson({parameters}) {
     print(_parameters['showIfLogicCheckbox']);
     return DrawTextField(label: _parameters['label'], required: _parameters['required'],
       showIfValueSelected: _parameters['showIfLogicCheckbox'],
@@ -27,6 +27,12 @@ class IFormTextField implements IForm{
   void setParameters(parametrs) {
     _parameters = parametrs;
 
+  }
+
+  @override
+  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+    // TODO: implement fomrElementtoJson
+    throw UnimplementedError();
   }
   
 }

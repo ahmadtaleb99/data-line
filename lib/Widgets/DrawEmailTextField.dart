@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 
-class DrawEmailTextField extends IDrawable with FormValidation {
+class DrawEmailTextField extends FormElement with FormValidation {
    DrawEmailTextField({  Key ? key,
     required this.label,
      this.visible,
+     required this.deactivate,
+     required this.isHidden,
+
     required this.required,
     required this.name,
     required this.showIfValueSelected,
+    required this.isReadOnly,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
   }) : super(label: label,key: key,
@@ -22,7 +26,10 @@ class DrawEmailTextField extends IDrawable with FormValidation {
 
   final String label;
   final String name;
+  final bool deactivate;
+  final bool isHidden;
   final bool required;
+  final bool isReadOnly;
   bool?  visible;
   final bool showIfValueSelected;
   final String ? showIfFieldValue;

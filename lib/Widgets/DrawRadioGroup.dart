@@ -8,7 +8,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'DrawRadioItem.dart';
 import 'DrawTextField.dart';
 
-class DrawRadioGroup extends IDrawable {
+class DrawRadioGroup extends FormElement {
   DrawRadioGroup({
     Key? key,
     required this.label,

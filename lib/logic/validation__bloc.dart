@@ -36,7 +36,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       StateFormRequested event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(status: Status.loading));
     var formElements = await _formRepository.LoadFormElements(event.formId);
-    Map<String, IDrawable>? map = {};
+    Map<String, FormElement>? map = {};
     // for(var formElement in formElements) {
     //   if(formElement is DrawChildList || formElement is DrawMultiSelect  ){
     //   map[formElement.name] = formElement;
@@ -133,8 +133,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith(formElements: formElements,status: Status.success));
   }
 
-  List<IDrawable>?  _checkRelatedFields(String value) {
-    var formElements = _formRepository.formElementList as List<IDrawable>;
+  List<FormElement>?  _checkRelatedFields(String value) {
+    var formElements = _formRepository.formElementList as List<FormElement>;
     for (var formElement in formElements) {
       if (formElement.showIfValueSelected &&
           formElement.showIfFieldValue == value)

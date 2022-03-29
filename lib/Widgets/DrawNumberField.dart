@@ -4,7 +4,7 @@ import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 import '../Expression.dart';
 
-class DrawNumberField extends IDrawable with FormValidation {
+class DrawNumberField extends FormElement with FormValidation {
    DrawNumberField(
       {Key? key,
         required this.label,

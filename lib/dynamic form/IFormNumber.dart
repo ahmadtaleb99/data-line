@@ -7,11 +7,11 @@ import 'package:form_builder_test/dynamic%20form/formable.dart';
 
 import '../Expression.dart';
 
-class IFormNumber implements IForm {
+class IFormNumber implements IFormModel {
   dynamic _parameters;
 
   @override
-  IDrawable drawFormElement({parameters}) {
+  FormElement formElementFromJson({parameters}) {
     print(_parameters);
     return DrawNumberField(
       label: _parameters['label'],
@@ -32,5 +32,11 @@ class IFormNumber implements IForm {
   @override
   void setParameters(parametrs) {
     _parameters = parametrs;
+  }
+
+  @override
+  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+    // TODO: implement fomrElementtoJson
+    throw UnimplementedError();
   }
 }

@@ -6,7 +6,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 
 import 'IDrawable.dart';
 
-class DrawCheckboxGroup extends IDrawable {
+class DrawCheckboxGroup extends FormElement {
   DrawCheckboxGroup( {
     Key? key,
     required this.children,
@@ -17,6 +17,7 @@ class DrawCheckboxGroup extends IDrawable {
     required this.label,
     this.visible,
     required this.required,
+    required this.deactivate,
     required this.other,
     required this.name,
     required this.showIfValueSelected,
@@ -42,6 +43,7 @@ class DrawCheckboxGroup extends IDrawable {
   final bool deactivated;
   final bool required;
   final bool isHidden;
+  final bool deactivate;
   bool? visible;
   final bool isReadOnly;
   final bool? showIfIsRequired;

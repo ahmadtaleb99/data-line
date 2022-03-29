@@ -9,7 +9,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'DrawChildList.dart';
 import 'DropDownItemWidget.dart';
 
-class DrawMultiSelect extends IDrawable {
+class DrawMultiSelect extends FormElement {
   DrawMultiSelect(
       {Key? key,
       this.visible = false,

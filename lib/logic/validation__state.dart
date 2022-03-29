@@ -13,10 +13,10 @@ class ValidationState {
 
   List<DrawChildList> ? childLists;
 
-  List<IDrawable> ? formElements;
+  List<FormElement> ? formElements;
   DrawChildList ? childList;
 
-  Map<String, IDrawable> childsMap;
+  Map<String, FormElement> childsMap;
 
   ValidationState({
     this.drawCheckboxGroup,
@@ -31,7 +31,7 @@ class ValidationState {
   });
 
   ValidationState copyWith({
-    List<IDrawable>? formElements,
+    List<FormElement>? formElements,
     Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,
@@ -41,7 +41,7 @@ class ValidationState {
     List<DropDownItemWidget>? childItems,
     List<DrawChildList>? childLists,
     DrawChildList? childList,
-    Map<String, IDrawable> ? childsMap
+    Map<String, FormElement> ? childsMap
 
   }) {
     return ValidationState(

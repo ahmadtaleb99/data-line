@@ -5,12 +5,14 @@ import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:hive/hive.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'DrawChecboxGroup.dart';
 import 'DropDownItemWidget.dart';
 import 'IDrawable.dart';
 
-class DrawChildList extends IDrawable {
+
+class DrawChildList extends FormElement {
   DrawChildList({Key? key,
     this.visible = false,
     required this.label,

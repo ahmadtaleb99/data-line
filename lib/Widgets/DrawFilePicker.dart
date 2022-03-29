@@ -7,7 +7,7 @@ import 'package:form_builder_test/Expression.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'IDrawable.dart';
-class DrawFilePicker extends  IDrawable {
+class DrawFilePicker extends  FormElement {
 
 
   DrawFilePicker( {

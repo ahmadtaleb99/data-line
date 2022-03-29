@@ -66,7 +66,7 @@ class ParentDropListChanged extends ValidationEvent {
 
 class childDropDownChanged extends ValidationEvent {
 
-  IDrawable childList ;
+  FormElement childList ;
   String value;
 
   childDropDownChanged({

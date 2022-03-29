@@ -12,7 +12,7 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
 import 'DropDownItemWidget.dart';
 
-class DrawDropDownButton extends IDrawable {
+class DrawDropDownButton extends FormElement {
   final String label;
   final bool deactivated;
   final bool required;

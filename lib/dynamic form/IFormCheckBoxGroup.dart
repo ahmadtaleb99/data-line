@@ -6,12 +6,12 @@ import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 import 'formable.dart';
 
-class IFormCheckBoxGroup implements IForm {
+class IFormCheckBoxGroup implements IFormModel {
   List<DrawCheckboxGroupItem> itemsList = [];
 
   dynamic _parameters;
   @override
-  IDrawable drawFormElement() {
+  FormElement formElementFromJson() {
     print(_parameters);
     for (var checkBox in _parameters['values']) {
       var item = DrawCheckboxGroupItem(
@@ -30,6 +30,7 @@ class IFormCheckBoxGroup implements IForm {
         showIfFieldValue: _parameters['showIfFieldValue'],
         showIfValueSelected: _parameters['showIfLogicCheckbox'],
         name: _parameters['name'],
+        deactivate: _parameters['deactivate'],
         children: itemsList,
         minMaxCheckbox: _parameters['minMaxCheckbox'],
         maxCheckedAllowed: _parameters['checkboxMaxValue'],
@@ -46,6 +47,7 @@ class IFormCheckBoxGroup implements IForm {
       minMaxCheckbox: _parameters['minMaxCheckbox'],
       label: _parameters['label'],
       required: _parameters['required'],
+      deactivate: _parameters['deactivate'],
       showIfIsRequired: _parameters['showIfIsRequired'],
       showIfFieldValue: _parameters['showIfFieldValue'],
       showIfValueSelected: _parameters['showIfLogicCheckbox'],
@@ -61,5 +63,29 @@ class IFormCheckBoxGroup implements IForm {
   @override
   void setParameters(parametrs) {
     _parameters = parametrs;
+  }
+
+  @override
+  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+    var checkBoxGroup = formElement as DrawCheckboxGroup;
+
+    return {
+      'type'  : 'email',
+      'name' : checkBoxGroup.name,
+      'label' : checkBoxGroup.label,
+      'deactivate' : checkBoxGroup.deactivate,
+      'required' : checkBoxGroup.required,
+      'isHidden' : checkBoxGroup.isHidden,
+      'isReadOnly' : checkBoxGroup.isReadOnly,
+      'showIfLogicCheckBox' : checkBoxGroup.showIfValueSelected,
+      'showIfIsRequired' : checkBoxGroup.showIfIsRequired,
+
+
+      'minMaxCheckbox': checkBoxGroup.minMaxCheckbox,
+      'checkboxMinValue' : checkBoxGroup.minMaxCheckbox,
+      'checkboxMaxValue' : checkBoxGroup.maxCheckedAllowed,
+      
+
+    };
   }
 }

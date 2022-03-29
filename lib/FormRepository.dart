@@ -22,12 +22,12 @@ import 'dynamic form/formable.dart';
 
 class FormRepository {
 
-  List<IDrawable> _formElementList = [];
+  List<FormElement> _formElementList = [];
 
-  List<IDrawable> get formElementList => _formElementList;
+  List<FormElement> get formElementList => _formElementList;
 
-  List<IForm> _jsonSerialize(int formID)  {
-    List<IForm> itemsToDraw = [];
+  List<IFormModel> _jsonSerialize(int formID)  {
+    List<IFormModel> itemsToDraw = [];
     var data ;
     if(formID == 0)
   data = jsonDecode(rawJson);
@@ -45,12 +45,12 @@ class FormRepository {
 
 
 
-  Future<List<IDrawable>> LoadFormElements(int formId) async {
+  Future<List<FormElement>> LoadFormElements(int formId) async {
     this._formElementList = [];
     await Future.delayed(Duration(seconds: 1));
     for(var element in _jsonSerialize(formId)){
       print(element);
-      this._formElementList.add(element.drawFormElement()) ;
+      this._formElementList.add(element.formElementFromJson()) ;
     }
 
     return _formElementList;
@@ -67,14 +67,14 @@ class FormRepository {
   }
 
 
-  List<IDrawable> getChildrenSelectsFor (String name) {
+  List<FormElement> getChildrenSelectsFor (String name) {
 
     return _formElementList.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
   }
 
 
 
-  IForm ? _htmlFormToFlutters(String type){
+  IFormModel ? _htmlFormToFlutters(String type){
     switch (type){
       case 'select':
         return IFormDropList();
@@ -102,4 +102,6 @@ class FormRepository {
     }
 
 
-}}
+}
+
+}
