@@ -8,12 +8,12 @@ class DrawCheckboxGroupItem extends StatelessWidget {
     Key? key,
     required this.label,
     this.validator,
-    required this.id,
+    required this.value,
     required this.groupName,
     this.isChecked,
   }) : super(key: key);
   final String label;
-  final String id;
+  final String value;
   final String groupName;
   final String? Function(bool?)? validator;
   bool? isChecked;
@@ -43,7 +43,7 @@ class DrawCheckboxGroupItem extends StatelessWidget {
                   onChanged: (value) {
                     debugPrint(this.groupName);
                     context.read<ValidationBloc>().add(CheckboxGroupValueChanged(
-                        id: this.id,
+                        id: this.value,
                         newIsChecked: value!,
                         groupName: this.groupName));
 

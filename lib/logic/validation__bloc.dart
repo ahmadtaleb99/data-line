@@ -55,7 +55,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     else
       group.checksNumber--;
 
-    var child = group.children.firstWhere((element) => element.id == event.id);
+    var child = group.children.firstWhere((element) => element.value == event.id);
     child.isChecked = event.newIsChecked;
     emit(state.copyWith(drawCheckboxGroup: group));
   }

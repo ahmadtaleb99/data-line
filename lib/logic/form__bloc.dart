@@ -41,7 +41,7 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
      group.checksNumber--;
 
    var child =
-   group.children.firstWhere((element) => element.id == event.id);
+   group.children.firstWhere((element) => element.value == event.id);
    child.isChecked = event.newIsChecked;
 
    emit((state as FormLoaded).copyWith(drawCheckboxGroup: group));

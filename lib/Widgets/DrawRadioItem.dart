@@ -10,18 +10,6 @@ class DrawRadioItem extends StatelessWidget {
   final String parent;
   String? groupValue;
 
-  DrawRadioItem({
-    Key? key,
-    required this.label,
-    this.name,
-    this.showIfValueSelected,
-    this.showIfFieldValue,
-    this.showIfIsRequired,
-    this.groupValue,
-    required this.hasOther,
-    required this.value,
-    required this.parent, this.subTitle,
-  }) : super(key: key);
 
   final String label;
   final String? name;
@@ -31,8 +19,20 @@ class DrawRadioItem extends StatelessWidget {
   final bool? showIfIsRequired;
    Widget?    subTitle;
    Widget?    titleWidget;
-   bool hasOther;
 
+
+
+  DrawRadioItem({
+    Key? key,
+    required this.label,
+    this.name,
+    this.showIfValueSelected,
+    this.showIfFieldValue,
+    this.showIfIsRequired,
+    this.groupValue,
+    required this.value,
+    required this.parent, this.subTitle,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ValidationBloc, ValidationState>(
