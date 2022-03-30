@@ -6,11 +6,13 @@ import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
+import 'IFormModel.dart';
 
+part 'IFormDrawRadioGroup.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 23)
 class IFormDrawRadioGroup implements IFormModel {
-  @HiveField(1)
+  @HiveField(12)
   List<RadioItem> values;
 
   @HiveField(1)

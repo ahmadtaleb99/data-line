@@ -2,11 +2,24 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel';
+import 'package:hive/hive.dart';
+
+
+part 'DropDownItem.g.dart';
+@HiveType(typeId: 21)
 
 class DropDownItem extends Equatable implements IFormModel {
+
+  @HiveField(1)
+
   final String? parent;
+  @HiveField(2)
+
   final String value;
+  @HiveField(3)
+
   final String status;
+
 
   factory DropDownItem.fromJson(json) {
     return DropDownItem(

@@ -6,24 +6,49 @@ import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
 
+
+part 'IFormDropList.g.dart';
+
+@HiveType(typeId: 24)
 class IFormDropList implements IFormModel {
   dynamic _parameters;
+
+  @HiveField(1)
+
   List<DropDownItem> values = [];
+  @HiveField(2)
   String label;
+  @HiveField(3)
   String name;
+  @HiveField(4)
   String prompt;
+
+  @HiveField(5)
   bool deactivate;
+
+  @HiveField(6)
   bool isHidden;
+  @HiveField(7)
   bool multiple;
+  @HiveField(8)
   bool required;
+  @HiveField(9)
   bool isReadOnly;
+  @HiveField(10)
   bool relatedToParent;
+  @HiveField(11)
   String? parentName;
+  @HiveField(12)
   bool? visible;
+  @HiveField(13)
   bool showIfValueSelected;
+  @HiveField(14)
   String? showIfFieldValue;
+  @HiveField(15)
   bool? showIfIsRequired;
+
 
 
 

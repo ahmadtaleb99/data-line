@@ -136,7 +136,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   List<FormElement>?  _checkRelatedFields(String value) {
     var formElements = _formRepository.formElementList as List<FormElement>;
     for (var formElement in formElements) {
-      if (formElement.showIfValueSelected &&
+      if (formElement.showIfValueSelected! &&
           formElement.showIfFieldValue == value)
         formElement.visible = true;
       else

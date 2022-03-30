@@ -5,9 +5,9 @@ abstract class FormElement extends StatelessWidget {
 
   final String label;
   final String name;
-  final bool required;
+  final bool? required;
   bool ? visible;
-  final bool showIfValueSelected;
+  final bool ? showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
 
@@ -16,11 +16,11 @@ abstract class FormElement extends StatelessWidget {
   Key? key,
     required this.label,
     required this.name,
-    required this.visible,
-    required this.required,
-    required this.showIfValueSelected,
-    required this.showIfFieldValue,
-    required this.showIfIsRequired,
+     this.visible,
+     this.required,
+     this.showIfValueSelected,
+     this.showIfFieldValue,
+     this.showIfIsRequired,
   }) : super(key: key) ;
 
 }

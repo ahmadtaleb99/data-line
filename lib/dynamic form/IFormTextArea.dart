@@ -2,22 +2,45 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawTextArea.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
 
+part 'IFormTextArea.g.dart';
+
+@HiveType(typeId: 29)
 class IFormTextArea implements IFormModel {
   dynamic _parameters;
-  String label;
-  String name;
-  bool deactivate;
-  bool isHidden;
-  bool required;
-  bool isReadOnly;
-  bool? visible;
-  bool showIfValueSelected;
-  String? showIfFieldValue;
-  bool? showIfIsRequired;
 
+  @HiveField(1)
+  String label;
+
+  @HiveField(2)
+  String name;
+
+  @HiveField(3)
+  bool deactivate;
+
+  @HiveField(4)
+  bool isHidden;
+
+  @HiveField(5)
+  bool required;
+
+  @HiveField(6)
+  bool isReadOnly;
+
+  @HiveField(7)
+  bool? visible;
+  @HiveField(8)
+  bool showIfValueSelected;
+  @HiveField(9)
+  String? showIfFieldValue;
+  @HiveField(10)
+  bool? showIfIsRequired;
+  @HiveField(11)
   int minLength;
+  @HiveField(12)
   int maxLength;
+
 
   IFormTextArea({
     required this.label,

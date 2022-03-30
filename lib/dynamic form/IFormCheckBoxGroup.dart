@@ -6,29 +6,51 @@ import 'package:form_builder_test/Widgets/DrawCheckbox.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
+import 'package:hive/hive.dart';
 
 import 'IFormModel.dart';
 
-class IFormCheckBoxGroup implements IFormModel {
-  List<DrawCheckboxGroupItem> itemsList = [];
-  List<CheckboxItem> citemsList = [];
+part 'IFormCheckBoxGroup.g.dart';
 
+@HiveType(typeId: 22)
+class IFormCheckBoxGroup implements IFormModel {
+  List<DrawCheckboxGroupItem> WidgetitemsList = [];
+
+  @HiveField(1)
+  String label;
+  @HiveField(2)
+  String name;
+  @HiveField(3)
+  bool deactivate;
+  @HiveField(4)
+  bool isHidden;
+  @HiveField(5)
+  bool required;
+  @HiveField(6)
+  bool isReadOnly;
+  @HiveField(7)
+  bool? visible;
+  @HiveField(8)
+  bool showIfValueSelected;
+  @HiveField(9)
+  String? showIfFieldValue;
+  @HiveField(10)
+   bool minMaxCheckbox;
+  @HiveField(11)
+   int? minCheckedAllowed;
+
+  @HiveField(12)
+
+  int? maxCheckedAllowed;
+  @HiveField(13)
+
+  bool? showIfIsRequired;
+  @HiveField(14)
+
+  bool other;
+  @HiveField(15)
 
   List<CheckboxItem> values;
-  String label;
-  String name;
-  bool deactivate;
-  bool isHidden;
-  bool required;
-  bool isReadOnly;
-  bool? visible;
-  bool showIfValueSelected;
-  String? showIfFieldValue;
-   bool minMaxCheckbox;
-   int? minCheckedAllowed;
-   int? maxCheckedAllowed;
-  bool? showIfIsRequired;
-  bool other;
 
 
 
@@ -89,7 +111,7 @@ class IFormCheckBoxGroup implements IFormModel {
         groupName: checkBox.groupName,
 
       );
-      itemsList.add(item);
+      WidgetitemsList.add(item);
     }
 
       return DrawCheckboxGroup(
@@ -104,7 +126,7 @@ class IFormCheckBoxGroup implements IFormModel {
         visible:  this.showIfValueSelected == true  ? false : true,
         isHidden: this.isHidden,
         deactivate: this.deactivate,
-        children: this.itemsList,
+        children: this.WidgetitemsList,
         minMaxCheckbox: this.minMaxCheckbox,
         maxCheckedAllowed: this.maxCheckedAllowed,
         minCheckedAllowed: this.minCheckedAllowed,

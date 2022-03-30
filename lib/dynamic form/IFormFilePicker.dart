@@ -5,22 +5,51 @@ import 'package:form_builder_test/Widgets/DrawNumberField.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
 
 import '../Expression.dart';
 
+part 'IFormFilePicker.g.dart';
+
+@HiveType(typeId: 26)
 class IFormFilePicker implements IFormModel {
   dynamic _parameters;
+
+  @HiveField(1)
   String label;
+
+  @HiveField(2)
   String name;
+
+  @HiveField(3)
   bool deactivate;
+
+  @HiveField(4)
   bool isHidden;
+
+  @HiveField(5)
   bool required;
+
+  @HiveField(6)
   bool isReadOnly;
+
+  @HiveField(7)
   bool? visible;
+
+  @HiveField(8)
   bool showIfValueSelected;
+
+  @HiveField(9)
   String? showIfFieldValue;
+
+  @HiveField(10)
+
   bool? showIfIsRequired;
+
+  @HiveField(11)
   final int maxFileSize;
+
+  @HiveField(12)
   FileTypeEnum fileType;
 
   IFormFilePicker( {
