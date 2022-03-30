@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:form_builder_test/FormService/FlexFormApi.dart';
 import 'package:form_builder_test/FormService/FormApi.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
+import 'package:form_builder_test/Widgets/DrawForm.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
@@ -23,39 +24,37 @@ class FormRepository {
 
   FormApi _apiClient = FlexFormApi();
 
-  List<FormElement> _formElementList = [];
+  List<FormWidget> _forms = [];
 
-  List<FormElement> get formElementList => _formElementList;
-
-
+  List<FormWidget> get forms => _forms;
 
 
 
-  Future<List<FormElement>> LoadFormElements(int formId) async {
-    this._formElementList = [];
-    await Future.delayed(Duration(seconds: 1));
-    for(var element in _apiClient.getFormElements(formId)){
-      print(element);
-      this._formElementList.add(element.getFormElement()) ;
+
+
+  Future<List<FormWidget>> LoadForms(int formId)  async {
+    this._forms = [];
+    for(var element in await _apiClient.getFormElements()){
+      this._forms.add(element.getFormElement() as FormWidget) ;
     }
 
-    return _formElementList;
+    return _forms;
   }
 
   DrawCheckboxGroup getCheckBoxGroup (String name) {
 
-    return _formElementList.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == name) as DrawCheckboxGroup;
+    return _forms.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == name) as DrawCheckboxGroup;
   }
 
   DrawRadioGroup getRadioGroup (String name) {
 
-    return _formElementList.firstWhere((element) => (element is DrawRadioGroup) && element.name == name) as DrawRadioGroup;
+    return _forms.firstWhere((element) => (element is DrawRadioGroup) && element.name == name) as DrawRadioGroup;
   }
 
 
   List<FormElement> getChildrenSelectsFor (String name) {
 
-    return _formElementList.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
+    return _forms.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
   }
 
 

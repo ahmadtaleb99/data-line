@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawForm extends FormElement{
+class FormWidget extends FormElement{
 
 
   final String label;
   final String name;
   final List<FormElement> fields;
 
-  DrawForm({
+  FormWidget({
     required this.label,
     required this.name,
     required this.fields,

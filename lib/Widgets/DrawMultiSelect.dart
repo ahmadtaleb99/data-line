@@ -68,7 +68,6 @@ class DrawMultiSelect extends FormElement {
           : const EdgeInsets.only(top: 0),
       child: BlocBuilder<ValidationBloc, ValidationState>(
         builder: (context, state) {
-          print('1 ${state.formElements?.first.name}');
           print('2 ${this.parentName}');
 
           DrawMultiSelect? list;
@@ -82,7 +81,7 @@ class DrawMultiSelect extends FormElement {
             print(this.items);
             print('test passed ');
           } else {
-            parentList = state.formElements!
+            parentList = state.form!.fields
                 .firstWhereOrNull((element) => element.name == this.parentName);
             parentListLabel = parentList.label;
             print('fat2 $name');

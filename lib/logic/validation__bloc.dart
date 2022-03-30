@@ -11,6 +11,7 @@ import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
+import 'package:form_builder_test/Widgets/DrawForm.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
@@ -26,6 +27,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   ValidationBloc(this._formRepository) : super(ValidationState(childsMap: {})) {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<StateFormRequested>(_onStateFormRequested);
+    on<FormRequested>(_onFormRequested);
     on<ParentDropListChanged>(_onParentDropListChanged1);
     on<childDropDownChanged>(_onchildDropDownChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
@@ -35,7 +37,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   Future<void> _onStateFormRequested(
       StateFormRequested event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(status: Status.loading));
-    var formElements = await _formRepository.LoadFormElements(event.formId);
+    var forms = await _formRepository.LoadForms(event.formId);
     Map<String, FormElement>? map = {};
     // for(var formElement in formElements) {
     //   if(formElement is DrawChildList || formElement is DrawMultiSelect  ){
@@ -44,7 +46,14 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     // }
 
     print(map.toString());
-    emit(state.copyWith(status: Status.success, formElements: formElements,childsMap: map));
+    emit(state.copyWith(status: Status.success, forms: forms,childsMap: map));
+  }
+
+
+  Future<void> _onFormRequested(
+      FormRequested event, Emitter<ValidationState> emit) async {
+        var form =  _formRepository.forms.firstWhere((element) => element.name == event.formName);
+        // emit(state.copyWith(formElements: form));
   }
 
   void _onCheckboxGroupValueChanged(
@@ -130,11 +139,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     else  radioGroup.isOtherSelected= false;
 
     var formElements =  _checkRelatedFields(event.value);
-    emit(state.copyWith(formElements: formElements,status: Status.success));
+    // emit(state.copyWith(formElements: formElements,status: Status.success));
   }
 
   List<FormElement>?  _checkRelatedFields(String value) {
-    var formElements = _formRepository.formElementList as List<FormElement>;
+    var formElements = _formRepository.forms as List<FormElement>;
     for (var formElement in formElements) {
       if (formElement.showIfValueSelected! &&
           formElement.showIfFieldValue == value)

@@ -38,6 +38,14 @@ class StateFormRequested extends ValidationEvent {
   });
 
 }
+class FormRequested extends ValidationEvent {
+  String formName;
+
+  FormRequested({
+    required this.formName,
+  });
+
+}
 
 
 class RadioGroupValueChanged extends ValidationEvent{

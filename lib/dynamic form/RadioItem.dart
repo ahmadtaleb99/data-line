@@ -1,6 +1,6 @@
 import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/IFormModel';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 
 class RadioItem  {
    String label;

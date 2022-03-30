@@ -11,17 +11,19 @@ class FlexFormApi extends FormApi{
 
 
   @override
-  List<IFormModel> getFormElements(int formID ) {
-    List<IFormModel> formElements = [];
+  Future<List<IFormModel>> getFormElements() async {
+    List<IFormModel> forms = [];
+    await Future.delayed(Duration(seconds: 1));
 
     var data ;
-      data = jsonDecode(formsJson);
-    for(var formElement in data ){
+
+    data = jsonDecode(formsJson);
+    for(var form in data ){
       // var type  = htmlFormToFlutters(formElement['type'],formElement);
-      formElements.add(FormModel.fromJson(formElement));
+      forms.add(FormModel.fromJson(form));
     }
 
-    return formElements;
+    return forms;
   }
 
   @override

@@ -30,13 +30,13 @@ class Form2Page extends StatelessWidget {
                         if (state.status == Status.loading)
                           return CircularProgressIndicator();
                         else if (state.status == Status.success) {
-                          print(state.formElements![1].visible);
                           return Padding(
                             padding:
                             const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
                             child: Column(
-                              children:[ ...state.formElements!.cast(),
+                              children:[
+                                // ...state.form!.cast(),
                               SizedBox(height: 20,),
                                 ElevatedButton(
 

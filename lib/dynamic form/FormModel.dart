@@ -73,6 +73,6 @@ class FormModel implements IFormModel {
       fieldsList.add(field.getFormElement());
     }
 
-    return DrawForm(label: name, name: name, fields: fieldsList);
+    return FormWidget(label: name, name: name, fields: fieldsList);
   }
 }

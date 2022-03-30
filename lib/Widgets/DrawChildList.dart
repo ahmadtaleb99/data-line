@@ -68,7 +68,7 @@ class DrawChildList extends FormElement {
 
 
         builder: (context, state) {
-          var parent = state.formElements!.firstWhere((element) => element.name == this.parentName);
+          var parent = state.form!.fields.firstWhere((element) => element.name == this.parentName);
           String parentListLabel = parent.label;
           DrawChildList? list;
           List<DropDownItem> itemsToBuild;

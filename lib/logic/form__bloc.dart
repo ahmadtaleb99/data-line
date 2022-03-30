@@ -20,9 +20,9 @@ part 'form__state.dart';
 class FormBloc extends Bloc<FormEvent, BlocFormState> {
  final  FormRepository _formRepository;
   FormBloc( this._formRepository) : super(FormInitial()) {
-    on<FormRequested>((event, emit) async {
+    on<sd>((event, emit) async {
       emit(FormLoading());
-      var formElements = await _formRepository.LoadFormElements(event.formId);
+      var formElements = await _formRepository.LoadForms(event.formId);
       emit(FormLoaded(formElements: formElements, childsMap: {}));
     });
 
@@ -108,7 +108,7 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
    }
    emit(FormLoading());
 
-   var formElements = _formRepository.formElementList as List<dynamic>;
+   var formElements = _formRepository.forms as List<dynamic>;
    for(var formElement in formElements)
    {
      if(formElement.showIfValueSelected && formElement.showIfFieldValue == event.value)
