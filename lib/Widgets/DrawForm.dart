@@ -5,46 +5,41 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class FormWidget extends FormElement{
+class DrawForm extends FormElement{
 
-
+  bool validate(){
+    return _key.currentState!.validate();
+  }
   final String label;
   final String name;
   final List<FormElement> fields;
 
-  FormWidget({
+  DrawForm({
     required this.label,
     required this.name,
     required this.fields,
   }) : super(label: label, name: name) ;
 
 
+
+
   GlobalKey<FormState> _key = GlobalKey<FormState>();
+
 
 
   @override
   Widget build(BuildContext context) {
+
     return Form(
       key: _key,
-      child: BlocBuilder<ValidationBloc, ValidationState>(
-        builder: (context, state) {
-
-          if (state.status == Status.loading)
-            return CircularProgressIndicator();
-          else if (state.status == Status.success) {
-            return Padding(
+      child:  Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
               child: Column(
                 children: this.fields,
               ),
-            );
-          } else
-            return Container();
-        },
-      ),
-    );
+      )  );
+          }
   }
 
 
-}

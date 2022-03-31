@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';

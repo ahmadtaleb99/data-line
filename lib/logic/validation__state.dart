@@ -13,8 +13,8 @@ class ValidationState {
 
   List<DrawChildList> ? childLists;
 
-  List<FormWidget> ? forms;
-  FormWidget ? form;
+  List<DrawForm> ? forms;
+  DrawForm ? form;
   DrawChildList ? childList;
 
   Map<String, FormElement> childsMap;
@@ -33,13 +33,13 @@ class ValidationState {
   });
 
   ValidationState copyWith({
-    FormWidget ?  form,
+    DrawForm ?  form,
     Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,
     DrawDropDown? drawDropDownButton,
     DrawRadioGroup ? radioGroup,
-    List<FormWidget> ? forms,
+    List<DrawForm> ? forms,
 
     List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,

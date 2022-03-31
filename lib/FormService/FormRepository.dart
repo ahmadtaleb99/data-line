@@ -24,18 +24,18 @@ class FormRepository {
 
   FormApi _apiClient = FlexFormApi();
 
-  List<FormWidget> _forms = [];
+  List<DrawForm> _forms = [];
 
-  List<FormWidget> get forms => _forms;
-
-
+  List<DrawForm> get forms => _forms;
 
 
 
-  Future<List<FormWidget>> LoadForms(int formId)  async {
+
+
+  Future<List<DrawForm>> LoadForms(int formId)  async {
     this._forms = [];
     for(var element in await _apiClient.getFormElements()){
-      this._forms.add(element.getFormElement() as FormWidget) ;
+      this._forms.add(element.getFormElement() as DrawForm) ;
     }
 
     return _forms;

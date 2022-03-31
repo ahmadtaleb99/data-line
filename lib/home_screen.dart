@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                           itemBuilder: (context , index  ) {
                             return ElevatedButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Form1Page()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Form1Page(form:  state.forms![index],)));
                                 context.read<ValidationBloc>().add(FormRequested(formName: state.forms![index].name));
                                 },
                               child: Text(state.forms![index].name.toString()),

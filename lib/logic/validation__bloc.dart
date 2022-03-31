@@ -28,7 +28,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<StateFormRequested>(_onStateFormRequested);
     on<FormRequested>(_onFormRequested);
-    on<ParentDropListChanged>(_onParentDropListChanged1);
+    on<ParentDropListChanged>(_onParentDropListChanged);
     on<childDropDownChanged>(_onchildDropDownChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<MultiSelectItemRemoved>(_onMultiSelectItemRemoved);
@@ -53,12 +53,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   Future<void> _onFormRequested(
       FormRequested event, Emitter<ValidationState> emit) async {
         var form =  _formRepository.forms.firstWhere((element) => element.name == event.formName);
-        // emit(state.copyWith(formElements: form));
+        emit(state.copyWith(form: form,childsMap: {}));
   }
 
   void _onCheckboxGroupValueChanged(
       CheckboxGroupValueChanged event, Emitter<ValidationState> emit) {
-    var group = _formRepository.getCheckBoxGroup(event.groupName);
+    var group = state.form!.fields.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == event.groupName) as DrawCheckboxGroup;
     if (event.newIsChecked == true)
       group.checksNumber++;
     else
@@ -71,11 +71,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
 
 
-  void _onParentDropListChanged1(ParentDropListChanged event, Emitter<ValidationState> emit) {
+  void _onParentDropListChanged(ParentDropListChanged event, Emitter<ValidationState> emit) {
+    print(state.form!.fields.toString()+ ' children for ${event.parent}');
 
-
-    var childLists =
-    _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
+    var childLists = state.form!.fields.where((dynamic element)
+    =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&(  element.parentName == event.drawDropDownButton.name)).toList();
+    // _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
     print(childLists.toString()+ ' children for ${event.parent}');
     event.drawDropDownButton.value = event.parent;
 
@@ -125,10 +126,15 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   }
 
   void _onRadioGroupValueChanged(
+
+
       RadioGroupValueChanged event, Emitter<ValidationState> emit) {
-    var radioGroup = _formRepository.getRadioGroup(event.groupName);
-    var child =
-        radioGroup.children.firstWhere((element) => element.value == event.id);
+
+    var s =  state.form!.fields.firstWhere((element) => element.name == 'radio-group-1') as DrawRadioGroup;
+    s.isOtherSelected = true;
+    var radioGroup = state.form!.fields.firstWhere((element) =>
+      (element is DrawRadioGroup) && element.name == event.groupName) as DrawRadioGroup;
+
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }
@@ -136,21 +142,27 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     if(event.value == 'other'){
       radioGroup.isOtherSelected= true;
   }
-    else  radioGroup.isOtherSelected= false;
+    // else  radioGroup.isOtherSelected= false;
 
-    var formElements =  _checkRelatedFields(event.value);
-    // emit(state.copyWith(formElements: formElements,status: Status.success));
+     var newForm = _checkRelatedFields(event.value);
+    emit(state.copyWith(form: newForm,status: Status.success));
+
   }
 
-  List<FormElement>?  _checkRelatedFields(String value) {
-    var formElements = _formRepository.forms as List<FormElement>;
-    for (var formElement in formElements) {
+  DrawForm  _checkRelatedFields(String fieldValue) {
+    var form = state.form!;
+    for (var formElement in form.fields) {
       if (formElement.showIfValueSelected! &&
-          formElement.showIfFieldValue == value)
+          formElement.showIfFieldValue == fieldValue)
         formElement.visible = true;
       else
         formElement.visible = false;
     }
+
+
+    return form;
+
+
   }
 
 
