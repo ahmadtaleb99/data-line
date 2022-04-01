@@ -33,7 +33,7 @@ class CheckboxItem implements IFormModel{
   }
 
   @override
-  FormElement getFormElement() {
+  FormElement toWidget() {
     throw UnimplementedError();
   }
 

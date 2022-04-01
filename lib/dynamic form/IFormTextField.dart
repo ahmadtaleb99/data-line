@@ -67,7 +67,7 @@ class IFormTextField implements IFormModel {
   }
 
   @override
-  FormElement getFormElement({parameters}) {
+  FormElement toWidget({parameters}) {
     return DrawTextField(
       label: this.label,
       required: this.required,

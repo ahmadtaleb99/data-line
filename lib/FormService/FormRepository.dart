@@ -6,6 +6,7 @@ import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawForm.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/dynamic%20form/FormModel.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormFilePicker.dart';
@@ -25,6 +26,7 @@ class FormRepository {
   FormApi _apiClient = FlexFormApi();
 
   List<DrawForm> _forms = [];
+  List<FormModel> _formsModel = [];
 
   List<DrawForm> get forms => _forms;
 
@@ -35,10 +37,20 @@ class FormRepository {
   Future<List<DrawForm>> LoadForms(int formId)  async {
     this._forms = [];
     for(var element in await _apiClient.getFormElements()){
-      this._forms.add(element.getFormElement() as DrawForm) ;
+      this._forms.add(element.toWidget() as DrawForm) ;
     }
 
     return _forms;
+  }
+
+
+  Future<List<FormModel>> LoadFormsModel(int formId)  async {
+    this._formsModel = [];
+    for(var element in await _apiClient.getFormElements()){
+      this._formsModel.add(element as FormModel) ;
+    }
+
+    return _formsModel;
   }
 
   DrawCheckboxGroup getCheckBoxGroup (String name) {

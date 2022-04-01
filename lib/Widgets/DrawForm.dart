@@ -8,6 +8,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 class DrawForm extends FormElement{
 
   bool validate(){
+    _key.currentState!.reset();
     return _key.currentState!.validate();
   }
   final String label;

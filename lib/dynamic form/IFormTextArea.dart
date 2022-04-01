@@ -72,7 +72,7 @@ class IFormTextArea implements IFormModel {
         deactivate: json['deactivate'], );
   }
   @override
-  FormElement getFormElement({parameters}) {
+  FormElement toWidget({parameters}) {
     return DrawTextArea(
       minLength: this.minLength,
       maxLength: this.maxLength,

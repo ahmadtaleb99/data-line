@@ -78,7 +78,7 @@ class IFormDropList implements IFormModel {
 
 
   @override
-  FormElement getFormElement({parameters}) {
+  FormElement toWidget({parameters}) {
 
     if (this.multiple == true) {
       return DrawMultiSelect(

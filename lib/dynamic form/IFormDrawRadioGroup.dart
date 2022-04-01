@@ -60,7 +60,7 @@ class IFormDrawRadioGroup implements IFormModel {
 
 
   @override
-  FormElement getFormElement() {
+  FormElement toWidget() {
     List<DrawRadioItem> children = [];
     for (var radio in this.values) {
       var newRadio = DrawRadioItem(

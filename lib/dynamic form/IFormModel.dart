@@ -6,7 +6,7 @@ part 'IFormModel.g.dart';
 @HiveType(typeId: 27)
 abstract class IFormModel {
 
-  FormElement getFormElement ();
+  FormElement toWidget ();
   Map<String,dynamic> fomrElementtoJson (FormElement formElement);
 
 

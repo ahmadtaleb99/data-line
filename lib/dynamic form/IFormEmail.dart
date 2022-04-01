@@ -66,7 +66,7 @@ class IFormEmail extends IFormModel {
   }
 
   @override
-  FormElement getFormElement({parameters}) {
+  FormElement toWidget({parameters}) {
     return DrawEmailTextField(
       label: this.label,
       required: this.required,

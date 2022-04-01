@@ -67,10 +67,10 @@ class FormModel implements IFormModel {
   }
 
   @override
-  FormElement getFormElement() {
+  FormElement toWidget() {
     List<FormElement> fieldsList = [];
     for (var field in fields) {
-      fieldsList.add(field.getFormElement());
+      fieldsList.add(field.toWidget());
     }
 
     return DrawForm(label: name, name: name, fields: fieldsList);

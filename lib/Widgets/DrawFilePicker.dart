@@ -67,7 +67,9 @@ class DrawFilePicker extends  FormElement {
                 else return null;
 
               },
+              initialValue: null,
              builder: (FormFieldState<PlatformFile> fieldState) {
+
 
                return Column(
                  children: [

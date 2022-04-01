@@ -43,7 +43,7 @@ class DropDownItem extends Equatable implements IFormModel {
   }
 
   @override
-  FormElement getFormElement() {
+  FormElement toWidget() {
     // TODO: implement getFormElement
     throw UnimplementedError();
   }

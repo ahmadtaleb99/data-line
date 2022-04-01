@@ -86,7 +86,7 @@ class IFormFilePicker implements IFormModel {
   }
   
   @override
-  FormElement getFormElement({parameters}) {
+  FormElement toWidget({parameters}) {
     return DrawFilePicker(
       label: this.label,
       required: this.required,

@@ -15,6 +15,7 @@ class Form1Page extends StatelessWidget {
       floatingActionButton: ElevatedButton(
 
           onPressed: () {
+
             if (form.validate()) {
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));

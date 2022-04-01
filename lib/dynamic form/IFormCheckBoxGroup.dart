@@ -102,7 +102,7 @@ class IFormCheckBoxGroup implements IFormModel {
 
 
   @override
-  FormElement getFormElement() {
+  FormElement toWidget() {
 
 
     for (var checkBox in this.values) {
