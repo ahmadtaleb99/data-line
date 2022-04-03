@@ -94,6 +94,7 @@ class DrawMultiSelect extends FormElement {
           }
 
           return FormField<dynamic>(
+            initialValue: selectedValues,
               validator: (value) {
                 if (this.selectedValues.isEmpty)
                   return 'required';

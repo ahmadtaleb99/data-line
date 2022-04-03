@@ -53,7 +53,6 @@ class DrawRadioGroup extends FormElement {
       child: FormField<String>(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) {
-          print(this.value.toString() + ' asdsadasdasd');
           if (this.value == null && required) {
             return '$label is required';
           }

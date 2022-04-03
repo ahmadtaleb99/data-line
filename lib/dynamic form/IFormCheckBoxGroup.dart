@@ -127,6 +127,7 @@ class IFormCheckBoxGroup implements IFormModel {
         minCheckedAllowed: this.minCheckedAllowed,
         other:  this.other,
 
+
       );
 
   }

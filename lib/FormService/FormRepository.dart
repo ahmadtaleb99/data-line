@@ -75,7 +75,7 @@ class FormRepository {
   }
 
 
-  void savetoLocal(FormModel formModel){
+  void saveToLocal(FormModel formModel){
     _localApi.saveForm(formModel);
   }
 

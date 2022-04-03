@@ -17,7 +17,7 @@ class IFormDropList implements IFormModel {
 
   @HiveField(1)
 
-  List<DropDownItem> values = [];
+  List<DropDownItem> items = [];
   @HiveField(2)
   String label;
   @HiveField(3)
@@ -67,12 +67,13 @@ class IFormDropList implements IFormModel {
         name: json['name'],
         isReadOnly: json['isReadOnly'],
         prompt: json['prompt'],
-        values: List<DropDownItem>.from(json['values'].map((e) => DropDownItem.fromJson(e)).toList()),
+        items: List<DropDownItem>.from(json['values'].map((e) => DropDownItem.fromJson(e)).toList()),
         parentName: json['relatedListCheckbox'] ?  json['relatedListFieldName'] : null,
         showIfIsRequired: json['showIfIsRequired'],
         showIfFieldValue: json['showIfFieldValue'],
         showIfValueSelected: json['showIfLogicCheckbox'],
         multiple: json['multiple'],
+
         relatedToParent: json['relatedListCheckbox'],
       visible:  json['showIfLogicCheckbox'] == true  ? false : true,
 
@@ -92,18 +93,25 @@ class IFormDropList implements IFormModel {
         name:name,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: relatedToParent ? [] : values,
+        items: relatedToParent ? [] : items,
         parentName: parentName,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,
         showIfValueSelected: showIfValueSelected,
         multiple: multiple,
         relatedToParent: relatedToParent,
+
         visible: showIfValueSelected == true  ? false : true,
 
       );
     }
     if (this.relatedToParent) {
+      var childItems;
+      if(value != null){
+        var parent = items.firstWhere((element) => element.value == value).parent;
+         childItems =  items.where((item) => item.parent == parent).toList();
+      }
+      print(value);
       return DrawChildList(
         label: label,
         deactivate:deactivate ,
@@ -112,7 +120,9 @@ class IFormDropList implements IFormModel {
         name:name,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: [],
+        value: value,
+        //i
+        items:  value != null ? childItems : [],
         parentName: parentName,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,
@@ -131,8 +141,9 @@ class IFormDropList implements IFormModel {
         name:name,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: values,
+        items: items,
         parentName: parentName,
+        value: this.value,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,
         showIfValueSelected: showIfValueSelected,
@@ -143,10 +154,6 @@ class IFormDropList implements IFormModel {
     );
   }
 
-  @override
-  void setParameters(parametrs) {
-    _parameters = parametrs;
-  }
 
   @override
   Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
@@ -155,7 +162,7 @@ class IFormDropList implements IFormModel {
   }
 
   IFormDropList({
-    required this.values,
+    required this.items,
     required this.label,
     required this.parentName,
     required this.name,

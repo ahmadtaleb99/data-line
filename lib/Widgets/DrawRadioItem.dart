@@ -5,14 +5,13 @@ import 'package:form_builder_test/logic/form__bloc.dart';
 
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawRadioItem extends StatelessWidget {
+class DrawRadioItem extends FormElement {
   final String value;
   final String parent;
   String? groupValue;
 
 
   final String label;
-  final String? name;
 
   final bool? showIfValueSelected;
   final String? showIfFieldValue;
@@ -25,14 +24,13 @@ class DrawRadioItem extends StatelessWidget {
   DrawRadioItem({
     Key? key,
     required this.label,
-    this.name,
     this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
     this.groupValue,
     required this.value,
     required this.parent, this.subTitle,
-  }) : super(key: key);
+  }) : super(name: value,label: label);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ValidationBloc, ValidationState>(

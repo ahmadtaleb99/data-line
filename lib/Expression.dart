@@ -1,4 +1,5 @@
 import 'Widgets/DrawNumberField.dart';
+import 'dynamic form/FileTypeEnum.dart';
 class Expression {
   final Operator operator;
   final int value;
@@ -49,4 +50,6 @@ class EnumValues<T> {
 }
 
 enum Operator {MORE,LESS,EQUAL,BETWEEN}
-enum FileTypeEnum {IMAGE,TEXT,VIDEO,AUDIO}
+
+
+

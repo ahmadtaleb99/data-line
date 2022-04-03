@@ -72,7 +72,10 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRequested event, Emitter<ValidationState> emit) async {
 
       var formModel =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
+                for(var kza in formModel.fields){
+                  print(kza.value);
 
+                }
         emit(state.copyWith(form: formModel.toWidget() as FormWidget,status: Status.success,formModel: formModel));
   }
 
@@ -102,7 +105,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     for (var childList in childLists) {
 
       List<DropDownItem> items   = (_formRepository.formsModel.firstWhere((element) => element.name == state.form!.name).fields.firstWhere
-        (( element ) => element is IFormDropList && childList.name == element.name) as IFormDropList).values;
+        (( element ) => element is IFormDropList && childList.name == element.name) as IFormDropList).items;
 
 
         childList.items =  items.where((element) => element.parent == event.parent).toList();
@@ -120,7 +123,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
-
+    var list =
     print('fat');
     var ch =event.childList;
     if (ch is DrawChildList){
@@ -198,12 +201,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   }
 
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
-    var form =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
-      for(int i=0;i<form.fields.length;i++){
-        form.fields[i].value = state.form!.fields[i].value;
+    var formModel =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
+      for(int i=0;i<formModel.fields.length;i++){
+        print(formModel.fields[i].value.toString());
+        formModel.fields[i].value = state.form!.fields[i].value;
       }
 
-      _formRepository.savetoLocal(form);
+      _formRepository.saveToLocal(formModel);
   }
 
 

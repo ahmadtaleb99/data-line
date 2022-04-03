@@ -1,6 +1,7 @@
 import 'package:form_builder_test/FormService/FormApi.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
+import 'package:form_builder_test/dynamic%20form/FileTypeEnum.dart';
 import 'package:form_builder_test/dynamic%20form/FormModel.dart';
 import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
@@ -11,6 +12,7 @@ import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
+import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
 import 'package:hive/hive.dart';
 
 class LocalStorageApi  extends FormApi{
@@ -29,6 +31,8 @@ class LocalStorageApi  extends FormApi{
       Hive.registerAdapter(IFormNumberAdapter());
       Hive.registerAdapter(IFormTextAreaAdapter());
       Hive.registerAdapter(IFormTextFieldAdapter());
+      Hive.registerAdapter(RadioItemAdapter());
+      Hive.registerAdapter(FileTypeEnumAdapter());
                 init();
 
     }

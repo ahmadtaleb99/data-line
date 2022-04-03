@@ -8,6 +8,7 @@ import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
 import '../Expression.dart';
+import 'FileTypeEnum.dart';
 
 part 'IFormFilePicker.g.dart';
 

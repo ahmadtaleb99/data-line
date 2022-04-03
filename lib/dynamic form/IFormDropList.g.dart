@@ -17,7 +17,7 @@ class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IFormDropList(
-      values: (fields[1] as List).cast<DropDownItem>(),
+      items: (fields[1] as List).cast<DropDownItem>(),
       label: fields[2] as String,
       parentName: fields[11] as String?,
       name: fields[3] as String,
@@ -40,7 +40,7 @@ class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
     writer
       ..writeByte(16)
       ..writeByte(1)
-      ..write(obj.values)
+      ..write(obj.items)
       ..writeByte(2)
       ..write(obj.label)
       ..writeByte(3)

@@ -41,6 +41,7 @@ class DrawDropDown extends FormElement {
       required this.isHidden,
       required this.isReadOnly,
       required this.prompt,
+       this.value,
       required this.multiple,
       required this.showIfValueSelected,
       required this.showIfFieldValue,
@@ -69,7 +70,7 @@ class DrawDropDown extends FormElement {
       child: BlocBuilder<ValidationBloc, ValidationState>(
         builder: (context, state) {
           return FormField<dynamic>(
-              initialValue: null,
+              initialValue: value,
               validator: (value) {
                 if (value == null) {
                   return 'required';

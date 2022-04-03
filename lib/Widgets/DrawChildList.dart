@@ -20,6 +20,7 @@ class DrawChildList extends FormElement {
     required this.deactivate,
     required this.required,
     required this.isHidden,
+     this.value,
     required this.isReadOnly,
     required this.prompt,
     required this.items,
@@ -80,6 +81,7 @@ class DrawChildList extends FormElement {
 
 
           return FormField<dynamic>(
+            initialValue: this.value,
               validator: (value) {
                 if (value== null )
                   return 'required';
@@ -130,8 +132,6 @@ class DrawChildList extends FormElement {
                                   ),
                                   hint: Text(prompt),
                                   disabledHint: Text(prompt),
-                                  // value: state.childList != null && state.childList!.name == this.name ? state.childList!.value : null,
-                                  // items:   state.childList != null && state.childList!.name == this.name ? _buildItems(state.childList!.items)
                                   items: _buildItems(items) ,
                                   value: value ?? null,
                                   onChanged: (value) {

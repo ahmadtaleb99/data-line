@@ -1,11 +1,20 @@
 import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
 
+part 'RadioItem.g.dart';
+
+
+@HiveType(typeId: 56)
 class RadioItem implements IFormModel  {
+
+  @HiveField(1)
    String label;
-   String parent;
-   String value;
+  @HiveField(2)
+  String parent;
+  @HiveField(3)
+  dynamic value;
 
   @override
   factory RadioItem.fromJson(parameters,String parent) {
@@ -19,13 +28,7 @@ class RadioItem implements IFormModel  {
 
 
 
-   DrawRadioItem formElementFromJson() {
-     return DrawRadioItem(
-         label: this.label,
-         parent :this.parent,
-         value: this.value
-     );
-   }
+
 
    RadioItem({
     required this.label,
@@ -41,7 +44,10 @@ class RadioItem implements IFormModel  {
 
   @override
   FormElement toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return DrawRadioItem(
+        label: this.label,
+        parent :this.parent,
+        value: this.value,
+    );
   }
 }
