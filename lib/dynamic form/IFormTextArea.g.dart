@@ -8,7 +8,7 @@ part of 'IFormTextArea.dart';
 
 class IFormTextAreaAdapter extends TypeAdapter<IFormTextArea> {
   @override
-  final int typeId = 29;
+  final int typeId = 49;
 
   @override
   IFormTextArea read(BinaryReader reader) {
@@ -29,13 +29,13 @@ class IFormTextAreaAdapter extends TypeAdapter<IFormTextArea> {
       showIfIsRequired: fields[10] as bool?,
       minLength: fields[11] as int,
       maxLength: fields[12] as int,
-    );
+    )..value = fields[13] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormTextArea obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -59,7 +59,9 @@ class IFormTextAreaAdapter extends TypeAdapter<IFormTextArea> {
       ..writeByte(11)
       ..write(obj.minLength)
       ..writeByte(12)
-      ..write(obj.maxLength);
+      ..write(obj.maxLength)
+      ..writeByte(13)
+      ..write(obj.value);
   }
 
   @override

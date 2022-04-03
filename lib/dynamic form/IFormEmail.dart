@@ -5,7 +5,7 @@ import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
 part 'IFormEmail.g.dart';
-@HiveType(typeId: 25)
+@HiveType(typeId: 45)
 class IFormEmail extends IFormModel {
 
   @HiveField(1)
@@ -30,8 +30,8 @@ class IFormEmail extends IFormModel {
   String? showIfFieldValue;
   @HiveField(10)
   bool? showIfIsRequired;
-
-
+  @HiveField(11)
+  dynamic value;
 
   IFormEmail({
     required this.label,

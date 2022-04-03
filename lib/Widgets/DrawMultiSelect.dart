@@ -39,7 +39,7 @@ class DrawMultiSelect extends FormElement {
             showIfFieldValue: showIfFieldValue,
             showIfIsRequired: showIfIsRequired);
 
-  String? value;
+  dynamic value;
   final String label;
   final bool deactivate;
   final bool required;
@@ -76,10 +76,7 @@ class DrawMultiSelect extends FormElement {
           String parentListLabel = 'nu';
 
           if (!relatedToParent) {
-            print('fat1q $name');
             itemsToBuild = this.items;
-            print(this.items);
-            print('test passed ');
           } else {
             parentList = state.form!.fields
                 .firstWhereOrNull((element) => element.name == this.parentName);
@@ -142,25 +139,25 @@ class DrawMultiSelect extends FormElement {
                               ),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-                              dialogHeight: itemsToBuild.isEmpty ? 5 : null,
-                              dialogWidth: itemsToBuild.isEmpty ? 5 : null,
+                              dialogHeight: items.isEmpty ? 5 : null,
+                              dialogWidth: items.isEmpty ? 5 : null,
                               selectedItemsTextStyle:
                                   TextStyle(color: Colors.black),
                               buttonIcon: Icon(Icons.arrow_drop_down),
 
-                              title: itemsToBuild.isEmpty
+                              title: items.isEmpty
                                   ? Text('Please Select a $parentListLabel')
                                   : Text(label),
                               buttonText: Text(prompt),
                               listType: MultiSelectListType.CHIP,
 
                               // items: relatedToParent && items.isEmpty ?  _buildItemsMulti([]) :  _buildItemsMulti(items!) ,
-                              items: _buildItemsMulti(itemsToBuild),
+                              items: _buildItemsMulti(items),
                               initialValue: list?.selectedValues ?? null,
                               onConfirm: (values) {
                                 fieldState.didChange(values);
                                 selectedValues = values;
-                                if (itemsToBuild.isNotEmpty && relatedToParent)
+                                if (items.isNotEmpty && relatedToParent)
                                   context.read<ValidationBloc>().add(
                                       childDropDownChanged(
                                           childList: this, value: ''));

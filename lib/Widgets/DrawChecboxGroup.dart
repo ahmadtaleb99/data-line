@@ -37,7 +37,7 @@ class DrawCheckboxGroup extends FormElement {
             showIfIsRequired: showIfIsRequired);
 
   final List<DrawCheckboxGroupItem> children;
-  String? value;
+  dynamic value;
   final String label;
   final String name;
   final bool deactivated;
@@ -80,7 +80,7 @@ class DrawCheckboxGroup extends FormElement {
                 SizedBox(
                   height: 10,
                 ),
-                BlocBuilder<ValidationBloc, ValidationState>(
+                BlocConsumer<ValidationBloc, ValidationState>(
                   buildWhen: (previous, current) {
                     if (previous != current &&
                        current.drawCheckboxGroup != null &&  current.drawCheckboxGroup!.name == this.name) {
@@ -89,20 +89,16 @@ class DrawCheckboxGroup extends FormElement {
                     }
                     return false;
                   },
-                  builder: (context, state) {
+listener: (context, state) {},
+
+    builder: (context, state) {
                     print('state');
-                    var children;
-                    if (state.drawCheckboxGroup != null &&
-                        state.drawCheckboxGroup!.name == this.name) {
-                      {
-                        children = state.drawCheckboxGroup?.children;
-                      }
-                    }
+
 
                     return GestureDetector(
                         onTap: () => fieldState.validate(),
                         child: Column(children: [
-                          ...children ?? this.children,
+                      ...   this.children,
 
                         ]));
                   },

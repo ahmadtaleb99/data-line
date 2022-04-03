@@ -31,11 +31,8 @@ class MultiSelectItemRemoved extends ValidationEvent {
   });
 }
 class StateFormRequested extends ValidationEvent {
-  int formId;
 
-  StateFormRequested({
-    required this.formId,
-  });
+
 
 }
 class FormRequested extends ValidationEvent {
@@ -45,6 +42,22 @@ class FormRequested extends ValidationEvent {
     required this.formName,
   });
 
+}
+
+class FormsRequestedFromLocal extends ValidationEvent {
+}
+class FormSubmitted extends ValidationEvent {
+  String formName;
+  FormSubmitted({required this.formName});
+}
+
+class ServiceRegistered extends ValidationEvent {
+}
+
+class TextFieldValueChanged extends ValidationEvent {
+  String textFieldName;
+  String value;
+  TextFieldValueChanged(this.value,{required this.textFieldName});
 }
 
 

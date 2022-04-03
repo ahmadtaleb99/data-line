@@ -14,8 +14,12 @@ import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DrawForm.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
+import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/dynamic%20form/FormModel.dart';
+import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
+import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
 
 part 'validation__event.dart';
@@ -24,7 +28,7 @@ part 'validation__state.dart';
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
 
-  ValidationBloc(this._formRepository) : super(ValidationState(childsMap: {})) {
+  ValidationBloc(this._formRepository) : super(ValidationState(childsMap: {},)) {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<StateFormRequested>(_onStateFormRequested);
     on<FormRequested>(_onFormRequested);
@@ -32,29 +36,44 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<childDropDownChanged>(_onchildDropDownChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<MultiSelectItemRemoved>(_onMultiSelectItemRemoved);
+    on<ServiceRegistered>(_onServiceRegistered);
+    on<FormsRequestedFromLocal>(_onFormsRequestedFromLocal);
+    on<TextFieldValueChanged>(_onTextFieldValueChanged);
+    on<FormSubmitted>(_onFormSubmitted);
   }
 
   Future<void> _onStateFormRequested(
       StateFormRequested event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(status: Status.loading));
-    var forms = await _formRepository.LoadFormsModel(event.formId);
-    Map<String, FormElement>? map = {};
-    // for(var formElement in formElements) {
-    //   if(formElement is DrawChildList || formElement is DrawMultiSelect  ){
-    //   map[formElement.name] = formElement;
-    //   }
-    // }
+    var forms = await _formRepository.LoadFormsModel();
 
-    print(map.toString());
-    emit(state.copyWith(status: Status.success, forms: forms.map((e) => e.toWidget() as DrawForm).toList(),childsMap: map));
+    emit(state.copyWith(status: Status.success, forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
   }
 
 
+
+  Future<void> _onFormsRequestedFromLocal(
+      FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    await _formRepository.initLocal();
+    var forms = await _formRepository.getForms();
+    emit(state.copyWith(status: Status.success, forms: forms.map((e) => e.toWidget() as FormWidget).toList() ));
+  }
+
+
+  Future<void> _onServiceRegistered(
+      ServiceRegistered event, Emitter<ValidationState> emit) async {
+   add(FormsRequestedFromLocal());
+
+  }
+
   Future<void> _onFormRequested(
 
-      FormRequested event, Emitter<ValidationState> emit) async {
-        var form =  state.forms!.firstWhere((element) => element.name == event.formName);
-        emit(state.copyWith(form: form,childsMap: {}));
+  FormRequested event, Emitter<ValidationState> emit) async {
+
+      var formModel =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
+
+        emit(state.copyWith(form: formModel.toWidget() as FormWidget,status: Status.success,formModel: formModel));
   }
 
   void _onCheckboxGroupValueChanged(
@@ -75,30 +94,25 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   void _onParentDropListChanged(ParentDropListChanged event, Emitter<ValidationState> emit) {
     print(state.form!.fields.toString()+ ' children for ${event.parent}');
 
-    var childLists = state.form!.fields.where((dynamic element)
+    dynamic childLists = state.form!.fields.where((dynamic element)
     =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&(  element.parentName == event.drawDropDownButton.name)).toList();
-    // _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
     print(childLists.toString()+ ' children for ${event.parent}');
     event.drawDropDownButton.value = event.parent;
-
-    var map = state.childsMap;
+      
     for (var childList in childLists) {
-      var ch;
-      if(childList is DrawChildList)
-       ch = childList.copyWith();
 
-     else if(childList is DrawMultiSelect)
-         ch = childList.copyWith();
+      List<DropDownItem> items   = (_formRepository.formsModel.firstWhere((element) => element.name == state.form!.name).fields.firstWhere
+        (( element ) => element is IFormDropList && childList.name == element.name) as IFormDropList).values;
 
 
-      ch.items =  ch.items.where((element) => element.parent == event.parent).toList();
-      print(ch.items! );
-      map[ch.name] = ch;
+        childList.items =  items.where((element) => element.parent == event.parent).toList();
+        childList.value=null;
+      print(childList.items.toString()+ '  chil   ');
+
     }
 
-    print(map.toString()+ '  chil   ');
 
-    emit(state.copyWith( childsMap: map));
+    emit(state.copyWith());
 
 
 
@@ -107,10 +121,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
 
-
-
-    var map = state.childsMap;
-    var ch = map[event.childList.name];
+    print('fat');
+    var ch =event.childList;
     if (ch is DrawChildList){
       ch.value = event.value;
     }
@@ -119,20 +131,16 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       var list  = event.childList as DrawMultiSelect;
       ch.selectedValues = list.selectedValues;
     }
-    map[ch!.name] = ch;
 
 
 
-    emit(state.copyWith(childsMap: map));
+    emit(state.copyWith());
   }
 
   void _onRadioGroupValueChanged(
 
 
       RadioGroupValueChanged event, Emitter<ValidationState> emit) {
-    var s =    _formRepository.forms[1].fields.firstWhere((element) => element.name == 'radio-group-1') as DrawRadioGroup;
-    // var s =  state.form!.fields.firstWhere((element) => element.name == 'radio-group-1') as DrawRadioGroup;
-    s.isOtherSelected = true;
     var radioGroup = state.form!.fields.firstWhere((element) =>
       (element is DrawRadioGroup) && element.name == event.groupName) as DrawRadioGroup;
 
@@ -143,14 +151,14 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     if(event.value == 'other'){
       radioGroup.isOtherSelected= true;
   }
-    // else  radioGroup.isOtherSelected= false;
+    else  radioGroup.isOtherSelected= false;
 
      var newForm = _checkRelatedFields(event.value);
     emit(state.copyWith(form: newForm,status: Status.success));
 
   }
 
-  DrawForm  _checkRelatedFields(String fieldValue) {
+  FormWidget  _checkRelatedFields(String fieldValue) {
     var form = state.form!;
     for (var formElement in form.fields) {
       if (formElement.showIfValueSelected! &&
@@ -180,47 +188,30 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       map[select.name] = select;
       emit(state.copyWith(childsMap: map));
   }
+
+
+
+  void _onTextFieldValueChanged(TextFieldValueChanged event, Emitter<ValidationState> emit) {
+    var textField = state.form!.fields.firstWhere((element) =>element.name == event.textFieldName)  as DrawTextField;
+
+    textField.value  = event.value;
+  }
+
+  void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
+    var form =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
+      for(int i=0;i<form.fields.length;i++){
+        form.fields[i].value = state.form!.fields[i].value;
+      }
+
+      _formRepository.savetoLocal(form);
+  }
+
+
+
 }
 
 
 
-
-
-
-
-
-
-// void _onParentDropListChanged(ParentDropListChanged event, Emitter<ValidationState> emit) {
-//   print(state.form!.fields.toString()+ ' children for ${event.parent}');
-//
-//   var childLists = state.form!.fields.where((dynamic element)
-//   =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&(  element.parentName == event.drawDropDownButton.name)).toList();
-//   // _formRepository.getChildrenSelectsFor(event.drawDropDownButton.name);
-//   print(childLists.toString()+ ' children for ${event.parent}');
-//   event.drawDropDownButton.value = event.parent;
-//
-//   var map = state.childsMap;
-//   for (var childList in childLists) {
-//     var ch;
-//     if(childList is DrawChildList)
-//       ch = childList.copyWith();
-//
-//     else if(childList is DrawMultiSelect)
-//       ch = childList.copyWith();
-//
-//
-//     ch.items =  ch.items.where((element) => element.parent == event.parent).toList();
-//     print(ch.items! );
-//     map[ch.name] = ch;
-//   }
-//
-//   print(map.toString()+ '  chil   ');
-//
-//   emit(state.copyWith( childsMap: map));
-//
-//
-//
-// }
 
 
 

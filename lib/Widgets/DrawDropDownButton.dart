@@ -18,13 +18,13 @@ class DrawDropDown extends FormElement {
   final bool required;
   final bool isHidden;
   final bool multiple;
-  bool  ? visible;
+  bool? visible;
   final bool isReadOnly;
   final bool? showIfIsRequired;
   final bool showIfValueSelected;
   final String? showIfFieldValue;
 
-  String? value;
+  dynamic value;
   final String prompt;
   final String name;
   final String? parentName;
@@ -32,48 +32,51 @@ class DrawDropDown extends FormElement {
   final String? Function(dynamic)? validator;
   List<DropDownItem> items;
 
-  DrawDropDown({Key? key,
-    required this.label,
-    required this.showIfIsRequired,
-    required this.deactivate,
-    required this.required,
-    required this.isHidden,
-    required this.isReadOnly,
-    required this.prompt,
-    required this.multiple,
-    required this.showIfValueSelected,
-    required this.showIfFieldValue,
-    this.visible = false,
-    required this.items,
-    required this.relatedToParent,
-    this.parentName,
-    required this.name,
-    this.validator})
+  DrawDropDown(
+      {Key? key,
+      required this.label,
+      required this.showIfIsRequired,
+      required this.deactivate,
+      required this.required,
+      required this.isHidden,
+      required this.isReadOnly,
+      required this.prompt,
+      required this.multiple,
+      required this.showIfValueSelected,
+      required this.showIfFieldValue,
+      this.visible = false,
+      required this.items,
+      required this.relatedToParent,
+      this.parentName,
+      required this.name,
+      this.validator})
       : super(
-      key: key,
-      name: name,
-      label: label,
-      visible: visible,
-      required: required,
-      showIfValueSelected: showIfValueSelected,
-      showIfFieldValue: showIfFieldValue,
-      showIfIsRequired: showIfIsRequired);
+            key: key,
+            name: name,
+            label: label,
+            visible: visible,
+            required: required,
+            showIfValueSelected: showIfValueSelected,
+            showIfFieldValue: showIfFieldValue,
+            showIfIsRequired: showIfIsRequired);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true
+          ? const EdgeInsets.only(top: 30)
+          : const EdgeInsets.only(top: 0),
       child: BlocBuilder<ValidationBloc, ValidationState>(
         builder: (context, state) {
           return FormField<dynamic>(
+              initialValue: null,
               validator: (value) {
-                if (this.value == null) {
+                if (value == null) {
                   return 'required';
                 } else
                   return null;
               },
-              builder: (FormFieldState<dynamic> fieldState) =>
-                  Column(
+              builder: (FormFieldState<dynamic> fieldState) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -89,22 +92,47 @@ class DrawDropDown extends FormElement {
                       Container(
                           width: double.infinity,
                           child: DecoratedBox(
-                            decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.1),
-          borderRadius: BorderRadius.all(Radius.circular(40)),
-          border: Border.all(
-          color: Colors.blue,
-          width: 2,
-          ),
-          ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Center(
-                                  child: !multiple
-                                      ? _buildDropdownButton(context)
-                                      : _buildMultiSelectDialogField()),
-                            ),
-                          )),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Center(
+                                    child: DropdownButton<dynamic>(
+                                        onTap: () {
+                                          FocusScopeNode currentFocus =
+                                              FocusScope.of(context);
+
+                                          if (!currentFocus.hasPrimaryFocus) {
+                                            currentFocus.unfocus();
+                                          }
+                                        },
+                                        underline: Container(),
+                                        icon: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 99),
+                                          child: Icon(Icons.arrow_drop_down),
+                                        ),
+                                        hint: Text(prompt),
+                                        disabledHint: Text(prompt),
+                                        value: value ?? null,
+                                        items: _buildItems(items),
+                                        onChanged: (value) {
+                                          context.read<ValidationBloc>().add(
+                                              ParentDropListChanged(
+                                                  drawDropDownButton: this,
+                                                  parent: value.toString()));
+
+                                          fieldState.didChange(value);
+                                          print(value.toString() + ' eveeent ');
+                                        }),
+                                  )))),
                       if (fieldState.hasError)
                         Padding(
                           padding: const EdgeInsets.only(left: 8, top: 15),
@@ -124,32 +152,6 @@ class DrawDropDown extends FormElement {
     );
   }
 
-
-  DropdownButton<dynamic> _buildDropdownButton(BuildContext context) {
-    return DropdownButton<dynamic>(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        underline: Container(),
-        icon: Padding(
-          padding: const EdgeInsets.only(left: 99),
-          child: Icon(Icons.arrow_drop_down),
-        ),
-        hint: Text(prompt),
-        disabledHint: Text(prompt),
-        value: value ?? null,
-        items: _buildItems(items),
-        onChanged: (value) {
-          context.read<ValidationBloc>().add(ParentDropListChanged(
-              drawDropDownButton: this, parent: value.toString()));
-          print(value.toString() + ' eveeent ');
-        });
-  }
-
   List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItem> items) {
     List<DropdownMenuItem<dynamic>>? list = [];
 
@@ -163,8 +165,7 @@ class DrawDropDown extends FormElement {
     return list;
   }
 
-  List<MultiSelectItem<String>> _buildItemsMulti(
-      List<DropDownItem> items) {
+  List<MultiSelectItem<String>> _buildItemsMulti(List<DropDownItem> items) {
     List<MultiSelectItem<String>> list = [];
 
     print('iteemsss to draw  ${items.toString()}');
@@ -173,21 +174,14 @@ class DrawDropDown extends FormElement {
     }
     return list;
   }
+
   MultiSelectDialogField<String> _buildMultiSelectDialogField() {
     return MultiSelectDialogField<String>(
-
       chipDisplay: MultiSelectChipDisplay.none(),
-      selectedItemsTextStyle: TextStyle(
-          color: Colors.black
-      ),
+      selectedItemsTextStyle: TextStyle(color: Colors.black),
       buttonIcon: Icon(Icons.arrow_drop_down),
-      decoration: BoxDecoration(
-
-
-      ),
+      decoration: BoxDecoration(),
       title: Text(label),
-
-
       buttonText: Text(prompt),
       listType: MultiSelectListType.CHIP,
       items: _buildItemsMulti(items),
@@ -197,6 +191,4 @@ class DrawDropDown extends FormElement {
       },
     );
   }
-
-
 }

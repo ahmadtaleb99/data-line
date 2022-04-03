@@ -1,38 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'person.dart';
+part of 'FormModel.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PersonAdapter extends TypeAdapter<Person> {
+class FormModelAdapter extends TypeAdapter<FormModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 35;
 
   @override
-  Person read(BinaryReader reader) {
+  FormModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Person(
+    return FormModel(
       name: fields[1] as String,
-      age: fields[2] as int,
-      isMarried: fields[3] as bool,
-    );
+      directionality: fields[2] as String,
+      fields: (fields[3] as List).cast<IFormModel>(),
+    )..value = fields[4] as dynamic;
   }
 
   @override
-  void write(BinaryWriter writer, Person obj) {
+  void write(BinaryWriter writer, FormModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.age)
+      ..write(obj.directionality)
       ..writeByte(3)
-      ..write(obj.isMarried);
+      ..write(obj.fields)
+      ..writeByte(4)
+      ..write(obj.value);
   }
 
   @override
@@ -41,7 +43,7 @@ class PersonAdapter extends TypeAdapter<Person> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PersonAdapter &&
+      other is FormModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

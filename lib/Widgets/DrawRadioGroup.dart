@@ -33,7 +33,7 @@ class DrawRadioGroup extends FormElement {
             showIfIsRequired: showIfIsRequired);
 
   final String label;
-  String? value;
+  dynamic? value;
   final String name;
   final bool required;
   final bool other;

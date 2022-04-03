@@ -8,7 +8,7 @@ part of 'DropDownItem.dart';
 
 class DropDownItemAdapter extends TypeAdapter<DropDownItem> {
   @override
-  final int typeId = 21;
+  final int typeId = 41;
 
   @override
   DropDownItem read(BinaryReader reader) {
@@ -18,7 +18,7 @@ class DropDownItemAdapter extends TypeAdapter<DropDownItem> {
     };
     return DropDownItem(
       parent: fields[1] as String?,
-      value: fields[2] as String,
+      value: fields[2] as dynamic,
       status: fields[3] as String,
     );
   }

@@ -8,7 +8,7 @@ part of 'IFormNumber.dart';
 
 class IFormNumberAdapter extends TypeAdapter<IFormNumber> {
   @override
-  final int typeId = 28;
+  final int typeId = 48;
 
   @override
   IFormNumber read(BinaryReader reader) {
@@ -28,13 +28,13 @@ class IFormNumberAdapter extends TypeAdapter<IFormNumber> {
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
       expression: fields[11] as Expression,
-    );
+    )..value = fields[12] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormNumber obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -56,7 +56,9 @@ class IFormNumberAdapter extends TypeAdapter<IFormNumber> {
       ..writeByte(10)
       ..write(obj.showIfIsRequired)
       ..writeByte(11)
-      ..write(obj.expression);
+      ..write(obj.expression)
+      ..writeByte(12)
+      ..write(obj.value);
   }
 
   @override

@@ -11,7 +11,7 @@ import 'package:hive/hive.dart';
 
 part 'IFormDropList.g.dart';
 
-@HiveType(typeId: 24)
+@HiveType(typeId: 44)
 class IFormDropList implements IFormModel {
   dynamic _parameters;
 
@@ -49,6 +49,9 @@ class IFormDropList implements IFormModel {
   @HiveField(15)
   bool? showIfIsRequired;
 
+
+  @HiveField(16)
+  dynamic value;
 
 
 
@@ -89,7 +92,7 @@ class IFormDropList implements IFormModel {
         name:name,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: values,
+        items: relatedToParent ? [] : values,
         parentName: parentName,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,
@@ -109,7 +112,7 @@ class IFormDropList implements IFormModel {
         name:name,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: values,
+        items: [],
         parentName: parentName,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,

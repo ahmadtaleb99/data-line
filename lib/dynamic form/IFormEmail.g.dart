@@ -8,7 +8,7 @@ part of 'IFormEmail.dart';
 
 class IFormEmailAdapter extends TypeAdapter<IFormEmail> {
   @override
-  final int typeId = 25;
+  final int typeId = 45;
 
   @override
   IFormEmail read(BinaryReader reader) {
@@ -27,13 +27,13 @@ class IFormEmailAdapter extends TypeAdapter<IFormEmail> {
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
-    );
+    )..value = fields[11] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormEmail obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -53,7 +53,9 @@ class IFormEmailAdapter extends TypeAdapter<IFormEmail> {
       ..writeByte(9)
       ..write(obj.showIfFieldValue)
       ..writeByte(10)
-      ..write(obj.showIfIsRequired);
+      ..write(obj.showIfIsRequired)
+      ..writeByte(11)
+      ..write(obj.value);
   }
 
   @override

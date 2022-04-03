@@ -11,6 +11,9 @@ import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:hive/hive.dart';
+
+part 'FormModel.g.dart';
 
 IFormModel? getType(String type, dynamic json) {
   switch (type) {
@@ -40,11 +43,22 @@ IFormModel? getType(String type, dynamic json) {
       return null;
   }
 }
-
+@HiveType(typeId: 35)
 class FormModel implements IFormModel {
+  @HiveField(1)
   String name;
+
+  @HiveField(2)
+
   String directionality;
+
+  @HiveField(3)
+
   List<IFormModel> fields;
+
+  @HiveField(4)
+  dynamic value;
+
 
   FormModel({
     required this.name,
@@ -73,6 +87,8 @@ class FormModel implements IFormModel {
       fieldsList.add(field.toWidget());
     }
 
-    return DrawForm(label: name, name: name, fields: fieldsList);
+    return FormWidget(label: name, name: name, fields: fieldsList);
   }
+
+
 }

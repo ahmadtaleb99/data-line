@@ -8,7 +8,7 @@ part of 'IFormCheckBoxGroup.dart';
 
 class IFormCheckBoxGroupAdapter extends TypeAdapter<IFormCheckBoxGroup> {
   @override
-  final int typeId = 22;
+  final int typeId = 42;
 
   @override
   IFormCheckBoxGroup read(BinaryReader reader) {
@@ -32,13 +32,13 @@ class IFormCheckBoxGroupAdapter extends TypeAdapter<IFormCheckBoxGroup> {
       minCheckedAllowed: fields[11] as int?,
       maxCheckedAllowed: fields[12] as int?,
       other: fields[14] as bool,
-    );
+    )..value = fields[16] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormCheckBoxGroup obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(16)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -68,7 +68,9 @@ class IFormCheckBoxGroupAdapter extends TypeAdapter<IFormCheckBoxGroup> {
       ..writeByte(14)
       ..write(obj.other)
       ..writeByte(15)
-      ..write(obj.values);
+      ..write(obj.values)
+      ..writeByte(16)
+      ..write(obj.value);
   }
 
   @override

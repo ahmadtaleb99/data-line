@@ -8,7 +8,7 @@ part of 'IFormDropList.dart';
 
 class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
   @override
-  final int typeId = 24;
+  final int typeId = 44;
 
   @override
   IFormDropList read(BinaryReader reader) {
@@ -32,13 +32,13 @@ class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
       showIfValueSelected: fields[13] as bool,
       showIfFieldValue: fields[14] as String?,
       showIfIsRequired: fields[15] as bool?,
-    );
+    )..value = fields[16] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormDropList obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(16)
       ..writeByte(1)
       ..write(obj.values)
       ..writeByte(2)
@@ -68,7 +68,9 @@ class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
       ..writeByte(14)
       ..write(obj.showIfFieldValue)
       ..writeByte(15)
-      ..write(obj.showIfIsRequired);
+      ..write(obj.showIfIsRequired)
+      ..writeByte(16)
+      ..write(obj.value);
   }
 
   @override

@@ -8,7 +8,7 @@ part of 'IFormDrawRadioGroup.dart';
 
 class IFormDrawRadioGroupAdapter extends TypeAdapter<IFormDrawRadioGroup> {
   @override
-  final int typeId = 23;
+  final int typeId = 43;
 
   @override
   IFormDrawRadioGroup read(BinaryReader reader) {
@@ -29,13 +29,13 @@ class IFormDrawRadioGroupAdapter extends TypeAdapter<IFormDrawRadioGroup> {
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
       other: fields[11] as bool,
-    );
+    )..value = fields[13] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormDrawRadioGroup obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(12)
       ..write(obj.values)
       ..writeByte(1)
@@ -59,7 +59,9 @@ class IFormDrawRadioGroupAdapter extends TypeAdapter<IFormDrawRadioGroup> {
       ..writeByte(10)
       ..write(obj.showIfIsRequired)
       ..writeByte(11)
-      ..write(obj.other);
+      ..write(obj.other)
+      ..writeByte(13)
+      ..write(obj.value);
   }
 
   @override

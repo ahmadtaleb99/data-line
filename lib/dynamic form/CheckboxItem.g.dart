@@ -8,7 +8,7 @@ part of 'CheckboxItem.dart';
 
 class CheckboxItemAdapter extends TypeAdapter<CheckboxItem> {
   @override
-  final int typeId = 20;
+  final int typeId = 40;
 
   @override
   CheckboxItem read(BinaryReader reader) {
@@ -19,7 +19,7 @@ class CheckboxItemAdapter extends TypeAdapter<CheckboxItem> {
     return CheckboxItem(
       label: fields[1] as String,
       groupName: fields[2] as String,
-      value: fields[3] as String,
+      value: fields[3] as dynamic,
     );
   }
 

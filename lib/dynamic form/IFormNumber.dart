@@ -10,7 +10,7 @@ import '../Expression.dart';
 
 part 'IFormNumber.g.dart';
 
-@HiveType(typeId: 28)
+@HiveType(typeId: 48)
 class IFormNumber implements IFormModel {
   dynamic _parameters;
 
@@ -48,6 +48,8 @@ class IFormNumber implements IFormModel {
   @HiveField(11)
   Expression expression;
 
+  @HiveField(12)
+  dynamic value;
 
   IFormNumber({
     required this.label,

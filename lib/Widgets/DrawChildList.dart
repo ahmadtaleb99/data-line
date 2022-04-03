@@ -39,7 +39,7 @@ class DrawChildList extends FormElement {
       showIfFieldValue: showIfFieldValue,
       showIfIsRequired: showIfIsRequired);
 
-  String? value;
+  dynamic value;
   final String label;
   final bool deactivate;
   final bool required;
@@ -81,7 +81,7 @@ class DrawChildList extends FormElement {
 
           return FormField<dynamic>(
               validator: (value) {
-                if (list?.value == null )
+                if (value== null )
                   return 'required';
                 else
                   return null;
@@ -132,14 +132,17 @@ class DrawChildList extends FormElement {
                                   disabledHint: Text(prompt),
                                   // value: state.childList != null && state.childList!.name == this.name ? state.childList!.value : null,
                                   // items:   state.childList != null && state.childList!.name == this.name ? _buildItems(state.childList!.items)
-                                  items: itemsToBuild.isEmpty ? _buildItems([]) : _buildItems(itemsToBuild)  ,
-                                  value: list != null ? list.value : null,
+                                  items: _buildItems(items) ,
+                                  value: value ?? null,
                                   onChanged: (value) {
-                                    if(itemsToBuild.isNotEmpty)
-                                    context
-                                        .read<ValidationBloc>()
-                                        .add(childDropDownChanged(value: value, childList: this));
-                                  })
+                                    if(items.isNotEmpty) {
+                                        context.read<ValidationBloc>().add(
+                                            childDropDownChanged(
+                                                value: value, childList: this));
+
+                                        fieldState.didChange(value);
+                                      }
+                                    })
                             ),
                           ),
                         ),

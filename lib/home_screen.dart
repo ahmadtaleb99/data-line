@@ -15,36 +15,35 @@ import 'logic/validation__bloc.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  // var list = FormRepository().jsonSeilize();
 
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
         floatingActionButton: BlocBuilder<ValidationBloc, ValidationState>(
           builder: (context, state) {
             return Container();
           },
         ),
-        appBar: AppBar(
-            actions: [TextButton(onPressed: () {
-               context.read<ValidationBloc>().add(StateFormRequested(formId: 0));
-
-            }, child: Text('load forms',style: TextStyle(color: Colors.black),))]),
+        appBar: AppBar(actions: [
+          TextButton(
+              onPressed: () {
+                context
+                    .read<ValidationBloc>()
+                    .add(StateFormRequested());
+              },
+              child: Text(
+                'load forms from internet',
+                style: TextStyle(color: Colors.black),
+              ))
+        ]),
         body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // ElevatedButton(
-                //   onPressed: () {
-                //     context.read<ValidationBloc>().add(StateFormRequested(formId: 0));
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) => Form1Page()));
-                //
-                //   },
-                //   child: Text('load form 1 '),
-                // ),
 
                 SizedBox(
                   height: 20,
@@ -56,12 +55,19 @@ class HomeScreen extends StatelessWidget {
                     else if (state.status == Status.success) {
                       return Expanded(
                         child: ListView.separated(
-                          itemBuilder: (context , index  ) {
+                          itemBuilder: (context, index) {
                             return ElevatedButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Form1Page(form:  state.forms![index],)));
-                                context.read<ValidationBloc>().add(FormRequested(formName: state.forms![index].name));
-                                },
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Form1Page(
+                                              form: state.forms![index],
+                                            )));
+                                context.read<ValidationBloc>().add(
+                                    FormRequested(
+                                        formName: state.forms![index].name));
+                              },
                               child: Text(state.forms![index].name.toString()),
                             );
                           },

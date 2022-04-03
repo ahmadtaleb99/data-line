@@ -12,7 +12,7 @@ import 'IFormModel.dart';
 
 part 'IFormCheckBoxGroup.g.dart';
 
-@HiveType(typeId: 22)
+@HiveType(typeId: 42)
 class IFormCheckBoxGroup implements IFormModel {
   List<DrawCheckboxGroupItem> WidgetitemsList = [];
 
@@ -53,6 +53,8 @@ class IFormCheckBoxGroup implements IFormModel {
   List<CheckboxItem> values;
 
 
+  @HiveField(16)
+  dynamic value;
 
 
   IFormCheckBoxGroup({
@@ -105,14 +107,7 @@ class IFormCheckBoxGroup implements IFormModel {
   FormElement toWidget() {
 
 
-    for (var checkBox in this.values) {
-      var item = DrawCheckboxGroupItem(label: checkBox.label,
-        value: checkBox.value,
-        groupName: checkBox.groupName,
 
-      );
-      WidgetitemsList.add(item);
-    }
 
       return DrawCheckboxGroup(
         label: this.label,
@@ -126,7 +121,7 @@ class IFormCheckBoxGroup implements IFormModel {
         visible:  this.showIfValueSelected == true  ? false : true,
         isHidden: this.isHidden,
         deactivate: this.deactivate,
-        children: this.WidgetitemsList,
+        children: this.values.map((e) => e.toWidget() as DrawCheckboxGroupItem).toList(),
         minMaxCheckbox: this.minMaxCheckbox,
         maxCheckedAllowed: this.maxCheckedAllowed,
         minCheckedAllowed: this.minCheckedAllowed,

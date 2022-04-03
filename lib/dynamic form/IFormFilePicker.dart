@@ -11,7 +11,7 @@ import '../Expression.dart';
 
 part 'IFormFilePicker.g.dart';
 
-@HiveType(typeId: 26)
+@HiveType(typeId: 46)
 class IFormFilePicker implements IFormModel {
   dynamic _parameters;
 
@@ -52,6 +52,9 @@ class IFormFilePicker implements IFormModel {
   @HiveField(12)
   FileTypeEnum fileType;
 
+
+  @HiveField(13)
+  dynamic value;
   IFormFilePicker( {
     required this.label,
     required this.name,

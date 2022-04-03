@@ -12,8 +12,9 @@ class ValidationState {
 
   List<DrawChildList> ? childLists;
 
-  List<DrawForm> ? forms;
-  DrawForm ? form;
+  List<FormWidget> ? forms;
+  FormWidget ?   form;
+  FormModel ?   formModel;
   DrawChildList ? childList;
 
   Map<String, FormElement> childsMap;
@@ -21,6 +22,7 @@ class ValidationState {
   ValidationState({
     this.drawCheckboxGroup,
     this.form,
+    this.formModel,
     this.status = Status.initial,
     this.drawDropDownButton,
     this.radioGroup,
@@ -31,13 +33,14 @@ class ValidationState {
   });
 
   ValidationState copyWith({
-    DrawForm ?  form,
+    FormWidget ?  form,
     Status? status,
 
     DrawCheckboxGroup? drawCheckboxGroup,
     DrawDropDown? drawDropDownButton,
     DrawRadioGroup ? radioGroup,
-    List<DrawForm> ? forms,
+    List<FormWidget> ? forms,
+    FormModel ?   formModel,
 
     List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,
@@ -54,7 +57,8 @@ class ValidationState {
         childLists: childLists ?? this.childLists,
         childList: childList ?? this.childList,
         childsMap: childsMap ?? this.childsMap,
-        forms: forms ?? this.forms
+        forms: forms ?? this.forms,
+        formModel: formModel ?? this.formModel
     );
   }
 

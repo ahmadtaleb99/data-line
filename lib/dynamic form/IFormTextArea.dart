@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 
 part 'IFormTextArea.g.dart';
 
-@HiveType(typeId: 29)
+@HiveType(typeId: 49)
 class IFormTextArea implements IFormModel {
   dynamic _parameters;
 
@@ -42,6 +42,8 @@ class IFormTextArea implements IFormModel {
   int maxLength;
 
 
+  @HiveField(13)
+  dynamic value;
   IFormTextArea({
     required this.label,
     required this.name,

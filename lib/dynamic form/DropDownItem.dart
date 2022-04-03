@@ -6,18 +6,17 @@ import 'package:hive/hive.dart';
 
 
 part 'DropDownItem.g.dart';
-@HiveType(typeId: 21)
+@HiveType(typeId: 41)
 
-class DropDownItem extends Equatable implements IFormModel {
+class DropDownItem  extends  IFormModel {
 
   @HiveField(1)
-
   final String? parent;
+
   @HiveField(2)
+   dynamic value;
 
-  final String value;
   @HiveField(3)
-
   final String status;
 
 
@@ -26,15 +25,15 @@ class DropDownItem extends Equatable implements IFormModel {
         value: json['value'], status: json['status'], parent: json['parent']);
   }
 
-  const DropDownItem({
+   DropDownItem({
     this.parent,
     required this.value,
     required this.status,
   });
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => [value, status, parent];
+  // @override
+  // // TODO: implement props
+  // List<Object?> get props => [value, status, parent];
 
   @override
   Map<String, dynamic> fomrElementtoJson(formElement) {

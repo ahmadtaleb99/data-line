@@ -5,7 +5,9 @@ import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
 part 'IFormTextField.g.dart';
-@HiveType(typeId: 30)
+
+
+@HiveType(typeId: 50)
 class IFormTextField implements IFormModel {
   dynamic _parameters;
   @HiveField(1)
@@ -37,6 +39,10 @@ class IFormTextField implements IFormModel {
 
   @HiveField(10)
   bool? showIfIsRequired;
+
+  @HiveField(11)
+  dynamic value;
+
 
 
   IFormTextField({
@@ -76,6 +82,7 @@ class IFormTextField implements IFormModel {
       showIfIsRequired: this.showIfIsRequired,
       visible: this.visible,
       name: this.name,
+      value: this.value,
     );
   }
 

@@ -8,7 +8,7 @@ part of 'IFormModel.dart';
 
 class IFormModelAdapter extends TypeAdapter<IFormModel> {
   @override
-  final int typeId = 27;
+  final int typeId = 47;
 
   @override
   IFormModel read(BinaryReader reader) {

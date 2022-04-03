@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawCheckboxGroupItem extends StatelessWidget {
+class DrawCheckboxGroupItem extends FormElement {
   DrawCheckboxGroupItem({
     Key? key,
     required this.label,
@@ -11,7 +12,7 @@ class DrawCheckboxGroupItem extends StatelessWidget {
     required this.value,
     required this.groupName,
     this.isChecked,
-  }) : super(key: key);
+  }) : super(key: key,label: label , name: value);
   final String label;
   final String value;
   final String groupName;
@@ -26,15 +27,20 @@ class DrawCheckboxGroupItem extends StatelessWidget {
       validator: validator,
       builder: (FormFieldState<bool> fieldState) {
         return Column(
+
           children: [
-            BlocBuilder<ValidationBloc, ValidationState>(
-              buildWhen: (previous, current) {
-                if (previous != current &&
-                    current.drawCheckboxGroup != null &&  current.drawCheckboxGroup!.name == this.groupName) {
-                  fieldState.validate();
-                  return true;
-                }
-                return false;
+            BlocConsumer<ValidationBloc, ValidationState>(
+              // buildWhen: (previous, current) {
+              //   if (previous != current &&
+              //       current.drawCheckboxGroup != null &&  current.drawCheckboxGroup!.name == this.groupName) {
+              //     fieldState.validate();
+              //     return true;
+              //   }
+              //   return false;
+              // },
+              listener: (context,state){
+                fieldState.validate();
+
               },
               builder: (context, state) {
                 return CheckboxListTile(

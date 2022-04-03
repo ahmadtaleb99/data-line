@@ -8,7 +8,7 @@ part of 'IFormFilePicker.dart';
 
 class IFormFilePickerAdapter extends TypeAdapter<IFormFilePicker> {
   @override
-  final int typeId = 26;
+  final int typeId = 46;
 
   @override
   IFormFilePicker read(BinaryReader reader) {
@@ -29,13 +29,13 @@ class IFormFilePickerAdapter extends TypeAdapter<IFormFilePicker> {
       showIfIsRequired: fields[10] as bool?,
       maxFileSize: fields[11] as int,
       fileType: fields[12] as FileTypeEnum,
-    );
+    )..value = fields[13] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormFilePicker obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -59,7 +59,9 @@ class IFormFilePickerAdapter extends TypeAdapter<IFormFilePicker> {
       ..writeByte(11)
       ..write(obj.maxFileSize)
       ..writeByte(12)
-      ..write(obj.fileType);
+      ..write(obj.fileType)
+      ..writeByte(13)
+      ..write(obj.value);
   }
 
   @override

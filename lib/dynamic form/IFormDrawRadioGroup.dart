@@ -10,8 +10,8 @@ import 'IFormModel.dart';
 
 part 'IFormDrawRadioGroup.g.dart';
 
-@HiveType(typeId: 23)
-class IFormDrawRadioGroup implements IFormModel {
+@HiveType(typeId: 43)
+class IFormDrawRadioGroup extends IFormModel {
   @HiveField(12)
   List<RadioItem> values;
 
@@ -38,8 +38,13 @@ class IFormDrawRadioGroup implements IFormModel {
   @HiveField(11)
   bool other;
 
+  @HiveField(13)
+  dynamic value;
+
+
   factory IFormDrawRadioGroup.fromJson(parameters) {
     return IFormDrawRadioGroup(
+
         label: parameters['label'],
         required: parameters['required'],
         showIfIsRequired: parameters['showIfIsRequired'],

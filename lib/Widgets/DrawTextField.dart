@@ -11,6 +11,7 @@ class DrawTextField extends  FormElement {
     required this.visible,
     required this.required,
     required this.name,
+     this.value,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
@@ -24,7 +25,9 @@ class DrawTextField extends  FormElement {
   final String label;
   final String name;
   final bool required;
+  dynamic value;
   bool?  visible;
+
   final bool showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
@@ -46,6 +49,10 @@ class DrawTextField extends  FormElement {
               reverseDuration: Duration(milliseconds: 222),
 
             child: visible! ? TextFormField(
+              initialValue: value,
+              onChanged: (value){
+                context.read<ValidationBloc>().add(TextFieldValueChanged(value,textFieldName: this.name));
+              },
               autofocus: true,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {

@@ -8,7 +8,7 @@ part of 'IFormTextField.dart';
 
 class IFormTextFieldAdapter extends TypeAdapter<IFormTextField> {
   @override
-  final int typeId = 30;
+  final int typeId = 50;
 
   @override
   IFormTextField read(BinaryReader reader) {
@@ -27,13 +27,13 @@ class IFormTextFieldAdapter extends TypeAdapter<IFormTextField> {
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
-    );
+    )..value = fields[11] as dynamic;
   }
 
   @override
   void write(BinaryWriter writer, IFormTextField obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -53,7 +53,9 @@ class IFormTextFieldAdapter extends TypeAdapter<IFormTextField> {
       ..writeByte(9)
       ..write(obj.showIfFieldValue)
       ..writeByte(10)
-      ..write(obj.showIfIsRequired);
+      ..write(obj.showIfIsRequired)
+      ..writeByte(11)
+      ..write(obj.value);
   }
 
   @override

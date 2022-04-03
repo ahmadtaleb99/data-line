@@ -1,5 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 
 abstract class FormElement extends StatelessWidget {
 
@@ -10,6 +11,7 @@ abstract class FormElement extends StatelessWidget {
   final bool ? showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
+  dynamic value;
 
 
   FormElement({
