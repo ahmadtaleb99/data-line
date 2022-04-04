@@ -1,4 +1,5 @@
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
@@ -13,7 +14,7 @@ import 'package:hive/hive.dart';
 part 'IFormDropList.g.dart';
 
 @HiveType(typeId: 44)
-class IFormDropList implements IFormModel {
+class IFormDropList  implements IFormModel  {
   dynamic _parameters;
 
   @HiveField(1)
@@ -87,14 +88,10 @@ class IFormDropList implements IFormModel {
     var childItems;
     var parent;
     if(value != null ){
-      print('isnt null');
-      var item = items.firstWhereOrNull((element) => element.value == value);
+      print('value isnt null $multiple');
+      var parent = items.first.parent;
+      print('item isnt null');
 
-      if(item != null ){
-        parent = item.parent;
-        print('parent is  ${item.parent} and i am $multiple multi');
-
-      }
 
       childItems =  items.where((item) => item.parent == parent).toList();
     }
@@ -191,5 +188,6 @@ class IFormDropList implements IFormModel {
     this.showIfFieldValue,
     this.showIfIsRequired,
   });
+
 
 }

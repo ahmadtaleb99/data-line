@@ -194,10 +194,9 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
 
   void _onMultiSelectItemRemoved(MultiSelectItemRemoved event, Emitter<ValidationState> emit) {
-    var select =  event.select;
+    var select = state.form!.fields.firstWhere((element) => element.name == event.selectName) as DrawMultiSelect;
     select.selectedValues!.remove(event.item);
-    emit(state.copyWith());
-
+    emit(state.copyWith(initialMulti: select.selectedValues));
   }
 
 

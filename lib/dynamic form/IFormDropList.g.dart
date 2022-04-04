@@ -6,7 +6,7 @@ part of 'IFormDropList.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
+class IFormDropListAdapter extends TypeAdapter<IFormDropList>{
   @override
   final int typeId = 44;
 

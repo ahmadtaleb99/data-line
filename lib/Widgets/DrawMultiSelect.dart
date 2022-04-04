@@ -1,4 +1,5 @@
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,14 +10,15 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'DrawChildList.dart';
 import '../dynamic form/DropDownItem.dart';
 
-class DrawMultiSelect extends FormElement {
+class DrawMultiSelect  extends FormElement {
+
   DrawMultiSelect(
       {Key? key,
       this.visible = false,
       required this.label,
       required this.showIfIsRequired,
       required this.deactivate,
-       this.value ,
+      this.value,
       required this.required,
       required this.relatedToParent,
       required this.isHidden,
@@ -47,7 +49,7 @@ class DrawMultiSelect extends FormElement {
   final bool isHidden;
   final bool multiple;
   bool? visible;
-  List<String> ?  selectedValues;
+  List<String>? selectedValues;
   final bool isReadOnly;
   final bool relatedToParent;
   final bool? showIfIsRequired;
@@ -57,25 +59,30 @@ class DrawMultiSelect extends FormElement {
   final String name;
   final String? parentName;
   final String? Function(dynamic)? validator;
-
+  List<String>? l = [
+    'Eating',
+    'Politics',
+  ];
   List<DropDownItem> items;
 
   @override
   Widget build(BuildContext context) {
-    print ('${selectedValues.toString()} initla asdsa sdfdas ea');
     return Container(
       child: Padding(
         padding: this.visible == true
             ? const EdgeInsets.only(top: 30)
             : const EdgeInsets.only(top: 0),
         child: BlocBuilder<ValidationBloc, ValidationState>(
+          buildWhen: (context, state) {
+            if (1 == 1)
+              return true;
+            else
+              return false;
+          },
           builder: (context, state) {
-            print('2 ${this.parentName}');
-
-
 
             return FormField<dynamic>(
-              initialValue: selectedValues,
+                initialValue: selectedValues,
                 validator: (value) {
                   if (value.isEmpty)
                     return 'required';
@@ -83,7 +90,9 @@ class DrawMultiSelect extends FormElement {
                     return null;
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                builder: (FormFieldState<dynamic> fieldState) => Column(
+                builder: (FormFieldState<dynamic> fieldState) {
+
+                  return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
@@ -100,51 +109,46 @@ class DrawMultiSelect extends FormElement {
                           padding: const EdgeInsets.all(0.0),
                           child: Center(
                               child: MultiSelectDialogField<String>(
-                                searchable: true,
-                                decoration: BoxDecoration(
-
-                                  color: Colors.blue.withOpacity(0.1),
-                                  borderRadius:
+                                key: GlobalKey(),
+                            searchable: true,
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.1),
+                              borderRadius:
                                   BorderRadius.all(Radius.circular(40)),
-                                ),
-                                chipDisplay: MultiSelectChipDisplay(
-                              items: selectedValues!.map((e) => MultiSelectItem(e,e)).toList(),
-                                  alignment: Alignment.topCenter,
-                                  onTap: (item) {
-                                    context.read<ValidationBloc>().add(
-                                        MultiSelectItemRemoved(
-                                            item: item,
-                                            select: this,
-                                            selectName: this.name));
-                                    print(item);
-                                  },
-                                ),
+                            ),
+                            chipDisplay: MultiSelectChipDisplay(
+                              alignment: Alignment.topCenter,
+                              onTap: (item) {
+                                context.read<ValidationBloc>().add(
+                                    MultiSelectItemRemoved(
+                                        item: item,
+                                        select: this,
+                                        selectName: this.name));
+                                print(item);
+                              },
+                            ),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            dialogHeight: items.isEmpty ? 5 : null,
+                            dialogWidth: items.isEmpty ? 5 : null,
+                            selectedItemsTextStyle:
+                                TextStyle(color: Colors.black),
+                            buttonIcon: Icon(Icons.arrow_drop_down),
+                            title: items.isEmpty
+                                ? Text('Please Select a ')
+                                : Text(label),
+                            buttonText: Text(prompt),
+                            listType: MultiSelectListType.CHIP,
+                            items: _buildItemsMulti(items),
+                            initialValue:  selectedValues,
+                            onConfirm: (values) {
+                              fieldState.didChange(values);
 
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-                                dialogHeight: items.isEmpty ? 5 : null,
-                                dialogWidth: items.isEmpty ? 5 : null,
-                                selectedItemsTextStyle:
-                                    TextStyle(color: Colors.black),
-                                buttonIcon: Icon(Icons.arrow_drop_down),
-
-                                title: items.isEmpty
-                                    ? Text('Please Select a ')
-                                    : Text(label),
-                                buttonText: Text(prompt),
-                                listType: MultiSelectListType.CHIP,
-
-                                items: _buildItemsMulti(items),
-                                initialValue: selectedValues ,
-                                onConfirm: (values) {
-
-                                  fieldState.didChange(values);
-
-                                    context.read<ValidationBloc>().add(
-                                        MultiSelectChanged(
-                                            select: this, value: values));
-
-                                },
-                              )),
+                              context.read<ValidationBloc>().add(
+                                  MultiSelectChanged(
+                                      select: this, value: values));
+                            },
+                          )),
                         ),
                         if (fieldState.hasError)
                           Padding(
@@ -158,21 +162,19 @@ class DrawMultiSelect extends FormElement {
                                   height: 0.5),
                             ),
                           )
-                      ],
-                    ));
+                      ]);
+                });
           },
         ),
       ),
     );
   }
 
-  List<MultiSelectItem<String>> _buildItemsMulti(
-      List<DropDownItem> items) {
+  List<MultiSelectItem<String>> _buildItemsMulti(List<DropDownItem> items) {
     List<MultiSelectItem<String>> list = [];
     if (items.isEmpty) {
       return [];
     }
-    print(' multi iteemsss to draw  ${items.toString()}');
     for (var item in items) {
       list.add(MultiSelectItem(item.value, item.value));
     }
@@ -218,4 +220,18 @@ class DrawMultiSelect extends FormElement {
       items: items ?? this.items,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DrawMultiSelect &&
+              runtimeType == other.runtimeType &&
+              name == other.name &&
+              value == other.value&&
+              items == other.items&&
+            selectedValues == other.selectedValues;
+
+
+
+
 }
