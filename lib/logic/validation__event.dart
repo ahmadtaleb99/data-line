@@ -53,6 +53,16 @@ class FormSubmitted extends ValidationEvent {
 
 class ServiceRegistered extends ValidationEvent {
 }
+class MultiSelectChanged extends ValidationEvent {
+
+  FormElement select ;
+  List<String> value;
+
+  MultiSelectChanged({
+    required this.select,
+    required this.value,
+  });
+}
 
 class TextFieldValueChanged extends ValidationEvent {
   String textFieldName;

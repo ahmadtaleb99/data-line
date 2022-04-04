@@ -1,3 +1,4 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
@@ -83,17 +84,33 @@ class IFormDropList implements IFormModel {
 
   @override
   FormElement toWidget({parameters}) {
+    var childItems;
+    var parent;
+    if(value != null ){
+      print('isnt null');
+      var item = items.firstWhereOrNull((element) => element.value == value);
+
+      if(item != null ){
+        parent = item.parent;
+        print('parent is  ${item.parent} and i am $multiple multi');
+
+      }
+
+      childItems =  items.where((item) => item.parent == parent).toList();
+    }
 
     if (this.multiple == true) {
       return DrawMultiSelect(
+        selectedValues: value ?? [],
         label: label,
         deactivate:deactivate ,
         required: required,
         isHidden: isHidden,
         name:name,
+        value: value,
         isReadOnly: isReadOnly,
         prompt:prompt,
-        items: relatedToParent ? [] : items,
+        items: relatedToParent ? (value != null ? childItems : []) : items,
         parentName: parentName,
         showIfIsRequired: showIfIsRequired,
         showIfFieldValue: showIfFieldValue,
@@ -106,11 +123,7 @@ class IFormDropList implements IFormModel {
       );
     }
     if (this.relatedToParent) {
-      var childItems;
-      if(value != null){
-        var parent = items.firstWhere((element) => element.value == value).parent;
-         childItems =  items.where((item) => item.parent == parent).toList();
-      }
+
       print(value);
       return DrawChildList(
         label: label,

@@ -40,6 +40,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormsRequestedFromLocal>(_onFormsRequestedFromLocal);
     on<TextFieldValueChanged>(_onTextFieldValueChanged);
     on<FormSubmitted>(_onFormSubmitted);
+    on<MultiSelectChanged>(_onMultiSelectChanged);
   }
 
   Future<void> _onStateFormRequested(
@@ -48,6 +49,22 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     var forms = await _formRepository.LoadFormsModel();
 
     emit(state.copyWith(status: Status.success, forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
+  }
+
+
+  void _onMultiSelectChanged(
+      MultiSelectChanged event, Emitter<ValidationState> emit)  {
+
+
+    var select = event.select as DrawMultiSelect;
+
+    select.selectedValues  = event.value ;
+    select.value = event.value;
+    print('selected value for multi parent : ${select.value}');
+    print('selected value for multi parent : ${select.selectedValues}');
+
+      emit(state.copyWith());
+
   }
 
 
@@ -72,10 +89,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRequested event, Emitter<ValidationState> emit) async {
 
       var formModel =  _formRepository.formsModel.firstWhere((element) => element.name == event.formName);
-                for(var kza in formModel.fields){
-                  print(kza.value);
 
-                }
         emit(state.copyWith(form: formModel.toWidget() as FormWidget,status: Status.success,formModel: formModel));
   }
 
@@ -123,17 +137,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
-    var list =
-    print('fat');
+
     var ch =event.childList;
     if (ch is DrawChildList){
       ch.value = event.value;
     }
 
-    else  if (ch is DrawMultiSelect){
-      var list  = event.childList as DrawMultiSelect;
-      ch.selectedValues = list.selectedValues;
-    }
+
 
 
 
@@ -184,12 +194,10 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
 
   void _onMultiSelectItemRemoved(MultiSelectItemRemoved event, Emitter<ValidationState> emit) {
-
-    var map = state.childsMap;
     var select =  event.select;
-      select.selectedValues.remove(event.item);
-      map[select.name] = select;
-      emit(state.copyWith(childsMap: map));
+    select.selectedValues!.remove(event.item);
+    emit(state.copyWith());
+
   }
 
 
