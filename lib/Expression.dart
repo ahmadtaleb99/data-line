@@ -1,8 +1,16 @@
+import 'package:hive/hive.dart';
+
 import 'Widgets/DrawNumberField.dart';
 import 'dynamic form/FileTypeEnum.dart';
+part 'Expression.g.dart';
+
+@HiveType(typeId: 61)
 class Expression {
+  @HiveField(1)
   final Operator operator;
+  @HiveField(2)
   final int value;
+  @HiveField(3)
   final int? value2;
 
   Expression( {required this.operator,required  this.value,this.value2});
@@ -49,7 +57,17 @@ class EnumValues<T> {
   }
 }
 
-enum Operator {MORE,LESS,EQUAL,BETWEEN}
+@HiveType(typeId: 62)
+enum Operator {
+@HiveField(1)
+MORE,
+@HiveField(2)
+  LESS,
+@HiveField(3)
+  EQUAL,
+@HiveField(4)
+  BETWEEN
+}
 
 
 

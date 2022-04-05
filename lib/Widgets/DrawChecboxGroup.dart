@@ -16,6 +16,7 @@ class DrawCheckboxGroup extends FormElement {
     this.validator,
     required this.label,
     this.visible,
+    this.value,
     required this.required,
     required this.deactivate,
     required this.other,
@@ -54,10 +55,13 @@ class DrawCheckboxGroup extends FormElement {
   final int? minCheckedAllowed;
   final int? maxCheckedAllowed;
   final String? Function(bool?)? validator;
-  int checksNumber = 0;
+  int checksNumber   = 0;
+
 
   @override
   Widget build(BuildContext context) {
+    if(value != null )
+      checksNumber = value.length;
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 36) :  const EdgeInsets.only(top: 0),
       child: FormField<bool>(

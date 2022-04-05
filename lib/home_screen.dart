@@ -52,11 +52,29 @@ class HomeScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state.status == Status.loading)
                       return CircularProgressIndicator();
-                    else if (state.status == Status.success) {
+
+
+
+    else if (state.status == Status.success) {
+                     if (state.forms!.isEmpty) {
+                      return Text('There are no submitted forms yet. ');
+                    }
                       return Expanded(
-                        child: ListView.separated(
+
+                        child: GridView.builder(
+                          padding: EdgeInsets.all(30),
+                          itemCount: state.forms!.length,
                           itemBuilder: (context, index) {
+// return FormCard();
                             return ElevatedButton(
+
+                              style: ElevatedButton.styleFrom(
+                                elevation: 20,
+                                primary: Colors.lightBlueAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                                )
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -68,12 +86,15 @@ class HomeScreen extends StatelessWidget {
                                     FormRequested(
                                         formName: state.forms![index].name));
                               },
-                              child: Text(state.forms![index].name.toString()),
+                              child: Text(state.forms![index].name.toString(),style: TextStyle(color: Colors.black,fontSize: 15),),
                             );
                           },
-                          itemCount: state.forms!.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(  crossAxisCount: 2,
+                            crossAxisSpacing: 10.0,
+                            mainAxisSpacing: 20.0,
+                          childAspectRatio: 1
+
+                        ),
                         ),
                       );
                     } else
@@ -86,4 +107,39 @@ class HomeScreen extends StatelessWidget {
               ]),
         ));
   }
+
+
+
 }
+
+
+class FormCard extends StatelessWidget {
+  const FormCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      height: 300,
+        decoration :BoxDecoration(
+            color:  Colors.lightBlueAccent,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child: Column(
+        children: [
+          Expanded(flex: 5,child: Center(child: Text('Form name',style: TextStyle(color: Colors.black,fontSize: 18) ))),
+          Expanded(flex: 2,child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(onPressed: (){}, icon: Icon(Icons.add,color: Colors.white,)),
+              IconButton(onPressed: (){}, icon: Icon(Icons.visibility,color: Colors.white,)),
+            ],
+          )),
+
+      ],
+    ),
+    );
+  }
+}
+

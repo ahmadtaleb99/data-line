@@ -22,7 +22,7 @@ class IFormCheckBoxGroupAdapter extends TypeAdapter<IFormCheckBoxGroup> {
       deactivate: fields[3] as bool,
       isHidden: fields[4] as bool,
       required: fields[5] as bool,
-      values: (fields[15] as List).cast<CheckboxItem>(),
+      children: (fields[15] as List).cast<CheckboxItem>(),
       isReadOnly: fields[6] as bool,
       visible: fields[7] as bool?,
       showIfValueSelected: fields[8] as bool,
@@ -68,7 +68,7 @@ class IFormCheckBoxGroupAdapter extends TypeAdapter<IFormCheckBoxGroup> {
       ..writeByte(14)
       ..write(obj.other)
       ..writeByte(15)
-      ..write(obj.values)
+      ..write(obj.children)
       ..writeByte(16)
       ..write(obj.value);
   }

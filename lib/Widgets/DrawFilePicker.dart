@@ -16,6 +16,7 @@ class DrawFilePicker extends  FormElement {
     required this.label,
      this.visible,
     this.validator,
+    this.value,
     required this.required,
     required this.name,
     required this.deactivate,
@@ -46,9 +47,13 @@ class DrawFilePicker extends  FormElement {
   final int maxFileSize;
   final FileTypeEnum fileType;
   String? Function(File?)? validator;
-  PlatformFile ?  _pickedFile;
+  PlatformFile ?  pickedFile;
+  dynamic  value;
+
   @override
   Widget build(BuildContext context) {
+    String ?  fileName;
+
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 10) :  const EdgeInsets.only(top: 10),
       child: BlocBuilder<ValidationBloc, ValidationState>(
@@ -60,10 +65,10 @@ class DrawFilePicker extends  FormElement {
             child: FormField<PlatformFile>(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (file) {
-                if(file==null )
+                if(pickedFile==null && required)
                   return 'required';
 
-                if(_pickedFile!.size /1000000 > maxFileSize )
+                if( pickedFile != null && pickedFile!.size /1000000 > maxFileSize  )
                   return 'file can\'t be larger than $maxFileSize MB';
                 else return null;
 
@@ -82,15 +87,8 @@ class DrawFilePicker extends  FormElement {
                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                        ),
                        onPressed: () async {
-                         FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
+                         context.read<ValidationBloc>().add(FilePickerPressed(drawFilePicker: this));
 
-                         if (result != null) {
-                           _pickedFile = result.files.single;
-                           print(_pickedFile!.size /1000000);
-                           fieldState.didChange(_pickedFile);
-                         } else {
-                           // User canceled the picker
-                         }
                          fieldState.validate();
 
                        },
@@ -106,6 +104,9 @@ class DrawFilePicker extends  FormElement {
 
                      ),
                    ),
+                   SizedBox(height: 5,),
+                   if (value != null )
+                     Text(value),
                    if (fieldState.hasError)
                      Padding(
                        padding: const EdgeInsets.only(left: 8, top: 10),

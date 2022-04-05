@@ -9,6 +9,7 @@ class DrawTextArea extends FormElement with FormValidation {
       {Key ? key,
         required this.label,
          this.visible,
+         this.value,
         required this.required,
         required this.name,
         required this.showIfValueSelected,
@@ -29,6 +30,7 @@ class DrawTextArea extends FormElement with FormValidation {
   final String name;
   final bool required;
   bool? visible;
+  dynamic value;
   final bool showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
@@ -38,9 +40,11 @@ class DrawTextArea extends FormElement with FormValidation {
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 40) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
-        onChanged: (description) {},
+        initialValue: value,
+        onChanged: (value){
+          this.value = value;
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        keyboardType: TextInputType.text,
         validator: (value) {
           if (required && value!.isEmpty) return '$label is required';
 

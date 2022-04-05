@@ -60,6 +60,7 @@ class IFormEmail extends IFormModel {
       isReadOnly: parameters['isReadOnly'],
       showIfValueSelected: parameters['showIfLogicCheckbox'],
       name: parameters['name'],
+
       visible: parameters['showIfLogicCheckbox'] == true ? false : true,
       deactivate: parameters['deactivate'],
     );
@@ -78,6 +79,8 @@ class IFormEmail extends IFormModel {
       name: this.name,
       visible: this.visible == true ? false : true,
       deactivate: this.deactivate,
+      value: this.value,
+
     );
   }
 

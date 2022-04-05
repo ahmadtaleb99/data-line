@@ -87,10 +87,11 @@ class IFormDropList  implements IFormModel  {
   FormElement toWidget({parameters}) {
     var childItems;
     var parent;
-    if(value != null ){
-      print('value isnt null $multiple');
-      var parent = items.first.parent;
-      print('item isnt null');
+    if(value != null &&relatedToParent){
+      if(value is List)
+       parent = items.firstWhere((element) => element.value ==  value.first).parent;
+      if(value is String)
+         parent = items.firstWhere((element) => element.value ==  value).parent;
 
 
       childItems =  items.where((item) => item.parent == parent).toList();

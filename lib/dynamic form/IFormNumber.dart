@@ -94,6 +94,8 @@ class IFormNumber implements IFormModel {
 
       showIfValueSelected:  this.showIfValueSelected,
       name:  this.name,
+      value: this.value,
+
       expression:  this.expression,
     );
   }

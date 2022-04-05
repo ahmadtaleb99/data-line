@@ -83,6 +83,8 @@ class IFormTextArea implements IFormModel {
       showIfIsRequired: this.showIfIsRequired,
       showIfFieldValue: this.showIfFieldValue,
       visible:  this.visible,
+      value: this.value,
+
       showIfValueSelected: this.showIfValueSelected,
       name: this.name,  );
   }

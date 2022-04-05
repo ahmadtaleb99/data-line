@@ -20,11 +20,11 @@ class CheckboxItem implements IFormModel{
     required this.value,
   });
 
-  factory CheckboxItem.FromJson(parameters,String groupName) {
+  factory CheckboxItem.FromJson(json,String groupName) {
     return CheckboxItem(
-      label: parameters['label'],
+      label: json['label'],
       groupName: groupName,
-      value:parameters['value'],
+      value:json['value'],
     );
   }
   @override

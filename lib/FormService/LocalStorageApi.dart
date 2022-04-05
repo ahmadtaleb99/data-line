@@ -1,3 +1,4 @@
+import 'package:form_builder_test/Expression.dart';
 import 'package:form_builder_test/FormService/FormApi.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
@@ -33,6 +34,8 @@ class LocalStorageApi  extends FormApi{
       Hive.registerAdapter(IFormTextFieldAdapter());
       Hive.registerAdapter(RadioItemAdapter());
       Hive.registerAdapter(FileTypeEnumAdapter());
+      Hive.registerAdapter(ExpressionAdapter());
+      Hive.registerAdapter(OperatorAdapter());
                 init();
 
     }
@@ -58,7 +61,7 @@ class LocalStorageApi  extends FormApi{
 
     
   void saveForm(FormModel formModel) {
-          _formBox.put(formModel.name, formModel);
+          _formBox.add(formModel);
   }
 
 

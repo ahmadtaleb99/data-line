@@ -68,20 +68,20 @@ class IFormTextField implements IFormModel {
       isReadOnly: json['isReadOnly'],
       showIfValueSelected: json['showIfLogicCheckbox'],
       name: json['name'],
-      visible: json['showIfLogicCheckbox'] == true ? false : true,
       deactivate: json['deactivate'], );
   }
 
   @override
   FormElement toWidget({parameters}) {
     return DrawTextField(
+
       label: this.label,
       required: this.required,
       showIfValueSelected: this.showIfValueSelected,
       showIfFieldValue: this.showIfFieldValue,
       showIfIsRequired: this.showIfIsRequired,
-      visible: this.visible,
       name: this.name,
+      visible: this.showIfValueSelected == true && value == null ? false : true,
       value: this.value,
     );
   }

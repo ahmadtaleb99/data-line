@@ -50,6 +50,7 @@ class DrawCheckboxGroupItem extends FormElement {
                     debugPrint(this.groupName);
                     context.read<ValidationBloc>().add(CheckboxGroupValueChanged(
                         id: this.value,
+                        value: this.value,
                         newIsChecked: value!,
                         groupName: this.groupName));
 

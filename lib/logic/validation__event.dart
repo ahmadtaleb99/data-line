@@ -8,12 +8,14 @@ abstract class ValidationEvent {}
 
 class CheckboxGroupValueChanged extends ValidationEvent {
   String id;
+  String value;
   String groupName;
   bool newIsChecked;
 
   CheckboxGroupValueChanged({
     required this.groupName,
     required this.id,
+    required this.value,
     required this.newIsChecked,
   });
 
@@ -52,6 +54,13 @@ class FormSubmitted extends ValidationEvent {
 }
 
 class ServiceRegistered extends ValidationEvent {
+}
+
+
+class FilePickerPressed extends ValidationEvent {
+
+  DrawFilePicker drawFilePicker;
+  FilePickerPressed({required this.drawFilePicker});
 }
 class MultiSelectChanged extends ValidationEvent {
 

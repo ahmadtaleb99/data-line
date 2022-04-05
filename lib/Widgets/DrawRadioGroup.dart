@@ -15,7 +15,7 @@ class DrawRadioGroup extends FormElement {
     required this.name,
     this.visible,
     this.isOtherSelected = false,
-    this.value = null,
+    this.value,
     required this.required,
     required this.other,
     required this.children,
@@ -33,7 +33,7 @@ class DrawRadioGroup extends FormElement {
             showIfIsRequired: showIfIsRequired);
 
   final String label;
-  dynamic? value;
+  dynamic value;
   final String name;
   final bool required;
   final bool other;

@@ -6,6 +6,7 @@ class DrawEmailTextField extends FormElement with FormValidation {
    DrawEmailTextField({  Key ? key,
     required this.label,
      this.visible,
+     this.value,
      required this.deactivate,
      required this.isHidden,
 
@@ -34,6 +35,7 @@ class DrawEmailTextField extends FormElement with FormValidation {
   final bool showIfValueSelected;
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
+  dynamic value;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,7 +43,10 @@ class DrawEmailTextField extends FormElement with FormValidation {
       child: TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: TextInputType.emailAddress,
-
+        initialValue: value,
+        onChanged: (value){
+          this.value = value;
+        },
         validator: (value){
           if(required)
             if(value!.isEmpty){
@@ -52,8 +57,11 @@ class DrawEmailTextField extends FormElement with FormValidation {
                 return 'must be a valid email ';
             }
         },
+
+
         decoration: InputDecoration(
-            label: Text(label)
+            label: Text(label),
+
         ),
       ),
     );

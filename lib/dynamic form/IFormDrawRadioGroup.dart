@@ -43,6 +43,7 @@ class IFormDrawRadioGroup extends IFormModel {
 
 
   factory IFormDrawRadioGroup.fromJson(parameters) {
+
     return IFormDrawRadioGroup(
 
         label: parameters['label'],
@@ -66,9 +67,11 @@ class IFormDrawRadioGroup extends IFormModel {
 
   @override
   FormElement toWidget() {
+    var groupValue;
+    if(value != null ) groupValue = value;
     List<DrawRadioItem> children = [];
     for (var radio in this.values) {
-      var newRadio = DrawRadioItem(
+      var newRadio = DrawRadioItem(groupValue: groupValue,
           label: radio.label, value: radio.label, parent: this.name);
 
       children.add(newRadio);
@@ -79,6 +82,7 @@ class IFormDrawRadioGroup extends IFormModel {
       );
 
     return DrawRadioGroup(
+      value: groupValue,
         label: this.label,
         name: this.name,
         required: this.required,

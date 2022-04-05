@@ -51,7 +51,7 @@ class DrawTextField extends  FormElement {
             child: visible! ? TextFormField(
               initialValue: value,
               onChanged: (value){
-                context.read<ValidationBloc>().add(TextFieldValueChanged(value,textFieldName: this.name));
+                this.value = value;
               },
               autofocus: true,
               autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -83,7 +83,6 @@ class IFormFilePicker implements IFormModel {
       showIfValueSelected: json['showIfLogicCheckbox'],
       name: json['name'],
       maxFileSize: json['maxFileSize'],
-        visible: json['showIfLogicCheckbox'] == true ? false : true,
       deactivate: json['deactivate'],
       fileType: fileTypeEnumValues.map![json['fileType']]!,
     );
@@ -92,6 +91,7 @@ class IFormFilePicker implements IFormModel {
   @override
   FormElement toWidget({parameters}) {
     return DrawFilePicker(
+      value:  value,
       label: this.label,
       required: this.required,
       showIfIsRequired: this.showIfIsRequired,
@@ -100,7 +100,7 @@ class IFormFilePicker implements IFormModel {
       isReadOnly: this.isReadOnly,
       showIfValueSelected: this.showIfValueSelected,
       name: this.name,
-      visible: this.visible,
+      visible: this.showIfValueSelected == true && value == null ? false : true,
       deactivate: this.deactivate,
       maxFileSize: this.maxFileSize,
       fileType: this.fileType,

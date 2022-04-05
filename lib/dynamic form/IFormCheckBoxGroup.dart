@@ -50,7 +50,7 @@ class IFormCheckBoxGroup implements IFormModel {
   bool other;
   @HiveField(15)
 
-  List<CheckboxItem> values;
+  List<CheckboxItem> children;
 
 
   @HiveField(16)
@@ -63,9 +63,10 @@ class IFormCheckBoxGroup implements IFormModel {
     required this.deactivate,
     required this.isHidden,
     required this.required,
-    required this.values,
+    required this.children,
     required this.isReadOnly,
     this.visible,
+    this.value,
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
@@ -94,7 +95,7 @@ class IFormCheckBoxGroup implements IFormModel {
       minCheckedAllowed: parameters['minMaxCheckbox'] ? parameters['checkboxMinValue'] : null ,
       maxCheckedAllowed: parameters['minMaxCheckbox'] ? parameters['checkboxMaxValue'] : null,
         other: parameters['other'],
-      values: List<CheckboxItem>.from(parameters['values'].map((e) => CheckboxItem.FromJson(e , parameters['name'])).toList())
+      children: List<CheckboxItem>.from(parameters['values'].map((e) => CheckboxItem.FromJson(e , parameters['name'])).toList())
 
     );
   }
@@ -106,6 +107,17 @@ class IFormCheckBoxGroup implements IFormModel {
   @override
   FormElement toWidget() {
 
+    List<DrawCheckboxGroupItem> widgetChildrenList = [ ];
+    for(var child in this.children){
+      var newCheckBoxWidget = child.toWidget() as DrawCheckboxGroupItem ;
+
+      if(value!= null ){
+        var values = value as List<String>;
+        values.contains(newCheckBoxWidget.value) ?  newCheckBoxWidget.isChecked = true :         newCheckBoxWidget.isChecked = false;
+      }
+      widgetChildrenList.add(newCheckBoxWidget);
+
+    }
 
 
 
@@ -117,11 +129,12 @@ class IFormCheckBoxGroup implements IFormModel {
         showIfFieldValue: this.showIfFieldValue,
         showIfValueSelected: this.showIfValueSelected,
         name: this.name,
+        value: this.value ?? <String>[],
         deactivated: this.deactivate,
         visible:  this.showIfValueSelected == true  ? false : true,
         isHidden: this.isHidden,
         deactivate: this.deactivate,
-        children: this.values.map((e) => e.toWidget() as DrawCheckboxGroupItem).toList(),
+        children: widgetChildrenList,
         minMaxCheckbox: this.minMaxCheckbox,
         maxCheckedAllowed: this.maxCheckedAllowed,
         minCheckedAllowed: this.minCheckedAllowed,

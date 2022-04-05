@@ -10,6 +10,7 @@ class DrawNumberField extends FormElement with FormValidation {
       {Key? key,
         required this.label,
          this.visible,
+         this.value,
         required this.required,
         required this.name,
         required this.showIfValueSelected,
@@ -30,7 +31,7 @@ class DrawNumberField extends FormElement with FormValidation {
   final bool showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
-
+  dynamic value;
   final Expression expression;
 
   @override
@@ -38,6 +39,10 @@ class DrawNumberField extends FormElement with FormValidation {
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
+        initialValue: value,
+        onChanged: (value){
+          this.value = value;
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: TextInputType.number,
         validator: (number) {
