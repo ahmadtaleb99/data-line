@@ -1,6 +1,7 @@
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/dynamic%20form/FormModel.dart';
   import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
   import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
   import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
@@ -13,7 +14,7 @@ import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 abstract class FormApi {
 
-  Future<List<IFormModel>> getFormElements( );
+  Future<List<FormModel>> getFormElements( );
 
   void saveFormElements();
 

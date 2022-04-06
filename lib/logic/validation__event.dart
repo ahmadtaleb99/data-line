@@ -32,7 +32,7 @@ class MultiSelectItemRemoved extends ValidationEvent {
     required this.select,
   });
 }
-class StateFormRequested extends ValidationEvent {
+class FormsRequested extends ValidationEvent {
 
 
 
@@ -54,6 +54,22 @@ class FormSubmitted extends ValidationEvent {
 }
 
 class ServiceRegistered extends ValidationEvent {
+}
+
+class SubmittionsFormsRequested extends ValidationEvent {
+  String formName;
+
+  SubmittionsFormsRequested({
+    required this.formName,
+  });
+}
+
+class FormUpdateRequested extends ValidationEvent {
+  String formName;
+
+  FormUpdateRequested({
+    required this.formName,
+  });
 }
 
 

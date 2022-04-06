@@ -13,8 +13,10 @@ class ValidationState {
   List<DrawChildList> ? childLists;
 
   List<FormWidget> ? forms;
+  List<FormWidget> ? subedForms;
   FormWidget ?   form;
   FormModel ?   formModel;
+  bool ?   islocallyWorking;
 
 
 
@@ -34,6 +36,8 @@ class ValidationState {
     this.radioGroup,
     this.childList,
     this.forms,
+    this.subedForms,
+    this.islocallyWorking = false,
     required this.childsMap,
     this.childLists = const [],
   });
@@ -48,6 +52,9 @@ class ValidationState {
     DrawRadioGroup ? radioGroup,
     List<FormWidget> ? forms,
     FormModel ?   formModel,
+    List<FormWidget> ? subedForms,
+
+    bool ?   islocallyWorking,
 
     List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,
@@ -66,6 +73,8 @@ class ValidationState {
         childsMap: childsMap ?? this.childsMap,
         forms: forms ?? this.forms,
         formModel: formModel ?? this.formModel,
+        subedForms: subedForms ?? this.subedForms,
+        islocallyWorking: islocallyWorking ?? this.islocallyWorking,
         initialMulti: initialMulti ?? this.initialMulti
     );
   }

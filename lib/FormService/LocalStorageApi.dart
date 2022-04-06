@@ -18,36 +18,45 @@ import 'package:hive/hive.dart';
 
 class LocalStorageApi  extends FormApi{
 
-    late  Box<FormModel>   _formBox;
+    late  Box <FormModel>   _formBox;
+    late  Box<List<FormModel>>   _availableBox;
 
-    LocalStorageApi() {
-      Hive.registerAdapter(FormModelAdapter());
-      Hive.registerAdapter(CheckboxItemAdapter());
-      Hive.registerAdapter(DropDownItemAdapter());
-      Hive.registerAdapter(IFormCheckBoxGroupAdapter());
-      Hive.registerAdapter(IFormDrawRadioGroupAdapter());
-      Hive.registerAdapter(IFormDropListAdapter());
-      Hive.registerAdapter(IFormEmailAdapter());
-      Hive.registerAdapter(IFormFilePickerAdapter());
-      Hive.registerAdapter(IFormNumberAdapter());
-      Hive.registerAdapter(IFormTextAreaAdapter());
-      Hive.registerAdapter(IFormTextFieldAdapter());
-      Hive.registerAdapter(RadioItemAdapter());
-      Hive.registerAdapter(FileTypeEnumAdapter());
-      Hive.registerAdapter(ExpressionAdapter());
-      Hive.registerAdapter(OperatorAdapter());
-                init();
+    Box<List<FormModel>> get listBox => _availableBox;
+
+  set listBox(Box<List<FormModel>> value) {
+    _availableBox = value;
+  }
+
+  LocalStorageApi() {
+
 
     }
 
   Future<void> init() async {
+    Hive.registerAdapter(FormModelAdapter());
+    Hive.registerAdapter(CheckboxItemAdapter());
+    Hive.registerAdapter(DropDownItemAdapter());
+    Hive.registerAdapter(IFormCheckBoxGroupAdapter());
+    Hive.registerAdapter(IFormDrawRadioGroupAdapter());
+    Hive.registerAdapter(IFormDropListAdapter());
+    Hive.registerAdapter(IFormEmailAdapter());
+    Hive.registerAdapter(IFormFilePickerAdapter());
+    Hive.registerAdapter(IFormNumberAdapter());
+    Hive.registerAdapter(IFormTextAreaAdapter());
+    Hive.registerAdapter(IFormTextFieldAdapter());
+    Hive.registerAdapter(RadioItemAdapter());
+    Hive.registerAdapter(FileTypeEnumAdapter());
+    Hive.registerAdapter(ExpressionAdapter());
+    Hive.registerAdapter(OperatorAdapter());
    _formBox  = await Hive.openBox<FormModel>('form');
+   _availableBox   = await Hive.openBox('available');
+
 
   }
 
 
   @override
-  Future<List<IFormModel>> getFormElements() {
+  Future<List<FormModel>> getFormElements() {
 
     throw UnimplementedError();
   }
@@ -57,23 +66,43 @@ class LocalStorageApi  extends FormApi{
 
 
 
+    Future<List<FormModel>> getAvailableForms() async {
+      var list = await  _availableBox.get('available') as List<FormModel> ;
+      return list ;
+    }
+
+  Future<void> addAvailableForms(List<FormModel> availableForms) async {
+   await  _availableBox.put('available', availableForms) ;
+  }
+
+
+
 
 
     
-  void saveForm(FormModel formModel) {
-          _formBox.add(formModel);
+       void updateSubmittedForm(FormModel submittedForm) {
+         final form = _formBox.values.firstWhere((element) => element == submittedForm);
+         final index = form.key as int ;
+          _formBox.put(index,submittedForm);
+    }
+
+
+
+    Future<void> addSubmittedForm(FormModel submittedForm) async {
+
+      await  _formBox.add( submittedForm) ;
+    }
+
+
+
+    List<FormModel> getAllSubmissionByName(String formName) {
+    return _formBox.values.where((element) => element.name == formName).toList();
   }
 
 
-
-  List<FormModel> getAllForms() {
-    return _formBox.values.toList();
-  }
-
-
-  FormModel getFormByName(String formName) {
-    return _formBox.get(formName,defaultValue: null)!;
-  }
+  // FormModel getFormByName(String formName) {
+  //   return _formBox.get(formName,defaultValue: null)!;
+  // }
 
 
 

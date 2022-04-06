@@ -22,8 +22,6 @@ class FormBloc extends Bloc<FormEvent, BlocFormState> {
   FormBloc( this._formRepository) : super(FormInitial()) {
     on<sd>((event, emit) async {
       emit(FormLoading());
-      var formElements = await _formRepository.LoadForms(event.formId);
-      emit(FormLoaded(formElements: formElements, childsMap: {}));
     });
 
     on<CheckboxGroupValueChanged1>(_onCheckboxGroupValueChanged);

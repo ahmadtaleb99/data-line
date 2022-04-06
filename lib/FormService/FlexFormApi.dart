@@ -11,9 +11,9 @@ class FlexFormApi extends FormApi{
 
 
   @override
-  Future<List<IFormModel>> getFormElements() async {
-    List<IFormModel> forms = [];
-    await Future.delayed(Duration(seconds: 1));
+  Future<List<FormModel>> getFormElements() async {
+    List<FormModel> forms = [];
+    await Future.delayed(Duration(seconds: 2  ));
 
     var data ;
 

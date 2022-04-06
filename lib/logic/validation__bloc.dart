@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -35,7 +36,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
           childsMap: {},
         )) {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
-    on<StateFormRequested>(_onStateFormRequested);
+    on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
     on<ParentDropListChanged>(_onParentDropListChanged);
     on<childDropDownChanged>(_onchildDropDownChanged);
@@ -47,16 +48,24 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormSubmitted>(_onFormSubmitted);
     on<MultiSelectChanged>(_onMultiSelectChanged);
     on<FilePickerPressed>(_onFilePickerPressed);
+    on<SubmittionsFormsRequested>(_onSubmittionsFormsRequested);
+    on<FormUpdateRequested>(_onFormUpdateRequested);
   }
 
-  Future<void> _onStateFormRequested(
-      StateFormRequested event, Emitter<ValidationState> emit) async {
-    emit(state.copyWith(status: Status.loading));
-    var forms = await _formRepository.LoadFormsModel();
+  Future<void> _onFormsRequested(
+      FormsRequested event, Emitter<ValidationState> emit) async {
+    try{
+      emit(state.copyWith(status: Status.loading));
+      var forms = await _formRepository.LoadFormsModel();
 
-    emit(state.copyWith(
-        status: Status.success,
-        forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
+      emit(state.copyWith(
+          status: Status.success,
+          forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
+    }
+    on SocketException {
+      emit(state.copyWith(islocallyWorking: true));
+      add(FormsRequestedFromLocal());
+    }
   }
 
   void _onMultiSelectChanged(
@@ -73,27 +82,52 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
-    emit(state.copyWith(status: Status.loading));
-    await _formRepository.initLocal();
-    var forms = await _formRepository.getForms();
-    for(var kza in forms )
-      print(kza.fields.first.value);
+    var forms = await _formRepository.getAvailableFormsFromLocal();
+
     emit(state.copyWith(
         status: Status.success,
         forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
   }
 
+
+
   Future<void> _onServiceRegistered(
       ServiceRegistered event, Emitter<ValidationState> emit) async {
-    add(FormsRequestedFromLocal());
+    await _formRepository.initLocal();
   }
+  Future<void> _onSubmittionsFormsRequested(
+      SubmittionsFormsRequested event, Emitter<ValidationState> emit) async {
+
+
+
+   var forms =  _formRepository.getAllSubmissionByName(event.formName);
+   emit(state.copyWith(subedForms:
+   forms.map((e) => e.toWidget() as FormWidget).toList()
+   ));
+
+  }
+
+
+  Future<void> _onFormUpdateRequested(
+      FormUpdateRequested event, Emitter<ValidationState> emit) async {
+    print('fast');
+
+    var formModel = _formRepository.up
+
+    print('form model state : ${formModel.fields.first.value}');
+    emit(state.copyWith(
+        form: formModel.toWidget() as FormWidget,
+        status: Status.success,
+        formModel: formModel));
+  }
+
 
   Future<void> _onFormRequested(
       FormRequested event, Emitter<ValidationState> emit) async {
-    var formModel = _formRepository.formsModel
+
+    var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName);
 
-    print('form model state : ${formModel.fields.first.value}');
     emit(state.copyWith(
         form: formModel.toWidget() as FormWidget,
         status: Status.success,
@@ -218,7 +252,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   }
 
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
-    var formModel = _formRepository.formsModel
+    var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName);
     for (int i = 0; i < formModel.fields.length; i++){
       print(formModel.fields[i].value.toString());
@@ -226,7 +260,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       formModel.fields[i].value = state.form!.fields[i].value;
     }
 
-    _formRepository.saveToLocal(formModel);
+    _formRepository.addSubmittedForm(formModel);
   }
 
   void _onFilePickerPressed(FilePickerPressed event, Emitter<ValidationState> emit) async {

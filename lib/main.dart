@@ -22,12 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => FormRepository(),
+      create: (context) => FormRepository() ..initLocal(),
       child: BlocProvider(
         create: (context) => ValidationBloc(context.read<FormRepository>())
-          ..add(ServiceRegistered())
+                  ..add(FormsRequested()),
 
-          ,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: HomeScreen(),

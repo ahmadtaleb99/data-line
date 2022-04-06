@@ -44,7 +44,7 @@ IFormModel? getType(String type, dynamic json) {
   }
 }
 @HiveType(typeId: 35)
-class FormModel implements IFormModel {
+class FormModel extends HiveObject implements IFormModel {
   @HiveField(1)
   String name;
 

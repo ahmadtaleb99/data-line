@@ -5,10 +5,10 @@ import 'FormService/FormRepository.dart';
 import 'Widgets/DrawForm.dart';
 import 'logic/validation__bloc.dart';
 
-class Form1Page extends StatelessWidget {
+class UpdateFormPage extends StatelessWidget {
 
    FormWidget form;
-   Form1Page ({Key? key, required this.form}) : super(key: key);
+   UpdateFormPage ({Key? key, required this.form}) : super(key: key);
   late GlobalKey<FormState> _key;
 
   @override
