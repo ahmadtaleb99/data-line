@@ -112,7 +112,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       FormUpdateRequested event, Emitter<ValidationState> emit) async {
     print('fast');
 
-    var formModel = _formRepository.up
+    var formModel = _formRepository.submittedForms[event.index];
 
     print('form model state : ${formModel.fields.first.value}');
     emit(state.copyWith(

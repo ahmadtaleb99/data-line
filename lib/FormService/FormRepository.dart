@@ -30,10 +30,12 @@ class FormRepository {
 
   List<FormWidget> _forms = [];
   List<FormModel> _formsModel = [];
+  List<FormModel> _submittedForms = [];
 
   List<FormWidget> get forms => _forms;
   List<FormModel> get formsModel => _formsModel;
   List<FormModel> get availableForms => _availableForms;
+  List<FormModel> get submittedForms => _submittedForms;
 
   List<FormModel> _availableForms = [];
 
@@ -67,7 +69,8 @@ class FormRepository {
 
 
   List<FormModel> getAllSubmissionByName(String formName){
-    return _localApi.getAllSubmissionByName(formName);
+    _submittedForms = _localApi.getAllSubmissionByName(formName);
+     return _submittedForms;
   }
 
 
