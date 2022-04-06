@@ -4,7 +4,7 @@ part of 'validation__bloc.dart';
 
 @immutable
 enum Status {initial,loading,success,failure}
-class ValidationState {
+class ValidationState{
   Status status;
   DrawCheckboxGroup ? drawCheckboxGroup;
   DrawDropDown ? drawDropDownButton;
@@ -14,7 +14,7 @@ class ValidationState {
 
   List<FormWidget> ? forms;
   List<FormWidget> ? subedForms;
-  FormWidget ?   form;
+  FormWidget  ?   form;
   FormModel ?   formModel;
   bool ?   islocallyWorking;
 
@@ -79,7 +79,6 @@ class ValidationState {
     );
   }
 
-// List<Object?> get props => [formElements,drawCheckboxGroup,radioGroup,childsMap,childLists,drawDropDownButton];
 
 
 }

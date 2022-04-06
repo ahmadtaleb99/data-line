@@ -40,25 +40,28 @@ class SubmittionsPage extends StatelessWidget {
                 builder: (context, state) {
                   return Expanded(
                     child: ListView.builder(
-                        itemCount: state.subedForms!.length, itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10,
-                            horizontal: 30),
-                        child: SubmittionCard(onUpdateCallBack: () {
-                          context.read<ValidationBloc>().add(FormUpdateRequested(formName: this.form.name, index: index,context: context));
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => UpdateFormPage(
-                          //           form: state.form!,
-                          //         )));
-                        }, onViewCallBack: () {
-
-                        }, onDeleteCallBack: () {
-
-                        },),
-                      );
-                    }),
+                        itemCount: state.subedForms!.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 30),
+                            child: SubmittionCard(
+                              onUpdateCallBack: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UpdateFormPage(
+                                            index: index,
+                                            form: state.subedForms![index])));
+                              },
+                              onViewCallBack: () {},
+                              onDeleteCallBack: () {
+                                context.read<ValidationBloc>().add(FormDeleted(
+                                    formName: state.subedForms![index].name));
+                              },
+                            ),
+                          );
+                        }),
                   );
                 },
               ),
@@ -68,12 +71,16 @@ class SubmittionsPage extends StatelessWidget {
   }
 }
 
-
 class SubmittionCard extends StatelessWidget {
-  const SubmittionCard({Key? key,required this.onDeleteCallBack,required this.onViewCallBack, required this.onUpdateCallBack}) : super(key: key);
-final void Function()? onDeleteCallBack;
-final void Function()? onViewCallBack;
-final void Function()? onUpdateCallBack;
+  const SubmittionCard(
+      {Key? key,
+      required this.onDeleteCallBack,
+      required this.onViewCallBack,
+      required this.onUpdateCallBack})
+      : super(key: key);
+  final void Function()? onDeleteCallBack;
+  final void Function()? onViewCallBack;
+  final void Function()? onUpdateCallBack;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,14 +110,12 @@ final void Function()? onUpdateCallBack;
                       )),
                   IconButton(
                       onPressed: onUpdateCallBack,
-
                       icon: Icon(
                         Icons.edit,
                         color: Colors.white,
                       )),
                   IconButton(
                       onPressed: onDeleteCallBack,
-
                       icon: Icon(
                         Icons.delete_rounded,
                         color: Colors.white,

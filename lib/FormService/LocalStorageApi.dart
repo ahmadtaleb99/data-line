@@ -103,10 +103,10 @@ class LocalStorageApi  extends FormApi{
   // FormModel getFormByName(String formName) {
   //   return _formBox.get(formName,defaultValue: null)!;
   // }
+      void deleteForm(FormModel form) {
+              print(_formBox.keys.toList().toString());
 
-
-
-
-
-
-}
+          final formToDelete = _formBox.values.firstWhere((element) => element == form);
+          final index = formToDelete.key as int ;
+            _formBox.delete(index);
+    }}

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:form_builder_test/SubmitFormPage.dart';
+import 'package:form_builder_test/NewSubmitPage.dart';
 import 'package:form_builder_test/SubmittionsPage.dart';
 
 import 'form2Page.dart';
@@ -66,15 +66,18 @@ class HomeScreen extends StatelessWidget {
                               return FormCard(
                                 formName : state.forms![index].name,
                                 submitNewFormCallBack: () {
-                                  Navigator.push(
+                                   context.read<ValidationBloc>()
+                                      .add(FormRequested(formName: state.forms![index].name));
+
+                                 Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => SubmitFormPage(
+                                          builder: (context) => NewSubmitPage(
                                             form: state.forms![index],
                                           )));
 
-                                  context.read<ValidationBloc>()
-                                      .add(FormRequested(formName: state.forms![index].name));
+                                  // print(state.form!.value);
+
                                 },
                                 viewSubmittedCallBack: () {
                                   Navigator.push(

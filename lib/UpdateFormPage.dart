@@ -8,8 +8,9 @@ import 'logic/validation__bloc.dart';
 class UpdateFormPage extends StatelessWidget {
 
    FormWidget form;
-   UpdateFormPage ({Key? key, required this.form}) : super(key: key);
+   UpdateFormPage ({Key? key, required this.form,required this.index}) : super(key: key);
   late GlobalKey<FormState> _key;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class UpdateFormPage extends StatelessWidget {
           onPressed: () {
 
             if (form.validate()) {
-              context.read<ValidationBloc>().add(FormSubmitted(formName: this.form.name));
+              context.read<ValidationBloc>().add(FormUpdated(formName: form.name, index: this.index));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));
             // context.read<FormRepository>().savetoLocal();
             // context.read<FormRepository>().getForm();
@@ -47,12 +48,12 @@ class UpdateFormPage extends StatelessWidget {
   if (state.status == Status.loading)
   return CircularProgressIndicator();
   else if (state.status == Status.success) {
-    form = state.form!;
+    // form = state.form!;
   return Padding(
   padding:
   const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
   child: Column(
-  children: [state.form!],
+  children: [form],
 
   ),
   );

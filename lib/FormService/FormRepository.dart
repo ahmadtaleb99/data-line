@@ -76,7 +76,9 @@ class FormRepository {
 
 
 
-
+      void deleteForm(FormModel form){
+          _localApi.deleteForm(form);
+      }
 
 
 

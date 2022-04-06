@@ -56,6 +56,17 @@ class FormSubmitted extends ValidationEvent {
 class ServiceRegistered extends ValidationEvent {
 }
 
+
+class FormUpdated extends ValidationEvent {
+  String formName;
+  int index;
+  FormUpdated({required this.formName,required this.index});
+
+}
+
+
+
+
 class SubmittionsFormsRequested extends ValidationEvent {
   String formName;
 
@@ -64,12 +75,20 @@ class SubmittionsFormsRequested extends ValidationEvent {
   });
 }
 
-class FormUpdateRequested extends ValidationEvent {
+class FormDeleted extends ValidationEvent {
+  String formName;
+
+  FormDeleted({
+    required this.formName,
+  });
+}
+
+class FormUpdatePageRequested extends ValidationEvent {
   String formName;
   int index;
   BuildContext context;
 
-  FormUpdateRequested({
+  FormUpdatePageRequested({
     required this.formName,
     required this.index,
     required this.context,

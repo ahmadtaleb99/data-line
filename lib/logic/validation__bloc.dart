@@ -51,11 +51,14 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<MultiSelectChanged>(_onMultiSelectChanged);
     on<FilePickerPressed>(_onFilePickerPressed);
     on<SubmittionsFormsRequested>(_onSubmittionsFormsRequested);
-    on<FormUpdateRequested>(_onFormUpdateRequested);
+    on<FormUpdatePageRequested>(_onFormUpdatePageRequested);
+    on<FormUpdated>(_onFormUpdated);
+    on<FormDeleted>(_onFormDeleted);
   }
 
   Future<void> _onFormsRequested(
       FormsRequested event, Emitter<ValidationState> emit) async {
+    print('forms req event');
     try{
       emit(state.copyWith(status: Status.loading));
       var forms = await _formRepository.LoadFormsModel();
@@ -110,37 +113,57 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   }
 
 
-  Future<void> _onFormUpdateRequested(
-      FormUpdateRequested event, Emitter<ValidationState> emit) async {
+  Future<void> _onFormUpdatePageRequested(
+      FormUpdatePageRequested event, Emitter<ValidationState> emit) async {
     print('fast');
 
     var formModel = _formRepository.submittedForms[event.index];
-
-    print('form model state : ${formModel.fields.first.value}');
+    var formWidget  = formModel.toWidget() as FormWidget;
     emit(state.copyWith(
-        form: formModel.toWidget() as FormWidget,
+        form: formWidget,
         status: Status.success,
         formModel: formModel));
-    Navigator.push(
-        event.context,
-        MaterialPageRoute(
-            builder: (context) => UpdateFormPage(
-              form: state.form!,
-            )));
+
+  }
+
+  Future<void> _onFormUpdated(
+      FormUpdated event, Emitter<ValidationState> emit) async {
+
+    var formModel = _formRepository.submittedForms
+        .firstWhere((element) => element.name == event.formName);
+    for (int i = 0; i < formModel.fields.length; i++){
+      formModel.fields[i].value = state.subedForms![event.index].value;
+    }
+
+    _formRepository.updateSubmission(formModel);
   }
 
 
   Future<void> _onFormRequested(
       FormRequested event, Emitter<ValidationState> emit) async {
+    print('1 form req event');
 
     var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName);
-
+    print(formModel.value);
+    var form = formModel.toWidget() as FormWidget;
+    print(form.fields);
     emit(state.copyWith(
-        form: formModel.toWidget() as FormWidget,
+        form: form,
         status: Status.success,
         formModel: formModel));
   }
+
+  Future<void> _onFormDeleted(
+      FormDeleted event, Emitter<ValidationState> emit) async {
+
+    var formModel = _formRepository.submittedForms
+        .firstWhere((element) => element.name == event.formName);
+
+    _formRepository.deleteForm(formModel);
+    emit(state.copyWith());
+  }
+
 
   void _onCheckboxGroupValueChanged(
       CheckboxGroupValueChanged event, Emitter<ValidationState> emit) {

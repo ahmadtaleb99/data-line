@@ -5,10 +5,10 @@ import 'FormService/FormRepository.dart';
 import 'Widgets/DrawForm.dart';
 import 'logic/validation__bloc.dart';
 
-class SubmitFormPage extends StatelessWidget {
+class NewSubmitPage extends StatelessWidget {
 
    FormWidget form;
-   SubmitFormPage ({Key? key, required this.form}) : super(key: key);
+   NewSubmitPage ({Key? key, required this.form}) : super(key: key);
   late GlobalKey<FormState> _key;
 
   @override
