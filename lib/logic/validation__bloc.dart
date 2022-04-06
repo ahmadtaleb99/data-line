@@ -25,6 +25,8 @@ import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
 
+import '../UpdateFormPage.dart';
+
 part 'validation__event.dart';
 part 'validation__state.dart';
 
@@ -119,6 +121,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         form: formModel.toWidget() as FormWidget,
         status: Status.success,
         formModel: formModel));
+    Navigator.push(
+        event.context,
+        MaterialPageRoute(
+            builder: (context) => UpdateFormPage(
+              form: state.form!,
+            )));
   }
 
 

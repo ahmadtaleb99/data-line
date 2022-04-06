@@ -45,13 +45,13 @@ class SubmittionsPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10,
                             horizontal: 30),
                         child: SubmittionCard(onUpdateCallBack: () {
-                          context.read<ValidationBloc>().add(FormUpdateRequested(formName: this.form.name, index: index));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UpdateFormPage(
-                                    form: state.form!,
-                                  )));
+                          context.read<ValidationBloc>().add(FormUpdateRequested(formName: this.form.name, index: index,context: context));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => UpdateFormPage(
+                          //           form: state.form!,
+                          //         )));
                         }, onViewCallBack: () {
 
                         }, onDeleteCallBack: () {

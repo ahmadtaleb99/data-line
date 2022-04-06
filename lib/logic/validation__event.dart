@@ -67,10 +67,12 @@ class SubmittionsFormsRequested extends ValidationEvent {
 class FormUpdateRequested extends ValidationEvent {
   String formName;
   int index;
+  BuildContext context;
 
   FormUpdateRequested({
     required this.formName,
     required this.index,
+    required this.context,
   });
 }
 
