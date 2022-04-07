@@ -293,12 +293,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
     var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName).copyWith();
-
+    var  stateForm = state.form!;
     for (int i = 0; i < formModel.fields.length; i++){
       print(formModel.fields[i].value.toString());
       print(state.form!.fields[i].value.toString());
-      formModel.fields[i].value = state.form!.fields[i].value;
+      formModel.fields[i].value = stateForm.fields[i].value;
     }
+
 
     _formRepository.addSubmittedForm(formModel);
   }

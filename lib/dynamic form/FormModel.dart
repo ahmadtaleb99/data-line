@@ -99,10 +99,13 @@ class FormModel extends HiveObject implements IFormModel {
     dynamic? value,
     List<FormElement>? fieldsList,
   }) {
+    var fieldss = this.fields;
+    fieldss!.first = (fieldss.first as IFormTextField).copyWith(value: 'null');
+
     return FormModel(
       name: name ?? this.name,
       directionality: directionality ?? this.directionality,
-      fields: this.fields.map((e) => e),
+      fields: fieldss,
       value: value ?? this.value,
     );
   }

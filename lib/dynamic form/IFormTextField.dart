@@ -53,6 +53,7 @@ class IFormTextField implements IFormModel {
     required this.required,
     required this.isReadOnly,
     this.visible,
+    this.value,
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
@@ -72,17 +73,48 @@ class IFormTextField implements IFormModel {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IFormTextField &&
+          runtimeType == other.runtimeType &&
+          label == other.label &&
+          name == other.name &&
+          deactivate == other.deactivate &&
+          isHidden == other.isHidden &&
+          required == other.required &&
+          isReadOnly == other.isReadOnly &&
+          visible == other.visible &&
+          showIfValueSelected == other.showIfValueSelected &&
+          showIfFieldValue == other.showIfFieldValue &&
+          showIfIsRequired == other.showIfIsRequired &&
+          value == other.value;
+
+  @override
+  int get hashCode =>
+      label.hashCode ^
+      name.hashCode ^
+      deactivate.hashCode ^
+      isHidden.hashCode ^
+      required.hashCode ^
+      isReadOnly.hashCode ^
+      visible.hashCode ^
+      showIfValueSelected.hashCode ^
+      showIfFieldValue.hashCode ^
+      showIfIsRequired.hashCode ^
+      value.hashCode;
+
+  @override
   FormElement toWidget({parameters}) {
     return DrawTextField(
 
       label: this.label,
+      value: this.value,
       required: this.required,
       showIfValueSelected: this.showIfValueSelected,
       showIfFieldValue: this.showIfFieldValue,
       showIfIsRequired: this.showIfIsRequired,
       name: this.name,
       visible: this.showIfValueSelected == true && value == null ? false : true,
-      value: this.value,
     );
   }
 
@@ -97,5 +129,32 @@ class IFormTextField implements IFormModel {
     throw UnimplementedError();
   }
 
-
+  IFormTextField copyWith({
+    dynamic? parameters,
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    dynamic? value,
+  }) {
+    return IFormTextField(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      value: value ?? this.value,
+    );
+  }
 }

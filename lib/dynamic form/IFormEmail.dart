@@ -99,6 +99,9 @@ class IFormEmail extends IFormModel {
       'showIfLogicCheckBox': emailFormElement.showIfValueSelected,
       'showIfIsRequired': emailFormElement.showIfIsRequired,
     };
+
+
+
   }
 
 
