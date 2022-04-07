@@ -61,6 +61,8 @@ class FormModel extends HiveObject implements IFormModel {
 
 
   FormModel({
+    this.value,
+
     required this.name,
     required this.directionality,
     required this.fields,
@@ -90,5 +92,18 @@ class FormModel extends HiveObject implements IFormModel {
     return FormWidget(label: name, name: name, fields: fieldsList);
   }
 
-
+  FormModel copyWith({
+    String? name,
+    String? directionality,
+    List<IFormModel>? fields,
+    dynamic? value,
+    List<FormElement>? fieldsList,
+  }) {
+    return FormModel(
+      name: name ?? this.name,
+      directionality: directionality ?? this.directionality,
+      fields: this.fields.map((e) => e),
+      value: value ?? this.value,
+    );
+  }
 }

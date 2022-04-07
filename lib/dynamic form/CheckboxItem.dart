@@ -37,5 +37,15 @@ class CheckboxItem implements IFormModel{
     return DrawCheckboxGroupItem(label: label, value: value, groupName: groupName);
   }
 
-
+  CheckboxItem copyWith({
+    String? label,
+    String? groupName,
+    dynamic? value,
+  }) {
+    return CheckboxItem(
+      label: label ?? this.label,
+      groupName: groupName ?? this.groupName,
+      value: value ?? this.value,
+    );
+  }
 }

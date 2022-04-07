@@ -3,7 +3,7 @@
 part of 'validation__bloc.dart';
 
 @immutable
-enum Status {initial,loading,success,failure}
+enum Status {initial,loading,success,failure,newFormLoaded}
 class ValidationState{
   Status status;
   DrawCheckboxGroup ? drawCheckboxGroup;

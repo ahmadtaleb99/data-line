@@ -50,11 +50,21 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  BlocBuilder<ValidationBloc, ValidationState>(
+                  BlocConsumer<ValidationBloc, ValidationState>(
+                    listener: (context,state){
+                       if (state.status == Status.newFormLoaded )
+
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => NewSubmitPage(
+                      form: state.form!,
+                      )));
+                    },
                     builder: (context, state) {
                       if (state.status == Status.loading)
                         return CircularProgressIndicator();
-                      else if (state.status == Status.success) {
+                      else if (state.status == Status.success ) {
                         if (state.forms!.isEmpty) {
                           return Text('There are no submitted forms yet. ');
                         }
@@ -65,17 +75,17 @@ class HomeScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return FormCard(
                                 formName : state.forms![index].name,
-                                submitNewFormCallBack: () {
+                                submitNewFormCallBack: () async {
                                    context.read<ValidationBloc>()
-                                      .add(FormRequested(formName: state.forms![index].name));
+                                    .add(FormRequested(formName: state.forms![index].name));
 
-                                 Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NewSubmitPage(
-                                            form: state.forms![index],
-                                          )));
 
+                                   Navigator.push(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (context) => NewSubmitPage(
+                                             form: state.forms![index],
+                                           )));
                                   // print(state.form!.value);
 
                                 },
@@ -122,8 +132,8 @@ class HomeScreen extends StatelessWidget {
                                     childAspectRatio: 1),
                           ),
                         );
-                      } else
-                        return Container();
+                      }
+                      else  return Container();
                     },
                   ),
                   SizedBox(

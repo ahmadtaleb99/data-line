@@ -46,4 +46,16 @@ class DropDownItem  extends  IFormModel {
     // TODO: implement getFormElement
     throw UnimplementedError();
   }
+
+  DropDownItem copyWith({
+    String? parent,
+    dynamic? value,
+    String? status,
+  }) {
+    return DropDownItem(
+      parent: parent ?? this.parent,
+      value: value ?? this.value,
+      status: status ?? this.status,
+    );
+  }
 }

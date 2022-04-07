@@ -34,6 +34,7 @@ class DrawTextField extends  FormElement {
 
   @override
   Widget build(BuildContext context) {
+    print('value [$value] in text field class ');
     return Padding(
 
       padding: this.visible == true ?   const EdgeInsets.only(top: 20) :  const EdgeInsets.only(top: 0),

@@ -1,9 +1,13 @@
 void main () {
 
 
-  var array = [5,2,6];
-  print(array);
+ var person = Person(name: 'ahmad');
+ var person2 = Person(name: 'k');
 
+person2 = person;
+
+person.name = 'ss';
+print(person2.name);
 
 }
 
@@ -21,3 +25,35 @@ class Person {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

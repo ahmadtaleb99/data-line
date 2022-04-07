@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/dynamic%20form/FormModel.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
 class FormWidget extends FormElement {
@@ -42,6 +43,13 @@ class FormWidget extends FormElement {
       },
     );
   }
+
+//
+// FormModel  toFormModel(){
+//     return FormModel(name: name, directionality:'', fields: this.fields)
+// }
+
+
 }
 
 
