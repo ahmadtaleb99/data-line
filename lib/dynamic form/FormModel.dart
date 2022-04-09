@@ -43,26 +43,23 @@ IFormModel? getType(String type, dynamic json) {
       return null;
   }
 }
+
 @HiveType(typeId: 35)
 class FormModel extends HiveObject implements IFormModel {
   @HiveField(1)
   String name;
 
   @HiveField(2)
-
   String directionality;
 
   @HiveField(3)
-
   List<IFormModel> fields;
 
   @HiveField(4)
   dynamic value;
 
-
   FormModel({
     this.value,
-
     required this.name,
     required this.directionality,
     required this.fields,
@@ -99,13 +96,15 @@ class FormModel extends HiveObject implements IFormModel {
     dynamic? value,
     List<FormElement>? fieldsList,
   }) {
-    var fieldss = this.fields;
-    fieldss!.first = (fieldss.first as IFormTextField).copyWith(value: 'null');
 
+    List<IFormModel> list = [];
+    for(var item in this.fields){
+      list.add(item.copyWith());
+    }
     return FormModel(
       name: name ?? this.name,
       directionality: directionality ?? this.directionality,
-      fields: fieldss,
+      fields: list ,
       value: value ?? this.value,
     );
   }

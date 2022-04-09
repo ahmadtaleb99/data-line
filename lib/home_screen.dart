@@ -90,6 +90,11 @@ class HomeScreen extends StatelessWidget {
 
                                 },
                                 viewSubmittedCallBack: () {
+
+                                  context.read<ValidationBloc>()
+                                      .add(SubmittionsFormsRequested(formName: state.forms![index].name));
+
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -97,32 +102,10 @@ class HomeScreen extends StatelessWidget {
                                             form: state.forms![index],
                                           )));
 
-                                  context.read<ValidationBloc>()
-                                      .add(SubmittionsFormsRequested(formName: state.forms![index].name));
+
                                 },
                               );
-                              // return ElevatedButton(
-                              //
-                              //   style: ElevatedButton.styleFrom(
-                              //     elevation: 20,
-                              //     primary: Colors.lightBlueAccent,
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(10)
-                              //     )
-                              //   ),
-                              //   onPressed: () {
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: (context) => Form1Page(
-                              //                   form: state.forms![index],
-                              //                 )));
-                              //     context.read<ValidationBloc>().add(
-                              //         FormRequested(
-                              //             formName: state.forms![index].name));
-                              //   },
-                              //   child: Text(state.forms![index].name.toString(),style: TextStyle(color: Colors.black,fontSize: 15),),
-                              // );
+
                             },
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(

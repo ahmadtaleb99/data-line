@@ -77,6 +77,7 @@ class FormRepository {
 
 
       void deleteForm(FormModel form){
+          _submittedForms.remove(form);
           _localApi.deleteForm(form);
       }
 

@@ -126,7 +126,8 @@ class DrawDropDown extends FormElement {
                                         items: _buildItems(items),
                                         onChanged: (value) {
                                           if(value == this.value) return;
-                                          context.read<ValidationBloc>().add(
+
+                                          else context.read<ValidationBloc>().add(
                                               ParentDropListChanged(
                                                   drawDropDownButton: this,
                                                   parent: value.toString()));

@@ -168,4 +168,45 @@ class IFormCheckBoxGroup implements IFormModel {
       'checkboxMaxValue' : checkBoxGroup.maxCheckedAllowed,
     };
   }
+
+
+
+
+  IFormCheckBoxGroup copyWith({
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    bool? minMaxCheckbox,
+    int? maxCheckedAllowed,
+    int? minCheckedAllowed,
+    bool? other,
+    List<CheckboxItem> ? children,
+    dynamic? value,
+  }) {
+    return IFormCheckBoxGroup(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      value: value ?? this.value,
+      minMaxCheckbox:minMaxCheckbox?? this.minMaxCheckbox,
+      maxCheckedAllowed: maxCheckedAllowed ?? this.maxCheckedAllowed,
+      minCheckedAllowed:minCheckedAllowed ?? this.minCheckedAllowed,
+      other:  other ??this.other,
+      children: children ?? this.children,
+    );
+  }
 }

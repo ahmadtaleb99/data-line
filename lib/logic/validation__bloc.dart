@@ -54,6 +54,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormUpdatePageRequested>(_onFormUpdatePageRequested);
     on<FormUpdated>(_onFormUpdated);
     on<FormDeleted>(_onFormDeleted);
+    on<FormUpdateRequested>(_onFormUpdateRequested);
   }
 
   Future<void> _onFormsRequested(
@@ -126,19 +127,24 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   }
 
+
+
   Future<void> _onFormUpdated(
       FormUpdated event, Emitter<ValidationState> emit) async {
 
-    var formModel = _formRepository.submittedForms
-        .firstWhere((element) => element.name == event.formName);
+    var formModel = _formRepository.submittedForms[event.index];
     for (int i = 0; i < formModel.fields.length; i++){
-      formModel.fields[i].value = state.subedForms![event.index].value;
+      formModel.fields[i].value = state.form!.fields[i].value;
     }
 
-    _formRepository.updateSubmission(formModel);
-  }
-  void hrll(){
 
+
+    _formRepository.updateSubmission(formModel);
+
+    emit(state.copyWith(
+        form: formModel.toWidget() as FormWidget,
+        status: Status.success
+      ));
   }
 
 
@@ -147,11 +153,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   Future<void> _onFormDeleted(
       FormDeleted event, Emitter<ValidationState> emit) async {
 
-    var formModel = _formRepository.submittedForms
-        .firstWhere((element) => element.name == event.formName);
-
+      var formModel = _formRepository.submittedForms[event.index];
     _formRepository.deleteForm(formModel);
-    emit(state.copyWith());
+    var forms = _formRepository.submittedForms;
+    emit(state.copyWith(subedForms:    forms.map((e) => e.toWidget() as FormWidget).toList()
+    ));
   }
 
 
@@ -193,7 +199,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     event.drawDropDownButton.value = event.parent;
 
     for (var childList in childLists) {
-      List<DropDownItem> items = (_formRepository.formsModel
+      List<DropDownItem> items = (_formRepository.availableForms
               .firstWhere((element) => element.name == state.form!.name)
               .fields
               .firstWhere((element) =>
@@ -205,7 +211,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         childList.items =
             items.where((element) => element.parent == event.parent).toList();
         childList.value = null;
-        event.drawDropDownButton.value == event.parent;
       print(childList.items.toString() + '  chil   ');
     }
 
@@ -270,6 +275,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         as DrawTextField;
 
     textField.value = event.value;
+    print('value for text field in bloc ${textField.value}');
   }
 
 
@@ -284,6 +290,21 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     print('FORM MODEL FROM AVAILABLE :: '+formModel.fields.first.value.toString());
     var form = formModel.toWidget() as FormWidget;
     print('FORM widget FROM AVAILABLE ::'+form.fields.first.value.toString());
+    print(form.fields.first.value.toString()+' is sisi is sisi si is in form req event');
+    emit(state.copyWith(
+        form: form,
+        formModel: formModel));
+  }
+
+Future<void> _onFormUpdateRequested(
+    FormUpdateRequested event, Emitter<ValidationState> emit) async {
+    print('1 form sub req event');
+
+    var formModel = _formRepository.submittedForms[event.index];
+    print('FORM MODEL FROM AVAILABLE :: '+formModel.fields.first.value.toString());
+    var form = formModel.toWidget() as FormWidget;
+    print('FORM widget FROM AVAILABLE ::'+form.fields.first.value.toString());
+    print(form.fields.first.value.toString()+' is sisi is sisi si is in form req event');
     emit(state.copyWith(
         form: form,
         formModel: formModel));

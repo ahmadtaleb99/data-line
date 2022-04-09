@@ -4,7 +4,6 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'IDrawable.dart';
 class DrawTextField extends  FormElement {
-
   DrawTextField({
     Key ? key,
     required this.label,
@@ -34,6 +33,7 @@ class DrawTextField extends  FormElement {
 
   @override
   Widget build(BuildContext context) {
+
     print('value [$value] in text field class ');
     return Padding(
 
@@ -50,9 +50,11 @@ class DrawTextField extends  FormElement {
               reverseDuration: Duration(milliseconds: 222),
 
             child: visible! ? TextFormField(
+              autocorrect: false,
               initialValue: value,
               onChanged: (value){
-                this.value = value;
+                  this.value = value;
+               // context.read<ValidationBloc>().add(TextFieldValueChanged(value, textFieldName: this.name));
               },
               autofocus: true,
               autovalidateMode: AutovalidateMode.onUserInteraction,

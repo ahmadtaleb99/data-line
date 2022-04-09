@@ -15,29 +15,19 @@ class SubmittionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: ElevatedButton(
-            onPressed: () {
-              if (form.validate()) {
-                context
-                    .read<ValidationBloc>()
-                    .add(FormSubmitted(formName: this.form.name));
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('form is valid ')));
-                // context.read<FormRepository>().savetoLocal();
-                // context.read<FormRepository>().getForm();
 
-              }
-            },
-            child: Text('submit form ')),
         appBar: AppBar(
-          title: Text(form.name),
+          title: Text(form.name+' submissions'),
           centerTitle: true,
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<ValidationBloc, ValidationState>(
                 builder: (context, state) {
+                  if(state.subedForms!.isEmpty)
+                    return Text('There are no submitted forms yet');
                   return Expanded(
                     child: ListView.builder(
                         itemCount: state.subedForms!.length,
@@ -47,6 +37,8 @@ class SubmittionsPage extends StatelessWidget {
                                 vertical: 10, horizontal: 30),
                             child: SubmittionCard(
                               onUpdateCallBack: () {
+                                context.read<ValidationBloc>()
+                                    .add(FormUpdateRequested(formName: state.subedForms![index].name,index: index));
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -54,10 +46,18 @@ class SubmittionsPage extends StatelessWidget {
                                             index: index,
                                             form: state.subedForms![index])));
                               },
-                              onViewCallBack: () {},
+                              onViewCallBack: () {
+                                _formDetailsDialog(context: context,form: state.subedForms![index]);
+                              },
                               onDeleteCallBack: () {
-                                context.read<ValidationBloc>().add(FormDeleted(
-                                    formName: state.subedForms![index].name));
+
+                                _confirmDeleteDialog(context: context,onConfirm: (){
+                                  context.read<ValidationBloc>().add(FormDeleted(index: index,
+                                      formName: state.subedForms![index].name),);
+                                });
+
+
+
                               },
                             ),
                           );
@@ -126,4 +126,114 @@ class SubmittionCard extends StatelessWidget {
       ),
     );
   }
+}
+void _confirmDeleteDialog ({required BuildContext context, void Function()? onConfirm}){
+  showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Center(child: const Text('Please Confirm',style: TextStyle(
+            fontWeight: FontWeight.bold,color: Colors.redAccent
+          ),)),
+          content: const Text('Are you sure to remove this submission?'),
+          actions: [
+           Row(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               ElevatedButton(
+
+                   onPressed: () {
+                     onConfirm!();
+                     // Close the dialog
+                     Navigator.of(context).pop();
+                   }
+                   ,style: ElevatedButton.styleFrom(
+                   shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(20)
+                   ),
+                   primary: Colors.redAccent
+               )
+                   , child: Text('Yes')),
+               SizedBox(width: 20,),
+               ElevatedButton(
+
+                   onPressed: () {
+                     // Close the dialog
+                     Navigator.of(context).pop();
+                   },
+                   style: ElevatedButton.styleFrom(
+                       shape: RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(20)
+                       ),
+                       primary: Colors.lightBlueAccent
+                   )
+                   , child: Text('No')),
+             ],
+           )
+
+          ],
+        );
+      });
+}
+void _formDetailsDialog ({required BuildContext context, void Function()? onConfirm,required FormWidget form}){
+  showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+
+          title: Center(child: const Text('Form Details')),
+          content: Container(
+            height: 300,
+            width: 400,
+            child: ListView.builder(shrinkWrap: true,itemCount: form.fields.length,itemBuilder: (context,index){
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(form.fields[index].label),
+                    Text(form.fields[index].value.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+
+
+                  ],
+
+                ),
+              );
+            }),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                
+            onPressed: (){
+                  Navigator.of(context).pop();
+
+              }
+              ,style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                    primary: Colors.lightBlueAccent
+                  )
+              , child: Text('okay')),
+            )
+          ],
+          // actions: [
+          //   // The "Yes" button
+          //   TextButton(
+          //       onPressed: () {
+          //             onConfirm!();
+          //         // Close the dialog
+          //         Navigator.of(context).pop();
+          //       },
+          //       child: const Text('Yes')),
+          //   TextButton(
+          //       onPressed: () {
+          //         // Close the dialog
+          //         Navigator.of(context).pop();
+          //       },
+          //       child: const Text('No'))
+          // ],
+        );
+      });
 }

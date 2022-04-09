@@ -29,7 +29,7 @@ class UpdateFormPage extends StatelessWidget {
 
             }
           },
-          child: Text('submit form ')),
+          child: Text('Update form ')),
     appBar: AppBar(
 
     ),
@@ -48,12 +48,13 @@ class UpdateFormPage extends StatelessWidget {
   if (state.status == Status.loading)
   return CircularProgressIndicator();
   else if (state.status == Status.success) {
+    form = state.form!;
     // form = state.form!;
   return Padding(
   padding:
   const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
   child: Column(
-  children: [form],
+  children: [state.form!],
 
   ),
   );

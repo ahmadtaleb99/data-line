@@ -64,6 +64,7 @@ class IFormFilePicker implements IFormModel {
     required this.required,
     required this.isReadOnly,
     this.visible,
+    this.value,
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
@@ -118,5 +119,35 @@ class IFormFilePicker implements IFormModel {
     throw UnimplementedError();
   }
 
-  
+  IFormFilePicker copyWith({
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    int? maxFileSize,
+    FileTypeEnum? fileType,
+    dynamic? value,
+  }) {
+    return IFormFilePicker(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      maxFileSize: maxFileSize ?? this.maxFileSize,
+      fileType: fileType ?? this.fileType,
+      value: value ?? this.value,
+    );
+  }
 }

@@ -46,6 +46,16 @@ class FormRequested extends ValidationEvent {
 
 }
 
+class FormUpdateRequested extends ValidationEvent {
+  String formName;
+  int index;
+  FormUpdateRequested({
+    required this.formName,
+    required this.index,
+  });
+
+}
+
 class FormsRequestedFromLocal extends ValidationEvent {
 }
 class FormSubmitted extends ValidationEvent {
@@ -77,9 +87,10 @@ class SubmittionsFormsRequested extends ValidationEvent {
 
 class FormDeleted extends ValidationEvent {
   String formName;
-
+  int index;
   FormDeleted({
     required this.formName,
+    required this.index,
   });
 }
 

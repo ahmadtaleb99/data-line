@@ -50,4 +50,16 @@ class RadioItem implements IFormModel  {
         value: this.value,
     );
   }
+
+  RadioItem copyWith({
+    String? label,
+    String? parent,
+    dynamic? value,
+  }) {
+    return RadioItem(
+      label: label ?? this.label,
+      parent: parent ?? this.parent,
+      value: value ?? this.value,
+    );
+  }
 }

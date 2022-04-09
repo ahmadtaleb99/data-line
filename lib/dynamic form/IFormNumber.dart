@@ -63,6 +63,7 @@ class IFormNumber implements IFormModel {
     this.showIfFieldValue,
     this.showIfIsRequired,
     required this.expression,
+    this.value
   }) ;
 
   factory IFormNumber.fromJson(json) {
@@ -111,5 +112,33 @@ class IFormNumber implements IFormModel {
     throw UnimplementedError();
   }
 
-
+  IFormNumber copyWith({
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    Expression? expression,
+    dynamic? value,
+  }) {
+    return IFormNumber(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      expression: expression ?? this.expression,
+      value: value ?? this.value,
+    );
+  }
 }

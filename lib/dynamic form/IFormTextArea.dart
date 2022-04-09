@@ -45,6 +45,7 @@ class IFormTextArea implements IFormModel {
   @HiveField(13)
   dynamic value;
   IFormTextArea({
+    this.value,
     required this.label,
     required this.name,
     required this.deactivate,
@@ -100,7 +101,35 @@ class IFormTextArea implements IFormModel {
     throw UnimplementedError();
   }
 
-
-
-
+  IFormTextArea copyWith({
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    int? minLength,
+    int? maxLength,
+    dynamic? value,
+  }) {
+    return IFormTextArea(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      minLength: minLength ?? this.minLength,
+      maxLength: maxLength ?? this.maxLength,
+      value: value ?? this.value,
+    );
+  }
 }

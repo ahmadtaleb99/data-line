@@ -47,7 +47,7 @@ class NewSubmitPage extends StatelessWidget {
   if (state.status == Status.loading)
   return CircularProgressIndicator();
   else if (state.status == Status.success) {
-    form = state.form!;
+    form =state.form!;
   return Padding(
   padding:
   const EdgeInsets.symmetric(horizontal: 20,vertical: 20),

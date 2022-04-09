@@ -185,10 +185,48 @@ class IFormDropList  implements IFormModel  {
     required this.isReadOnly,
     required this.relatedToParent,
     this.visible,
+    this.value,
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
   });
+  IFormDropList copyWith({
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? multiple,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    bool? relatedToParent,
+    String? parentName,
+    String? prompt,
+    List<DropDownItem> ?  items ,
 
+    dynamic? value,
+  }) {
+    return IFormDropList(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      value: value ?? this.value,
+      relatedToParent: relatedToParent ?? this.relatedToParent,
+      parentName: parentName ?? this.parentName,
+      items: items ?? this.items,
+      prompt: prompt ?? this.prompt,
+      multiple: multiple ?? this.multiple,
+    );
+  }
 
 }

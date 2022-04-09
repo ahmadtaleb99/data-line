@@ -86,6 +86,7 @@ class IFormDrawRadioGroup extends IFormModel {
         label: this.label,
         name: this.name,
         required: this.required,
+        isOtherSelected: value == 'other',
         other: this.other,
         showIfValueSelected: this.showIfValueSelected,
         showIfIsRequired: this.showIfIsRequired,
@@ -110,9 +111,42 @@ class IFormDrawRadioGroup extends IFormModel {
     required this.required,
     required this.isReadOnly,
     this.visible,
+    this.value,
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
     required this.other,
   });
+
+
+  IFormDrawRadioGroup copyWith({
+    dynamic? parameters,
+    String? label,
+    String? name,
+    bool? deactivate,
+    bool? isHidden,
+    bool? required,
+    bool? isReadOnly,
+    bool? visible,
+    bool? other,
+    bool? showIfValueSelected,
+    String? showIfFieldValue,
+    bool? showIfIsRequired,
+    List<RadioItem>  ? values,
+    dynamic? value,
+  }) {
+    return IFormDrawRadioGroup(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      deactivate: deactivate ?? this.deactivate,
+      isHidden: isHidden ?? this.isHidden,
+      required: required ?? this.required,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      visible: visible ?? this.visible,
+      showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      value: value ?? this.value, other: other ?? this.other, values: values ?? this.values,
+    );
+  }
 }

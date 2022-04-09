@@ -88,6 +88,9 @@ class DrawRadioGroup extends FormElement {
                               ? Padding(
                                 padding: const EdgeInsets.only(right: 100),
                                 child: TextFormField(
+                                  onChanged: (value){
+                                    this.value = value;
+                                  },
                                     decoration:
                                         InputDecoration(label: Text('other')),
                                     autovalidateMode:
