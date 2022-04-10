@@ -30,13 +30,15 @@ class IFormDrawRadioGroupAdapter extends TypeAdapter<IFormDrawRadioGroup> {
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
       other: fields[11] as bool,
-    )..otherValue = fields[14] as String?;
+    )
+      ..otherValue = fields[14] as String?
+      ..isOtherSelected = fields[15] as bool?;
   }
 
   @override
   void write(BinaryWriter writer, IFormDrawRadioGroup obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -64,7 +66,9 @@ class IFormDrawRadioGroupAdapter extends TypeAdapter<IFormDrawRadioGroup> {
       ..writeByte(13)
       ..write(obj.value)
       ..writeByte(14)
-      ..write(obj.otherValue);
+      ..write(obj.otherValue)
+      ..writeByte(15)
+      ..write(obj.isOtherSelected);
   }
 
   @override

@@ -246,8 +246,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
             (element is DrawRadioGroup) && element.name == event.groupName)
         as DrawRadioGroup;
 
-
     radioGroup.value = event.value;
+
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }
@@ -344,7 +344,7 @@ Future<void> _onFormUpdateRequested(
       var formModelField = formModel.fields[i];
       if( widgetFields is DrawRadioGroup && widgetFields.isOtherSelected!){
         var radio  = formModelField as  IFormDrawRadioGroup;
-        radio.otherValue = widgetFields.otherValue;
+        radio.isOtherSelected=true;
       }
 
       formModelField.value = widgetFields.value;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/SubmittionsDetailsPage.dart';
+import 'package:form_builder_test/submissionDetailsPage.dart';
 import 'package:form_builder_test/UpdateFormPage.dart';
 
 import 'FormService/FormRepository.dart';
@@ -36,7 +36,8 @@ class SubmittionsPage extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 30),
-                            child: SubmittionCard(
+                            child: SubmissionCard(
+                              form: state.subedForms![index],
                               onUpdateCallBack: () {
                                 context.read<ValidationBloc>()
                                     .add(FormUpdateRequested(formName: state.subedForms![index].name,index: index));
@@ -75,16 +76,75 @@ class SubmittionsPage extends StatelessWidget {
   }
 }
 
-class SubmittionCard extends StatelessWidget {
-  const SubmittionCard(
+class SubmissionCard extends StatelessWidget {
+
+  List<Widget> _build(){
+    List<Widget> list =[];
+    if(form.fields.length <2)
+    return [
+      Padding(
+        padding: const EdgeInsets.all(33.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          children: [
+            Text(form.fields.first.label,style: TextStyle(
+                fontSize: 20
+            ),),
+            Text(form.fields.first.value.toString(),style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),),
+          ],
+        ),
+      ),
+    ];
+
+  else  {
+    for(int i = 0; i<2 ; i++){
+        var field = form.fields[i];
+
+        list.add(   Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              Text(field.label,style: TextStyle(
+                  fontSize: 20
+              ),),
+              Text(field.value.toString(),style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),),
+            ],
+          ),
+        ),
+        );
+      }
+    return list;
+
+
+    }
+  }
+
+
+
+
+  const SubmissionCard(
       {Key? key,
       required this.onDeleteCallBack,
       required this.onViewCallBack,
+      required this.form,
       required this.onUpdateCallBack})
       : super(key: key);
   final void Function()? onDeleteCallBack;
   final void Function()? onViewCallBack;
   final void Function()? onUpdateCallBack;
+  final  FormWidget form;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -96,36 +156,44 @@ class SubmittionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
-          Expanded(
+            Expanded(
               flex: 5,
-              child: Center(
-                  child: Text('formName',
-                      style: TextStyle(color: Colors.black, fontSize: 18)))),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                 ..._build()
+                  ],
+                ),
+              ),
+            ),
           Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                      onPressed: onViewCallBack,
-                      icon: Icon(
-                        Icons.visibility,
-                        color: Colors.white,
-                      )),
-                  IconButton(
-                      onPressed: onUpdateCallBack,
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      )),
-                  IconButton(
-                      onPressed: onDeleteCallBack,
-                      icon: Icon(
-                        Icons.delete_rounded,
-                        color: Colors.white,
-                      )),
-                ],
-              )),
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                    onPressed: onViewCallBack,
+                    icon: Icon(
+                      Icons.visibility,
+                      color: Colors.white,
+                    )),
+                IconButton(
+                    onPressed: onUpdateCallBack,
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    )),
+                IconButton(
+                    onPressed: onDeleteCallBack,
+                    icon: Icon(
+                      Icons.delete_rounded,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
+          ),
         ],
       ),
     );

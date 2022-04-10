@@ -87,14 +87,14 @@ class DrawRadioGroup extends FormElement {
                                     child: child,
                                   ),
                           duration: Duration(milliseconds: 600),
-                          child: value == 'other'
+                          child: this.isOtherSelected!
                               ? Padding(
                                 padding: const EdgeInsets.only(right: 100),
                                 child: TextFormField(
-                                  initialValue: otherValue,
+                                  initialValue: value,
                                   onChanged: (value){
                                     // context.read<ValidationBloc>().add(OtherRadioValueChanged(value: value, groupName: this.name));
-                                    this.otherValue = value;
+                                    this.value = value;
                                   },
                                     decoration:
                                         InputDecoration(label: Text('other')),

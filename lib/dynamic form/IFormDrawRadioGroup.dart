@@ -47,6 +47,9 @@ class IFormDrawRadioGroup extends IFormModel {
 
   @HiveField(14)
   String ? otherValue;
+
+  @HiveField(15)
+  bool ? isOtherSelected;
   factory IFormDrawRadioGroup.fromJson(parameters) {
 
     return IFormDrawRadioGroup(
@@ -72,8 +75,14 @@ class IFormDrawRadioGroup extends IFormModel {
 
   @override
   FormElement toWidget() {
+    print(isOtherSelected.toString() +' :::::::::::::::: isOtherSelected');
     var groupValue;
-    if(value != null ) groupValue = value;
+    if(value != null ) {
+      if( isOtherSelected == true ) {
+        groupValue = 'other';
+      }
+     else groupValue = value;
+    }
     List<DrawRadioItem> children = [];
     for (var radio in this.values) {
       var newRadio = DrawRadioItem(groupValue: groupValue,
@@ -88,12 +97,11 @@ class IFormDrawRadioGroup extends IFormModel {
       );
 
     return DrawRadioGroup(
-      otherValue: groupValue == 'other' ? otherValue : null,
-      value: groupValue,
+      value: value,
         label: this.label,
         name: this.name,
         required: this.required,
-        isOtherSelected: groupValue == 'other',
+        isOtherSelected: this.isOtherSelected ?? false,
         other: this.other,
         showIfValueSelected: this.showIfValueSelected,
         showIfIsRequired: this.showIfIsRequired,
