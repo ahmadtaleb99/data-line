@@ -14,7 +14,7 @@ import 'package:hive/hive.dart';
 part 'IFormDropList.g.dart';
 
 @HiveType(typeId: 44)
-class IFormDropList  implements IFormModel  {
+class IFormDropList  extends IFormModel  {
   dynamic _parameters;
 
   @HiveField(1)

@@ -16,6 +16,7 @@ class DrawRadioGroup extends FormElement {
     this.visible,
     this.isOtherSelected = false,
     this.value,
+    this.otherValue,
     required this.required,
     required this.other,
     required this.children,
@@ -34,6 +35,7 @@ class DrawRadioGroup extends FormElement {
 
   final String label;
   dynamic value;
+  String ? otherValue;
   final String name;
   final bool required;
   final bool other;
@@ -46,6 +48,7 @@ class DrawRadioGroup extends FormElement {
 
   @override
   Widget build(BuildContext context) {
+    print(otherValue.toString() + ' other value is ');
     return Padding(
       padding: this.other == true
           ? const EdgeInsets.symmetric(vertical: 0)
@@ -74,7 +77,7 @@ class DrawRadioGroup extends FormElement {
                       {
                         children = this.children;
                       }
-                    if (other == true)
+                    if (other == true) {
                       children.last.titleWidget = AnimatedSwitcher(
                           reverseDuration: Duration(seconds: 0),
                           transitionBuilder:
@@ -84,12 +87,14 @@ class DrawRadioGroup extends FormElement {
                                     child: child,
                                   ),
                           duration: Duration(milliseconds: 600),
-                          child: isOtherSelected!
+                          child: value == 'other'
                               ? Padding(
                                 padding: const EdgeInsets.only(right: 100),
                                 child: TextFormField(
+                                  initialValue: otherValue,
                                   onChanged: (value){
-                                    this.value = value;
+                                    // context.read<ValidationBloc>().add(OtherRadioValueChanged(value: value, groupName: this.name));
+                                    this.otherValue = value;
                                   },
                                     decoration:
                                         InputDecoration(label: Text('other')),
@@ -99,13 +104,13 @@ class DrawRadioGroup extends FormElement {
                                       if (value!.isEmpty)
                                         return 'other is required';
                                     },
-                                    autofocus: true,
                                   ),
                               )
                               : Align(
                                   child: Text('other'),
                                   alignment: Alignment.centerLeft,
                                 ));
+                    }
 
                     return Column(
                       children: [

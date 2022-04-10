@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/SubmittionsDetailsPage.dart';
 import 'package:form_builder_test/UpdateFormPage.dart';
 
 import 'FormService/FormRepository.dart';
@@ -47,7 +48,10 @@ class SubmittionsPage extends StatelessWidget {
                                             form: state.subedForms![index])));
                               },
                               onViewCallBack: () {
-                                _formDetailsDialog(context: context,form: state.subedForms![index]);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SubmittionsDetailsPage(formWidget: state.subedForms![index])));
                               },
                               onDeleteCallBack: () {
 

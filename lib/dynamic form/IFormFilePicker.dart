@@ -13,7 +13,7 @@ import 'FileTypeEnum.dart';
 part 'IFormFilePicker.g.dart';
 
 @HiveType(typeId: 46)
-class IFormFilePicker implements IFormModel {
+class IFormFilePicker extends IFormModel {
   dynamic _parameters;
 
   @HiveField(1)

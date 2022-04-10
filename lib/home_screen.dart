@@ -66,53 +66,63 @@ class HomeScreen extends StatelessWidget {
                         return CircularProgressIndicator();
                       else if (state.status == Status.success ) {
                         if (state.forms!.isEmpty) {
-                          return Text('There are no submitted forms yet. ');
+                          return Text('There are no Assigned forms yet. ');
                         }
                         return Expanded(
-                          child: GridView.builder(
-                            padding: EdgeInsets.all(30),
-                            itemCount: state.forms!.length,
-                            itemBuilder: (context, index) {
-                              return FormCard(
-                                formName : state.forms![index].name,
-                                submitNewFormCallBack: () async {
-                                   context.read<ValidationBloc>()
-                                    .add(FormRequested(formName: state.forms![index].name));
+                          child: Column(
+                            children: [
+                              Text('Assigned Forms',style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              ),),
+                              Expanded(
+                                child: GridView.builder(
+                                  padding: EdgeInsets.all(30),
+                                  itemCount: state.forms!.length,
+                                  itemBuilder: (context, index) {
+                                    return FormCard(
+                                      formName : state.forms![index].name,
+                                      submitNewFormCallBack: () async {
+                                         context.read<ValidationBloc>()
+                                          .add(FormRequested(formName: state.forms![index].name));
 
 
-                                   Navigator.push(
-                                       context,
-                                       MaterialPageRoute(
-                                           builder: (context) => NewSubmitPage(
-                                             form: state.forms![index],
-                                           )));
-                                  // print(state.form!.value);
+                                         Navigator.push(
+                                             context,
+                                             MaterialPageRoute(
+                                                 builder: (context) => NewSubmitPage(
+                                                   form: state.forms![index],
+                                                 )));
+                                        // print(state.form!.value);
 
-                                },
-                                viewSubmittedCallBack: () {
+                                      },
+                                      viewSubmittedCallBack: () {
 
-                                  context.read<ValidationBloc>()
-                                      .add(SubmittionsFormsRequested(formName: state.forms![index].name));
-
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SubmittionsPage(
-                                            form: state.forms![index],
-                                          )));
+                                        context.read<ValidationBloc>()
+                                            .add(SubmittionsFormsRequested(formName: state.forms![index].name));
 
 
-                                },
-                              );
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => SubmittionsPage(
+                                                  form: state.forms![index],
+                                                )));
 
-                            },
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10.0,
-                                    mainAxisSpacing: 20.0,
-                                    childAspectRatio: 1),
+
+                                      },
+                                    );
+
+                                  },
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 10.0,
+                                          mainAxisSpacing: 20.0,
+                                          childAspectRatio: 1),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }

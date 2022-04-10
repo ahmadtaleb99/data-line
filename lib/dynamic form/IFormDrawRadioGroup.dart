@@ -12,8 +12,6 @@ part 'IFormDrawRadioGroup.g.dart';
 
 @HiveType(typeId: 43)
 class IFormDrawRadioGroup extends IFormModel {
-  @HiveField(12)
-  List<RadioItem> values;
 
   @HiveField(1)
   String label;
@@ -38,10 +36,17 @@ class IFormDrawRadioGroup extends IFormModel {
   @HiveField(11)
   bool other;
 
+
+
+
+  @HiveField(12)
+  List<RadioItem> values;
+
   @HiveField(13)
   dynamic value;
 
-
+  @HiveField(14)
+  String ? otherValue;
   factory IFormDrawRadioGroup.fromJson(parameters) {
 
     return IFormDrawRadioGroup(
@@ -78,15 +83,17 @@ class IFormDrawRadioGroup extends IFormModel {
     }
     if (this.other == true)
       children.add(
-        DrawRadioItem(label: 'other', value: 'other', parent: this.name),
+        DrawRadioItem(        groupValue: groupValue,
+            label: 'other', value: 'other', parent: this.name),
       );
 
     return DrawRadioGroup(
+      otherValue: groupValue == 'other' ? otherValue : null,
       value: groupValue,
         label: this.label,
         name: this.name,
         required: this.required,
-        isOtherSelected: value == 'other',
+        isOtherSelected: groupValue == 'other',
         other: this.other,
         showIfValueSelected: this.showIfValueSelected,
         showIfIsRequired: this.showIfIsRequired,

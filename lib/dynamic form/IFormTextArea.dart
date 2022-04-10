@@ -8,7 +8,6 @@ part 'IFormTextArea.g.dart';
 
 @HiveType(typeId: 49)
 class IFormTextArea implements IFormModel {
-  dynamic _parameters;
 
   @HiveField(1)
   String label;
@@ -88,11 +87,6 @@ class IFormTextArea implements IFormModel {
 
       showIfValueSelected: this.showIfValueSelected,
       name: this.name,  );
-  }
-
-  @override
-  void setParameters(parametrs) {
-    _parameters = parametrs;
   }
 
   @override

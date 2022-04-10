@@ -24,12 +24,13 @@ class IFormFilePickerAdapter extends TypeAdapter<IFormFilePicker> {
       required: fields[5] as bool,
       isReadOnly: fields[6] as bool,
       visible: fields[7] as bool?,
+      value: fields[13] as dynamic,
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
       maxFileSize: fields[11] as int,
       fileType: fields[12] as FileTypeEnum,
-    )..value = fields[13] as dynamic;
+    );
   }
 
   @override

@@ -24,10 +24,11 @@ class IFormEmailAdapter extends TypeAdapter<IFormEmail> {
       required: fields[5] as bool,
       isReadOnly: fields[6] as bool,
       visible: fields[7] as bool?,
+      value: fields[11] as dynamic,
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
-    )..value = fields[11] as dynamic;
+    );
   }
 
   @override

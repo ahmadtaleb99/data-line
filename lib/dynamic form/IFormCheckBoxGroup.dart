@@ -13,7 +13,7 @@ import 'IFormModel.dart';
 part 'IFormCheckBoxGroup.g.dart';
 
 @HiveType(typeId: 42)
-class IFormCheckBoxGroup implements IFormModel {
+class IFormCheckBoxGroup extends IFormModel {
   List<DrawCheckboxGroupItem> WidgetitemsList = [];
 
   @HiveField(1)

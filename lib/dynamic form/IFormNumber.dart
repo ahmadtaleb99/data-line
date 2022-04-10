@@ -11,7 +11,7 @@ import '../Expression.dart';
 part 'IFormNumber.g.dart';
 
 @HiveType(typeId: 48)
-class IFormNumber implements IFormModel {
+class IFormNumber extends IFormModel {
   dynamic _parameters;
 
   @HiveField(1)

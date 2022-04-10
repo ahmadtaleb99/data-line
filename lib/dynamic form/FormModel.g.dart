@@ -17,10 +17,11 @@ class FormModelAdapter extends TypeAdapter<FormModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FormModel(
+      value: fields[4] as dynamic,
       name: fields[1] as String,
       directionality: fields[2] as String,
       fields: (fields[3] as List).cast<IFormModel>(),
-    )..value = fields[4] as dynamic;
+    );
   }
 
   @override

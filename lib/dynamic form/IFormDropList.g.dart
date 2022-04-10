@@ -29,10 +29,11 @@ class IFormDropListAdapter extends TypeAdapter<IFormDropList> {
       isReadOnly: fields[9] as bool,
       relatedToParent: fields[10] as bool,
       visible: fields[12] as bool?,
+      value: fields[16] as dynamic,
       showIfValueSelected: fields[13] as bool,
       showIfFieldValue: fields[14] as String?,
       showIfIsRequired: fields[15] as bool?,
-    )..value = fields[16] as dynamic;
+    );
   }
 
   @override

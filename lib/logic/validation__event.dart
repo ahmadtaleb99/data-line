@@ -55,6 +55,15 @@ class FormUpdateRequested extends ValidationEvent {
   });
 
 }
+class OtherRadioValueChanged extends ValidationEvent {
+  String groupName;
+  String value;
+  OtherRadioValueChanged({
+    required this.value,
+    required this.groupName,
+  });
+
+}
 
 class FormsRequestedFromLocal extends ValidationEvent {
 }

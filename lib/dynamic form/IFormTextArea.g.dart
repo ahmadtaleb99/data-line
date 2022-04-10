@@ -17,6 +17,7 @@ class IFormTextAreaAdapter extends TypeAdapter<IFormTextArea> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return IFormTextArea(
+      value: fields[13] as dynamic,
       label: fields[1] as String,
       name: fields[2] as String,
       deactivate: fields[3] as bool,
@@ -29,7 +30,7 @@ class IFormTextAreaAdapter extends TypeAdapter<IFormTextArea> {
       showIfIsRequired: fields[10] as bool?,
       minLength: fields[11] as int,
       maxLength: fields[12] as int,
-    )..value = fields[13] as dynamic;
+    );
   }
 
   @override

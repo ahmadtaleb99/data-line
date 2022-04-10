@@ -28,7 +28,8 @@ class IFormNumberAdapter extends TypeAdapter<IFormNumber> {
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
       expression: fields[11] as Expression,
-    )..value = fields[12] as dynamic;
+      value: fields[12] as dynamic,
+    );
   }
 
   @override

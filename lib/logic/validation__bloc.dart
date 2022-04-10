@@ -21,6 +21,7 @@ import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/FormModel.dart';
+import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
@@ -43,6 +44,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<ParentDropListChanged>(_onParentDropListChanged);
     on<childDropDownChanged>(_onchildDropDownChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
+    on<OtherRadioValueChanged>(_onOtherRadioValueChanged);
     on<MultiSelectItemRemoved>(_onMultiSelectItemRemoved);
     on<ServiceRegistered>(_onServiceRegistered);
     on<FormsRequestedFromLocal>(_onFormsRequestedFromLocal);
@@ -133,15 +135,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       FormUpdated event, Emitter<ValidationState> emit) async {
 
     var formModel = _formRepository.submittedForms[event.index];
-    for (int i = 0; i < formModel.fields.length; i++){
-      formModel.fields[i].value = state.form!.fields[i].value;
-    }
 
-
+      _mapWidgetValuesToModel(formModel, state.form!);
 
     _formRepository.updateSubmission(formModel);
 
     emit(state.copyWith(
+        subedForms: _formRepository.submittedForms.map((e) => e.toWidget() as FormWidget).toList(),
         form: formModel.toWidget() as FormWidget,
         status: Status.success
       ));
@@ -227,17 +227,32 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
+  void _onOtherRadioValueChanged(
+      OtherRadioValueChanged event, Emitter<ValidationState> emit) {
+    //
+    // var radioWidget = state.form!.fields.firstWhere((element) =>
+    // (element is DrawRadioGroup) && element.name == event.groupName);
+    //
+    // IFormDrawRadioGroup radioModel = state.formModel!.fields.firstWhere((element) => element is IFormDrawRadioGroup && element.name == event.groupName) as IFormDrawRadioGroup;
+    //
+    //
+    // radioModel.otherValue = event.value;
+    // emit(state.copyWith());
+  }
+
   void _onRadioGroupValueChanged(
       RadioGroupValueChanged event, Emitter<ValidationState> emit) {
     var radioGroup = state.form!.fields.firstWhere((element) =>
             (element is DrawRadioGroup) && element.name == event.groupName)
         as DrawRadioGroup;
 
+
+    radioGroup.value = event.value;
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }
-    radioGroup.value = event.value;
     if (event.value == 'other') {
+      print(radioGroup.otherValue );
       radioGroup.isOtherSelected = true;
     } else
       radioGroup.isOtherSelected = false;
@@ -315,14 +330,25 @@ Future<void> _onFormUpdateRequested(
     var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName).copyWith();
     var  stateForm = state.form!;
-    for (int i = 0; i < formModel.fields.length; i++){
-      print(formModel.fields[i].value.toString());
-      print(state.form!.fields[i].value.toString());
-      formModel.fields[i].value = stateForm.fields[i].value;
-    }
+      _mapWidgetValuesToModel(formModel, stateForm);
 
 
     _formRepository.addSubmittedForm(formModel);
+  }
+
+
+
+  void _mapWidgetValuesToModel(FormModel formModel , FormWidget formWidget){
+    for (int i = 0; i < formModel.fields.length; i++){
+      var widgetFields = formWidget.fields[i];
+      var formModelField = formModel.fields[i];
+      if( widgetFields is DrawRadioGroup && widgetFields.isOtherSelected!){
+        var radio  = formModelField as  IFormDrawRadioGroup;
+        radio.otherValue = widgetFields.otherValue;
+      }
+
+      formModelField.value = widgetFields.value;
+    }
   }
 
   void _onFilePickerPressed(FilePickerPressed event, Emitter<ValidationState> emit) async {
