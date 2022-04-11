@@ -10,5 +10,5 @@ part 'IFormModel.g.dart';
   dynamic value;
   FormElement toWidget ();
   Map<String,dynamic> fomrElementtoJson (FormElement formElement);
-
+  String valueToString();
 }

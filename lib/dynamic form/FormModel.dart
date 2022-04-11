@@ -108,4 +108,9 @@ class FormModel extends HiveObject implements IFormModel {
       value: value ?? this.value,
     );
   }
+
+  @override
+  String valueToString() {
+    return this.value.toString();
+  }
 }

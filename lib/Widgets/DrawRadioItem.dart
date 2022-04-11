@@ -56,4 +56,10 @@ class DrawRadioItem extends FormElement {
       },
     );
   }
+
+
+  @override
+  String valueToString() {
+    return this.value.toString();
+  }
 }

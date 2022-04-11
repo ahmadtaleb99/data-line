@@ -62,4 +62,11 @@ class RadioItem implements IFormModel  {
       value: value ?? this.value,
     );
   }
+
+
+  @override
+  String valueToString() {
+    return value.toString();
+  }
+
 }

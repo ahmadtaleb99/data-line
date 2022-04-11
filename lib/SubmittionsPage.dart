@@ -80,56 +80,81 @@ class SubmissionCard extends StatelessWidget {
 
   List<Widget> _build(){
     List<Widget> list =[];
-    if(form.fields.length <2)
-    return [
-      Padding(
-        padding: const EdgeInsets.all(33.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-          children: [
-            Text(form.fields.first.label,style: TextStyle(
-                fontSize: 20
-            ),),
-            Text(form.fields.first.value.toString(),style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),),
-          ],
-        ),
-      ),
-    ];
-
-  else  {
-    for(int i = 0; i<2 ; i++){
+  //   // if(form.fields.length <=2)
+  //   // return [
+  //   //   Padding(
+  //   //     padding: const EdgeInsets.all(33.0),
+  //   //     child: Row(
+  //   //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //   //
+  //   //       children: [
+  //   //         Text(form.fields.first.label,style: TextStyle(
+  //   //             fontSize: 20
+  //   //         ),),
+  //   //         Text(form.fields.first.valueToString().toString(),style: TextStyle(
+  //   //           fontSize: 20,
+  //   //           color: Colors.white,
+  //   //           fontWeight: FontWeight.bold,
+  //   //         ),),
+  //   //       ],
+  //   //     ),
+  //   //   ),
+  //   // ];
+  //
+  // else  {
+    for(int i = 0; i<form.fields.length ; i++){
+        if(i == )
         var field = form.fields[i];
+        var textValue = field.value;
+        if(textValue == null) textValue = 'empty';
 
+        else textValue =  field.valueToString();
         list.add(   Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.all(2.0),
+          child: Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-            children: [
-              Text(field.label,style: TextStyle(
-                  fontSize: 20
-              ),),
-              Text(field.value.toString(),style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),),
-            ],
+              children: [
+                Text(field.label,style: TextStyle(
+                    fontSize: 20
+                ),),
+                Text(textValue,style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),),
+              ],
+            ),
           ),
         ),
         );
       }
+
+    if(form.fields.length>3)
+      list.add( Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              Text('......', style: TextStyle(
+                  fontSize: 20
+              )),
+              Text('......', style: TextStyle(
+                  fontSize: 20
+              )),
+
+            ],
+          ),
+        ),
+      ),);
     return list;
 
 
     }
   }
-
 
 
 
@@ -149,7 +174,7 @@ class SubmissionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height: 155,
+      height: 175,
       decoration: BoxDecoration(
           color: Colors.lightBlueAccent,
           shape: BoxShape.rectangle,
@@ -157,7 +182,7 @@ class SubmissionCard extends StatelessWidget {
       child: Column(
         children: [
             Expanded(
-              flex: 5,
+              flex: 11,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -169,7 +194,7 @@ class SubmissionCard extends StatelessWidget {
               ),
             ),
           Expanded(
-            flex: 2,
+              flex: 4,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

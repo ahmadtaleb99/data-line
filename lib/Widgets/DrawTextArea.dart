@@ -76,4 +76,10 @@ class DrawTextArea extends FormElement with FormValidation {
       ),
     );
   }
+
+
+   @override
+   String valueToString() {
+     return this.value.toString();
+   }
 }

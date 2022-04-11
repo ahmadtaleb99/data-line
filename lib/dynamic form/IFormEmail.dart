@@ -132,6 +132,9 @@ class IFormEmail extends IFormModel {
       value: value ?? this.value,
     );
   }
-
+  @override
+  String valueToString() {
+    return this.value.toString();
+  }
 
 }

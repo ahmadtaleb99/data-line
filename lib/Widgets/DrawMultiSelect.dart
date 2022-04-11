@@ -233,5 +233,9 @@ class DrawMultiSelect  extends FormElement {
 
 
 
+  @override
+  String valueToString() {
+    return (value as List).join(',');
+  }
 
 }

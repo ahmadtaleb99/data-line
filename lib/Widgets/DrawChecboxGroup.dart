@@ -126,4 +126,11 @@ listener: (context, state) {},
       ),
     );
   }
+
+  @override
+  String valueToString() {
+    return (value as List).join(',');
+  }
+
+
 }

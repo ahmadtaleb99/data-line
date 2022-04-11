@@ -209,4 +209,9 @@ class IFormCheckBoxGroup extends IFormModel {
       children: children ?? this.children,
     );
   }
+
+  @override
+  String valueToString() {
+    return (value as List).join(',');
+  }
 }

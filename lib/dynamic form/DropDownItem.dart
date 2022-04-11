@@ -58,4 +58,9 @@ class DropDownItem  extends  IFormModel {
       status: status ?? this.status,
     );
   }
+
+  @override
+  String valueToString() {
+    return this.value.toString();
+  }
 }

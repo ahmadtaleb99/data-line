@@ -49,7 +49,7 @@ List<DataRow> _buildRows(FormWidget formWidget) {
             minWidth: 10,
             maxWidth: 250
           ),
-          child: Text(  field.value.toString(),
+          child: Text(  field.valueToString(),
               softWrap: true,
               overflow: TextOverflow.visible,
               style: TextStyle(

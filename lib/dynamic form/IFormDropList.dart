@@ -229,4 +229,16 @@ class IFormDropList  extends IFormModel  {
     );
   }
 
+
+
+  @override
+  String valueToString() {
+    String valueToString;
+    if(this.value is List){
+      valueToString =  (this.value as List).join(',');
+return valueToString;
+    }
+
+    return value.toString();
+  }
 }

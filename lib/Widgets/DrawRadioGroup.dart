@@ -91,10 +91,12 @@ class DrawRadioGroup extends FormElement {
                               ? Padding(
                                 padding: const EdgeInsets.only(right: 100),
                                 child: TextFormField(
-                                  initialValue: value,
+                                  initialValue: otherValue,
                                   onChanged: (value){
+                                    fieldState.didChange(value);
                                     // context.read<ValidationBloc>().add(OtherRadioValueChanged(value: value, groupName: this.name));
                                     this.value = value;
+                                    this.otherValue = value;
                                   },
                                     decoration:
                                         InputDecoration(label: Text('other')),
@@ -136,5 +138,11 @@ class DrawRadioGroup extends FormElement {
         },
       ),
     );
+  }
+
+
+  @override
+  String valueToString() {
+    return this.value.toString();
   }
 }

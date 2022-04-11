@@ -150,4 +150,11 @@ class IFormFilePicker extends IFormModel {
       value: value ?? this.value,
     );
   }
+
+  @override
+  String valueToString() {
+    throw UnimplementedError();
+  }
+
+
 }

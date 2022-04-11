@@ -97,6 +97,7 @@ class IFormDrawRadioGroup extends IFormModel {
       );
 
     return DrawRadioGroup(
+      otherValue: this.isOtherSelected != null && this.isOtherSelected  == true  ? value : null,
       value: value,
         label: this.label,
         name: this.name,
@@ -163,5 +164,11 @@ class IFormDrawRadioGroup extends IFormModel {
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
       value: value ?? this.value, other: other ?? this.other, values: values ?? this.values,
     );
+  }
+
+
+  @override
+  String valueToString() {
+    return this.value.toString();
   }
 }

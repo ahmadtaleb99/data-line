@@ -246,8 +246,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
             (element is DrawRadioGroup) && element.name == event.groupName)
         as DrawRadioGroup;
 
-    radioGroup.value = event.value;
-
+      radioGroup.value = event.value;
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }

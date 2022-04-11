@@ -12,7 +12,7 @@ abstract class FormElement extends StatelessWidget {
   final String ? showIfFieldValue;
   final bool ? showIfIsRequired;
   dynamic value;
-
+  String valueToString();
 
   FormElement({
   Key? key,

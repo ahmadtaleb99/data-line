@@ -84,4 +84,10 @@ class DrawCheckboxGroupItem extends FormElement {
       },
     );
   }
+
+
+  @override
+  String valueToString() {
+    return this.value.toString();
+  }
 }
