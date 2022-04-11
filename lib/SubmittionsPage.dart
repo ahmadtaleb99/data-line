@@ -103,7 +103,29 @@ class SubmissionCard extends StatelessWidget {
   //
   // else  {
     for(int i = 0; i<form.fields.length ; i++){
-        if(i == )
+        if(i == 3) {
+          list.add( Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                children: [
+                  Text('......', style: TextStyle(
+                      fontSize: 20
+                  )),
+                  Text('......', style: TextStyle(
+                      fontSize: 20
+                  )),
+
+                ],
+              ),
+            ),
+          ));
+          break;
+
+        }
+
         var field = form.fields[i];
         var textValue = field.value;
         if(textValue == null) textValue = 'empty';
@@ -131,30 +153,13 @@ class SubmissionCard extends StatelessWidget {
         );
       }
 
-    if(form.fields.length>3)
-      list.add( Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            children: [
-              Text('......', style: TextStyle(
-                  fontSize: 20
-              )),
-              Text('......', style: TextStyle(
-                  fontSize: 20
-              )),
-
-            ],
-          ),
-        ),
-      ),);
+    // if(form.fields.length>3)
+    //   ,);
     return list;
 
 
     }
-  }
+
 
 
 
