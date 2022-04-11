@@ -105,21 +105,18 @@ class SubmissionCard extends StatelessWidget {
     for(int i = 0; i<form.fields.length ; i++){
         if(i == 3) {
           list.add( Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 2),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
 
-                children: [
-                  Text('......', style: TextStyle(
-                      fontSize: 20
-                  )),
-                  Text('......', style: TextStyle(
-                      fontSize: 20
-                  )),
+              children: [
+                Text('. . .', style: TextStyle(
+                    fontSize: 20,
+                  fontWeight: FontWeight.bold
+                )),
 
-                ],
-              ),
+
+              ],
             ),
           ));
           break;
@@ -132,22 +129,20 @@ class SubmissionCard extends StatelessWidget {
 
         else textValue =  field.valueToString();
         list.add(   Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Expanded(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 2),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-              children: [
-                Text(field.label,style: TextStyle(
-                    fontSize: 20
-                ),),
-                Text(textValue,style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),),
-              ],
-            ),
+            children: [
+              Text(field.label,style: TextStyle(
+                  fontSize: 20
+              ),),
+              Text(textValue,style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),),
+            ],
           ),
         ),
         );

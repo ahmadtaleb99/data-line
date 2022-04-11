@@ -25,6 +25,7 @@ import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../UpdateFormPage.dart';
 
@@ -211,6 +212,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         childList.items =
             items.where((element) => element.parent == event.parent).toList();
         childList.value = null;
+        if(childList is DrawMultiSelect) childList.selectedValues =[];
       print(childList.items.toString() + '  chil   ');
     }
 
@@ -353,6 +355,7 @@ Future<void> _onFormUpdateRequested(
   void _onFilePickerPressed(FilePickerPressed event, Emitter<ValidationState> emit) async {
 
 
+
     var filePicker = event.drawFilePicker;
     PlatformFile? pickedFile;
     FilePickerResult? result = await FilePicker.platform
@@ -360,6 +363,16 @@ Future<void> _onFormUpdateRequested(
 
     if (result != null) {
       pickedFile = result.files.single;
+
+
+      File fileToCopy= File(pickedFile.path!);
+      Directory appDirectory = await getApplicationDocumentsDirectory();
+      var newDir = await  Directory(appDirectory.path+'/newDir');
+      bool doesExist = await newDir.exists();
+      print(doesExist);
+      print(newDir.path+' ::::::new dir ');
+      // fileToCopy.copy(appDirectory.path+pickedFile.name);
+
       // fieldState.didChange(_pickedFile);
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;
