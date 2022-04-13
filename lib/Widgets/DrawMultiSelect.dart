@@ -124,7 +124,6 @@ class DrawMultiSelect  extends FormElement {
                                         item: item,
                                         select: this,
                                         selectName: this.name));
-                                print(item);
                               },
                             ),
                             autovalidateMode:

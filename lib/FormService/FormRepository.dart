@@ -55,10 +55,13 @@ class FormRepository {
   }
 
 
-      int getSubmissionID (FormModel formModel){
-          return _localApi.getSubmissionID(formModel);
+      int getLastSubmissionID (){
+          return _localApi.getLastSubmissionID();
       }
 
+  int getSubmissionID (FormModel formModel){
+    return _localApi.getSubmissionID(formModel);
+  }
   Future<List<FormModel>> getAvailableFormsFromLocal() async {
     return await  _localApi.getAvailableForms();
   }

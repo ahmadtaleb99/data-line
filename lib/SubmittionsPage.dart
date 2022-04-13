@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/submissionDetailsPage.dart';
@@ -80,28 +81,7 @@ class SubmissionCard extends StatelessWidget {
 
   List<Widget> _build(){
     List<Widget> list =[];
-  //   // if(form.fields.length <=2)
-  //   // return [
-  //   //   Padding(
-  //   //     padding: const EdgeInsets.all(33.0),
-  //   //     child: Row(
-  //   //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //   //
-  //   //       children: [
-  //   //         Text(form.fields.first.label,style: TextStyle(
-  //   //             fontSize: 20
-  //   //         ),),
-  //   //         Text(form.fields.first.valueToString().toString(),style: TextStyle(
-  //   //           fontSize: 20,
-  //   //           color: Colors.white,
-  //   //           fontWeight: FontWeight.bold,
-  //   //         ),),
-  //   //       ],
-  //   //     ),
-  //   //   ),
-  //   // ];
-  //
-  // else  {
+
     for(int i = 0; i<form.fields.length ; i++){
         if(i == 3) {
           list.add( Padding(
@@ -134,14 +114,21 @@ class SubmissionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
-              Text(field.label,style: TextStyle(
-                  fontSize: 20
-              ),),
-              Text(textValue,style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),),
+              Expanded(
+                child: Text(field.label,style: TextStyle(
+                    fontSize: 20
+                ),),
+              ),
+              SizedBox(width: 30,),
+              Expanded(
+                child: Text(textValue,style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),),
+              ),
             ],
           ),
         ),

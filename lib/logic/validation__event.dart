@@ -48,10 +48,10 @@ class FormRequested extends ValidationEvent {
 
 
 class FilePickerSaved extends ValidationEvent {
-   DrawFilePicker filePicker;
+   File file;
 
   FilePickerSaved({
-    required this.filePicker,
+    required this.file,
   });
 
 }

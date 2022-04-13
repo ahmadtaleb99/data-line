@@ -73,6 +73,7 @@ class DrawFilePicker extends  FormElement {
 
             child: FormField<File>(
               onSaved: (file){
+                context.read<ValidationBloc>().add(FilePickerSaved(file : file!));
 
               },
               autovalidateMode: AutovalidateMode.onUserInteraction,

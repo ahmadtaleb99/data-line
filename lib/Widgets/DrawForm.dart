@@ -12,6 +12,10 @@ class FormWidget extends FormElement {
     // _key.currentState!.reset();
     return _key.currentState!.validate();
   }
+  void save() {
+    // _key.currentState!.reset();
+     _key.currentState!.save();
+  }
   final int ? submissionID;
   final String label;
   final String name;

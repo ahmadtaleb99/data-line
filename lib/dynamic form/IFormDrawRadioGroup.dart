@@ -75,7 +75,6 @@ class IFormDrawRadioGroup extends IFormModel {
 
   @override
   FormElement toWidget() {
-    print(isOtherSelected.toString() +' :::::::::::::::: isOtherSelected');
     var groupValue;
     if(value != null ) {
       if( isOtherSelected == true ) {

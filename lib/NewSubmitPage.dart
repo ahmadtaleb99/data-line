@@ -20,6 +20,8 @@ class NewSubmitPage extends StatelessWidget {
           onPressed: () {
 
             if (form.validate()) {
+              form.save();
+
               context.read<ValidationBloc>().add(FormSubmitted(formName: this.form.name));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));
             // context.read<FormRepository>().savetoLocal();

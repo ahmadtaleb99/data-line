@@ -18,6 +18,7 @@ import 'package:form_builder_test/Widgets/DrawForm.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
+import 'package:form_builder_test/constants.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/FormModel.dart';
@@ -25,6 +26,7 @@ import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/IFormDropList.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../UpdateFormPage.dart';
@@ -63,16 +65,14 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   Future<void> _onFormsRequested(
       FormsRequested event, Emitter<ValidationState> emit) async {
-    print('forms req event');
-    try{
+    try {
       emit(state.copyWith(status: Status.loading));
       var forms = await _formRepository.LoadFormsModel();
 
       emit(state.copyWith(
           status: Status.success,
           forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
-    }
-    on SocketException {
+    } on SocketException {
       emit(state.copyWith(islocallyWorking: true));
       add(FormsRequestedFromLocal());
     }
@@ -84,8 +84,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
     select.selectedValues = event.value;
     select.value = event.value;
-    print('selected value for multi parent : ${select.value}');
-    print('selected value for multi parent : ${select.selectedValues}');
 
     emit(state.copyWith());
   }
@@ -99,69 +97,66 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
   }
 
-
-
   Future<void> _onServiceRegistered(
       ServiceRegistered event, Emitter<ValidationState> emit) async {
     await _formRepository.initLocal();
   }
+
   Future<void> _onSubmittionsFormsRequested(
       SubmittionsFormsRequested event, Emitter<ValidationState> emit) async {
-
-
-
-   var forms =  _formRepository.getAllSubmissionByName(event.formName);
-   emit(state.copyWith(subedForms:
-   forms.map((e) => e.toWidget() as FormWidget).toList()
-   ));
-
+    var forms = _formRepository.getAllSubmissionByName(event.formName);
+    emit(state.copyWith(
+        subedForms: forms.map((e) => e.toWidget() as FormWidget).toList()));
   }
-
 
   Future<void> _onFormUpdatePageRequested(
       FormUpdatePageRequested event, Emitter<ValidationState> emit) async {
     print('fast');
 
     var formModel = _formRepository.submittedForms[event.index];
-    var formWidget  = formModel.toWidget() as FormWidget;
+    var formWidget = formModel.toWidget() as FormWidget;
     emit(state.copyWith(
-        form: formWidget,
-        status: Status.success,
-        formModel: formModel));
-
+        form: formWidget, status: Status.success, formModel: formModel));
   }
-
-
 
   Future<void> _onFormUpdated(
       FormUpdated event, Emitter<ValidationState> emit) async {
-
     var formModel = _formRepository.submittedForms[event.index];
 
-      _mapWidgetValuesToModel(formModel, state.form!);
+    _mapWidgetValuesToModel(formModel, state.form!);
 
     _formRepository.updateSubmission(formModel);
 
     emit(state.copyWith(
-        subedForms: _formRepository.submittedForms.map((e) => e.toWidget() as FormWidget).toList(),
-        form: formModel.toWidget() as FormWidget,
-        status: Status.success
-      ));
-  }
-
-
-
-
-  Future<void> _onFormDeleted(
-      FormDeleted event, Emitter<ValidationState> emit) async {
-
-      var formModel = _formRepository.submittedForms[event.index];
-    _formRepository.deleteForm(formModel);
-    var forms = _formRepository.submittedForms;
-    emit(state.copyWith(subedForms:    forms.map((e) => e.toWidget() as FormWidget).toList()
+      subedForms: _formRepository.submittedForms
+          .map((e) => e.toWidget() as FormWidget)
+          .toList(),
+      form: formModel.toWidget() as FormWidget,
     ));
   }
 
+
+  Future<void> _deleteSubmissionCache(int id,FormModel formModel) async {
+    String base = await  getBase();
+   var dir =  Directory(base+'/${id}-${formModel.name}');
+   if(await dir.exists())
+    await dir.delete(recursive: true);
+  }
+
+
+  Future<void> _onFormDeleted(
+
+      FormDeleted event, Emitter<ValidationState> emit) async {
+
+    var formModel = _formRepository.submittedForms[event.index];
+    print(formModel.key.toString()+'asdasdasdasd');
+    _deleteSubmissionCache(formModel.key,formModel);
+
+    _formRepository.deleteForm(formModel);
+    var forms = _formRepository.submittedForms;
+    emit(state.copyWith(
+        subedForms: forms.map((e) => e.toWidget() as FormWidget).toList()));
+  }
 
   void _onCheckboxGroupValueChanged(
       CheckboxGroupValueChanged event, Emitter<ValidationState> emit) {
@@ -169,13 +164,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
             (element is DrawCheckboxGroup) && element.name == event.groupName)
         as DrawCheckboxGroup;
 
-    List<String> valuesList = group.value ;
+    List<String> valuesList = group.value;
 
-    if (event.newIsChecked == true){
+    if (event.newIsChecked == true) {
       valuesList.add(event.value);
       group.checksNumber++;
-    }
-    else{
+    } else {
       valuesList.remove(event.value);
       group.checksNumber--;
     }
@@ -184,20 +178,16 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         group.children.firstWhere((element) => element.value == event.id);
     child.isChecked = event.newIsChecked;
 
-    print(group.value);
     emit(state.copyWith(drawCheckboxGroup: group));
   }
 
   void _onParentDropListChanged(
       ParentDropListChanged event, Emitter<ValidationState> emit) {
-    print(state.form!.fields.toString() + ' children for ${event.parent}');
-
     dynamic childLists = state.form!.fields
         .where((dynamic element) =>
             ((element is DrawChildList) || (element is DrawMultiSelect)) &&
             (element.parentName == event.drawDropDownButton.name))
         .toList();
-    print(childLists.toString() + ' children for ${event.parent}');
     event.drawDropDownButton.value = event.parent;
 
     for (var childList in childLists) {
@@ -209,12 +199,10 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
                   childList.name == element.name) as IFormDropList)
           .items;
 
-
-        childList.items =
-            items.where((element) => element.parent == event.parent).toList();
-        childList.value = null;
-        if(childList is DrawMultiSelect) childList.selectedValues =[];
-      print(childList.items.toString() + '  chil   ');
+      childList.items =
+          items.where((element) => element.parent == event.parent).toList();
+      childList.value = null;
+      if (childList is DrawMultiSelect) childList.selectedValues = [];
     }
 
     emit(state.copyWith());
@@ -249,12 +237,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
             (element is DrawRadioGroup) && element.name == event.groupName)
         as DrawRadioGroup;
 
-      radioGroup.value = event.value;
+    radioGroup.value = event.value;
     for (var child in radioGroup.children) {
       child.groupValue = event.value;
     }
     if (event.value == 'other') {
-      print(radioGroup.otherValue );
       radioGroup.isOtherSelected = true;
     } else
       radioGroup.isOtherSelected = false;
@@ -292,80 +279,82 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         as DrawTextField;
 
     textField.value = event.value;
-    print('value for text field in bloc ${textField.value}');
   }
-
-
-
 
   Future<void> _onFormRequested(
       FormRequested event, Emitter<ValidationState> emit) async {
-    print('1 form req event');
-
     var formModel = _formRepository.availableForms
         .firstWhere((element) => element.name == event.formName);
-    print('FORM MODEL FROM AVAILABLE :: '+formModel.fields.first.value.toString());
     var form = formModel.toWidget() as FormWidget;
-    print('FORM widget FROM AVAILABLE ::'+form.fields.first.value.toString());
-    print(form.fields.first.value.toString()+' is sisi is sisi si is in form req event');
-    emit(state.copyWith(
-        form: form,
-        formModel: formModel));
+
+    emit(state.copyWith(form: form, formModel: formModel));
   }
 
-Future<void> _onFormUpdateRequested(
-    FormUpdateRequested event, Emitter<ValidationState> emit) async {
-    print('1 form sub req event');
-
+  Future<void> _onFormUpdateRequested(
+      FormUpdateRequested event, Emitter<ValidationState> emit) async {
     var formModel = _formRepository.submittedForms[event.index];
-    print('FORM MODEL FROM AVAILABLE :: '+formModel.fields.first.value.toString());
     var form = formModel.toWidget() as FormWidget;
-    print('FORM widget FROM AVAILABLE ::'+form.fields.first.value.toString());
-    print(form.fields.first.value.toString()+' is sisi is sisi si is in form req event');
-    emit(state.copyWith(
-        form: form,
-        formModel: formModel));
 
+    emit(state.copyWith(form: form, formModel: formModel));
   }
-
 
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
     var formModel = _formRepository.availableForms
-        .firstWhere((element) => element.name == event.formName).copyWith();
-    var  stateForm = state.form!;
-      _mapWidgetValuesToModel(formModel, stateForm);
-
+        .firstWhere((element) => element.name == event.formName)
+        .copyWith();
+    var stateForm = state.form!;
+    _mapWidgetValuesToModel(formModel, stateForm);
 
     _formRepository.addSubmittedForm(formModel);
   }
 
-
-
-  void _mapWidgetValuesToModel(FormModel formModel , FormWidget formWidget){
-    for (int i = 0; i < formModel.fields.length; i++){
+  void _mapWidgetValuesToModel(FormModel formModel, FormWidget formWidget) {
+    for (int i = 0; i < formModel.fields.length; i++) {
       var widgetFields = formWidget.fields[i];
       var formModelField = formModel.fields[i];
-      if( widgetFields is DrawRadioGroup && widgetFields.isOtherSelected!){
-        var radio  = formModelField as  IFormDrawRadioGroup;
-        radio.isOtherSelected=true;
+      if (widgetFields is DrawRadioGroup && widgetFields.isOtherSelected!) {
+        var radio = formModelField as IFormDrawRadioGroup;
+        radio.isOtherSelected = true;
       }
 
       formModelField.value = widgetFields.value;
     }
   }
-  void _onFilePickerSaved(FilePickerSaved event, Emitter<ValidationState> emit) async {
 
+  void _onFilePickerSaved(
+      FilePickerSaved event, Emitter<ValidationState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    File fileToCopy = event.file;
 
+    int? submissionKey = state.formModel!.key;
+    Directory appDirectory = await getApplicationDocumentsDirectory();
+    String base = appDirectory.path + '/filePickerCache';
 
+    var newDir = await Directory(base).create();
+    String newFilePath;
+
+    if (submissionKey != null) {
+      //form has a submission
+
+      newFilePath = '$base/${submissionKey}-${state.formModel!.name}';
+    } else {
+      var newId = _formRepository.getLastSubmissionID() + 1;
+
+      newFilePath = '$base/${newId}-${state.formModel!.name}';
+    }
+    newDir = await Directory(newFilePath).create(recursive: true);
+    await fileToCopy.copy('$newFilePath/${basename(fileToCopy.path)}');
+
+    emit(state.copyWith(status: Status.success));
   }
 
 
 
 
-  void _onFilePickerPressed(FilePickerPressed event, Emitter<ValidationState> emit) async {
 
 
-
+  void _onFilePickerPressed(
+      FilePickerPressed event, Emitter<ValidationState> emit) async {
     var filePicker = event.drawFilePicker;
     PlatformFile? pickedFile;
     FilePickerResult? result = await FilePicker.platform
@@ -374,27 +363,13 @@ Future<void> _onFormUpdateRequested(
     if (result != null) {
       pickedFile = result.files.single;
 
-
-      File fileToCopy= File(pickedFile.path!);
-      Directory appDirectory = await getApplicationDocumentsDirectory();
-      var newDir = await  Directory(appDirectory.path+'/newDir');
-      bool doesExist = await newDir.exists();
-      if(doesExist)
-        await newDir.create();
-
-      // await fileToCopy.copy('${newDir.path}/Copy-${pickedFile.name}');
-
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;
-      filePicker.setStateFile( File(filePicker.value));
-
+      filePicker.setStateFile(File(filePicker.value));
     } else {
       // User canceled the picker
     }
 
     emit(state.copyWith());
-
   }
-
-
-  }
+}
