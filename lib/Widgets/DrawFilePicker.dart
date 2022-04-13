@@ -53,12 +53,15 @@ class DrawFilePicker extends  FormElement {
   void change(){
 
   }
+  void setStateFile(dynamic value) {
+    _fieldState.didChange(File(value));
+  }
 
   @override
   Widget build(BuildContext context) {
     String ?  fileName;
 
-    return Padding(
+      return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 10) :  const EdgeInsets.only(top: 10),
       child: BlocBuilder<ValidationBloc, ValidationState>(
 
@@ -74,7 +77,6 @@ class DrawFilePicker extends  FormElement {
               },
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (file)  {
-                print('file size : : : ${file!.lengthSync() /1000000}');
                 if(file==null && required)
                   return 'required';
 
@@ -85,6 +87,7 @@ class DrawFilePicker extends  FormElement {
               },
               initialValue: value == null ? null : File(value),
              builder: (FormFieldState<File> fieldState) {
+                _fieldState = fieldState;
 
                return Column(
                  children: [

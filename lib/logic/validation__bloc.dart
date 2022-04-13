@@ -390,6 +390,8 @@ Future<void> _onFormUpdateRequested(
     } else {
       // User canceled the picker
     }
+    filePicker.setStateFile( filePicker.value);
+
     emit(state.copyWith());
 
   }
