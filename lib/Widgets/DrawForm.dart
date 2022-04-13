@@ -12,7 +12,7 @@ class FormWidget extends FormElement {
     // _key.currentState!.reset();
     return _key.currentState!.validate();
   }
-
+  final int ? submissionID;
   final String label;
   final String name;
   final List<FormElement> fields;
@@ -21,6 +21,7 @@ class FormWidget extends FormElement {
     required this.label,
     required this.name,
     required this.fields,
+     this.submissionID,
   }) : super(label: label, name: name);
 
 

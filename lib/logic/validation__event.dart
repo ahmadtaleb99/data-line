@@ -46,6 +46,16 @@ class FormRequested extends ValidationEvent {
 
 }
 
+
+class FilePickerSaved extends ValidationEvent {
+   DrawFilePicker filePicker;
+
+  FilePickerSaved({
+    required this.filePicker,
+  });
+
+}
+
 class FormUpdateRequested extends ValidationEvent {
   String formName;
   int index;

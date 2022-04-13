@@ -77,12 +77,15 @@ class LocalStorageApi  extends FormApi{
 
 
 
-
+      int getSubmissionID(FormModel formModel){
+    return _formBox.keys.firstWhere((element) => element == formModel);
+      }
 
     
        void updateSubmittedForm(FormModel submittedForm) {
          final form = _formBox.values.firstWhere((element) => element == submittedForm);
          final index = form.key as int ;
+         print('index is $index');
           _formBox.put(index,submittedForm);
     }
 
@@ -96,6 +99,7 @@ class LocalStorageApi  extends FormApi{
 
 
     List<FormModel> getAllSubmissionByName(String formName) {
+    print(_formBox.keys.toString());
     return _formBox.values.where((element) => element.name == formName).toList();
   }
 

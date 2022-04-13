@@ -49,6 +49,10 @@ class DrawFilePicker extends  FormElement {
   String? Function(File?)? validator;
   PlatformFile ?  pickedFile;
   dynamic  value;
+  late FormFieldState<File> _fieldState;
+  void change(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,25 +61,30 @@ class DrawFilePicker extends  FormElement {
     return Padding(
       padding: this.visible == true ?   const EdgeInsets.only(top: 10) :  const EdgeInsets.only(top: 10),
       child: BlocBuilder<ValidationBloc, ValidationState>(
+
         builder: (context, state) {
           return Visibility(
             visible:   visible!,
             maintainState: false,
             maintainSize: false,
-            child: FormField<PlatformFile>(
+
+            child: FormField<File>(
+              onSaved: (file){
+
+              },
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (file) {
-                if(pickedFile==null && required)
+              validator: (file)  {
+                print('file size : : : ${file!.lengthSync() /1000000}');
+                if(file==null && required)
                   return 'required';
 
-                if( pickedFile != null && pickedFile!.size /1000000 > maxFileSize  )
+                if( file != null &&   file.lengthSync() /1000000 > maxFileSize  )
                   return 'file can\'t be larger than $maxFileSize MB';
                 else return null;
 
               },
-              initialValue: null,
-             builder: (FormFieldState<PlatformFile> fieldState) {
-
+              initialValue: value == null ? null : File(value),
+             builder: (FormFieldState<File> fieldState) {
 
                return Column(
                  children: [
@@ -86,9 +95,9 @@ class DrawFilePicker extends  FormElement {
                        style: ElevatedButton.styleFrom(
                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                        ),
+
                        onPressed: () async {
                          context.read<ValidationBloc>().add(FilePickerPressed(drawFilePicker: this));
-
                          fieldState.validate();
 
                        },

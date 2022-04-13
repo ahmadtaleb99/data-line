@@ -58,6 +58,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormUpdated>(_onFormUpdated);
     on<FormDeleted>(_onFormDeleted);
     on<FormUpdateRequested>(_onFormUpdateRequested);
+    on<FilePickerSaved>(_onFilePickerSaved);
   }
 
   Future<void> _onFormsRequested(
@@ -324,6 +325,7 @@ Future<void> _onFormUpdateRequested(
     emit(state.copyWith(
         form: form,
         formModel: formModel));
+
   }
 
 
@@ -351,6 +353,14 @@ Future<void> _onFormUpdateRequested(
       formModelField.value = widgetFields.value;
     }
   }
+  void _onFilePickerSaved(FilePickerSaved event, Emitter<ValidationState> emit) async {
+
+
+
+  }
+
+
+
 
   void _onFilePickerPressed(FilePickerPressed event, Emitter<ValidationState> emit) async {
 
@@ -369,17 +379,20 @@ Future<void> _onFormUpdateRequested(
       Directory appDirectory = await getApplicationDocumentsDirectory();
       var newDir = await  Directory(appDirectory.path+'/newDir');
       bool doesExist = await newDir.exists();
-      print(doesExist);
-      print(newDir.path+' ::::::new dir ');
-      // fileToCopy.copy(appDirectory.path+pickedFile.name);
+      if(doesExist)
+        await newDir.create();
+
+      await fileToCopy.copy('${newDir.path}/Copy-${pickedFile.name}');
 
       // fieldState.didChange(_pickedFile);
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;
-
     } else {
       // User canceled the picker
     }
     emit(state.copyWith());
+
   }
-}
+
+
+  }
