@@ -53,8 +53,8 @@ class DrawFilePicker extends  FormElement {
   void change(){
 
   }
-  void setStateFile(dynamic value) {
-    _fieldState.didChange(File(value));
+  void setStateFile(File file) {
+    _fieldState.didChange(file);
   }
 
   @override

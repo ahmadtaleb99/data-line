@@ -382,15 +382,15 @@ Future<void> _onFormUpdateRequested(
       if(doesExist)
         await newDir.create();
 
-      await fileToCopy.copy('${newDir.path}/Copy-${pickedFile.name}');
+      // await fileToCopy.copy('${newDir.path}/Copy-${pickedFile.name}');
 
-      // fieldState.didChange(_pickedFile);
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;
+      filePicker.setStateFile( File(filePicker.value));
+
     } else {
       // User canceled the picker
     }
-    filePicker.setStateFile( filePicker.value);
 
     emit(state.copyWith());
 
