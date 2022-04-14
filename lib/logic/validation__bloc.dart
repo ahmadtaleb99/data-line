@@ -2,12 +2,15 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:form_builder_test/FormService/FormRepository.dart';
 import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
@@ -35,12 +38,32 @@ part 'validation__event.dart';
 part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
+
+  static downloadingCallback(id, status, progress) {
+    // ///Looking up for a send port
+    // SendPort sendPort = IsolateNameServer.lookupPortByName("downloading")!;
+    //
+    // ///ssending the data
+    // sendPort.send([id, status, progress]);
+  }
   FormRepository _formRepository;
+  // ReceivePort _receivePort = ReceivePort();
 
   ValidationBloc(this._formRepository)
       : super(ValidationState(
           childsMap: {},
         )) {
+    // ///register a send port for the other isolates
+    // IsolateNameServer.registerPortWithName(_receivePort.sendPort, "downloading");
+    //
+    //
+    // ///Listening for the data is comming other isolataes
+    // _receivePort.listen((message) {
+    //
+    // });
+
+
+    FlutterDownloader.registerCallback(downloadingCallback);
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
@@ -142,7 +165,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
    if(await dir.exists())
     await dir.delete(recursive: true);
   }
-
 
   Future<void> _onFormDeleted(
 
@@ -372,4 +394,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
     emit(state.copyWith());
   }
+
+
 }

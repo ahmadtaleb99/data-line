@@ -1,29 +1,31 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'package:form_builder_test/NewSubmitPage.dart';
 import 'package:form_builder_test/SubmittionsPage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'form2Page.dart';
 import 'logic/form__bloc.dart';
 import 'logic/validation__bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-
   HomeScreen({Key? key}) : super(key: key);
-  Future<void> _refresh(BuildContext context) async{
+  Future<void> _refresh(BuildContext context) async {
     context.read<ValidationBloc>().add(FormsRequested());
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         floatingActionButton: BlocBuilder<ValidationBloc, ValidationState>(
           builder: (context, state) {
@@ -40,7 +42,7 @@ class HomeScreen extends StatelessWidget {
         ]),
         body: RefreshIndicator(
           onRefresh: () async {
-               context.read<ValidationBloc>().add(FormsRequested());
+            context.read<ValidationBloc>().add(FormsRequested());
           },
           child: Center(
             child: Column(
@@ -51,68 +53,67 @@ class HomeScreen extends StatelessWidget {
                     height: 20,
                   ),
                   BlocConsumer<ValidationBloc, ValidationState>(
-                    listener: (context,state){
-                       if (state.status == Status.newFormLoaded )
-
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => NewSubmitPage(
-                      form: state.form!,
-                      )));
+                    listener: (context, state) {
+                      if (state.status == Status.newFormLoaded)
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewSubmitPage(
+                                      form: state.form!,
+                                    )));
                     },
                     builder: (context, state) {
                       if (state.status == Status.loading)
                         return CircularProgressIndicator();
-                      else if (state.status == Status.success ) {
+                      else if (state.status == Status.success) {
                         if (state.forms!.isEmpty) {
                           return Text('There are no Assigned forms yet. ');
                         }
                         return Expanded(
                           child: Column(
                             children: [
-                              Text('Assigned Forms',style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              ),),
+                              Text(
+                                'Assigned Forms',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
                               Expanded(
                                 child: GridView.builder(
                                   padding: EdgeInsets.all(30),
                                   itemCount: state.forms!.length,
                                   itemBuilder: (context, index) {
                                     return FormCard(
-                                      formName : state.forms![index].name,
+                                      formName: state.forms![index].name,
                                       submitNewFormCallBack: () async {
-                                         context.read<ValidationBloc>()
-                                          .add(FormRequested(formName: state.forms![index].name));
-
-
-                                         Navigator.push(
-                                             context,
-                                             MaterialPageRoute(
-                                                 builder: (context) => NewSubmitPage(
-                                                   form: state.forms![index],
-                                                 )));
-                                        // print(state.form!.value);
-
-                                      },
-                                      viewSubmittedCallBack: () {
-
-                                        context.read<ValidationBloc>()
-                                            .add(SubmittionsFormsRequested(formName: state.forms![index].name));
-
+                                        context.read<ValidationBloc>().add(
+                                            FormRequested(
+                                                formName:
+                                                    state.forms![index].name));
 
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => SubmittionsPage(
-                                                  form: state.forms![index],
-                                                )));
+                                                builder: (context) =>
+                                                    NewSubmitPage(
+                                                      form: state.forms![index],
+                                                    )));
+                                        // print(state.form!.value);
+                                      },
+                                      viewSubmittedCallBack: () {
+                                        context.read<ValidationBloc>().add(
+                                            SubmittionsFormsRequested(
+                                                formName:
+                                                    state.forms![index].name));
 
-
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SubmittionsPage(
+                                                      form: state.forms![index],
+                                                    )));
                                       },
                                     );
-
                                   },
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,11 +123,40 @@ class HomeScreen extends StatelessWidget {
                                           childAspectRatio: 1),
                                 ),
                               ),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    _downLoadFile("/lib/1.jpg");
+                                  },
+
+                                  // {
+                                  //   log('asd');
+                                  //   final dir =
+                                  //       await getExternalStorageDirectory();
+                                  //   if (await Permission.storage
+                                  //       .request()
+                                  //       .isGranted) {
+                                  //     final taskId =
+                                  //         await FlutterDownloader.enqueue(
+                                  //       url:
+                                  //           'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGhvdG98ZW58MHx8MHx8&w=1000&q=80',
+                                  //       savedDir: dir!.path,
+                                  //       saveInPublicStorage: true,
+                                  //       fileName: 'adsasds2d',
+                                  //       showNotification:
+                                  //           true, // show download progress in status bar (for Android)
+                                  //       openFileFromNotification:
+                                  //           true, // click on notification to open downloaded file (for Android)
+                                  //     );
+                                  //   } else {
+                                  //     log('not granted');
+                                  //   }
+                                  // },
+                                  child: Text('click me'))
                             ],
                           ),
                         );
-                      }
-                      else  return Container();
+                      } else
+                        return Container();
                     },
                   ),
                   SizedBox(
@@ -136,6 +166,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ));
   }
+
+  void   _downLoadFile(String path) {
+      AnchorElement anchorElement = AnchorElement(href: path);
+      anchorElement.download = 'sad';
+      anchorElement.click();
+  }
+
+
 }
 
 class FormCard extends StatelessWidget {
@@ -170,7 +208,7 @@ class FormCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed:submitNewFormCallBack ,
+                      onPressed: submitNewFormCallBack,
                       icon: Icon(
                         Icons.add,
                         color: Colors.white,
@@ -187,7 +225,4 @@ class FormCard extends StatelessWidget {
       ),
     );
   }
-
 }
-
-
