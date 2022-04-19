@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
@@ -132,10 +133,15 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     if(downloadsDirectory == null) throw PlatformException(code: '123');
     var name = basename(event.path);
     File cachedFile = File(event.path);
+    AwesomeNotifications().createNotification(content: NotificationContent(id: 3, channelKey: 'first',title: 'sd', body: 'body'
 
+
+    ));
+    var sd = '213';
+    await  NotificationService.showNotification(title: sd, body: 'body', payload: event.path);
         await cachedFile.copy(downloadsDirectory.path+'/$name}');
-         
-       await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
+         sd = '312';
+       // await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
   }
 
 
