@@ -1,20 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
+ static  StreamController<String> _streamController = StreamController();
   static final FlutterLocalNotificationsPlugin
       _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+ static  Stream<String> get stream => _streamController.stream;
   static const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
   final MacOSInitializationSettings initializationSettingsMacOS =
       const MacOSInitializationSettings();
 
-
- static Future <void> init() async {
-    await _flutterLocalNotificationsPlugin.initialize( InitializationSettings(android: initializationSettingsAndroid),
-        onSelectNotification: _onSelectNotification);
+  Future<void> init() async {
+    await _flutterLocalNotificationsPlugin.initialize(
+        InitializationSettings(android: initializationSettingsAndroid),
+        onSelectNotification: (payload) {
+      _streamController.add(payload!);
+    });
   }
 
   static void _onSelectNotification(String? payload) {
@@ -28,8 +34,7 @@ class NotificationService {
           channelDescription: 'your channel description',
           importance: Importance.max,
           priority: Priority.high,
-          showProgress: true,
-          maxProgress: 24,
+
           ticker: 'ticker');
 
   static final NotificationDetails _platformChannelSpecifics =
@@ -38,10 +43,12 @@ class NotificationService {
   static Future<void> showNotification(
       {required String title,
       required String body,
+      void Function(String?)? onSelect,
       required String payload}) async {
     await _flutterLocalNotificationsPlugin
         .show(0, title, body, _platformChannelSpecifics, payload: payload);
   }
+    // Stream listen (){
+    // return _streamController.stream;
+    // }
 }
-
-

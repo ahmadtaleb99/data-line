@@ -19,7 +19,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
- await  NotificationService.init();
+ await  NotificationService().init();
   await FlutterDownloader.initialize(
       debug: true // optional: set false to disable printing logs to console
   );

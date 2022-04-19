@@ -49,9 +49,19 @@ class FormRequested extends ValidationEvent {
 
 class FilePickerSaved extends ValidationEvent {
    File file;
-
+    DrawFilePicker filePicker;
   FilePickerSaved({
     required this.file,
+    required this.filePicker,
+  });
+
+}
+
+class FileDownloadedNotification extends ValidationEvent {
+   String path;
+
+   FileDownloadedNotification({
+    required this.path,
   });
 
 }

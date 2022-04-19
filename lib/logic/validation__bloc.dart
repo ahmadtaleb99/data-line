@@ -4,12 +4,14 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
-
+import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:form_builder_test/FormService/FormRepository.dart';
 import 'package:form_builder_test/FormService/NotificationsService.dart';
@@ -40,31 +42,18 @@ part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
-  static downloadingCallback(id, status, progress) {
-    // ///Looking up for a send port
-    // SendPort sendPort = IsolateNameServer.lookupPortByName("downloading")!;
-    //
-    // ///ssending the data
-    // sendPort.send([id, status, progress]);
-  }
   FormRepository _formRepository;
   // ReceivePort _receivePort = ReceivePort();
-
+    StreamSubscription<String> _streamSubscription =  NotificationService.stream.listen((event) async {
+      print(event);
+     await OpenFile.open(event);
+    });
   ValidationBloc(this._formRepository)
       : super(ValidationState(
           childsMap: {},
         )) {
-    // ///register a send port for the other isolates
-    // IsolateNameServer.registerPortWithName(_receivePort.sendPort, "downloading");
-    //
-    //
-    // ///Listening for the data is comming other isolataes
-    // _receivePort.listen((message) {
-    //
-    // });
 
 
-    FlutterDownloader.registerCallback(downloadingCallback);
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
@@ -86,6 +75,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormUpdateRequested>(_onFormUpdateRequested);
     on<FilePickerSaved>(_onFilePickerSaved);
     on<FilePreviewRequested>(_onFilePreviewRequested);
+    on<FileDownloadedNotification>(_onFileDownloadedNotification);
   }
 
   Future<void> _onFormsRequested(
@@ -113,6 +103,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
+ void _onFileDownloadedNotification(
+     FileDownloadedNotification event, Emitter<ValidationState> emit) {
+
+    // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
+  }
+
 
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
@@ -132,10 +128,16 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   Future<void> _onFilePreviewRequested(
       FilePreviewRequested event, Emitter<ValidationState> emit) async {
+    var  downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+    if(downloadsDirectory == null) throw PlatformException(code: '123');
+    var name = basename(event.path);
+    File cachedFile = File(event.path);
 
-
-       await  NotificationService.showNotification(title: 'title', body: 'body', payload: 'payload');
+        await cachedFile.copy(downloadsDirectory.path+'/$name}');
+         
+       await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
   }
+
 
 
 
@@ -381,8 +383,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       newFilePath = '$base/${newId}-${state.formModel!.name}';
     }
     newDir = await Directory(newFilePath).create(recursive: true);
-    await fileToCopy.copy('$newFilePath/${basename(fileToCopy.path)}');
+    var path =  '$newFilePath/${basename(fileToCopy.path)}';
+    await fileToCopy.copy(path);
 
+
+    event.filePicker.value = path;
     emit(state.copyWith(status: Status.success));
   }
 
@@ -411,5 +416,9 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
-
+    @override
+  Future<void> close() {
+    _streamSubscription.cancel();
+    return super.close();
+  }
 }

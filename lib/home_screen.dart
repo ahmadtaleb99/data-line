@@ -54,6 +54,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   BlocConsumer<ValidationBloc, ValidationState>(
                     listener: (context, state) {
+
+
                       if (state.status == Status.newFormLoaded)
                         Navigator.push(
                             context,
@@ -125,32 +127,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                   onPressed: () async {
-                                    NotificationService.showNotification(title: 'title', body: 'body', payload: 'payload');
                                   },
 
-                                  // {
-                                  //   log('asd');
-                                  //   final dir =
-                                  //       await getExternalStorageDirectory();
-                                  //   if (await Permission.storage
-                                  //       .request()
-                                  //       .isGranted) {
-                                  //     final taskId =
-                                  //         await FlutterDownloader.enqueue(
-                                  //       url:
-                                  //           'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGhvdG98ZW58MHx8MHx8&w=1000&q=80',
-                                  //       savedDir: dir!.path,
-                                  //       saveInPublicStorage: true,
-                                  //       fileName: 'adsasds2d',
-                                  //       showNotification:
-                                  //           true, // show download progress in status bar (for Android)
-                                  //       openFileFromNotification:
-                                  //           true, // click on notification to open downloaded file (for Android)
-                                  //     );
-                                  //   } else {
-                                  //     log('not granted');
-                                  //   }
-                                  // },
                                   child: Text('click me'))
                             ],
                           ),
