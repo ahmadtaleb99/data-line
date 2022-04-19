@@ -10,8 +10,16 @@ static  List<NotificationChannel> channels =   [
         channelKey: 'first',
         channelName: 'Basic notifications',
         channelDescription: 'Notification channel for basic tests',
-        defaultColor: Color(0xFF9D50DD),
-        ledColor: Colors.white)
+        importance: NotificationImportance.Max,
+
+        ledColor: Colors.white),  NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'second',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        importance: NotificationImportance.Max,
+
+        ledColor: Colors.white),
   ];
 }
 

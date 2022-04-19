@@ -35,6 +35,7 @@ import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../UpdateFormPage.dart';
 
@@ -42,19 +43,17 @@ part 'validation__event.dart';
 part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
-
   FormRepository _formRepository;
   // ReceivePort _receivePort = ReceivePort();
-    StreamSubscription<String> _streamSubscription =  NotificationService.stream.listen((event) async {
-      print(event);
-     await OpenFile.open(event);
-    });
+  StreamSubscription<String> _streamSubscription =
+      NotificationService.stream.listen((event) async {
+    print(event);
+    await OpenFile.open(event);
+  });
   ValidationBloc(this._formRepository)
       : super(ValidationState(
           childsMap: {},
         )) {
-
-
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
@@ -104,12 +103,10 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
- void _onFileDownloadedNotification(
-     FileDownloadedNotification event, Emitter<ValidationState> emit) {
-
+  void _onFileDownloadedNotification(
+      FileDownloadedNotification event, Emitter<ValidationState> emit) {
     // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
   }
-
 
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
@@ -125,29 +122,25 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     await _formRepository.initLocal();
   }
 
-
-
   Future<void> _onFilePreviewRequested(
       FilePreviewRequested event, Emitter<ValidationState> emit) async {
-    var  downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
-    if(downloadsDirectory == null) throw PlatformException(code: '123');
+    var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+    if (downloadsDirectory == null) throw PlatformException(code: '123');
     var name = basename(event.path);
     File cachedFile = File(event.path);
-    AwesomeNotifications().createNotification(content: NotificationContent(id: 3, channelKey: 'first',title: 'sd', body: 'body'
-
-
-    ));
+    AwesomeNotifications().createNotification(
+        actionButtons: [
+          NotificationActionButton(key: 'first', label: 'aasdasdsd'),
+          NotificationActionButton(key: 'first', label: 'aasdasdsd')
+        ],
+        content: NotificationContent(
+            id: 3, channelKey: 'second', title: 'sd', body: 'body',category: NotificationCategory.Progress));
     var sd = '213';
-    await  NotificationService.showNotification(title: sd, body: 'body', payload: event.path);
-        await cachedFile.copy(downloadsDirectory.path+'/$name}');
-         sd = '312';
-       // await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
+    if (await Permission.storage.request().isGranted)
+      await cachedFile.copy(downloadsDirectory.path + '/$name}');
+    sd = '312';
+    // await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
   }
-
-
-
-
-
 
   Future<void> _onSubmittionsFormsRequested(
       SubmittionsFormsRequested event, Emitter<ValidationState> emit) async {
@@ -182,21 +175,17 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     ));
   }
 
-
-  Future<void> _deleteSubmissionCache(int id,FormModel formModel) async {
-    String base = await  getBase();
-   var dir =  Directory(base+'/${id}-${formModel.name}');
-   if(await dir.exists())
-    await dir.delete(recursive: true);
+  Future<void> _deleteSubmissionCache(int id, FormModel formModel) async {
+    String base = await getBase();
+    var dir = Directory(base + '/${id}-${formModel.name}');
+    if (await dir.exists()) await dir.delete(recursive: true);
   }
 
   Future<void> _onFormDeleted(
-
       FormDeleted event, Emitter<ValidationState> emit) async {
-
     var formModel = _formRepository.submittedForms[event.index];
-    print(formModel.key.toString()+'asdasdasdasd');
-    _deleteSubmissionCache(formModel.key,formModel);
+    print(formModel.key.toString() + 'asdasdasdasd');
+    _deleteSubmissionCache(formModel.key, formModel);
 
     _formRepository.deleteForm(formModel);
     var forms = _formRepository.submittedForms;
@@ -389,18 +378,12 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       newFilePath = '$base/${newId}-${state.formModel!.name}';
     }
     newDir = await Directory(newFilePath).create(recursive: true);
-    var path =  '$newFilePath/${basename(fileToCopy.path)}';
+    var path = '$newFilePath/${basename(fileToCopy.path)}';
     await fileToCopy.copy(path);
-
 
     event.filePicker.value = path;
     emit(state.copyWith(status: Status.success));
   }
-
-
-
-
-
 
   void _onFilePickerPressed(
       FilePickerPressed event, Emitter<ValidationState> emit) async {
@@ -422,7 +405,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
-    @override
+  @override
   Future<void> close() {
     _streamSubscription.cancel();
     return super.close();
