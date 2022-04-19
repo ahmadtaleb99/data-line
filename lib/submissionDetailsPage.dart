@@ -1,14 +1,10 @@
-import 'dart:developer';
-import 'dart:isolate';
 import 'dart:ui';
-
+import 'logic/validation__bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:form_builder_test/Widgets/DrawFilePicker.dart';
 import 'package:form_builder_test/Widgets/DrawForm.dart';
-import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubmittionsDetailsPage extends StatelessWidget {
 
@@ -35,7 +31,7 @@ class SubmittionsDetailsPage extends StatelessWidget {
                   DataColumn(label: Text('Field')),
                   DataColumn(label: Text('Value')),
                 ],
-                rows: _buildRows(formWidget),
+                rows: _buildRows(formWidget,context),
               ),
             ),
           ),
@@ -47,7 +43,7 @@ class SubmittionsDetailsPage extends StatelessWidget {
 
 }
 
-List<DataRow> _buildRows(FormWidget formWidget) {
+List<DataRow> _buildRows(FormWidget formWidget,BuildContext context) {
 
   List<DataRow> rows = [];
   for (var field in formWidget.fields) {
@@ -57,21 +53,8 @@ List<DataRow> _buildRows(FormWidget formWidget) {
         DataCell((field is DrawFilePicker)
             ? ElevatedButton(
                 onPressed: () async {
-                  log('asd');
-                  final dir = await getExternalStorageDirectory();
-                  if (await Permission.storage.request().isGranted) {
-                    final taskId = await FlutterDownloader.enqueue(
-                      url:
-                          'https://upload.wikimedia.org/wikipedia/commons/b/b2/Sand_Dunes_in_Death_Valley_National_Park.jpg',
-                      savedDir: dir!.path,
-                      fileName: 'download',
-                      showNotification: true, // show download progress in status bar (for Android)
-                      openFileFromNotification:
-                          true, // click on notification to open downloaded file (for Android)
-                    );
-                  } else {
-                    log('not granted');
-                  }
+                  context.read<ValidationBloc>().add(FilePreviewRequested(path: field.value));
+
                 },
                 child: Text('download file'))
             : ConstrainedBox(

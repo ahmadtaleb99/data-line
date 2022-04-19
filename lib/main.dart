@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/FormService/NotificationsService.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:hive/hive.dart';
 
@@ -18,6 +19,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
+ await  NotificationService.init();
   await FlutterDownloader.initialize(
       debug: true // optional: set false to disable printing logs to console
   );

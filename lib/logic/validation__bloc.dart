@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:form_builder_test/FormService/FormRepository.dart';
+import 'package:form_builder_test/FormService/NotificationsService.dart';
 import 'package:form_builder_test/Widgets/DrawChecboxGroup.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
@@ -84,6 +85,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormDeleted>(_onFormDeleted);
     on<FormUpdateRequested>(_onFormUpdateRequested);
     on<FilePickerSaved>(_onFilePickerSaved);
+    on<FilePreviewRequested>(_onFilePreviewRequested);
   }
 
   Future<void> _onFormsRequested(
@@ -111,6 +113,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
+
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
     var forms = await _formRepository.getAvailableFormsFromLocal();
@@ -124,6 +127,19 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       ServiceRegistered event, Emitter<ValidationState> emit) async {
     await _formRepository.initLocal();
   }
+
+
+
+  Future<void> _onFilePreviewRequested(
+      FilePreviewRequested event, Emitter<ValidationState> emit) async {
+
+
+       await  NotificationService.showNotification(title: 'title', body: 'body', payload: 'payload');
+  }
+
+
+
+
 
   Future<void> _onSubmittionsFormsRequested(
       SubmittionsFormsRequested event, Emitter<ValidationState> emit) async {

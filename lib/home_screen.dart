@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:form_builder_test/FormService/NotificationsService.dart';
 
 import 'package:form_builder_test/NewSubmitPage.dart';
 import 'package:form_builder_test/SubmittionsPage.dart';
@@ -125,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                   onPressed: () async {
-                                    _downLoadFile("/lib/1.jpg");
+                                    NotificationService.showNotification(title: 'title', body: 'body', payload: 'payload');
                                   },
 
                                   // {
@@ -165,12 +165,6 @@ class HomeScreen extends StatelessWidget {
                 ]),
           ),
         ));
-  }
-
-  void   _downLoadFile(String path) {
-      AnchorElement anchorElement = AnchorElement(href: path);
-      anchorElement.download = 'sad';
-      anchorElement.click();
   }
 
 
