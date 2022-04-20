@@ -55,7 +55,7 @@ class UpdateFormPage extends StatelessWidget {
 
                     },
                     builder: (context, state) {
-                      print(state.submitted.toString()!+'jijijijijijiji');
+                      print(state.submitted.toString()+'jijijijijijiji');
 
                       if (state.status == Status.success) {
                         form = state.form!;
