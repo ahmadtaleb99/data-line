@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'FormService/FormRepository.dart';
 import 'Widgets/DrawForm.dart';
+import 'logic/utils.dart';
 import 'logic/validation__bloc.dart';
 
 class UpdateFormPage extends StatelessWidget {
@@ -11,6 +12,7 @@ class UpdateFormPage extends StatelessWidget {
       : super(key: key);
   late GlobalKey<FormState> _key;
   final int index;
+  final LoadingOverlay _loadingOverlay = LoadingOverlay();
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,6 @@ class UpdateFormPage extends StatelessWidget {
                 context
                     .read<ValidationBloc>()
                     .add(FormUpdated(formName: form.name, index: this.index));
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('form is valid ')));
                 // context.read<FormRepository>().savetoLocal();
                 // context.read<FormRepository>().getForm();
 
@@ -40,11 +40,23 @@ class UpdateFormPage extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  BlocBuilder<ValidationBloc, ValidationState>(
+                  BlocConsumer<ValidationBloc, ValidationState>(
+
+                    listener: (context,state) {
+                      if(state.status == Status.loading)
+                      _loadingOverlay.show(context);
+                      else
+                        _loadingOverlay.hide();
+
+
+                      if(state.submitted! && state.status == Status.success)
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text('form has been updated'),duration: Duration(milliseconds: 600)));
+
+                    },
                     builder: (context, state) {
-                      if (state.status == Status.loading) {
-                      return CircularProgressIndicator();
-                      }
+                      print(state.submitted.toString()!+'jijijijijijiji');
+
                       if (state.status == Status.success) {
                         form = state.form!;
                         // form = state.form!;

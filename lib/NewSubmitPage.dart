@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/logic/utils.dart';
 
 import 'FormService/FormRepository.dart';
 import 'Widgets/DrawForm.dart';
@@ -10,6 +11,7 @@ class NewSubmitPage extends StatelessWidget {
    FormWidget form;
    NewSubmitPage ({Key? key, required this.form}) : super(key: key);
   late GlobalKey<FormState> _key;
+  LoadingOverlay _loadingOverlay =  LoadingOverlay();
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,6 @@ class NewSubmitPage extends StatelessWidget {
               form.save();
 
               context.read<ValidationBloc>().add(FormSubmitted(formName: this.form.name));
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form is valid ')));
-            // context.read<FormRepository>().savetoLocal();
-            // context.read<FormRepository>().getForm();
 
 
             }
@@ -43,12 +42,20 @@ class NewSubmitPage extends StatelessWidget {
   crossAxisAlignment: CrossAxisAlignment.center,
   children: [
   SizedBox(height: 20,),
-  BlocBuilder<ValidationBloc, ValidationState>(
+  BlocConsumer<ValidationBloc, ValidationState>(
+    listener: (context,state){
+      if(state.status == Status.loading)
+      _loadingOverlay.show(context);
+      else _loadingOverlay.hide();
+
+      if(state.submitted! && state.status == Status.success) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form has been submitted'),duration: Duration(milliseconds: 600)));
+
+    },
   builder: (context, state) {
 
-  if (state.status == Status.loading)
-  return CircularProgressIndicator();
-  else if (state.status == Status.success) {
+
+
+   if (state.status == Status.success) {
     form =state.form!;
   return Padding(
   padding:

@@ -8,6 +8,7 @@ import 'package:form_builder_test/dynamic%20form/FileTypeEnum.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'IDrawable.dart';
+import 'package:path/path.dart';
 class DrawFilePicker extends  FormElement {
 
 
@@ -119,7 +120,9 @@ class DrawFilePicker extends  FormElement {
                    ),
                    SizedBox(height: 5,),
                    if (value != null )
-                     Text(value),
+                     Text('Picked File:  ${basename(value)}',style: TextStyle(
+                       fontWeight: FontWeight.bold
+                     ),),
                    if (fieldState.hasError)
                      Padding(
                        padding: const EdgeInsets.only(left: 8, top: 10),

@@ -90,10 +90,13 @@ class SubmissionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
 
               children: [
-                Text('. . .', style: TextStyle(
-                    fontSize: 20,
-                  fontWeight: FontWeight.bold
-                )),
+                Expanded(
+                  child: Text('. . .', textAlign:TextAlign.center,style: TextStyle(
+
+                      fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  )),
+                ),
 
 
               ],
@@ -115,12 +118,13 @@ class SubmissionCard extends StatelessWidget {
 
             children: [
               Expanded(
+                flex: 4,
                 child: Text(field.label,style: TextStyle(
                     fontSize: 20
                 ),),
               ),
-              SizedBox(width: 30,),
               Expanded(
+                flex: 2,
                 child: Text(textValue,style: TextStyle(
                   overflow: TextOverflow.ellipsis,
 
@@ -161,7 +165,7 @@ class SubmissionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height: 175,
+      height: 180,
       decoration: BoxDecoration(
           color: Colors.lightBlueAccent,
           shape: BoxShape.rectangle,
@@ -169,7 +173,7 @@ class SubmissionCard extends StatelessWidget {
       child: Column(
         children: [
             Expanded(
-              flex: 11,
+              flex: 13,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -181,7 +185,7 @@ class SubmissionCard extends StatelessWidget {
               ),
             ),
           Expanded(
-              flex: 4,
+              flex: 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

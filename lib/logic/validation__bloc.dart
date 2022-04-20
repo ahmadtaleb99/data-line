@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:open_file/open_file.dart';
@@ -45,15 +46,18 @@ part 'validation__state.dart';
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
   // ReceivePort _receivePort = ReceivePort();
-  StreamSubscription<String> _streamSubscription =
-      NotificationService.stream.listen((event) async {
-    print(event);
-    await OpenFile.open(event);
-  });
+
   ValidationBloc(this._formRepository)
       : super(ValidationState(
           childsMap: {},
         )) {
+
+
+    AwesomeNotifications().actionStream.listen((action) {
+      OpenFile.open(action.payload!['value']);
+
+    });
+
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
@@ -128,18 +132,26 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     if (downloadsDirectory == null) throw PlatformException(code: '123');
     var name = basename(event.path);
     File cachedFile = File(event.path);
-    AwesomeNotifications().createNotification(
-        actionButtons: [
-          NotificationActionButton(key: 'first', label: 'aasdasdsd'),
-          NotificationActionButton(key: 'first', label: 'aasdasdsd')
-        ],
-        content: NotificationContent(
-            id: 3, channelKey: 'second', title: 'sd', body: 'body',category: NotificationCategory.Progress));
+
     var sd = '213';
-    if (await Permission.storage.request().isGranted)
-      await cachedFile.copy(downloadsDirectory.path + '/$name}');
+    String ?  newFilePath;
+    if (await Permission.storage.request().isGranted) {
+      print(downloadsDirectory.path);
+      newFilePath = downloadsDirectory.path + '/$name';
+      await cachedFile.copy(newFilePath);
+
+    }
+
+    AwesomeNotifications().createNotification(
+
+        content: NotificationContent(
+            id:  1, channelKey: 'second',
+            title: ' $name has been downloaded',
+            body: 'tap to preview file.',
+            bigPicture: 'file://$newFilePath',
+            notificationLayout: NotificationLayout.BigPicture,
+            category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
     sd = '312';
-    // await  NotificationService.showNotification(title: name, body: 'body', payload: event.path);
   }
 
   Future<void> _onSubmittionsFormsRequested(
@@ -156,6 +168,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     var formModel = _formRepository.submittedForms[event.index];
     var formWidget = formModel.toWidget() as FormWidget;
     emit(state.copyWith(
+      submitted: false,
         form: formWidget, status: Status.success, formModel: formModel));
   }
 
@@ -168,6 +181,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     _formRepository.updateSubmission(formModel);
 
     emit(state.copyWith(
+      submitted: true,
       subedForms: _formRepository.submittedForms
           .map((e) => e.toWidget() as FormWidget)
           .toList(),
@@ -322,7 +336,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
         .firstWhere((element) => element.name == event.formName);
     var form = formModel.toWidget() as FormWidget;
 
-    emit(state.copyWith(form: form, formModel: formModel));
+    emit(state.copyWith(form: form, formModel: formModel,submitted: false));
   }
 
   Future<void> _onFormUpdateRequested(
@@ -330,7 +344,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     var formModel = _formRepository.submittedForms[event.index];
     var form = formModel.toWidget() as FormWidget;
 
-    emit(state.copyWith(form: form, formModel: formModel));
+    emit(state.copyWith(form: form, formModel: formModel,      submitted: false,
+    ));
   }
 
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
@@ -341,6 +356,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     _mapWidgetValuesToModel(formModel, stateForm);
 
     _formRepository.addSubmittedForm(formModel);
+    emit(state.copyWith(submitted: true));
   }
 
   void _mapWidgetValuesToModel(FormModel formModel, FormWidget formWidget) {
@@ -386,11 +402,15 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   }
 
   void _onFilePickerPressed(
-      FilePickerPressed event, Emitter<ValidationState> emit) async {
+
+
+  FilePickerPressed event, Emitter<ValidationState> emit) async {
+    emit(state.copyWith(submitted: false));
+
     var filePicker = event.drawFilePicker;
     PlatformFile? pickedFile;
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: false, type: FileType.image);
+        .pickFiles(allowMultiple: false, type: FileType.any);
 
     if (result != null) {
       pickedFile = result.files.single;
@@ -407,7 +427,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   @override
   Future<void> close() {
-    _streamSubscription.cancel();
+    AwesomeNotifications().actionSink.close();
     return super.close();
   }
 }
