@@ -3,14 +3,23 @@ import 'dart:io';
 import 'dart:typed_data';
 
 Future<void> main() async {
-  var file = File('assets/ahmad.txt');
-  var bytes = await _readFileByte(file.path);
-  file.openRead().listen((event) {
-    // bytes.addAll(event);
-    print(event);
-  });
-  var newFile = File('assets/sdsss.jpg');
- newFile.writeAsBytes(bytes.toList());
+  var file = File('assets/1.jpg');
+  var bytess = await _readFileByte(file.path);
+  // file.openRead().listen((event) {
+  //   // bytes.addAll(event);
+  //   print(event);
+  // });
+  //
+  var bytes = bytess.toList();
+  var newFile = File('assets/32aasd3.jpg');
+
+  var chunck2 = [];
+  for(int i = 0 ; i< bytes.length;i++){
+     chunck2= bytes.sublist(chunck2.);
+
+  }
+
+  newFile.writeAsBytes(bytes,mode: FileMode.append);
 
 
 //   print(await file.length());
@@ -42,12 +51,17 @@ Future<Uint8List> readFileBytes(String path, int len) async {
   return Uint8List.fromList(bytes);
 }
 
+
+
 Future<Uint8List> _readFileByte(String filePath) async {
   File audioFile = new File(filePath);
   late Uint8List bytes;
   await audioFile.readAsBytes().then((value) {
-    for (var kza in value) print(kza);
+    // for (var kza in value) print(kza);
     bytes = Uint8List.fromList(value);
+    var length = bytes.length;
+    var chunk = length / 5 ;
+    // for(int i = 0 ; i<length ; i+= chunk )
     print('reading of bytes is completed');
   }).catchError((onError) {
     print(
