@@ -6,6 +6,8 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:form_builder_test/logic/IoService.dart';
+import 'package:form_builder_test/testable.dart';
 import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
@@ -45,19 +47,31 @@ part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
+  IoService _ioService = IoService();
   // ReceivePort _receivePort = ReceivePort();
 
   ValidationBloc(this._formRepository)
-      : super(ValidationState(
+        : super(ValidationState(
           childsMap: {},
         )) {
 
-
     AwesomeNotifications().actionStream.listen((action) {
+      if(action.buttonKeyPressed == 'stopDownload '){
+        _ioService.stopCopying();
+      }
+
+
+      else
       OpenFile.open(action.payload!['value']);
 
     });
 
+
+    AwesomeNotifications().displayedStream.listen((event) {
+      if(event.id == 1){
+
+      }
+    });
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<FormsRequested>(_onFormsRequested);
     on<FormRequested>(_onFormRequested);
@@ -123,35 +137,59 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   Future<void> _onServiceRegistered(
       ServiceRegistered event, Emitter<ValidationState> emit) async {
-    await _formRepository.initLocal();
-  }
+    print('service  inited');
 
+    await _formRepository.initLocal();
+    await _ioService.init();
+  }
+/////////////////////////////////////////////////////
+  /////////////////////////////
+  /////////////////////////////
+  /////////////////////////////
+  /////////////////////////////
   Future<void> _onFilePreviewRequested(
       FilePreviewRequested event, Emitter<ValidationState> emit) async {
-    var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
-    if (downloadsDirectory == null) throw PlatformException(code: '123');
-    var name = basename(event.path);
     File cachedFile = File(event.path);
+    String fileName = basename(cachedFile.path);
 
-    var sd = '213';
-    String ?  newFilePath;
-    if (await Permission.storage.request().isGranted) {
-      print(downloadsDirectory.path);
-      newFilePath = downloadsDirectory.path + '/$name';
-      await cachedFile.copy(newFilePath);
+    String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
+int progress  = 0 ;
+    _ioService.copyProgress.listen((event) {
+      progress = event.toInt();
+      AwesomeNotifications().createNotification(
+                actionButtons: [
+                  NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
+                ],
+          content: NotificationContent(
 
+              id:  1,
+              channelKey: 'second',
+              title: 'downloading: $fileName',
+              body: '$progress',
+              progress: progress,
+              notificationLayout: NotificationLayout.ProgressBar,
+              category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
+    },
+       onDone: () async {
+         print('done ');
+         print(newFilePath);
+        var file = File(newFilePath!);
+         print( file.existsSync());
+         AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id:  1,
+              channelKey: 'second',
+              title: ' download complete for file $fileName',
+              body: ' tap to preview',
+              bigPicture: 'file://$newFilePath',
+              notificationLayout: NotificationLayout.BigPicture,
+              category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
     }
+    );
 
-    AwesomeNotifications().createNotification(
+    print(progress);
 
-        content: NotificationContent(
-            id:  1, channelKey: 'second',
-            title: ' $name has been downloaded',
-            body: 'tap to preview file.',
-            bigPicture: 'file://$newFilePath',
-            notificationLayout: NotificationLayout.BigPicture,
-            category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
-    sd = '312';
+
   }
 
   Future<void> _onSubmittionsFormsRequested(
@@ -189,17 +227,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     ));
   }
 
-  Future<void> _deleteSubmissionCache(int id, FormModel formModel) async {
-    String base = await getBase();
-    var dir = Directory(base + '/${id}-${formModel.name}');
-    if (await dir.exists()) await dir.delete(recursive: true);
-  }
+
 
   Future<void> _onFormDeleted(
       FormDeleted event, Emitter<ValidationState> emit) async {
     var formModel = _formRepository.submittedForms[event.index];
     print(formModel.key.toString() + 'asdasdasdasd');
-    _deleteSubmissionCache(formModel.key, formModel);
+    await _ioService.deleteSubmissionCache(formModel.key, formModel);
 
     _formRepository.deleteForm(formModel);
     var forms = _formRepository.submittedForms;
@@ -376,28 +410,19 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       FilePickerSaved event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(status: Status.loading));
     File fileToCopy = event.file;
-
     int? submissionKey = state.formModel!.key;
-    Directory appDirectory = await getApplicationDocumentsDirectory();
-    String base = appDirectory.path + '/filePickerCache';
+    String formName = state.formModel!.name;
 
-    var newDir = await Directory(base).create();
-    String newFilePath;
 
-    if (submissionKey != null) {
-      //form has a submission
-
-      newFilePath = '$base/${submissionKey}-${state.formModel!.name}';
-    } else {
-      var newId = _formRepository.getLastSubmissionID() + 1;
-
-      newFilePath = '$base/${newId}-${state.formModel!.name}';
+    if (submissionKey == null) {
+      // form has no submission
+      submissionKey = _formRepository.getLastSubmissionID() + 1;
     }
-    newDir = await Directory(newFilePath).create(recursive: true);
-    var path = '$newFilePath/${basename(fileToCopy.path)}';
-    await fileToCopy.copy(path);
 
-    event.filePicker.value = path;
+
+   var newPath =  await _ioService.cacheFile(submissionKey, formName, fileToCopy);
+
+    event.filePicker.value = newPath;
     emit(state.copyWith(status: Status.success));
   }
 
@@ -407,6 +432,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FilePickerPressed event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(submitted: false));
 
+
     var filePicker = event.drawFilePicker;
     PlatformFile? pickedFile;
     FilePickerResult? result = await FilePicker.platform
@@ -414,6 +440,9 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
     if (result != null) {
       pickedFile = result.files.single;
+
+      print('asdasdas');
+
 
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;
@@ -423,11 +452,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     }
 
     emit(state.copyWith());
+
   }
 
   @override
   Future<void> close() {
     AwesomeNotifications().actionSink.close();
+
     return super.close();
   }
 }

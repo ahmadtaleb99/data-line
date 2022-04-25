@@ -78,7 +78,9 @@ class LocalStorageApi  extends FormApi{
 
 
       int getLastSubmissionID(){
-    return _formBox.keys.last;
+    if(_formBox.keys.isNotEmpty)
+    return _formBox.keys.last ;
+    else return  -1;
       }
 
       int getSubmissionID(FormModel formModel){

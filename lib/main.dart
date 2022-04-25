@@ -30,7 +30,7 @@ void initNotifications(){
             channelGroupkey: 'basic_channel_group',
             channelGroupName: 'Basic group')
       ],
-      debug: true
+      debug: false
   );
 }
 
@@ -59,9 +59,10 @@ class MyApp extends StatelessWidget {
 
 
     return RepositoryProvider(
-      create: (context) => FormRepository() ..initLocal(),
+      create: (context) => FormRepository() ,
       child: BlocProvider(
         create: (context) => ValidationBloc(context.read<FormRepository>())
+                  ..add(ServiceRegistered())
                   ..add(FormsRequested()),
 
         child: MaterialApp(
