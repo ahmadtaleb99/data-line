@@ -52,6 +52,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
   ValidationBloc(this._formRepository)
         : super(ValidationState(
+    filePicking: false,
           childsMap: {},
         )) {
 
@@ -183,7 +184,7 @@ int progress  = 0 ;
               body: ' tap to preview',
               bigPicture: 'file://$newFilePath',
               notificationLayout: NotificationLayout.BigPicture,
-              category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
+              category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
     }
     );
 
@@ -428,7 +429,6 @@ int progress  = 0 ;
 
   void _onFilePickerPressed(
 
-
   FilePickerPressed event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(submitted: false));
 
@@ -436,13 +436,23 @@ int progress  = 0 ;
     var filePicker = event.drawFilePicker;
     PlatformFile? pickedFile;
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: false, type: FileType.any);
+
+        .pickFiles(allowMultiple: false, type: FileType.any,onFileLoading: (fileStatus){
+          if (fileStatus == FilePickerStatus.picking)
+            emit(state.copyWith(filePicking: true  )   );
+      else
+          if (fileStatus == FilePickerStatus.done)
+            {
+              print ('done picking ; : : : : : ');
+              emit(state.copyWith(filePicking: false  ));
+
+
+              }
+    });
 
     if (result != null) {
       pickedFile = result.files.single;
-
       print('asdasdas');
-
 
       filePicker.pickedFile = pickedFile;
       filePicker.value = pickedFile.path;

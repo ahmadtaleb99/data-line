@@ -6,11 +6,12 @@ part of 'validation__bloc.dart';
 enum Status {initial,loading,success,failure,newFormLoaded}
   class LoadingState {String msg;
 
-  LoadingState.name(this.msg);
+  LoadingState(this.msg);
 }
 class ValidationState{
 
   bool  ? submitted = false;
+  bool   filePicking = false;
   Status status;
   DrawCheckboxGroup ? drawCheckboxGroup;
   DrawDropDown ? drawDropDownButton;
@@ -38,6 +39,7 @@ class ValidationState{
     this.initialMulti ,
     this.submitted,
     this.formModel,
+    required this.filePicking,
     this.status = Status.initial,
     this.drawDropDownButton,
     this.radioGroup,
@@ -62,7 +64,7 @@ class ValidationState{
     FormModel ?   formModel,
     LoadingState ? loadingState,
     List<FormWidget> ? subedForms,
-
+    bool  ? filePicking,
     bool ?   islocallyWorking,
     bool ?   submitted,
 
@@ -87,7 +89,8 @@ class ValidationState{
         formModel: formModel ?? this.formModel,
         subedForms: subedForms ?? this.subedForms,
         islocallyWorking: islocallyWorking ?? this.islocallyWorking,
-        initialMulti: initialMulti ?? this.initialMulti
+        initialMulti: initialMulti ?? this.initialMulti,
+        filePicking: filePicking ?? this.filePicking
     );
   }
 

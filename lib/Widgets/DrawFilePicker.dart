@@ -119,10 +119,13 @@ class DrawFilePicker extends  FormElement {
                      ),
                    ),
                    SizedBox(height: 5,),
-                   if (value != null )
+                   if(state.filePicking)
+                     CircularProgressIndicator(),
+               if ( value != null )
                      Text('Picked File:  ${basename(value)}',style: TextStyle(
-                       fontWeight: FontWeight.bold
+                         fontWeight: FontWeight.bold
                      ),),
+
                    if (fieldState.hasError)
                      Padding(
                        padding: const EdgeInsets.only(left: 8, top: 10),
