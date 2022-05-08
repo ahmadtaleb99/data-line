@@ -3,16 +3,31 @@ import 'package:flutter/material.dart';
 class LoadingOverlay {
   OverlayEntry ? _overlay;
 
-
-  void show(BuildContext context) {
+  void show(BuildContext context, String msg)
+  {
     if (_overlay == null) {
       _overlay = OverlayEntry(
         // replace with your own layout
         builder: (context) => ColoredBox(
           color: Color(0x80000000),
           child: Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
+
+                ),
+                SizedBox(height: 15,),
+                DefaultTextStyle(
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold
+                  ),
+                  child: Text(msg)
+                ),
+
+              ],
             ),
           ),
         ),

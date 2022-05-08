@@ -77,7 +77,7 @@ class DrawFilePicker extends  FormElement {
                 context.read<ValidationBloc>().add(FilePickerSaved(file : file!,filePicker: this));
 
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              // autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (file)  {
                 if(file==null && required)
                   return 'required';
@@ -103,7 +103,6 @@ class DrawFilePicker extends  FormElement {
 
                        onPressed: () async {
                          context.read<ValidationBloc>().add(FilePickerPressed(drawFilePicker: this));
-                         fieldState.validate();
 
                        },
                        child: Row(
@@ -120,7 +119,18 @@ class DrawFilePicker extends  FormElement {
                    ),
                    SizedBox(height: 5,),
                    if(state.filePicking)
-                     CircularProgressIndicator(),
+                     Padding(
+                       padding: const EdgeInsets.all(8.0),
+                       child: Column(
+                         children: [
+                           CircularProgressIndicator(),
+                           SizedBox(height: 5,),
+                           Text('file is beign picked ...',style: TextStyle(
+                               fontWeight: FontWeight.bold
+                           ),),
+                         ],
+                       ),
+                     ),
                if ( value != null )
                      Text('Picked File:  ${basename(value)}',style: TextStyle(
                          fontWeight: FontWeight.bold
@@ -130,7 +140,7 @@ class DrawFilePicker extends  FormElement {
                      Padding(
                        padding: const EdgeInsets.only(left: 8, top: 10),
                        child: Text(
-                         fieldState.errorText!,
+                         _fieldState.errorText!,
                          style: TextStyle(
                              fontStyle: FontStyle.normal,
                              fontSize: 13,

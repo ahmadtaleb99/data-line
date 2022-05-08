@@ -18,8 +18,9 @@ void copyIsolateFunc(Map data) async{
   var file2 = File(data['newPath']);
 
   var _readStream = file.openRead();
-  int fileLength = file.lengthSync();
+  int fileLength = await file.length();
   int currentBytesWritten = 0;
+  print('3');
 
   print(fileLength.toString()+' file lengtg');
   var _writeSink = file2.openWrite();
@@ -27,13 +28,16 @@ void copyIsolateFunc(Map data) async{
     currentBytesWritten += bytes.length;
     _writeSink.add(bytes);
     var percentage = 100 * (currentBytesWritten) / (fileLength);
-    // yield percentage;
    sendPort.send(percentage);
+
   }
-  sendPort.send('done');
+
+  print(currentBytesWritten.toString()+' file currentBytesWritten');
+  print(currentBytesWritten);
   _writeSink.close();
-
-
+  print('4 stream end');
+  sendPort.send('done');
+  print('isolate :::::: ${file2.existsSync().toString() }  ${file2.path}');
 }
 class IoService {
 
@@ -49,15 +53,14 @@ class IoService {
   late StreamSubscription  streamSubscription ;
   Future<void> init() async {
 
-      streamSubscription = receivePort.listen((message) {
-        if(message is String && message == 'done')
-          receivePort.close();
 
+    streamSubscription = receivePort.listen((message) {
+        if(message is String && message == 'done') {
+          print('5');
+          _streamController.close();
 
-      else  _streamController.add(message);
+        } else  _streamController.add(message);
 
-      },onDone: (){
-        _streamController.close();
       });
 
 
@@ -103,9 +106,9 @@ class IoService {
         .request()
         .isGranted) {
       newFilePath = downloadsDirectory.path + '/$fileName';
+      print('1');
 
-      copyFileWithProgress(file, newFilePath);
-      // await file.copy(newFilePath);
+        await   copyFileWithProgress(file, newFilePath);
       return newFilePath;
     }
   }
@@ -123,26 +126,13 @@ class IoService {
   void downloadFile (){
 
   }
-  void copyFileWithProgress(File file ,String newPath) async {
+  Future<void> copyFileWithProgress(File file ,String newPath) async {
+      _streamController = StreamController.broadcast();
+    print('2');
 
     final data = {'port': receivePort.sendPort, 'filePath':file.path,'newPath':newPath};
     isolate = await Isolate.spawn(copyIsolateFunc, data);
     print('b4 rp');
-
-    //
-    //  streamSubscription = receivePort.listen((progress) {
-    //   _streamController.add(progress);
-    //
-    // });
-    //  streamSubscription.cancel();
-    // await for (var progress in receivePort){
-    //
-    //     print('after rp');
-    //     _streamController.add(progress);
-    //   }
-    // isolate.kill();
-    // receivePort.close();
-    // _streamController.close();
 
   }
 

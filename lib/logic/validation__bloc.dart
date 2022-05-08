@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
+import 'package:mime/mime.dart';
+
 import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:form_builder_test/logic/IoService.dart';
@@ -152,43 +154,62 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       FilePreviewRequested event, Emitter<ValidationState> emit) async {
     File cachedFile = File(event.path);
     String fileName = basename(cachedFile.path);
+    bool  kza  = false;
 
     String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
 int progress  = 0 ;
-    _ioService.copyProgress.listen((event) {
-      progress = event.toInt();
-      AwesomeNotifications().createNotification(
-                actionButtons: [
-                  NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
-                ],
-          content: NotificationContent(
+var mimi = lookupMimeType(cachedFile.path);
 
-              id:  1,
-              channelKey: 'second',
-              title: 'downloading: $fileName',
-              body: '$progress',
-              progress: progress,
-              notificationLayout: NotificationLayout.ProgressBar,
-              category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
-    },
-       onDone: () async {
-         print('done ');
-         print(newFilePath);
-        var file = File(newFilePath!);
-         print( file.existsSync());
-         AwesomeNotifications().createNotification(
+    await for (var event in _ioService.copyProgress) {
+      progress = event.toInt();
+
+    }
+    AwesomeNotifications().createNotification(
+        actionButtons: [
+          NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
+        ],
+        content: NotificationContent(
+
+            id:  1,
+            channelKey: 'second',
+            title: 'downloading: $fileName',
+            body: '$progress',
+            progress: progress,
+            locked: true,
+            notificationLayout: NotificationLayout.ProgressBar,
+            category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
+    print('first noti is done ');
+    if (mimi != defaultExtensionMap['jpg']){
+      print(mimi);
+  kza =     await AwesomeNotifications().createNotification(
           content: NotificationContent(
               id:  1,
               channelKey: 'second',
               title: ' download complete for file $fileName',
               body: ' tap to preview',
-              bigPicture: 'file://$newFilePath',
-              notificationLayout: NotificationLayout.BigPicture,
-              category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+              notificationLayout: NotificationLayout.Default,
+              category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
+  AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id:  8,
+              channelKey: 'second',
+              title: ' download complete for file',
+              body: ' tap to preview',
+              category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
+      print('second note should be done :: $kza');
     }
-    );
 
-    print(progress);
+   else await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id:  1,
+            channelKey: 'second',
+            title: ' download complete for file $fileName',
+            body: ' tap to preview',
+            bigPicture: 'file://$newFilePath',
+            notificationLayout: NotificationLayout.BigPicture,
+            category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
+
+
 
 
   }

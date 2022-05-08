@@ -45,7 +45,7 @@ class NewSubmitPage extends StatelessWidget {
   BlocConsumer<ValidationBloc, ValidationState>(
     listener: (context,state){
       if(state.status == Status.loading)
-      _loadingOverlay.show(context);
+      _loadingOverlay.show(context,'submitting ...');
       else _loadingOverlay.hide();
 
       if(state.submitted! && state.status == Status.success) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form has been submitted'),duration: Duration(milliseconds: 600)));

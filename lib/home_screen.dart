@@ -32,12 +32,7 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         appBar: AppBar(actions: [
-          TextButton(
-              onPressed: () {},
-              child: Text(
-                'load forms from internet',
-                style: TextStyle(color: Colors.black),
-              ))
+
         ]),
         body: RefreshIndicator(
           onRefresh: () async {
@@ -78,9 +73,10 @@ class HomeScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
+                              SizedBox(height: 10),
                               Expanded(
                                 child: GridView.builder(
-                                  padding: EdgeInsets.all(30),
+                                  padding: EdgeInsets.all(40),
                                   itemCount: state.forms!.length,
                                   itemBuilder: (context, index) {
                                     return FormCard(
@@ -124,11 +120,7 @@ class HomeScreen extends StatelessWidget {
                                           childAspectRatio: 1),
                                 ),
                               ),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                  },
 
-                                  child: Text('click me'))
                             ],
                           ),
                         );

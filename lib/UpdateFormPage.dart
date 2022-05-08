@@ -44,7 +44,7 @@ class UpdateFormPage extends StatelessWidget {
 
                     listener: (context,state) {
                       if(state.status == Status.loading)
-                      _loadingOverlay.show(context);
+                      _loadingOverlay.show(context,'updating form ...');
                       else
                         _loadingOverlay.hide();
 
