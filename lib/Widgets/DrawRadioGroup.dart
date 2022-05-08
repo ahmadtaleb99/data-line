@@ -66,7 +66,7 @@ class DrawRadioGroup extends FormElement {
               BlocConsumer<ValidationBloc, ValidationState>(
 
               listener: (context, state) {
-                fieldState.validate();
+                // fieldState.validate();
               },
                   builder: (context, state) {
                       var children;

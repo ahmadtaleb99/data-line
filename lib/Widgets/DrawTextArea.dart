@@ -37,8 +37,10 @@ class DrawTextArea extends FormElement with FormValidation {
 
   @override
   Widget build(BuildContext context) {
+    print('DrawTextArea visible:'+visible.toString());
+
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 40) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
         initialValue: value,
         onChanged: (value){
