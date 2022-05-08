@@ -38,7 +38,7 @@ class DrawTextArea extends FormElement with FormValidation {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 40) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true ?   const EdgeInsets.only(top: 60) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
         initialValue: value,
         onChanged: (value){
@@ -58,16 +58,15 @@ class DrawTextArea extends FormElement with FormValidation {
         textDirection: TextDirection.ltr,
         decoration: InputDecoration(
           label: Text(label),
-          contentPadding: EdgeInsets.all(12),
           fillColor: Colors.white,
           filled: true,
           errorStyle: const TextStyle(),
           hintStyle: TextStyle(color: Colors.grey.withOpacity(0.250)),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.withOpacity(0.250)),
+              borderSide: BorderSide(color: Colors.grey.withOpacity(0.300)),
               borderRadius: BorderRadius.circular(5)),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.withOpacity(0.250)),
+              borderSide: BorderSide(color: Colors.grey.withOpacity(0.400)),
               borderRadius: BorderRadius.circular(5)),
           errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey.withOpacity(0.250)),
