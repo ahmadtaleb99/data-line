@@ -192,7 +192,7 @@ class ParentDropListChanged extends ValidationEvent {
 class childDropDownChanged extends ValidationEvent {
 
   FormElement childList ;
-  String value;
+  String  ? value;
 
   childDropDownChanged({
     required this.childList,

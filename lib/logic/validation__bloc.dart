@@ -285,44 +285,99 @@ var mimi = lookupMimeType(cachedFile.path);
 
     emit(state.copyWith(drawCheckboxGroup: group));
   }
+    void getChildrenLists(){
 
+    }
   void _onParentDropListChanged(
+
       ParentDropListChanged event, Emitter<ValidationState> emit) {
+
     dynamic childLists = state.form!.fields
         .where((dynamic element) =>
             ((element is DrawChildList) || (element is DrawMultiSelect)) &&
             (element.parentName == event.drawDropDownButton.name))
         .toList();
+
+
+    _changeListItems(childLists, event.parent);
     event.drawDropDownButton.value = event.parent;
-
-    for (var childList in childLists) {
-      List<DropDownItem> items = (_formRepository.availableForms
-              .firstWhere((element) => element.name == state.form!.name)
-              .fields
-              .firstWhere((element) =>
-                  element is IFormDropList &&
-                  childList.name == element.name) as IFormDropList)
-          .items;
-
-      childList.items =
-          items.where((element) => element.parent == event.parent).toList();
-      childList.value = null;
-      if (childList is DrawMultiSelect) childList.selectedValues = [];
-    }
 
     emit(state.copyWith());
   }
+
+  void clearChildren(List<FormElement> childLists){
+    for (var childList in childLists) {
+        if(childList is DrawChildList )
+        childList.items = [];
+        else if(childList is DrawMultiSelect)
+          childList.items = [];
+
+        _clearListValue(childList);
+    }
+  }
+  void _changeListItems(dynamic childLists,String value){
+    for (var childList in childLists) {
+
+
+    var items= _getListItems(childList);
+      childList.items =
+          items.where((element) => element.parent == value).toList();
+
+      _clearListValue(childList);
+
+    add(childDropDownChanged(childList: childList,value: null));
+
+    }
+  }
+
 
   void _onchildDropDownChanged(
       childDropDownChanged event, Emitter<ValidationState> emit) {
-    var ch = event.childList;
-    if (ch is DrawChildList) {
-      ch.value = event.value;
+    // var ch = event.childList;
+    // if (ch is DrawChildList) {
+    //   ch.value = event.value;
+    // }
+
+
+    dynamic childLists = state.form!.fields
+        .where((dynamic element) =>
+    ((element is DrawChildList) || (element is DrawMultiSelect)) &&
+        (element.parentName == event.childList.name))
+        .toList();
+    if(event.value == null){
+      print(' this is true ');
+      clearChildren(childLists);
     }
+    else{
+      print(' this is not true ');
+
+      _changeListItems(childLists, event.value!);
+      event.childList.value = event.value;
+
+    }
+
+
+
+
+
+
 
     emit(state.copyWith());
   }
-
+  void _clearListValue(FormElement childList){
+    childList.value = null;
+    if (childList is DrawMultiSelect) childList.selectedValues = [];
+  }
+  List<DropDownItem> _getListItems(dynamic childList){
+    List<DropDownItem> items = (_formRepository.availableForms
+        .firstWhere((element) => element.name == state.form!.name)
+        .fields
+        .firstWhere((element) =>
+    element is IFormDropList &&
+        childList.name == element.name) as IFormDropList)
+        .items;
+    return items;
+  }
   void _onOtherRadioValueChanged(
       OtherRadioValueChanged event, Emitter<ValidationState> emit) {
     //

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +100,7 @@ class IFormDropList  extends IFormModel  {
     }
 
     if (this.multiple == true) {
+      log(this.items.toString());
       return DrawMultiSelect(
         selectedValues: value ?? [],
         label: label,
