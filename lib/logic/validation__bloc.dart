@@ -188,8 +188,15 @@ var mimi = lookupMimeType(cachedFile.path);
               title: ' download complete for file $fileName',
               body: ' tap to preview',
               notificationLayout: NotificationLayout.Default,
-              category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
-
+              category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+  AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id:  8,
+              channelKey: 'second',
+              title: ' download complete for file',
+              body: ' tap to preview',
+              category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+      print('second note should be done :: $kza');
     }
 
    else await AwesomeNotifications().createNotification(
@@ -200,7 +207,7 @@ var mimi = lookupMimeType(cachedFile.path);
             body: ' tap to preview',
             bigPicture: 'file://$newFilePath',
             notificationLayout: NotificationLayout.BigPicture,
-            category: NotificationCategory.Event,payload:{'value' : newFilePath!} ));
+            category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
 
 
 

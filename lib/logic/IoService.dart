@@ -16,7 +16,7 @@ void copyIsolateFunc(Map data) async{
   File file = File(data['filePath']);
 
   var file2 = File(data['newPath']);
-  var test;
+
   var _readStream = file.openRead();
   int fileLength = await file.length();
   int currentBytesWritten = 0;

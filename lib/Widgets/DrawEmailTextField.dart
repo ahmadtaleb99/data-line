@@ -38,8 +38,9 @@ class DrawEmailTextField extends FormElement with FormValidation {
   dynamic value;
   @override
   Widget build(BuildContext context) {
+    print('email visible:'+visible.toString());
     return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 30,bottom: 10,left: 50) :  const EdgeInsets.only(top: 0),
+      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
       child: TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: TextInputType.emailAddress,
@@ -61,7 +62,7 @@ class DrawEmailTextField extends FormElement with FormValidation {
 
         decoration: InputDecoration(
             label: Text(label),
-          fillColor: Colors.white,
+
         ),
       ),
     );

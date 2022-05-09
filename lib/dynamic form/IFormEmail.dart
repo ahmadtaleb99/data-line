@@ -76,7 +76,7 @@ class IFormEmail extends IFormModel {
       isReadOnly: this.isReadOnly,
       showIfValueSelected: this.showIfValueSelected,
       name: this.name,
-      visible: this.visible == true ? false : true,
+      visible: this.showIfValueSelected == true && value == null ? false : true,
       deactivate: this.deactivate,
       value: this.value,
 

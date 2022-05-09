@@ -80,6 +80,11 @@ class DrawMultiSelect  extends FormElement {
               return false;
           },
           builder: (context, state) {
+            String parentLabel ='';
+
+            if(relatedToParent)
+             parentLabel = state.form!.fields.firstWhere((element) => element.name == parentName).label;
+
 
             return FormField<dynamic>(
                 initialValue: selectedValues,
@@ -109,6 +114,9 @@ class DrawMultiSelect  extends FormElement {
                           padding: const EdgeInsets.all(0.0),
                           child: Center(
                               child: MultiSelectDialogField<String>(
+
+                  selectedItemsTextStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                barrierColor: Colors.grey.withOpacity(0.2),
                                 key: GlobalKey(),
                             searchable: true,
                             decoration: BoxDecoration(
@@ -117,6 +125,8 @@ class DrawMultiSelect  extends FormElement {
                                   BorderRadius.all(Radius.circular(40)),
                             ),
                             chipDisplay: MultiSelectChipDisplay(
+                              textStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+
                               alignment: Alignment.topCenter,
                               onTap: (item) {
                                 context.read<ValidationBloc>().add(
@@ -130,11 +140,10 @@ class DrawMultiSelect  extends FormElement {
                                 AutovalidateMode.onUserInteraction,
                             dialogHeight: items.isEmpty ? 5 : null,
                             dialogWidth: items.isEmpty ? 5 : null,
-                            selectedItemsTextStyle:
-                                TextStyle(color: Colors.black),
+
                             buttonIcon: Icon(Icons.arrow_drop_down),
                             title: items.isEmpty
-                                ? Text('Please Select a ')
+                                ? Text('Please Select a $parentLabel')
                                 : Text(label),
                             buttonText: Text(prompt),
                             listType: MultiSelectListType.CHIP,
