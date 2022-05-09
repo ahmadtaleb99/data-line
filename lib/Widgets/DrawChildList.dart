@@ -95,7 +95,8 @@ class DrawChildList extends FormElement {
                       Padding(
                         padding: const EdgeInsets.only(left: 16, bottom: 10),
                         child: Text(
-                          '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
+                          // '$label  ${itemsToBuild.isEmpty ? ' - ${parentListLabel}' : itemsToBuild.first.parent} '
+                          '$label'
                           ,style: TextStyle(fontSize: 18),
                         ),
                       ),
