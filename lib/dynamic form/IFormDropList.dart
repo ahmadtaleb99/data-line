@@ -100,7 +100,6 @@ class IFormDropList  extends IFormModel  {
     }
 
     if (this.multiple == true) {
-      log(this.items.toString());
       return DrawMultiSelect(
         selectedValues: value ?? [],
         label: label,

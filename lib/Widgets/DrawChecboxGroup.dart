@@ -129,7 +129,11 @@ listener: (context, state) {},
 
   @override
   String valueToString() {
-    return (value as List).join(',');
+    List values= value as List;
+
+    if(values.isEmpty) return 'Empty';
+    return values.join(',').toString();
+
   }
 
 

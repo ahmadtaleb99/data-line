@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -74,7 +75,15 @@ class DrawFilePicker extends  FormElement {
 
             child: FormField<File>(
               onSaved: (file){
-                context.read<ValidationBloc>().add(FilePickerSaved(file : file!,filePicker: this));
+
+                if(file != null){
+                  log('on saved file');
+                  context.read<ValidationBloc>().add(FilePickerSaved(file : file,filePicker: this));
+
+                }
+                else
+                  log('no saved  file');
+
 
               },
               // autovalidateMode: AutovalidateMode.onUserInteraction,

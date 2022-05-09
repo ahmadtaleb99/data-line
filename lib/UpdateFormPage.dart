@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +21,11 @@ class UpdateFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
+            ),
             onPressed: () {
               if (form.validate()) {
                 form.save();
@@ -49,9 +57,17 @@ class UpdateFormPage extends StatelessWidget {
                         _loadingOverlay.hide();
 
 
-                      if(state.submitted! && state.status == Status.success)
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text('form has been updated'),duration: Duration(milliseconds: 600)));
+                      if(state.submitted! && state.status == Status.success) {
+                        log('message');
+                        CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.success,
+                            text: "Form is Updated successfuly!",
+                            onConfirmBtnTap: (){
+                              Navigator.pop(context);
+                            }
+                        );
+                      }
 
                     },
                     builder: (context, state) {

@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
@@ -242,11 +243,14 @@ var mimi = lookupMimeType(cachedFile.path);
 
     emit(state.copyWith(
       submitted: true,
+      status: Status.success,
       subedForms: _formRepository.submittedForms
           .map((e) => e.toWidget() as FormWidget)
           .toList(),
       form: formModel.toWidget() as FormWidget,
     ));
+    emit(state.copyWith(submitted: false));
+
   }
 
 
@@ -413,11 +417,13 @@ var mimi = lookupMimeType(cachedFile.path);
   FormWidget _checkRelatedFields(String fieldValue) {
     var form = state.form!;
     for (var formElement in form.fields) {
-      if (formElement.showIfValueSelected! &&
-          formElement.showIfFieldValue == fieldValue)
-        formElement.visible = true;
-      else
-        formElement.visible = false;
+      if (formElement.showIfValueSelected!){
+        if(formElement.showIfFieldValue == fieldValue)
+          formElement.visible = true;
+        else
+          formElement.visible = false;
+      }
+
     }
 
     return form;
@@ -460,15 +466,23 @@ var mimi = lookupMimeType(cachedFile.path);
   }
 
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
-    var formModel = _formRepository.availableForms
-        .firstWhere((element) => element.name == event.formName)
-        .copyWith();
+    var formModel = _getEmptyForm(event.formName);
     var stateForm = state.form!;
     _mapWidgetValuesToModel(formModel, stateForm);
 
     _formRepository.addSubmittedForm(formModel);
-    emit(state.copyWith(submitted: true));
+    stateForm  = _getEmptyForm(stateForm.name).toWidget() as FormWidget;
+    print(stateForm.fields.first.value.toString()+' value');
+    emit(state.copyWith(submitted: true,form: stateForm,status: Status.success ));
+    emit(state.copyWith(submitted: false ));
   }
+
+  FormModel _getEmptyForm(String name){
+   return _formRepository.availableForms
+        .firstWhere((element) => element.name == name).copyWith();
+  }
+
+
 
   void _mapWidgetValuesToModel(FormModel formModel, FormWidget formWidget) {
     for (int i = 0; i < formModel.fields.length; i++) {

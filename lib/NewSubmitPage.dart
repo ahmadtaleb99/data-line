@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/logic/utils.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 import 'FormService/FormRepository.dart';
 import 'Widgets/DrawForm.dart';
@@ -18,6 +19,11 @@ class NewSubmitPage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          )
+        ),
 
           onPressed: () {
 
@@ -48,7 +54,16 @@ class NewSubmitPage extends StatelessWidget {
       _loadingOverlay.show(context,'submitting ...');
       else _loadingOverlay.hide();
 
-      if(state.submitted! && state.status == Status.success) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('form has been submitted'),duration: Duration(milliseconds: 600)));
+      if(state.submitted! && state.status == Status.success) {
+   CoolAlert.show(
+     context: context,
+     type: CoolAlertType.success,
+     text: "Form is Submitted successfuly!",
+     onConfirmBtnTap: (){
+       Navigator.pop(context);
+     }
+   );
+    }
 
     },
   builder: (context, state) {
