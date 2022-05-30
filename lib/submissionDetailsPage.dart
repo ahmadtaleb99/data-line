@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'dart:ui';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:form_builder_test/Widgets/DrawChildList.dart';
 import 'package:form_builder_test/Widgets/DrawDropDownButton.dart';
 import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
 import 'package:form_builder_test/Widgets/DrawNumberField.dart';
 import 'package:form_builder_test/Widgets/DrawRadioGroup.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 
 import 'Widgets/DrawChecboxGroup.dart';
 import 'logic/validation__bloc.dart';
@@ -73,7 +75,7 @@ class LabelWidget extends StatelessWidget {
   }
 }
 
-Widget _getFormElementThumbnail(FormElement field) {
+Widget _getFormElementThumbnail(FormElementWidget field) {
   if (field is DrawCheckboxGroup) {
     return FieldHintWidget(text: '(Checkbox Group)');
   }
@@ -88,6 +90,9 @@ Widget _getFormElementThumbnail(FormElement field) {
 
   if (field is DrawFilePicker) {
     return Container();
+  }
+  if (field is StarRatingWidget) {
+    return FieldHintWidget(text: '(Star Rating)');
   }
   if (field is DrawNumberField) {
     return FieldHintWidget(text: '(Number)');
@@ -135,7 +140,7 @@ List<Widget> _buildRows(FormWidget formWidget) {
 }
 
 class ValueWidget extends StatelessWidget {
-  FormElement field;
+  FormElementWidget field;
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +154,20 @@ class ValueWidget extends StatelessWidget {
                   .add(FilePreviewRequested(path: field.value));
             },
             child: Text('download file'));
+    }
+   if ( field is StarRatingWidget){
+      log('field is DrawFilePicker :::::::::::::::::::::::::::: ') ;
+      return
+        RatingBarIndicator(
+          rating: field.value,
+          itemBuilder: (context, index) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          itemCount: 5,
+          itemSize: 25.0,
+          direction: Axis.horizontal,
+        );
     }
 
     else {
@@ -169,7 +188,7 @@ class ValueWidget extends StatelessWidget {
   });
 }
 class FieldWidget extends StatelessWidget {
-  FormElement field;
+  FormElementWidget field;
 
   @override
   Widget build(BuildContext context) {

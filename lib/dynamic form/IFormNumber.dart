@@ -84,7 +84,7 @@ class IFormNumber extends IFormModel {
         value2: json['expressionsValue2'] ?? null));
   }
   @override
-  FormElement toWidget({parameters}) {
+  FormElementWidget toWidget({parameters}) {
     print(_parameters);
     return DrawNumberField(
       label:  this.label,
@@ -107,7 +107,7 @@ class IFormNumber extends IFormModel {
   }
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }

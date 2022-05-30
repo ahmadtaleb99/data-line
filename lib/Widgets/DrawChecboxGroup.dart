@@ -6,7 +6,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 
 import 'IDrawable.dart';
 
-class DrawCheckboxGroup extends FormElement {
+class DrawCheckboxGroup extends FormElementWidget {
   DrawCheckboxGroup( {
     Key? key,
     required this.children,

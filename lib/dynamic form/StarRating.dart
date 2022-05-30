@@ -1,14 +1,15 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
-part 'IFormTextField.g.dart';
+part 'StarRating.g.dart';
 
 
-@HiveType(typeId: 50)
-class IFormTextField implements IFormModel {
+@HiveType(typeId: 51)
+class StarRating implements IFormModel {
   dynamic _parameters;
   @HiveField(1)
   String label;
@@ -45,7 +46,7 @@ class IFormTextField implements IFormModel {
 
 
 
-  IFormTextField({
+  StarRating({
     required this.label,
     required this.name,
     required this.deactivate,
@@ -59,8 +60,8 @@ class IFormTextField implements IFormModel {
     this.showIfIsRequired,
   });
 
-  factory IFormTextField.fromJson(json) {
-    return IFormTextField(
+  factory StarRating.fromJson(json) {
+    return StarRating(
       label: json['label'],
       required: json['required'],
       showIfIsRequired: json['showIfIsRequired'],
@@ -75,19 +76,19 @@ class IFormTextField implements IFormModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is IFormTextField &&
-          runtimeType == other.runtimeType &&
-          label == other.label &&
-          name == other.name &&
-          deactivate == other.deactivate &&
-          isHidden == other.isHidden &&
-          required == other.required &&
-          isReadOnly == other.isReadOnly &&
-          visible == other.visible &&
-          showIfValueSelected == other.showIfValueSelected &&
-          showIfFieldValue == other.showIfFieldValue &&
-          showIfIsRequired == other.showIfIsRequired &&
-          value == other.value;
+          other is StarRating &&
+              runtimeType == other.runtimeType &&
+              label == other.label &&
+              name == other.name &&
+              deactivate == other.deactivate &&
+              isHidden == other.isHidden &&
+              required == other.required &&
+              isReadOnly == other.isReadOnly &&
+              visible == other.visible &&
+              showIfValueSelected == other.showIfValueSelected &&
+              showIfFieldValue == other.showIfFieldValue &&
+              showIfIsRequired == other.showIfIsRequired &&
+              value == other.value;
 
   @override
   int get hashCode =>
@@ -104,32 +105,24 @@ class IFormTextField implements IFormModel {
       value.hashCode;
 
   @override
-  FormElementWidget toWidget({parameters}) {
-    return DrawTextField(
+  FormElementWidget toWidget() {
+    return StarRatingWidget(
+          label: this.label,
+          value: this.value,
+          required: this.required,
+          showIfValueSelected: this.showIfValueSelected,
+          showIfFieldValue: this.showIfFieldValue,
+          showIfIsRequired: this.showIfIsRequired,
+          name: this.name,
+          visible: this.showIfValueSelected == true && value == null ? false : true,
 
-      label: this.label,
-      value: this.value,
-      required: this.required,
-      showIfValueSelected: this.showIfValueSelected,
-      showIfFieldValue: this.showIfFieldValue,
-      showIfIsRequired: this.showIfIsRequired,
-      name: this.name,
-      visible: this.showIfValueSelected == true && value == null ? false : true,
     );
   }
 
-  @override
-  void setParameters(parametrs) {
-    _parameters = parametrs;
-  }
 
-  @override
-  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
-    // TODO: implement fomrElementtoJson
-    throw UnimplementedError();
-  }
 
-  IFormTextField copyWith({
+
+  StarRating copyWith({
     dynamic? parameters,
     String? label,
     String? name,
@@ -143,7 +136,7 @@ class IFormTextField implements IFormModel {
     bool? showIfIsRequired,
     dynamic? value,
   }) {
-    return IFormTextField(
+    return StarRating(
       label: label ?? this.label,
       name: name ?? this.name,
       deactivate: deactivate ?? this.deactivate,

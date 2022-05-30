@@ -37,13 +37,13 @@ class RadioItem implements IFormModel  {
   });
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }
 
   @override
-  FormElement toWidget() {
+  FormElementWidget toWidget() {
     return DrawRadioItem(
         label: this.label,
         parent :this.parent,

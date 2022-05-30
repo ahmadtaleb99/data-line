@@ -66,7 +66,7 @@ class IFormEmail extends IFormModel {
   }
 
   @override
-  FormElement toWidget({parameters}) {
+  FormElementWidget toWidget({parameters}) {
     return DrawEmailTextField(
       label: this.label,
       required: this.required,
@@ -85,7 +85,7 @@ class IFormEmail extends IFormModel {
 
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     var emailFormElement = formElement as DrawEmailTextField;
     return {
       'type': 'email',

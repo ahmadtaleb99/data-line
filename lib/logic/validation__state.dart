@@ -31,7 +31,7 @@ class ValidationState{
   DrawChildList ? childList;
   List<String>? initialMulti;
 
-  Map<String, FormElement> childsMap;
+  Map<String, FormElementWidget> childsMap;
 
   ValidationState({
     this.drawCheckboxGroup,
@@ -71,7 +71,7 @@ class ValidationState{
     List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,
     DrawChildList? childList,
-    Map<String, FormElement> ? childsMap
+    Map<String, FormElementWidget> ? childsMap
 
   }) {
     return ValidationState(

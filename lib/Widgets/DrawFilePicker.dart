@@ -10,7 +10,7 @@ import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'IDrawable.dart';
 import 'package:path/path.dart';
-class DrawFilePicker extends  FormElement {
+class DrawFilePicker extends  FormElementWidget {
 
 
   DrawFilePicker( {

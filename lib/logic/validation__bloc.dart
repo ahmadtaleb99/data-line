@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
+import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:mime/mime.dart';
 
 import 'dart:ui';
@@ -98,6 +99,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FilePickerSaved>(_onFilePickerSaved);
     on<FilePreviewRequested>(_onFilePreviewRequested);
     on<FileDownloadedNotification>(_onFileDownloadedNotification);
+    on<StarRatingUpdated>(_onStarRatingUpdated);
   }
 
   Future<void> _onFormsRequested(
@@ -129,6 +131,13 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       FileDownloadedNotification event, Emitter<ValidationState> emit) {
     // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
   }
+void _onStarRatingUpdated(
+   StarRatingUpdated event, Emitter<ValidationState> emit) {
+   var widget  =  state.form!.fields.firstWhere((element) => element.name == event.name );
+   widget.value = event.value;
+   emit(state.copyWith(form: state.form));
+    // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
+  }
 
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
@@ -143,7 +152,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
       ServiceRegistered event, Emitter<ValidationState> emit) async {
     print('service  inited');
 
-    await _formRepository.initLocal();
     await _ioService.init();
   }
 /////////////////////////////////////////////////////
@@ -309,7 +317,7 @@ var mimi = lookupMimeType(cachedFile.path);
     emit(state.copyWith());
   }
 
-  void clearChildren(List<FormElement> childLists){
+  void clearChildren(List<FormElementWidget> childLists){
     for (var childList in childLists) {
         if(childList is DrawChildList )
         childList.items = [];
@@ -368,7 +376,7 @@ var mimi = lookupMimeType(cachedFile.path);
 
     emit(state.copyWith());
   }
-  void _clearListValue(FormElement childList){
+  void _clearListValue(FormElementWidget childList){
     childList.value = null;
     if (childList is DrawMultiSelect) childList.selectedValues = [];
   }

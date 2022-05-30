@@ -86,7 +86,7 @@ class IFormDropList  extends IFormModel  {
 
 
   @override
-  FormElement toWidget({parameters}) {
+  FormElementWidget toWidget({parameters}) {
     var childItems;
     var parent;
     if(value != null &&relatedToParent){
@@ -169,7 +169,7 @@ class IFormDropList  extends IFormModel  {
 
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }

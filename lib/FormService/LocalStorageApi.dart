@@ -14,6 +14,7 @@ import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
+import 'package:form_builder_test/dynamic%20form/StarRating.dart';
 import 'package:hive/hive.dart';
 
 class LocalStorageApi  extends FormApi{
@@ -48,6 +49,7 @@ class LocalStorageApi  extends FormApi{
     Hive.registerAdapter(FileTypeEnumAdapter());
     Hive.registerAdapter(ExpressionAdapter());
     Hive.registerAdapter(OperatorAdapter());
+    Hive.registerAdapter(StarRatingAdapter());
    _formBox  = await Hive.openBox<FormModel>('form');
    _availableBox   = await Hive.openBox('available');
 

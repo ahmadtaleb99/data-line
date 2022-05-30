@@ -8,7 +8,6 @@ part 'IFormModel.g.dart';
   abstract class IFormModel  {
   IFormModel copyWith();
   dynamic value;
-  FormElement toWidget ();
-  Map<String,dynamic> fomrElementtoJson (FormElement formElement);
+  FormElementWidget toWidget ();
   String valueToString();
 }

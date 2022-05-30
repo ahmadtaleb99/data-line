@@ -74,7 +74,7 @@ class IFormTextArea implements IFormModel {
         deactivate: json['deactivate'], );
   }
   @override
-  FormElement toWidget({parameters}) {
+  FormElementWidget toWidget({parameters}) {
     print('to widget :: ${this.visible}  ${this.maxLength}');
     return DrawTextArea(
       minLength: this.minLength,
@@ -91,7 +91,7 @@ class IFormTextArea implements IFormModel {
   }
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }

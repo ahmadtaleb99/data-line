@@ -10,7 +10,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'DrawChildList.dart';
 import '../dynamic form/DropDownItem.dart';
 
-class DrawMultiSelect  extends FormElement {
+class DrawMultiSelect  extends FormElementWidget {
 
   DrawMultiSelect(
       {Key? key,

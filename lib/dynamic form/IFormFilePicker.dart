@@ -90,7 +90,7 @@ class IFormFilePicker extends IFormModel {
   }
   
   @override
-  FormElement toWidget({parameters}) {
+  FormElementWidget toWidget({parameters}) {
     return DrawFilePicker(
       value:  value,
       label: this.label,
@@ -114,7 +114,7 @@ class IFormFilePicker extends IFormModel {
   }
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     // TODO: implement fomrElementtoJson
     throw UnimplementedError();
   }

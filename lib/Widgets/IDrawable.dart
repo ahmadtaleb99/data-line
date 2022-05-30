@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 
-abstract class FormElement extends StatelessWidget {
+abstract class FormElementWidget extends StatelessWidget {
 
   final String label;
   final String name;
@@ -14,7 +14,7 @@ abstract class FormElement extends StatelessWidget {
   dynamic value;
   String valueToString();
 
-  FormElement({
+  FormElementWidget({
   Key? key,
     required this.label,
     required this.name,

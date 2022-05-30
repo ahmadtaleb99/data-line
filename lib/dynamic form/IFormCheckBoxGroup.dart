@@ -105,7 +105,7 @@ class IFormCheckBoxGroup extends IFormModel {
 
 
   @override
-  FormElement toWidget() {
+  FormElementWidget toWidget() {
 
     List<DrawCheckboxGroupItem> widgetChildrenList = [ ];
     for(var child in this.children){
@@ -148,7 +148,7 @@ class IFormCheckBoxGroup extends IFormModel {
 
 
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     var checkBoxGroup = formElement as DrawCheckboxGroup;
 
     return {

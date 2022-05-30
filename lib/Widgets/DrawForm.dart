@@ -6,7 +6,7 @@ import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/FormModel.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class FormWidget extends FormElement {
+class FormWidget extends FormElementWidget {
 
   bool validate() {
     // _key.currentState!.reset();
@@ -19,7 +19,7 @@ class FormWidget extends FormElement {
   final int ? submissionID;
   final String label;
   final String name;
-  final List<FormElement> fields;
+  final List<FormElementWidget> fields;
 
   FormWidget({
     required this.label,

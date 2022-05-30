@@ -12,7 +12,7 @@ import '../dynamic form/DropDownItem.dart';
 import 'IDrawable.dart';
 
 
-class DrawChildList extends FormElement {
+class DrawChildList extends FormElementWidget {
   DrawChildList({Key? key,
     this.visible = false,
     required this.label,

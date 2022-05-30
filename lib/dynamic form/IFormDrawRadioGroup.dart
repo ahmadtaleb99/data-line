@@ -74,7 +74,7 @@ class IFormDrawRadioGroup extends IFormModel {
 
 
   @override
-  FormElement toWidget() {
+  FormElementWidget toWidget() {
     var groupValue;
     if(value != null ) {
       if( isOtherSelected == true ) {
@@ -111,11 +111,6 @@ class IFormDrawRadioGroup extends IFormModel {
 
 
 
-  @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
-    // TODO: implement fomrElementtoJson
-    throw UnimplementedError();
-  }
 
   IFormDrawRadioGroup({
     required this.values,

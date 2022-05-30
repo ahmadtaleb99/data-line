@@ -5,7 +5,7 @@ import 'package:form_builder_test/logic/form__bloc.dart';
 
 import 'package:form_builder_test/logic/validation__bloc.dart';
 
-class DrawRadioItem extends FormElement {
+class DrawRadioItem extends FormElementWidget {
   final String value;
   final String parent;
   String? groupValue;

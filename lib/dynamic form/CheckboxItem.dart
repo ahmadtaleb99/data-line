@@ -28,12 +28,12 @@ class CheckboxItem implements IFormModel{
     );
   }
   @override
-  Map<String, dynamic> fomrElementtoJson(FormElement formElement) {
+  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
     return {};
   }
 
   @override
-  FormElement toWidget() {
+  FormElementWidget toWidget() {
     return DrawCheckboxGroupItem(label: label, value: value, groupName: groupName);
   }
 

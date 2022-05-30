@@ -4,7 +4,7 @@ import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 import '../FormValidation.dart';
 
-class DrawTextArea extends FormElement with FormValidation {
+class DrawTextArea extends FormElementWidget with FormValidation {
    DrawTextArea(
       {Key ? key,
         required this.label,

@@ -149,7 +149,7 @@ class FilePickerPressed extends ValidationEvent {
 }
 class MultiSelectChanged extends ValidationEvent {
 
-  FormElement select ;
+  FormElementWidget select ;
   List<String> value;
 
   MultiSelectChanged({
@@ -189,9 +189,20 @@ class ParentDropListChanged extends ValidationEvent {
 }
 
 
+class StarRatingUpdated extends ValidationEvent {
+double value;
+String name;
+StarRatingUpdated({
+    required this.value,
+    required this.name,
+
+  });
+}
+
+
 class childDropDownChanged extends ValidationEvent {
 
-  FormElement childList ;
+  FormElementWidget childList ;
   String  ? value;
 
   childDropDownChanged({

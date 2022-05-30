@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 
-class DrawEmailTextField extends FormElement with FormValidation {
+class DrawEmailTextField extends FormElementWidget with FormValidation {
    DrawEmailTextField({  Key ? key,
     required this.label,
      this.visible,

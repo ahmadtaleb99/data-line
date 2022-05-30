@@ -44,7 +44,9 @@ class FormRepository {
     }
 
 
-
+  FormRepository(){
+    initLocal();
+  }
 
   void addSubmittedForm(FormModel formModel){
     _localApi.addSubmittedForm(formModel);
@@ -104,7 +106,7 @@ class FormRepository {
   }
 
 
-  List<FormElement> getChildrenSelectsFor (String name) {
+  List<FormElementWidget> getChildrenSelectsFor (String name) {
 
     return _forms.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
   }

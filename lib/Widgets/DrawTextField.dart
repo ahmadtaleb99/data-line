@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'IDrawable.dart';
-class DrawTextField extends  FormElement {
+class DrawTextField extends  FormElementWidget {
   DrawTextField({
     Key ? key,
     required this.label,
