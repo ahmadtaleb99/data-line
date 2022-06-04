@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:form_builder_test/Widgets/FormFieldWidget.dart';
 import '../logic/validation__bloc.dart';
 import 'IDrawable.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 
 class StarRatingWidget extends  FormElementWidget {
   StarRatingWidget({
@@ -38,58 +38,50 @@ class StarRatingWidget extends  FormElementWidget {
   @override
   Widget build(BuildContext context) {
     print('value [$value] in text field class ');
-    return Padding(
-
-      padding: this.visible == true ?   const EdgeInsets.only(top: 20) :  const EdgeInsets.only(top: 0),
-      child: BlocBuilder<ValidationBloc, ValidationState>(
-        builder: (context, state) {
-          StarRatingWidget stateField =  state.form!.fields.firstWhere((element) => element.name == this.name) as  StarRatingWidget;
+    return BlocBuilder<ValidationBloc, ValidationState>(
+      builder: (context, state) {
+        StarRatingWidget stateField =  state.form!.fields.firstWhere((element) => element.name == this.name) as  StarRatingWidget;
 
 
 
-          return AnimatedSwitcher(
-              transitionBuilder: (Widget child,Animation<double> animation) =>
-                  SlideTransition(position: Tween<Offset>(
-                      begin: Offset(0,-1),end: Offset(0,0)
-                  ).animate(animation),
-                    child: child,),
-              duration: Duration(milliseconds: 400),
-              reverseDuration: Duration(milliseconds: 222),
+        return FormFieldWidget<double>(visible: visible, required: required,validator: (rate)
+        {
+              if(required && this.value == null){
+                return 'required';
+              }
+        }
 
-              child: visible! ?
-                   Container(
-                     width: double.infinity,
-                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16, bottom: 10),
-                          child: Text(
-                            '$label  ',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Builder(
-                          builder: (context) {
-                            return StarRatingBar(name: name, stateField: stateField, value: value,
-                              onValueChanged: (value){
-                                context.read<ValidationBloc>().add(StarRatingUpdated(value:  value, name: name));
-                                log(value.toString());
-                            },);
-                          }
-                        ),
-                      ],
+        ,widget:  Container(
+            width: double.infinity,
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 10),
+                  child: Text(
+                    '$label  ',
+                    style: TextStyle(fontSize: 18),
                   ),
-                   )
-              :Container ()
-
-          );
-        },
-      ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Builder(
+                    builder: (context) {
+                      return StarRatingBar(name: name, stateField: stateField, value: value,
+                        onValueChanged: (value){
+                          context.read<ValidationBloc>().add(StarRatingUpdated(value:  value, name: name));
+                          log(value.toString());
+                        },);
+                    }
+                ),
+              ],
+            ),
+          )
+        );
+      },
     );
   }
 

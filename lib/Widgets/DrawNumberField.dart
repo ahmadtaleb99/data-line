@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
+import 'package:form_builder_test/Widgets/FormFieldWidget.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 
 import '../Expression.dart';
@@ -36,9 +37,10 @@ class DrawNumberField extends FormElementWidget with FormValidation {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 30) :  const EdgeInsets.only(top: 0),
-      child: TextFormField(
+    return FormFieldWidget(
+      visible: visible,
+     required: required,
+     widget :TextFormField(
         initialValue: value,
         onChanged: (value){
           this.value = value;

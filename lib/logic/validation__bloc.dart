@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:math';
 import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:mime/mime.dart';
 
@@ -248,7 +247,9 @@ var mimi = lookupMimeType(cachedFile.path);
     _mapWidgetValuesToModel(formModel, state.form!);
 
     _formRepository.updateSubmission(formModel);
-
+    formModel = _formRepository.submittedForms[event.index];
+    dynamic field = state.form!.fields.first;
+    log(field.isOtherSelected.toString()+ ' on asd asd asd');
     emit(state.copyWith(
       submitted: true,
       status: Status.success,
@@ -416,13 +417,16 @@ var mimi = lookupMimeType(cachedFile.path);
     if (event.value == 'other') {
       radioGroup.isOtherSelected = true;
     } else
-      radioGroup.isOtherSelected = false;
-
-    var newForm = _checkRelatedFields(event.value);
+        {
+          radioGroup.isOtherSelected = false;
+          radioGroup.otherValue = null;
+          log('other not selected');
+        }
+    var newForm = _toggleRelatedFields(event.value);
     emit(state.copyWith(form: newForm, status: Status.success));
   }
 
-  FormWidget _checkRelatedFields(String fieldValue) {
+  FormWidget _toggleRelatedFields(String fieldValue) {
     var form = state.form!;
     for (var formElement in form.fields) {
       if (formElement.showIfValueSelected!){
@@ -480,8 +484,8 @@ var mimi = lookupMimeType(cachedFile.path);
 
     _formRepository.addSubmittedForm(formModel);
     stateForm  = _getEmptyForm(stateForm.name).toWidget() as FormWidget;
-    print(stateForm.fields.first.value.toString()+' value');
-    emit(state.copyWith(submitted: true,form: stateForm,status: Status.success ));
+
+       emit(state.copyWith(submitted: true,form: stateForm,status: Status.success ));
     emit(state.copyWith(submitted: false ));
   }
 
@@ -494,14 +498,16 @@ var mimi = lookupMimeType(cachedFile.path);
 
   void _mapWidgetValuesToModel(FormModel formModel, FormWidget formWidget) {
     for (int i = 0; i < formModel.fields.length; i++) {
-      var widgetFields = formWidget.fields[i];
+      var widgetField = formWidget.fields[i];
+      if(widgetField is DrawRadioGroup)
+      log(widgetField.isOtherSelected.toString() +' _map') ;
       var formModelField = formModel.fields[i];
-      if (widgetFields is DrawRadioGroup && widgetFields.isOtherSelected!) {
-        var radio = formModelField as IFormDrawRadioGroup;
-        radio.isOtherSelected = true;
+      if (widgetField is DrawRadioGroup) {
+        var radioModel = formModelField as IFormDrawRadioGroup;
+        radioModel.isOtherSelected = widgetField.isOtherSelected;
       }
 
-      formModelField.value = widgetFields.value;
+      formModelField.value = widgetField.value;
     }
   }
 

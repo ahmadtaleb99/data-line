@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 
 import 'IDrawable.dart';
 
-class FormFieldWidget  extends FormElementWidget {
-  FormFieldWidget({required String label, required String name}) : super(label: label, name: name);
+class FormFieldWidget<T>  extends StatelessWidget {
+  FormFieldWidget({
+    Key ? key,
+    this.validator,
+    required this.visible,
+    required this.required,
+    required this.widget,
+    this.value,
 
 
+  }) : super(key: key);
+
+  final bool required;
+  dynamic value;
+  bool?  visible;
+  String? Function(T?)? validator;
+
+
+
+  final Widget widget;
   @override
   Widget build(BuildContext context) {
 
-    print('value [$value] in text field class ');
     return Padding(
 
       padding: this.visible == true ?   const EdgeInsets.only(top: 20) :  const EdgeInsets.only(top: 0),
@@ -20,33 +35,39 @@ class FormFieldWidget  extends FormElementWidget {
         ).animate(animation),
           child: child,),
     duration: Duration(milliseconds: 400),
-    reverseDuration: Duration(milliseconds: 222),
+    reverseDuration: Duration(milliseconds: 1),
 
-    child: visible! ? TextFormField(
-    autocorrect: false,
-    initialValue: value,
-    onChanged: (value){
-    this.value = value;
-    // context.read<ValidationBloc>().add(TextFieldValueChanged(value, textFieldName: this.name));
-    },
-    autofocus: false,
-    autovalidateMode: AutovalidateMode.onUserInteraction,
-    validator: (value) {
-    if (required || (showIfIsRequired!= null && showIfIsRequired == true)) {
-    if (value!.isEmpty) {
-    return label + ' is required';
-    }
-    }
-    else
-    return null;
-    },
-    decoration: InputDecoration(
-    label: Text(label)
-    ),
-    ) : Container()
+    child:  Visibility(
+      visible: visible!,
+      maintainSize: false,
+      maintainState: false,
+      child: FormField<T>(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+
+        validator: validator,
+        initialValue: this.value,
+        builder: (T){
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              widget,
+              if (T.hasError)
+                Padding(
+                    padding: const EdgeInsets.only(left: 8, top: 10),
+                    child: Text(
+                      T.errorText!,
+                      style: TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontSize: 13,
+                          color: Colors.red[700],
+                          height: 0.5),
+                    ))
+            ],
+          );
+        },
+      ),
     )
-    ,
-    );
+    ));
   }
 
   @override

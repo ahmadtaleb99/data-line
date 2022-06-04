@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
@@ -48,7 +50,7 @@ class DrawRadioGroup extends FormElementWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(otherValue.toString() + ' other value is ');
+    log(isOtherSelected.toString() + '  is other selectd');
     return Padding(
       padding: this.other == true
           ? const EdgeInsets.symmetric(vertical: 0)
@@ -87,7 +89,7 @@ class DrawRadioGroup extends FormElementWidget {
                                     child: child,
                                   ),
                           duration: Duration(milliseconds: 600),
-                          child: this.isOtherSelected!
+                          child:  isOtherSelected !
                               ? Padding(
                                 padding: const EdgeInsets.only(right: 100),
                                 child: TextFormField(

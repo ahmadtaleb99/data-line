@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Expression.dart';
+import 'package:form_builder_test/Widgets/FormFieldWidget.dart';
 import 'package:form_builder_test/dynamic%20form/FileTypeEnum.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
@@ -63,17 +64,12 @@ class DrawFilePicker extends  FormElementWidget {
   Widget build(BuildContext context) {
     String ?  fileName;
 
-      return Padding(
-      padding: this.visible == true ?   const EdgeInsets.only(top: 10) :  const EdgeInsets.only(top: 10),
-      child: BlocBuilder<ValidationBloc, ValidationState>(
+      return FormFieldWidget(
+        required: required,
+        widget: BlocBuilder<ValidationBloc, ValidationState>(
 
-        builder: (context, state) {
-          return Visibility(
-            visible:   visible!,
-            maintainState: false,
-            maintainSize: false,
-
-            child: FormField<File>(
+          builder: (context, state) {
+            return FormField<File>(
               onSaved: (file){
 
                 if(file != null){
@@ -160,11 +156,10 @@ class DrawFilePicker extends  FormElementWidget {
                  ],
                );
              },
-            )
-          );
-        },
-      ),
-    );
+            );
+          },
+        ), visible: visible,
+      );
   }
 
 
