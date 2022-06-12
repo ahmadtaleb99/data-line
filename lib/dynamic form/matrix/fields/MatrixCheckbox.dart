@@ -1,51 +1,31 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
-import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
 import 'package:hive/hive.dart';
 
 import '../matrix.dart';
 
+part 'MatrixCheckbox.g.dart';
 
-part 'MatrixRadioGroup.g.dart';
+@HiveType(typeId: 66)
 
-
-
-@HiveType(typeId: 61)
-class MatrixRadioGroup implements IFormModel {
-
+class MatrixCheckbox implements IFormModel {
 
   @HiveField(1)
   String name;
-
-
   @HiveField(2)
-
   String label;
-
-
-  @HiveField(3)
-
-  List<RadioItem> values;
-
-
-  MatrixRadioGroup({
+  MatrixCheckbox({
     required this.name,
     required this.label,
-    required this.values,
   });
 
-  factory MatrixRadioGroup.fromJson(dynamic json){
-    return MatrixRadioGroup(name: json['name'], label: json['label'],
-        values: List<RadioItem>.from(json['values'].map((e) => RadioItem.fromJson(e , json['name'])).toList())
-
-    );
+  factory MatrixCheckbox.fromJson(dynamic json){
+    return MatrixCheckbox(name: json['name'], label: json['label']);
   }
 
 
   @override
   @HiveField(4)
-
   var value;
 
 

@@ -3,13 +3,64 @@ import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixCheckboxGroup.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDatePicker.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDropDown.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixNumber.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixRadioGroup.dart';
 import 'package:hive/hive.dart';
+
+import 'fields/MatrixCheckbox.dart';
+import 'fields/MatrixTextField.dart';
+export 'fields/MatrixTextField.dart';
+export 'fields/MatrixDropDown.dart';
+export 'fields/MatrixCheckbox.dart';
+export 'fields/MatrixCheckboxGroup.dart';
+export 'fields/MatrixRadioGroup.dart';
+export 'fields/MatrixNumber.dart';
+export 'fields/MatrixDatePicker.dart';
 
 part 'matrix.g.dart';
 
 
 @HiveType(typeId: 54)
 class Matrix implements IFormModel {
+
+  static IFormModel? _getFieldFromType(String type, dynamic json) {
+    switch (type) {
+      case 'select':
+        return MatrixDropDown.fromJson(json);
+
+      case 'text':
+        return MatrixTextField.fromJson(json);
+
+
+
+      case 'number':
+        return MatrixNumber.fromJson(json);
+
+
+      case 'radio-group':
+        return MatrixRadioGroup.fromJson(json);
+
+      case 'date':
+        return MatrixDatePicker.fromJson(json);
+
+
+      case 'checkbox-group':
+        return MatrixCheckboxGroup.fromJson(json);
+
+
+     case 'checkbox':
+        return MatrixCheckbox.fromJson(json);
+
+      default:
+        return null;
+    }
+  }
+
+
+
   @HiveField(1)
   String label;
 
@@ -63,7 +114,9 @@ class Matrix implements IFormModel {
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
+    required this.maxRecordCount,
     required this.values
+
   });
 
   factory Matrix.fromJson(json) {
@@ -76,8 +129,10 @@ class Matrix implements IFormModel {
       isReadOnly: json['isReadOnly'],
       showIfValueSelected: json['showIfLogicCheckbox'],
       name: json['name'],
+      maxRecordCount: json['maxRecordCount'],
       deactivate: json['deactivate'],
-      values:
+        values: List<IFormModel>.from(json['values'].map((e) => _getFieldFromType(e['value'], e)).toList())
+
     );
   }
 
@@ -142,6 +197,8 @@ class Matrix implements IFormModel {
     bool? showIfValueSelected,
     String? showIfFieldValue,
     bool? showIfIsRequired,
+    int? maxRecordCount,
+    List<IFormModel>? values,
     dynamic? value,
   }) {
     return Matrix(
@@ -155,6 +212,9 @@ class Matrix implements IFormModel {
       showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
       showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      maxRecordCount: maxRecordCount ?? this.maxRecordCount,
+      values: values ?? this.values,
+
       value: value ?? this.value,
     );
   }
