@@ -6,7 +6,6 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'package:form_builder_test/NewSubmitPage.dart';
 import 'package:form_builder_test/SubmittionsPage.dart';
