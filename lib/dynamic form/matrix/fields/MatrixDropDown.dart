@@ -35,7 +35,7 @@ class MatrixDropDown implements IFormModel {
   });
 
   factory MatrixDropDown.fromJson(dynamic json){
-    return MatrixDropDown(name: json['name'], label: json['label'],
+    return MatrixDropDown(name: json['fieldName'], label: json['label'],
       values: List<DropDownItem>.from(json['values'].map((e) => DropDownItem.fromJson(e)).toList()),
 
     );

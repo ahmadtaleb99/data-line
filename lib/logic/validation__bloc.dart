@@ -43,6 +43,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../UpdateFormPage.dart';
+import '../Widgets/Matrix/MatrixWidget.dart';
 
 part 'validation__event.dart';
 part 'validation__state.dart';
@@ -98,6 +99,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FilePreviewRequested>(_onFilePreviewRequested);
     on<FileDownloadedNotification>(_onFileDownloadedNotification);
     on<StarRatingUpdated>(_onStarRatingUpdated);
+    on<RecordAdded>(_onRecordAdded);
+    on<RecordRemoved>(_onRecordRemoved);
   }
 
   Future<void> _onFormsRequested(
@@ -488,6 +491,7 @@ var mimi = lookupMimeType(cachedFile.path);
     emit(state.copyWith(submitted: false ));
   }
 
+
   FormModel _getEmptyForm(String name){
    return _formRepository.availableForms
         .firstWhere((element) => element.name == name).copyWith();
@@ -567,6 +571,29 @@ var mimi = lookupMimeType(cachedFile.path);
     emit(state.copyWith());
 
   }
+
+
+  void _onRecordAdded(RecordAdded event, Emitter<ValidationState> emit) {
+    MatrixWidget matrix = state.form!.fields.firstWhere((element) =>
+    element.name == event.matrixName) as MatrixWidget;
+
+    for(var record in matrix.records){
+      record.isLast = false;
+    }
+    matrix.records.add(MatrixRecord(isLast: true,children: matrix.fields,));
+    emit(state.copyWith());
+  }
+
+  void _onRecordRemoved(RecordRemoved event, Emitter<ValidationState> emit) {
+    MatrixWidget matrix = state.form!.fields.firstWhere((element) =>
+    element.name == event.matrixName) as MatrixWidget;
+
+
+    matrix.records.remove(event.matrixRecord);
+    emit(state.copyWith());
+  }
+
+
 
   @override
   Future<void> close() {

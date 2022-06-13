@@ -21,7 +21,7 @@ class MatrixDatePicker implements IFormModel {
   });
 
   factory MatrixDatePicker.fromJson(dynamic json){
-    return MatrixDatePicker(name: json['name'], label: json['label']);
+    return MatrixDatePicker(name: json['fieldName'], label: json['label']);
   }
 
 

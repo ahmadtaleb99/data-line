@@ -31,7 +31,7 @@ class MatrixCheckboxGroup implements IFormModel {
   });
 
   factory MatrixCheckboxGroup.fromJson(dynamic json){
-    return MatrixCheckboxGroup(name: json['name'], label: json['label'],
+    return MatrixCheckboxGroup(name: json['fieldName'], label: json['label'],
         values: List<CheckboxItem>.from(json['values'].map((e) => CheckboxItem.FromJson(e , json['name'])).toList())
 
     );

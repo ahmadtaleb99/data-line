@@ -19,7 +19,6 @@ class FlexFormApi extends FormApi{
 
     data = jsonDecode(formsJson);
     for(var form in data ){
-      // var type  = htmlFormToFlutters(formElement['type'],formElement);
       forms.add(FormModel.fromJson(form));
     }
 

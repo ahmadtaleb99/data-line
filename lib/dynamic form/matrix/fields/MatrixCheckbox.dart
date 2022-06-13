@@ -20,7 +20,7 @@ class MatrixCheckbox implements IFormModel {
   });
 
   factory MatrixCheckbox.fromJson(dynamic json){
-    return MatrixCheckbox(name: json['name'], label: json['label']);
+    return MatrixCheckbox(name: json['fieldName'], label: json['label']);
   }
 
 

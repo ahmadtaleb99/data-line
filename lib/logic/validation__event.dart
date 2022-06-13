@@ -46,6 +46,13 @@ class FormRequested extends ValidationEvent {
 
 }
 
+class RecordAdded extends ValidationEvent {
+
+
+  String matrixName;
+  RecordAdded({required this.matrixName});
+}
+
 
 class FilePickerSaved extends ValidationEvent {
    File file;
@@ -107,6 +114,13 @@ class FormUpdated extends ValidationEvent {
 class FilePreviewRequested extends ValidationEvent {
     String path;
     FilePreviewRequested({required this.path});
+}
+
+
+class RecordRemoved extends ValidationEvent {
+    String matrixName;
+    MatrixRecord matrixRecord;
+    RecordRemoved({required this.matrixName,required this.matrixRecord});
 }
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/MatrixWidget.dart';
 import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixCheckboxGroup.dart';
@@ -98,7 +99,7 @@ class Matrix implements IFormModel {
   List<IFormModel> values;
 
   @HiveField(13)
-  int maxRecordCount;
+  int maxRecordsCount;
 
 
 
@@ -114,7 +115,7 @@ class Matrix implements IFormModel {
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
-    required this.maxRecordCount,
+    required this.maxRecordsCount,
     required this.values
 
   });
@@ -126,10 +127,11 @@ class Matrix implements IFormModel {
       showIfIsRequired: json['showIfIsRequired'],
       showIfFieldValue: json['showIfFieldValue'],
       isHidden: json['isHidden'],
-      isReadOnly: json['isReadOnly'],
+      isReadOnly: json['isReadOnly'] ?? false,
       showIfValueSelected: json['showIfLogicCheckbox'],
       name: json['name'],
-      maxRecordCount: json['maxRecordCount'],
+        visible: json['showIfLogicCheckbox'] == true ? false : true,
+        maxRecordsCount: json['maxRecordsCount'],
       deactivate: json['deactivate'],
         values: List<IFormModel>.from(json['values'].map((e) => _getFieldFromType(e['value'], e)).toList())
 
@@ -169,17 +171,16 @@ class Matrix implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    return StarRatingWidget(
-      label: this.label,
-      value: this.value,
-      required: this.required,
-      showIfValueSelected: this.showIfValueSelected,
-      showIfFieldValue: this.showIfFieldValue,
-      showIfIsRequired: this.showIfIsRequired,
-      name: this.name,
-      visible: this.showIfValueSelected == true && value == null ? false : true,
+    return MatrixWidget(label: label,
+        visible: visible,
+        required: required,
+        name: name,
+        showIfValueSelected: showIfValueSelected,
+        showIfFieldValue: showIfFieldValue,
+        showIfIsRequired: showIfIsRequired,
+        maxRecordCount: maxRecordsCount,
 
-    );
+        fields: List<FormElementWidget>.from(values.map((e) => e.toWidget())));
   }
 
 
@@ -212,7 +213,7 @@ class Matrix implements IFormModel {
       showIfValueSelected: showIfValueSelected ?? this.showIfValueSelected,
       showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
-      maxRecordCount: maxRecordCount ?? this.maxRecordCount,
+      maxRecordsCount: maxRecordCount ?? this.maxRecordsCount,
       values: values ?? this.values,
 
       value: value ?? this.value,

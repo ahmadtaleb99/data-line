@@ -8,7 +8,7 @@ part of 'MatrixRadioGroup.dart';
 
 class MatrixRadioGroupAdapter extends TypeAdapter<MatrixRadioGroup> {
   @override
-  final int typeId = 61;
+  final int typeId = 71;
 
   @override
   MatrixRadioGroup read(BinaryReader reader) {

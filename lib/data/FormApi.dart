@@ -12,6 +12,8 @@ import 'package:form_builder_test/dynamic%20form/FormModel.dart';
   import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
   import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 
+import '../dynamic form/matrix/matrix.dart';
+
 abstract class FormApi {
 
   Future<List<FormModel>> getFormElements( );
@@ -41,6 +43,10 @@ abstract class FormApi {
 
       case 'file':
         return IFormFilePicker.fromJson(json);
+        
+        
+       case 'matrix':
+        return Matrix.fromJson(json);
 
       case 'checkbox-group':
         return IFormCheckBoxGroup.fromJson(json);

@@ -1,4 +1,5 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixNumberWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
@@ -8,7 +9,7 @@ part 'MatrixNumber.g.dart';
 
 
 
-@HiveType(typeId: 62)
+@HiveType(typeId: 72)
 class MatrixNumber implements IFormModel {
 
   @HiveField(1)
@@ -21,7 +22,7 @@ class MatrixNumber implements IFormModel {
   });
 
   factory MatrixNumber.fromJson(dynamic json){
-    return MatrixNumber(name: json['name'], label: json['label']);
+    return MatrixNumber(name: json['fieldName'], label: json['label']);
   }
 
 
@@ -34,8 +35,7 @@ class MatrixNumber implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixNumberWidget(label: label, name: name, value: value);
   }
 
   @override

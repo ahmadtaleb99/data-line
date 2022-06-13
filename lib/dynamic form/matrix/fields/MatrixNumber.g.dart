@@ -8,7 +8,7 @@ part of 'MatrixNumber.dart';
 
 class MatrixNumberAdapter extends TypeAdapter<MatrixNumber> {
   @override
-  final int typeId = 62;
+  final int typeId = 72;
 
   @override
   MatrixNumber read(BinaryReader reader) {

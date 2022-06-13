@@ -11,7 +11,7 @@ part 'MatrixRadioGroup.g.dart';
 
 
 
-@HiveType(typeId: 61)
+@HiveType(typeId: 71)
 class MatrixRadioGroup implements IFormModel {
 
 
@@ -36,7 +36,7 @@ class MatrixRadioGroup implements IFormModel {
   });
 
   factory MatrixRadioGroup.fromJson(dynamic json){
-    return MatrixRadioGroup(name: json['name'], label: json['label'],
+    return MatrixRadioGroup(name: json['fieldName'], label: json['label'],
         values: List<RadioItem>.from(json['values'].map((e) => RadioItem.fromJson(e , json['name'])).toList())
 
     );

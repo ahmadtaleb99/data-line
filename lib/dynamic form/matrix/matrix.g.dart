@@ -28,7 +28,7 @@ class MatrixAdapter extends TypeAdapter<Matrix> {
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
-      maxRecordCount: fields[13] as int,
+      maxRecordsCount: fields[13] as int,
       values: (fields[12] as List).cast<IFormModel>(),
     );
   }
@@ -62,7 +62,7 @@ class MatrixAdapter extends TypeAdapter<Matrix> {
       ..writeByte(12)
       ..write(obj.values)
       ..writeByte(13)
-      ..write(obj.maxRecordCount);
+      ..write(obj.maxRecordsCount);
   }
 
   @override

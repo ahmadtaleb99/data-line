@@ -1,4 +1,5 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixTextFieldWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
@@ -22,7 +23,7 @@ class MatrixTextField implements IFormModel {
   });
 
   factory MatrixTextField.fromJson(dynamic json){
-    return MatrixTextField(name: json['name'], label: json['label']);
+    return MatrixTextField(name: json['fieldName'], label: json['label']);
   }
 
 
@@ -34,8 +35,8 @@ class MatrixTextField implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+
+    return MatrixTextFieldWidget(label: label, name: name, value: value)  ;
   }
 
   @override
