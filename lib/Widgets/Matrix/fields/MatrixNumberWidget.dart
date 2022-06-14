@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/FormValidation.dart';
 import '../../IDrawable.dart';
 
 
-class MatrixNumberWidget extends FormElementWidget {
+class MatrixNumberWidget extends FormElementWidget with FormValidation {
   final String label;
   final String name;
   dynamic value;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+      initialValue: value,
+      onChanged: (value){
+        this.value = value;
+      },
       autovalidateMode: AutovalidateMode.onUserInteraction  ,
       validator: (value) {
-        try {
           if (value!.isEmpty) return 'required';
 
-        } catch (e) {
-          return 'must be a number';
-        }
+         if(!isNumeric(value)) return 'Must be a number';
+
+
       },
       decoration: InputDecoration(
           label: Text(label)

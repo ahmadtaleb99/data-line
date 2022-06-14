@@ -101,7 +101,7 @@ class Matrix implements IFormModel {
   @HiveField(13)
   int maxRecordsCount;
 
-
+   List<List<IFormModel>> ? records = [];
 
   Matrix({
     required this.label,
@@ -175,6 +175,7 @@ class Matrix implements IFormModel {
         visible: visible,
         required: required,
         name: name,
+        value: value,
         showIfValueSelected: showIfValueSelected,
         showIfFieldValue: showIfFieldValue,
         showIfIsRequired: showIfIsRequired,

@@ -510,7 +510,14 @@ var mimi = lookupMimeType(cachedFile.path);
         var radioModel = formModelField as IFormDrawRadioGroup;
         radioModel.isOtherSelected = widgetField.isOtherSelected;
       }
+    if(widgetField is MatrixWidget){
+     for(int i = 0; i < widgetField.records.length; i++){
+       var matrixModel = formModelField as Matrix;
 
+       matrixModel.records![i] = widgetField.records[i].children.cast() ;
+        matrixModel.values[i].value = widgetField.fields[i].value;
+     }
+    }
       formModelField.value = widgetField.value;
     }
   }
@@ -584,8 +591,13 @@ var mimi = lookupMimeType(cachedFile.path);
   Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
 
     matrix.records.add(MatrixRecord(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
+
+
+    matrix.value = matrix.records;
     emit(state.copyWith());
   }
+
+
 
   void _onRecordRemoved(RecordRemoved event, Emitter<ValidationState> emit) {
     MatrixWidget matrix = state.form!.fields.firstWhere((element) =>

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/FormFieldWidget.dart';
@@ -45,6 +47,7 @@ class MatrixWidget extends FormElementWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(this.value.toString() + ' the value of matrix widget');
 
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
