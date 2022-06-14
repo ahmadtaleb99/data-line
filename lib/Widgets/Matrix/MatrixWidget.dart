@@ -78,24 +78,35 @@ class MatrixWidget extends FormElementWidget {
 
 }
 
-Widget setupAlertDialoadContainer(List children) {
-  return Container(
-    height: 300.0, // Change as per your requirement
-    width: 300.0, // Change as per your requirement
-    child: ListView.builder(
-      shrinkWrap: true,
-      itemCount: children.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding:  EdgeInsets.all(10),
-          child: children[index],
-        );
-      },
-    ),
-  );
-}
 
 class MatrixRecord extends StatelessWidget {
+
+  Widget setupAlertDialoadContainer(List children) {
+    GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+    return BlocBuilder<ValidationBloc, ValidationState>(
+  builder: (context, state) {
+    return Container(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: Form(
+        key: state.key,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: children.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding:  EdgeInsets.all(10),
+              child: children[index],
+            );
+          },
+        ),
+      ),
+    );
+  },
+);
+  }
+
   MatrixRecord({Key? key, required this.isLast,required this.children}) : super(key: key);
   bool isLast = true;
    List<FormElementWidget> children;
@@ -128,7 +139,10 @@ class MatrixRecord extends StatelessWidget {
 
                              mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                                 ElevatedButton(onPressed: (){
-                                Form.of(context)!.validate();
+                                  if(state.key.currentState!.validate())
+                                    {
+                                      Navigator.pop(context);
+                                    }
                                 }, child: Text('submit')),
                                 ElevatedButton(onPressed: () => Navigator.pop(context), child: Text('cancel'))
                               ],

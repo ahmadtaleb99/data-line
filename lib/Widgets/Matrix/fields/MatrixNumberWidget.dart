@@ -10,7 +10,7 @@ class MatrixNumberWidget extends FormElementWidget {
   Widget build(BuildContext context) {
     return TextFormField(
 
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction  ,
       validator: (value) {
         try {
           if (value!.isEmpty) return 'required';
@@ -37,5 +37,17 @@ class MatrixNumberWidget extends FormElementWidget {
   String valueToString() {
     // TODO: implement valueToString
     throw UnimplementedError();
+  }
+
+  MatrixNumberWidget copyWith({
+    String? label,
+    String? name,
+    dynamic? value,
+  }) {
+    return MatrixNumberWidget(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      value: value ?? this.value,
+    );
   }
 }

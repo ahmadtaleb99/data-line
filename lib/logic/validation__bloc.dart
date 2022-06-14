@@ -44,6 +44,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../UpdateFormPage.dart';
 import '../Widgets/Matrix/MatrixWidget.dart';
+import '../dynamic form/matrix/matrix.dart';
 
 part 'validation__event.dart';
 part 'validation__state.dart';
@@ -580,7 +581,9 @@ var mimi = lookupMimeType(cachedFile.path);
     for(var record in matrix.records){
       record.isLast = false;
     }
-    matrix.records.add(MatrixRecord(isLast: true,children: matrix.fields,));
+  Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
+
+    matrix.records.add(MatrixRecord(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
     emit(state.copyWith());
   }
 

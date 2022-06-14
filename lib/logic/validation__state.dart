@@ -22,6 +22,8 @@ class ValidationState{
 
   List<FormWidget> ? forms;
   List<FormWidget> ? subedForms;
+  GlobalKey<FormState> key = GlobalKey<FormState>();
+
   FormWidget  ?   form;
   FormModel ?   formModel;
   bool ?   islocallyWorking;

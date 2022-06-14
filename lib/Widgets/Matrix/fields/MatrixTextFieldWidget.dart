@@ -12,7 +12,9 @@ class MatrixTextFieldWidget extends FormElementWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: value,
       onChanged: (value){
+        this.value = value;
       },
       autofocus: false,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -38,5 +40,17 @@ class MatrixTextFieldWidget extends FormElementWidget {
   String valueToString() {
     // TODO: implement valueToString
     throw UnimplementedError();
+  }
+
+  MatrixTextFieldWidget copyWith({
+    String? label,
+    String? name,
+    dynamic? value,
+  }) {
+    return MatrixTextFieldWidget(
+      label: label ?? this.label,
+      name: name ?? this.name,
+      value: value ?? this.value,
+    );
   }
 }
