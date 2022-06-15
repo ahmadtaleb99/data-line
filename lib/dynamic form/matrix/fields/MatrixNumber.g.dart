@@ -19,7 +19,8 @@ class MatrixNumberAdapter extends TypeAdapter<MatrixNumber> {
     return MatrixNumber(
       name: fields[1] as String,
       label: fields[2] as String,
-    )..value = fields[3] as dynamic;
+      value: fields[3] as dynamic,
+    );
   }
 
   @override

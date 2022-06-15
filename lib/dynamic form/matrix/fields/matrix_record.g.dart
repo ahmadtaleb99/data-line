@@ -1,37 +1,34 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'MatrixTextField.dart';
+part of 'matrix_record.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MatrixTextFieldAdapter extends TypeAdapter<MatrixTextField> {
+class MatrixRecordModelAdapter extends TypeAdapter<MatrixRecordModel> {
   @override
-  final int typeId = 60;
+  final int typeId = 67;
 
   @override
-  MatrixTextField read(BinaryReader reader) {
+  MatrixRecordModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MatrixTextField(
-      name: fields[1] as String,
-      label: fields[2] as String,
-      value: fields[3] as dynamic,
+    return MatrixRecordModel(
+      fields: (fields[1] as List).cast<IFormModel>(),
+      value: fields[2] as dynamic,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MatrixTextField obj) {
+  void write(BinaryWriter writer, MatrixRecordModel obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(1)
-      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.label)
-      ..writeByte(3)
+      ..writeByte(1)
+      ..write(obj.fields)
+      ..writeByte(2)
       ..write(obj.value);
   }
 
@@ -41,7 +38,7 @@ class MatrixTextFieldAdapter extends TypeAdapter<MatrixTextField> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MatrixTextFieldAdapter &&
+      other is MatrixRecordModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

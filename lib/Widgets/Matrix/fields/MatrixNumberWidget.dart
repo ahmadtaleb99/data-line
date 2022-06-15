@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/FormValidation.dart';
+import '../../../dynamic form/IFormModel.dart';
+import '../../../dynamic form/matrix/fields/MatrixNumber.dart';
+import '../../../dynamic form/matrix/fields/MatrixTextField.dart';
 import '../../IDrawable.dart';
 
 
@@ -16,9 +19,8 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
       },
       autovalidateMode: AutovalidateMode.onUserInteraction  ,
       validator: (value) {
-          if (value!.isEmpty) return 'required';
 
-         if(!isNumeric(value)) return 'Must be a number';
+         if(!isNumeric(value!) && value.isNotEmpty) return 'Must be a number';
 
 
       },
@@ -53,4 +55,11 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
       value: value ?? this.value,
     );
   }
+
+
+  IFormModel toModel(){
+    return MatrixNumber(name: name, label: label,value: value);
+  }
+
+
 }

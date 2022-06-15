@@ -15,6 +15,7 @@ import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
 import 'package:form_builder_test/dynamic%20form/IFormTextField.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
 import 'package:form_builder_test/dynamic%20form/StarRating.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/matrix.dart';
 import 'package:hive/hive.dart';
 
@@ -62,6 +63,7 @@ class LocalStorageApi  extends FormApi{
     Hive.registerAdapter(MatrixRadioGroupAdapter());
     Hive.registerAdapter(MatrixNumberAdapter());
     Hive.registerAdapter(MatrixTextFieldAdapter());
+    Hive.registerAdapter(MatrixRecordModelAdapter());
 
    _formBox  = await Hive.openBox<FormModel>('form');
    _availableBox   = await Hive.openBox('available');

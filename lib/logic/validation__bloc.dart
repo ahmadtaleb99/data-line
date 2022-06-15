@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
+import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
 import 'package:mime/mime.dart';
 
 import 'dart:ui';
@@ -43,6 +45,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../UpdateFormPage.dart';
+import '../Widgets/Matrix/MatrixRecordWidget.dart';
 import '../Widgets/Matrix/MatrixWidget.dart';
 import '../dynamic form/matrix/matrix.dart';
 
@@ -511,11 +514,12 @@ var mimi = lookupMimeType(cachedFile.path);
         radioModel.isOtherSelected = widgetField.isOtherSelected;
       }
     if(widgetField is MatrixWidget){
-     for(int i = 0; i < widgetField.records.length; i++){
-       var matrixModel = formModelField as Matrix;
 
-       matrixModel.records![i] = widgetField.records[i].children.cast() ;
-        matrixModel.values[i].value = widgetField.fields[i].value;
+
+      var matrixModel = formModelField as Matrix;
+        matrixModel.records = List<MatrixRecordModel>.from(widgetField.records.map((dynamic e) => e.toModel()));
+      for(int i = 0; i < widgetField.records.length; i++){
+
      }
     }
       formModelField.value = widgetField.value;
@@ -591,9 +595,10 @@ var mimi = lookupMimeType(cachedFile.path);
   Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
 
     matrix.records.add(MatrixRecord(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
+    matrix.records.last.showRecordDialog(event.context!, state.key);
 
 
-    matrix.value = matrix.records;
+    // matrix.value = matrix.records;
     emit(state.copyWith());
   }
 

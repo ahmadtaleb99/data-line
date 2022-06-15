@@ -20,6 +20,7 @@ class MatrixTextField implements IFormModel {
   MatrixTextField({
     required this.name,
     required this.label,
+     this.value
   });
 
   factory MatrixTextField.fromJson(dynamic json){

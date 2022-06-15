@@ -9,6 +9,7 @@ import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDatePicker.
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDropDown.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixNumber.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixRadioGroup.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
 import 'package:hive/hive.dart';
 
 import 'fields/MatrixCheckbox.dart';
@@ -101,7 +102,9 @@ class Matrix implements IFormModel {
   @HiveField(13)
   int maxRecordsCount;
 
-   List<List<IFormModel>> ? records = [];
+
+  @HiveField(14)
+   List<MatrixRecordModel> records;
 
   Matrix({
     required this.label,
@@ -115,6 +118,7 @@ class Matrix implements IFormModel {
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
+    required this.records,
     required this.maxRecordsCount,
     required this.values
 
@@ -122,6 +126,7 @@ class Matrix implements IFormModel {
 
   factory Matrix.fromJson(json) {
     return Matrix(
+      records: [],
       label: json['label'],
       required: json['required'],
       showIfIsRequired: json['showIfIsRequired'],
@@ -176,6 +181,7 @@ class Matrix implements IFormModel {
         required: required,
         name: name,
         value: value,
+        records: this.records.map((e) => e.toWidget()).toList().cast() ?? [],
         showIfValueSelected: showIfValueSelected,
         showIfFieldValue: showIfFieldValue,
         showIfIsRequired: showIfIsRequired,
@@ -204,6 +210,7 @@ class Matrix implements IFormModel {
     dynamic? value,
   }) {
     return Matrix(
+      records: []   ,
       label: label ?? this.label,
       name: name ?? this.name,
       deactivate: deactivate ?? this.deactivate,

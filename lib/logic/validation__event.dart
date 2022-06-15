@@ -50,7 +50,8 @@ class RecordAdded extends ValidationEvent {
 
 
   String matrixName;
-  RecordAdded({required this.matrixName});
+  BuildContext ?  context;
+  RecordAdded({required this.matrixName,this.context});
 }
 
 

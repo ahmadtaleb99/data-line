@@ -27,10 +27,7 @@ class CheckboxItem implements IFormModel{
       value:json['value'],
     );
   }
-  @override
-  Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
-    return {};
-  }
+
 
   @override
   FormElementWidget toWidget() {

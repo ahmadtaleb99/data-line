@@ -19,6 +19,7 @@ class MatrixNumber implements IFormModel {
   MatrixNumber({
     required this.name,
     required this.label,
+    this.value
   });
 
   factory MatrixNumber.fromJson(dynamic json){

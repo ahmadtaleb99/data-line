@@ -28,6 +28,7 @@ class MatrixAdapter extends TypeAdapter<Matrix> {
       showIfValueSelected: fields[8] as bool,
       showIfFieldValue: fields[9] as String?,
       showIfIsRequired: fields[10] as bool?,
+      records: (fields[14] as List).cast<MatrixRecordModel>(),
       maxRecordsCount: fields[13] as int,
       values: (fields[12] as List).cast<IFormModel>(),
     );
@@ -36,7 +37,7 @@ class MatrixAdapter extends TypeAdapter<Matrix> {
   @override
   void write(BinaryWriter writer, Matrix obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(1)
       ..write(obj.label)
       ..writeByte(2)
@@ -62,7 +63,9 @@ class MatrixAdapter extends TypeAdapter<Matrix> {
       ..writeByte(12)
       ..write(obj.values)
       ..writeByte(13)
-      ..write(obj.maxRecordsCount);
+      ..write(obj.maxRecordsCount)
+      ..writeByte(14)
+      ..write(obj.records);
   }
 
   @override

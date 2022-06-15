@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../dynamic form/IFormModel.dart';
+import '../../../dynamic form/matrix/fields/MatrixTextField.dart';
 import '../../IDrawable.dart';
 
 class MatrixTextFieldWidget extends FormElementWidget {
+
+  IFormModel toModel(){
+    return MatrixTextField(name: name, label: label,value: value);
+  }
 
   final String label;
   final String name;
@@ -19,9 +25,7 @@ class MatrixTextFieldWidget extends FormElementWidget {
       autofocus: false,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-          if (value!.isEmpty) {
-            return label + ' is required';
-          }
+
           return null;
       },
       decoration: InputDecoration(

@@ -12,8 +12,7 @@ class IFormModelAdapter extends TypeAdapter<IFormModel> {
 
   @override
   IFormModel read(BinaryReader reader) {
-         throw UnimplementedError();
-
+    throw UnimplementedError();
   }
 
   @override
