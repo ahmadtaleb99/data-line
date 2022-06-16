@@ -125,6 +125,13 @@ class RecordRemoved extends ValidationEvent {
 }
 
 
+class MatrixSubmitted extends ValidationEvent {
+    String matrixName;
+    BuildContext context;
+    MatrixSubmitted({required this.matrixName,required this.context});
+}
+
+
 
 
 class SubmittionsFormsRequested extends ValidationEvent {

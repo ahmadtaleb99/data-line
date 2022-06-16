@@ -105,6 +105,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<StarRatingUpdated>(_onStarRatingUpdated);
     on<RecordAdded>(_onRecordAdded);
     on<RecordRemoved>(_onRecordRemoved);
+    on<MatrixSubmitted>(_onMatrixSubmitted);
   }
 
   Future<void> _onFormsRequested(
@@ -611,6 +612,18 @@ var mimi = lookupMimeType(cachedFile.path);
 
     matrix.records.remove(event.matrixRecord);
     emit(state.copyWith());
+  }
+
+
+  void _onMatrixSubmitted(MatrixSubmitted event, Emitter<ValidationState> emit) {
+
+
+    if(state.key.currentState!.validate()){
+      Navigator.pop(event.context);
+      emit(state.copyWith());
+
+    }
+
   }
 
 

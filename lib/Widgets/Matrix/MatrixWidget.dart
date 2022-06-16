@@ -58,7 +58,19 @@ class MatrixWidget extends FormElementWidget {
             visible: visible,
             required: required,
             widget: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 10),
+                  child: Text(
+                    label,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 ...buildItems()
               ],
             )

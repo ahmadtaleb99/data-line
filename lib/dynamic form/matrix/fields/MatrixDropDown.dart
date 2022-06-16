@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixDropDownWidget.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
@@ -36,7 +38,7 @@ class MatrixDropDown implements IFormModel {
 
   factory MatrixDropDown.fromJson(dynamic json){
     return MatrixDropDown(name: json['fieldName'], label: json['label'],
-      values: List<DropDownItem>.from(json['values'].map((e) => DropDownItem.fromJson(e)).toList()),
+      values: List<DropDownItem>.from(json['multipleOptions'].map((e) => DropDownItem.fromJson(e)).toList()),
 
     );
   }
@@ -51,7 +53,8 @@ class MatrixDropDown implements IFormModel {
   @override
   FormElementWidget toWidget() {
     // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixDropDownWidget(label: label, name: name, value: value, values: List.generate(values.length, (index) =>
+        DropdownMenuItem(value: values[index].value, child: Text(values[index].value),)));
   }
 
   @override

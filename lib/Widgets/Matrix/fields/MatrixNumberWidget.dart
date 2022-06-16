@@ -19,8 +19,7 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
       },
       autovalidateMode: AutovalidateMode.onUserInteraction  ,
       validator: (value) {
-
-         if(!isNumeric(value!) && value.isNotEmpty) return 'Must be a number';
+           if(!isNumeric(value!) && value.isNotEmpty) return 'Must be a number';
 
 
       },
