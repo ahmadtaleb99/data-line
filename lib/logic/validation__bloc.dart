@@ -4,9 +4,11 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixDatePickerWidget.dart';
 import 'package:form_builder_test/Widgets/StarRatingWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
+import 'package:form_builder_test/services/FormValidation.dart';
 import 'package:mime/mime.dart';
 
 import 'dart:ui';
@@ -55,7 +57,7 @@ part 'validation__state.dart';
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   FormRepository _formRepository;
   IoService _ioService = IoService();
-  // ReceivePort _receivePort = ReceivePort();
+
 
   ValidationBloc(this._formRepository)
         : super(ValidationState(
@@ -106,6 +108,8 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<RecordAdded>(_onRecordAdded);
     on<RecordRemoved>(_onRecordRemoved);
     on<MatrixSubmitted>(_onMatrixSubmitted);
+    on<Refresher>(_onRefresher);
+    on<MatrixDatePickerChanged>(_onMatrixDatePickerChanged);
   }
 
   Future<void> _onFormsRequested(
@@ -133,6 +137,24 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     emit(state.copyWith());
   }
 
+
+  Future<void> _onMatrixDatePickerChanged(
+      MatrixDatePickerChanged event, Emitter<ValidationState> emit) async {
+
+
+
+   final date = await  showDatePicker(firstDate: DateTime(1940)
+        , initialDate: DateTime(1999),
+        lastDate: DateTime.now(), context: event.context);
+
+      event.matrixDatePickerWidget.value = date;
+
+   emit(state.copyWith());
+
+
+
+  }
+
   void _onFileDownloadedNotification(
       FileDownloadedNotification event, Emitter<ValidationState> emit) {
     // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
@@ -144,6 +166,14 @@ void _onStarRatingUpdated(
    emit(state.copyWith(form: state.form));
     // NotificationService.showNotification(title: 'title', body: 'body', payload: event.path);
   }
+
+  void _onRefresher(
+   Refresher event, Emitter<ValidationState> emit) {
+
+   emit(state.copyWith());
+  }
+
+
 
   Future<void> _onFormsRequestedFromLocal(
       FormsRequestedFromLocal event, Emitter<ValidationState> emit) async {
@@ -519,9 +549,7 @@ var mimi = lookupMimeType(cachedFile.path);
 
       var matrixModel = formModelField as Matrix;
         matrixModel.records = List<MatrixRecordModel>.from(widgetField.records.map((dynamic e) => e.toModel()));
-      for(int i = 0; i < widgetField.records.length; i++){
-
-     }
+     // x
     }
       formModelField.value = widgetField.value;
     }

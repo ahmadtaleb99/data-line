@@ -1,4 +1,5 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixCheckboxWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
@@ -17,6 +18,7 @@ class MatrixCheckbox implements IFormModel {
   MatrixCheckbox({
     required this.name,
     required this.label,
+     this.value,
   });
 
   factory MatrixCheckbox.fromJson(dynamic json){
@@ -33,7 +35,7 @@ class MatrixCheckbox implements IFormModel {
   @override
   FormElementWidget toWidget() {
     // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixCheckboxWidget(label: label, name: name, value: value);
   }
 
   @override

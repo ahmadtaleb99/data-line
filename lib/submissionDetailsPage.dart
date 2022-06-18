@@ -173,7 +173,7 @@ class ValueWidget extends StatelessWidget {
     else {
       log('field isnt DrawFilePicker ') ;
 
-      return Text(field.valueToString(),
+      return Text(field.valueToString() ?? 'empty',
           overflow: TextOverflow.fade,
           softWrap: true,
           style: TextStyle(

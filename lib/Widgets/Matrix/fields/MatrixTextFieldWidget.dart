@@ -41,9 +41,9 @@ class MatrixTextFieldWidget extends FormElementWidget {
   }) : super(label: label,name: name);
 
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ? valueToString() {
+    return this.value;
+
   }
 
   MatrixTextFieldWidget copyWith({

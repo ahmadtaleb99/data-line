@@ -27,7 +27,7 @@ class ValidationState{
   FormWidget  ?   form;
   FormModel ?   formModel;
   bool ?   islocallyWorking;
-
+  final formValidationManager = FormValidationManager();
 
 
   DrawChildList ? childList;

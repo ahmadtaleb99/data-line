@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixCheckbox.dart';
+import 'package:form_builder_test/logic/validation__bloc.dart';
+import 'package:provider/src/provider.dart';
 import '../../IDrawable.dart';
 
 class MatrixCheckboxWidget extends FormElementWidget {
@@ -7,7 +11,10 @@ class MatrixCheckboxWidget extends FormElementWidget {
   dynamic value;
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return CheckboxListTile(value: value ?? false,title: Text(label),contentPadding: EdgeInsets.only(right:19), onChanged: (value){
+      this.value = value;
+      context.read<ValidationBloc>().add(Refresher());
+    });
   }
 
    MatrixCheckboxWidget({
@@ -17,8 +24,15 @@ class MatrixCheckboxWidget extends FormElementWidget {
    }) : super(label: label,name: name);
 
   @override
-  String valueToString() {
+  String ? valueToString() {
     // TODO: implement valueToString
-    throw UnimplementedError();
+    return this.value != null ? this.value.toString() : this.value;
+  }
+
+
+
+
+  MatrixCheckbox toModel(){
+    return MatrixCheckbox(name: name, label: label,value:value);
   }
 }

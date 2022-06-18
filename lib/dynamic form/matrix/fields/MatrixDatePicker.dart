@@ -1,4 +1,5 @@
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixDatePickerWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
 
@@ -18,6 +19,7 @@ class MatrixDatePicker implements IFormModel {
   MatrixDatePicker({
     required this.name,
     required this.label,
+     this.value
   });
 
   factory MatrixDatePicker.fromJson(dynamic json){
@@ -34,7 +36,7 @@ class MatrixDatePicker implements IFormModel {
   @override
   FormElementWidget toWidget() {
     // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixDatePickerWidget(label: label, name: name, value: value);
   }
 
   @override

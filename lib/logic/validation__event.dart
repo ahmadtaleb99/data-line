@@ -37,6 +37,19 @@ class FormsRequested extends ValidationEvent {
 
 
 }
+
+
+class MatrixDatePickerChanged extends ValidationEvent {
+
+    BuildContext context;
+    MatrixDatePickerWidget matrixDatePickerWidget;
+    MatrixDatePickerChanged({
+    required this.context,
+    required this.matrixDatePickerWidget,
+
+
+  });
+}
 class FormRequested extends ValidationEvent {
   String formName;
 
@@ -184,6 +197,10 @@ class TextFieldValueChanged extends ValidationEvent {
   String textFieldName;
   String value;
   TextFieldValueChanged(this.value,{required this.textFieldName});
+}
+
+class Refresher extends ValidationEvent {
+
 }
 
 

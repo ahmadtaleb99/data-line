@@ -22,7 +22,7 @@ class DropDownItem  extends  IFormModel {
 
   factory DropDownItem.fromJson(json) {
     return DropDownItem(
-        value: json['value'], status: json['status'], parent: json['parent']);
+        value: json['value'], status: json['status'] ?? '', parent: json['parent'] ?? '');
   }
 
    DropDownItem({

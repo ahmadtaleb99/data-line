@@ -1,4 +1,5 @@
-import 'package:form_builder_test/Widgets/IDrawable.dart';
+  import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixRadioGroupWidget.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:form_builder_test/dynamic%20form/RadioItem.dart';
@@ -33,11 +34,12 @@ class MatrixRadioGroup implements IFormModel {
     required this.name,
     required this.label,
     required this.values,
+    this.value
   });
 
   factory MatrixRadioGroup.fromJson(dynamic json){
     return MatrixRadioGroup(name: json['fieldName'], label: json['label'],
-        values: List<RadioItem>.from(json['values'].map((e) => RadioItem.fromJson(e , json['name'])).toList())
+        values: List<RadioItem>.from(json['multipleOptions'].map((e) => RadioItem.fromJson(e , json['fieldName'])).toList())
 
     );
   }
@@ -52,8 +54,7 @@ class MatrixRadioGroup implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixRadioGroupWidget(label: label, name: name, children: values, value: value);
   }
 
   @override
@@ -67,6 +68,8 @@ class MatrixRadioGroup implements IFormModel {
     // TODO: implement copyWith
     throw UnimplementedError();
   }
+
+
 
 
 }

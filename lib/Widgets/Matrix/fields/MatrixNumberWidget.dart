@@ -38,9 +38,10 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
    }) : super(label: label,name: name);
 
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ? valueToString() {
+
+    return this.value;
+
   }
 
   MatrixNumberWidget copyWith({
