@@ -28,7 +28,7 @@ class MatrixRecordModel implements IFormModel{
 
   @override
   FormElementWidget toWidget() {
-   return MatrixRecord( children: fields.map((e) => e.toWidget()).toList());
+   return MatrixRecordWidget(isExpanded:false, children: fields.map((e) => e.toWidget()).toList());
   }
 
   @override

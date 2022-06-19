@@ -619,11 +619,11 @@ var mimi = lookupMimeType(cachedFile.path);
     element.name == event.matrixName) as MatrixWidget;
 
     for(var record in matrix.records){
-      record.isLast = false;
+      // record.isLast = false;
     }
   Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
 
-    matrix.records.add(MatrixRecord(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
+    matrix.records.add(MatrixRecordWidget(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
     matrix.records.last.showRecordDialog(event.context!, state.key);
 
 

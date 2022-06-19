@@ -133,7 +133,7 @@ class FilePreviewRequested extends ValidationEvent {
 
 class RecordRemoved extends ValidationEvent {
     String matrixName;
-    MatrixRecord matrixRecord;
+    MatrixRecordWidget matrixRecord;
     RecordRemoved({required this.matrixName,required this.matrixRecord});
 }
 

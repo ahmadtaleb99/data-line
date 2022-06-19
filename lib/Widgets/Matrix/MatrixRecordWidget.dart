@@ -1,46 +1,57 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixRadioGroup.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
+import 'package:collection/collection.dart';
 
 import '../../dynamic form/IFormModel.dart';
 import '../../logic/validation__bloc.dart';
 import '../IDrawable.dart';
 
-class MatrixRecord extends FormElementWidget {
+class MatrixRecordWidget extends FormElementWidget {
 
-  MatrixRecord({Key? key, this.isLast = true, required this.children})
+  MatrixRecordWidget({Key? key, this.isLast = true, required this.children, this.isExpanded = false})
       : super(key: key, name: 'sad', label: '');
-  bool isLast;
-  List<FormElementWidget> children;
+  final bool isLast;
+  final List<FormElementWidget> children;
+   bool isExpanded;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
+    return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
       builder: (context, state) {
-        return ExpansionTile(title:   Row(
-          children: [
-            Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 0, top: 5),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    elevation: 5,
-                    child: InkWell(
-                      customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      onTap: () {
-                        showRecordDialog(context, state.key);
-                      },
-                      child: Container(
+          log('build');
 
+        return Container(
+
+
+          child: Row(
+            children: [
+              Expanded(
+                flex: 6,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 0, top: 5),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      elevation: 5,
+                      child: InkWell(
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        onTap: () {
+
+                          // showRecordDialog(context, state.key);
+                        },
                         child: Column(
                           children: [
 
 
-                            ...List<Widget>.generate(1, (index) {
+                            ...List<Widget>.generate( state.pressedItems.contains(this)! ? children.length : 1 , (index) {
                               return  Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: Row(
@@ -48,8 +59,6 @@ class MatrixRecord extends FormElementWidget {
                                   children: [
                                     Expanded(child: Text(children[index].label)),
                                     Expanded(child: Text(children[index].valueToString() ?? '',overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
-
-
                                   ],
                                 ),
                               );
@@ -59,91 +68,37 @@ class MatrixRecord extends FormElementWidget {
 
                           ],
                         ),
-
                       ),
                     ),
-                  ),
-                )),
-            if (isLast)
-              IconButton(
-                  onPressed: () {
-                    context.read<ValidationBloc>().add(RecordAdded(
-                        matrixName: 'matrix_1655016823189', context: context));
-                  },
-                  icon: Icon(Icons.add_circle))
-            else
-              IconButton(
-                  onPressed: () {
-                    context.read<ValidationBloc>().add(RecordRemoved(
-                        matrixName: 'matrix_1655016823189',
-                        matrixRecord: this));
-                  },
-                  icon: Icon(Icons.remove))
-          ],
-        ),children: [
-          Row(
-          children: [
-            Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 0, top: 5),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    elevation: 5,
-                    child: InkWell(
-                      customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      onTap: () {
-                        showRecordDialog(context, state.key);
+                  )),
+              if (isLast)
+                Expanded(
+
+                  child: IconButton(
+                      onPressed: () {
+                        context.read<MatrixRecordCubit>().addRecord();
                       },
-                      child: Container(
-
-                        child: Column(
-                          children: [
-
-
-                            ...List<Widget>.generate(children.length, (index) {
-                              return  Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Expanded(child: Text(children[index].label)),
-                                    Expanded(child: Text(children[index].valueToString() ?? '',overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
-
-
-                                  ],
-                                ),
-                              );
-                            })
-                            ,
-
-
-                          ],
-                        ),
-
-                      ),
-                    ),
-                  ),
-                )),
-            if (isLast)
+                      icon: Icon(Icons.add_circle)),
+                )
+              else
+                Expanded(
+                  child: IconButton(
+                      onPressed: () {
+                        context.read<ValidationBloc>().add(RecordRemoved(
+                            matrixName: 'matrix_1655016823189',
+                            matrixRecord: this));
+                      },
+                      icon: Icon(Icons.remove)),
+                ),
               IconButton(
                   onPressed: () {
-                    context.read<ValidationBloc>().add(RecordAdded(
-                        matrixName: 'matrix_1655016823189', context: context));
+                  context.read<MatrixRecordCubit>().toggleExpanded(this);
                   },
-                  icon: Icon(Icons.add_circle))
-            else
-              IconButton(
-                  onPressed: () {
-                    context.read<ValidationBloc>().add(RecordRemoved(
-                        matrixName: 'matrix_1655016823189',
-                        matrixRecord: this));
-                  },
-                  icon: Icon(Icons.remove))
-          ],
-        )]);
+                   icon : Icon(   state.pressedItems.contains(this) ?  Icons.arrow_drop_up : Icons.arrow_drop_down)) ,
+
+            ],
+          ),
+        );
       },
     );
   }
@@ -158,7 +113,6 @@ class MatrixRecord extends FormElementWidget {
         fields: this.children.map((dynamic e) => e.toModel()).toList().cast());
   }
   Widget setupAlertDialoadContainer(List children) {
-    GlobalKey<FormState> _key = GlobalKey<FormState>();
 
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
@@ -252,4 +206,9 @@ class MatrixRecord extends FormElementWidget {
 
 
 
+
+
 }
+
+
+
