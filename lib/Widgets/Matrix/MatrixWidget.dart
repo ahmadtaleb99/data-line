@@ -54,7 +54,7 @@ class MatrixWidget extends FormElementWidget {
     log(this.value.toString() + ' the value of matrix widget');
 
     return BlocProvider(
-      create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..fetchRecords(name),
       child: BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
         builder: (context, state) {
           return FormFieldWidget(
@@ -75,7 +75,9 @@ class MatrixWidget extends FormElementWidget {
                     height: 5,
                   ),
 
-                  ...buildItems(),
+
+                  ...List.generate(state.recordsModel.length, (i) => MatrixRecordWidget(children: state.recordsModel[i].fields.map((e) => e.toWidget()).toList(),isExpanded: false,isLast: false,index: i,
+                  )),
                   ...state.records
 
                 ],

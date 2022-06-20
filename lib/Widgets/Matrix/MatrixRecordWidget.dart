@@ -14,11 +14,16 @@ import '../IDrawable.dart';
 
 class MatrixRecordWidget extends FormElementWidget {
 
-  MatrixRecordWidget({Key? key, this.isLast = true, required this.children, this.isExpanded = false})
+  MatrixRecordWidget({Key? key, this.isLast = true,
+    required this.children,
+     this.index,
+    this.isExpanded = false
+  })
       : super(key: key, name: 'sad', label: '');
   final bool isLast;
   final List<FormElementWidget> children;
    bool isExpanded;
+   final int ?  index;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +56,7 @@ class MatrixRecordWidget extends FormElementWidget {
                           children: [
 
 
-                            ...List<Widget>.generate( state.pressedItems.contains(this)! ? children.length : 1 , (index) {
+                            ...List<Widget>.generate( state.isExpanded[index!] ? children.length : 1 , (index) {
                               return  Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: Row(
@@ -71,7 +76,7 @@ class MatrixRecordWidget extends FormElementWidget {
                       ),
                     ),
                   )),
-              if (isLast)
+              // if (isLast)
                 Expanded(
 
                   child: IconButton(
@@ -79,8 +84,8 @@ class MatrixRecordWidget extends FormElementWidget {
                         context.read<MatrixRecordCubit>().addRecord();
                       },
                       icon: Icon(Icons.add_circle)),
-                )
-              else
+                ),
+              // else
                 Expanded(
                   child: IconButton(
                       onPressed: () {
@@ -92,9 +97,11 @@ class MatrixRecordWidget extends FormElementWidget {
                 ),
               IconButton(
                   onPressed: () {
-                  context.read<MatrixRecordCubit>().toggleExpanded(this);
+                      log('buton');
+                    log(state.isExpanded[index!].toString());
+                  context.read<MatrixRecordCubit>().toggleExpanded(this,index!);
                   },
-                   icon : Icon(   state.pressedItems.contains(this) ?  Icons.arrow_drop_up : Icons.arrow_drop_down)) ,
+                   icon : Icon(  state.isExpanded[index!] ?   Icons.arrow_drop_up : Icons.arrow_drop_down)) ,
 
             ],
           ),
@@ -203,11 +210,17 @@ class MatrixRecordWidget extends FormElementWidget {
         });
   }
 
-
-
-
-
-
+  MatrixRecordWidget copyWith({
+    bool? isLast,
+    List<FormElementWidget>? children,
+    bool? isExpanded,
+  }) {
+    return MatrixRecordWidget(
+      isLast: isLast ?? this.isLast,
+      children: children ?? this.children,
+      isExpanded: isExpanded ?? this.isExpanded,
+    );
+  }
 }
 
 
