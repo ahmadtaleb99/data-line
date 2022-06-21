@@ -58,6 +58,7 @@ class FormModel extends HiveObject implements IFormModel {
         return null;
     }
   }
+  late String label;
 
   @HiveField(1)
   String name;
@@ -121,4 +122,6 @@ class FormModel extends HiveObject implements IFormModel {
   String valueToString() {
     return this.value.toString();
   }
+
+
 }

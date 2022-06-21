@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
 import 'package:form_builder_test/services/notification/NotificationsService.dart';
 import 'package:form_builder_test/services/notification/NotificationManager.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
@@ -11,7 +12,7 @@ import 'home_screen.dart';
 import 'package:form_builder_test/services/notification/NotificationManager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void initNotifications(){
+void initNotifications() {
   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
     if (!isAllowed) {
       // This is just a basic example. For real apps, you must show some
@@ -23,7 +24,7 @@ void initNotifications(){
   AwesomeNotifications().initialize(
     // senullt the icon to null if you want to use the default app icon
       null,
-          NotificationManager.channels,
+      NotificationManager.channels,
       // Channel groups are only visual and are not required
       channelGroups: [
         NotificationChannelGroup(
@@ -35,13 +36,11 @@ void initNotifications(){
 }
 
 
-
-
 Future<void> main() async {
   await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
   initNotifications();
- await  NotificationService().init();
+  await NotificationService().init();
 
 
   runApp(const MyApp());
@@ -54,15 +53,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return RepositoryProvider(
-      create: (context) => FormRepository() ,
-      child: BlocProvider(
-        create: (context) => ValidationBloc(context.read<FormRepository>())
-                  ..add(ServiceRegistered())
-                  ..add(FormsRequested()),
+      create: (context) => FormRepository(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+            ValidationBloc(context.read<FormRepository>())
+              ..add(ServiceRegistered())..add(FormsRequested()),
 
+          ),
+          BlocProvider(
+            create: (context) =>
+            MatrixRecordCubit(context.read<FormRepository>()),
+
+          ),
+
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: HomeScreen(),

@@ -5,12 +5,13 @@ part of 'matrix_record_cubit.dart';
 class  MatrixRecordState extends Equatable{
   @override
   // TODO: implement props
-  List<Object?> get props => [records,pressedItems];
+  List<Object?> get props => [records,pressedItems,recordsModel];
 
  List<MatrixRecordWidget> records;
  List<MatrixRecordModel> recordsModel;
  List<MatrixRecordWidget>   pressedItems = [];
  List<bool>   isExpanded = [];
+ int recordNumber = 0 ;
 
   MatrixRecordState({
     required this.records,

@@ -67,10 +67,21 @@ class MatrixDropDown implements IFormModel {
   }
 
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
-  }
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    String? value,
+    List<DropDownItem>? values
+  }) {
 
+    return MatrixDropDown(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+      values: values ?? this.values,
+
+    );
+
+  }
 
 }

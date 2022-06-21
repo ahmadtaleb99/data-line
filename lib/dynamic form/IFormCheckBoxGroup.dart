@@ -76,7 +76,8 @@ class IFormCheckBoxGroup extends IFormModel {
     this.maxCheckedAllowed,
     required this.other,
 
-  });
+  }) : super( name: name,label: label) ;
+
 
 
   factory IFormCheckBoxGroup.fromJson(parameters) {

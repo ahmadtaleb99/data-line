@@ -21,14 +21,15 @@ class MatrixRecordModel implements IFormModel{
   var value;
 
   @override
-  IFormModel copyWith() {
+  IFormModel copyWith({dynamic value}) {
     // TODO: implement copyWith
     throw UnimplementedError();
   }
 
   @override
   FormElementWidget toWidget() {
-   return MatrixRecordWidget(isExpanded:false, children: fields.map((e) => e.toWidget()).toList());
+    throw UnimplementedError();
+
   }
 
   @override
@@ -41,4 +42,14 @@ class MatrixRecordModel implements IFormModel{
     required this.fields,
      this.value,
   });
+
+  @override
+  // TODO: implement label
+  String get label => throw UnimplementedError();
+
+  @override
+  // TODO: implement name
+  String get name => throw UnimplementedError();
+
+
 }

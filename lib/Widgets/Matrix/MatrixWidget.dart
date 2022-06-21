@@ -53,59 +53,49 @@ class MatrixWidget extends FormElementWidget {
   Widget build(BuildContext context) {
     log(this.value.toString() + ' the value of matrix widget');
 
-    return BlocProvider(
-      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..fetchRecords(name),
-      child: BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-        builder: (context, state) {
-          return FormFieldWidget(
-              visible: visible,
-              required: required,
-              widget: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, bottom: 10),
-                    child: Text(
-                      label,
-                      style: TextStyle(fontSize: 18),
+    return Builder(
+      builder: (context) {
+        context.read<MatrixRecordCubit>().fetchRecords(name);
+        return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+          builder: (context, state) {
+            return FormFieldWidget(
+                visible: visible,
+                required: required,
+                widget: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, bottom: 10),
+                      child: Text(
+                        label,
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-
-
-                  ...List.generate(state.recordsModel.length, (i) => MatrixRecordWidget(children: state.recordsModel[i].fields.map((e) => e.toWidget()).toList(),isExpanded: false,isLast: false,index: i,
-                  )),
-                  ...state.records
-
-                ],
-              )
-          );
-        },
-      ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    ...List.generate(
+                        state.recordsModel.length,
+                            (i) =>
+                            MatrixRecordWidget(
+                              children: state.recordsModel[i].fields
+                                 ,
+                                    matrixName: this.name,
+                              isLast: i == state.recordsModel.length - 1,
+                              index: i,
+                            )),
+                  ],
+                ));
+          },
+        );
+      }
     );
   }
 
-
-  List<MatrixRecordWidget> buildItems() {
-    if (records.isEmpty) {
-      records.add(MatrixRecordWidget(isLast: true, children: this.fields));
-    }
-    for (var record in records) {
-      // record.isLast = false;
-    }
-    // records.last.isLast = true;
-    return records;
-  }
 
   @override
   String valueToString() {
     return this.value.toString();
   }
-
-
 }
-
-

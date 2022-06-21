@@ -623,8 +623,8 @@ var mimi = lookupMimeType(cachedFile.path);
     }
   Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
 
-    matrix.records.add(MatrixRecordWidget(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),));
-    matrix.records.last.showRecordDialog(event.context!, state.key);
+    // matrix.records.add(MatrixRecordWidget(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),index: matrix.records.length,));
+    // matrix.records.last.showRecordDialog(event.context!, state.key);
 
 
     // matrix.value = matrix.records;

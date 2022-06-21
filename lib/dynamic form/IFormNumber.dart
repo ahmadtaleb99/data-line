@@ -64,7 +64,7 @@ class IFormNumber extends IFormModel {
     this.showIfIsRequired,
     required this.expression,
     this.value
-  }) ;
+  }) : super( name: name,label: label) ;
 
   factory IFormNumber.fromJson(json) {
     return IFormNumber(

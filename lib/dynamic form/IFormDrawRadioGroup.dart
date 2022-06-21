@@ -126,7 +126,8 @@ class IFormDrawRadioGroup extends IFormModel {
     this.showIfFieldValue,
     this.showIfIsRequired,
     required this.other,
-  });
+  }) : super( name: name,label: label) ;
+
 
 
   IFormDrawRadioGroup copyWith({

@@ -42,14 +42,22 @@ class MatrixDatePicker implements IFormModel {
   @override
   String valueToString() {
     // TODO: implement valueToString
-    throw UnimplementedError();
+    return value.toString();
   }
-
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
-  }
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    String? value,
+  }) {
 
+    return MatrixDatePicker(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+
+    );
+
+  }
 
 }

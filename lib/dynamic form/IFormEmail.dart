@@ -45,7 +45,8 @@ class IFormEmail extends IFormModel {
     required this.showIfValueSelected,
     this.showIfFieldValue,
     this.showIfIsRequired,
-  });
+  }) : super( name: name,label: label) ;
+
 
 
 

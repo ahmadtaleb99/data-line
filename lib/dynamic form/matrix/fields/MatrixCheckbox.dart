@@ -43,11 +43,20 @@ class MatrixCheckbox implements IFormModel {
     // TODO: implement valueToString
     throw UnimplementedError();
   }
-
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    dynamic value,
+  }) {
+
+    return MatrixCheckbox(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+
+    );
+
   }
 
 

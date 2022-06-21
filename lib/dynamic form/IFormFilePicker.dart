@@ -71,7 +71,8 @@ class IFormFilePicker extends IFormModel {
 
     required this.maxFileSize,
     required this.fileType,
-  });
+  }) : super( name: name,label: label) ;
+
 
   factory IFormFilePicker.fromJson(json) {
     return IFormFilePicker(

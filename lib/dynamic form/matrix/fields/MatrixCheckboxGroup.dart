@@ -28,6 +28,7 @@ class MatrixCheckboxGroup implements IFormModel {
     required this.name,
     required this.label,
     required this.values,
+     this.value,
   });
 
   factory MatrixCheckboxGroup.fromJson(dynamic json){
@@ -57,9 +58,21 @@ class MatrixCheckboxGroup implements IFormModel {
   }
 
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    String? value,
+    List<CheckboxItem>? values
+  }) {
+
+    return MatrixCheckboxGroup(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+      values: values ?? this.values,
+
+    );
+
   }
 
 

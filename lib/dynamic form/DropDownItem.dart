@@ -29,7 +29,8 @@ class DropDownItem  extends  IFormModel {
     this.parent,
     required this.value,
     required this.status,
-  });
+   }) : super( name: value,label: value) ;
+
 
   // @override
   // // TODO: implement props

@@ -47,9 +47,19 @@ class MatrixTextField implements IFormModel {
   }
 
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    String? value,
+  }) {
+
+    return MatrixTextField(
+        name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+
+       );
+
   }
 
 

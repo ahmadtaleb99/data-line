@@ -64,12 +64,22 @@ class MatrixRadioGroup implements IFormModel {
   }
 
   @override
-  IFormModel copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
+  IFormModel copyWith({
+    String? name,
+    String? label,
+    String? value,
+    List<RadioItem>? values
+  }) {
+
+    return MatrixRadioGroup(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      value: value ?? this.value,
+      values: values ?? this.values,
+
+    );
+
   }
-
-
 
 
 }

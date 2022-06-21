@@ -18,7 +18,9 @@ class CheckboxItem implements IFormModel{
     required this.label,
     required this.groupName,
     required this.value,
-  });
+  })  ;
+
+
 
   factory CheckboxItem.FromJson(json,String groupName) {
     return CheckboxItem(
@@ -51,4 +53,8 @@ class CheckboxItem implements IFormModel{
   String valueToString() {
     return this.value.toString();
   }
+
+  @override
+  // TODO: implement name
+  String get name => throw UnimplementedError();
 }
