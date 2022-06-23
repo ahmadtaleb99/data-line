@@ -4,6 +4,7 @@ import 'package:form_builder_test/dynamic%20form/DropDownItem.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDropDown.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import '../../IDrawable.dart';
+import 'RecordCubit/matrix_record_cubit.dart';
 
 class MatrixDropDownWidget extends FormElementWidget {
   final String label;
@@ -53,6 +54,8 @@ class MatrixDropDownWidget extends FormElementWidget {
                       ))
                       .toList(),
                   onChanged: (value) {
+                    context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+
                     context.read<ValidationBloc>().add(Refresher());
                     this.value = value;
                   },

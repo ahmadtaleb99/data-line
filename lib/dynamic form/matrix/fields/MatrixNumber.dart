@@ -49,13 +49,14 @@ class MatrixNumber implements IFormModel {
   IFormModel copyWith({
     String? name,
     String? label,
-    String? value,
+    dynamic value,
+
   }) {
 
     return MatrixNumber(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value ?? this.value,
+      value: value ,
 
     );
 

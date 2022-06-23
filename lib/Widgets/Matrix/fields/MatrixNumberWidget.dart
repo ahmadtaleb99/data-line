@@ -4,6 +4,8 @@ import '../../../dynamic form/IFormModel.dart';
 import '../../../dynamic form/matrix/fields/MatrixNumber.dart';
 import '../../../dynamic form/matrix/fields/MatrixTextField.dart';
 import '../../IDrawable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
 
 
 class MatrixNumberWidget extends FormElementWidget with FormValidation {
@@ -13,8 +15,9 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: value,
-      onChanged: (value){
+      initialValue:  value,
+      onChanged: (value) {
+        context.read<MatrixRecordCubit>().textFieldValueChanged(value,name);
         this.value = value;
       },
       autovalidateMode: AutovalidateMode.onUserInteraction  ,

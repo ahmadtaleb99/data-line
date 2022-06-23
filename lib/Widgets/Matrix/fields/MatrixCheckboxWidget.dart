@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixCheckbox.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:provider/src/provider.dart';
@@ -12,7 +13,12 @@ class MatrixCheckboxWidget extends FormElementWidget {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(value: value ?? false,title: Text(label),contentPadding: EdgeInsets.only(right:19), onChanged: (value){
+
+      context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+
+
       this.value = value;
+
       context.read<ValidationBloc>().add(Refresher());
     });
   }
@@ -25,7 +31,6 @@ class MatrixCheckboxWidget extends FormElementWidget {
 
   @override
   String ? valueToString() {
-    // TODO: implement valueToString
     return this.value != null ? this.value.toString() : this.value;
   }
 

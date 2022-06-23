@@ -50,13 +50,14 @@ class MatrixTextField implements IFormModel {
   IFormModel copyWith({
     String? name,
     String? label,
-    String? value,
+    dynamic value,
+
   }) {
 
     return MatrixTextField(
         name: name ?? this.name,
       label: label ?? this.label,
-      value: value ?? this.value,
+      value: value ,
 
        );
 

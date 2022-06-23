@@ -25,7 +25,7 @@ class MatrixTextFieldWidget extends FormElementWidget {
 
         print(state.recordsModel.toString());
         return TextFormField(
-          // initialValue:  state.recordsModel[state.recordNumber].fields.firstWhere((dynamic element) => element.name == this.name).value,
+            // initialValue:  state.recordsModel[state.recordNumber].fields.firstWhere((dynamic element) => element.name == this.name).value,
           initialValue:  value,
           onChanged: (value) {
             context.read<MatrixRecordCubit>().textFieldValueChanged(value,name);

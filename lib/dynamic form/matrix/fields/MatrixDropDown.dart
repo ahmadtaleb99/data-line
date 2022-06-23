@@ -70,14 +70,16 @@ class MatrixDropDown implements IFormModel {
   IFormModel copyWith({
     String? name,
     String? label,
-    String? value,
+    dynamic value,
+
     List<DropDownItem>? values
   }) {
 
     return MatrixDropDown(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value ?? this.value,
+      value: value,
+
       values: values ?? this.values,
 
     );

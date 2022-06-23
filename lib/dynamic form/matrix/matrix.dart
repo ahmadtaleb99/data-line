@@ -182,6 +182,7 @@ class Matrix implements IFormModel {
         visible: visible,
         required: required,
         name: name,
+
         value: value,
         records: this.records.map((e) => e.toWidget()).toList().cast() ?? [],
         showIfValueSelected: showIfValueSelected,

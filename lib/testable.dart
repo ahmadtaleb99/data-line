@@ -1,110 +1,37 @@
+import 'dart:developer';
+import 'dart:convert';
+
 import 'dart:io';
-import 'package:path/path.dart';
-
-import 'dart:typed_data';
-
-import 'package:path_provider/path_provider.dart';
 
 
+   String json  = '[{"id":1,"name_en":"الكترونيات","name_pt":"الكترونيات","name_ar":"الكترونيات","status":1,"parent_id":null,"created_at":"2022-06-22T07:38:19.000000Z","updated_at":"2022-06-22T08:42:04.000000Z","all_active_children":[{"id":2,"name_en":"موبايلات","name_pt":"موبايلات","name_ar":"موبايلات","status":1,"parent_id":1,"created_at":"2022-06-22T07:38:31.000000Z","updated_at":"2022-06-23T06:32:51.000000Z","all_active_children":[]},{"id":3,"name_en":"لابتوبات","name_pt":"لابتوبات","name_ar":"لابتوبات","status":1,"parent_id":1,"created_at":"2022-06-22T07:38:43.000000Z","updated_at":"2022-06-23T06:32:49.000000Z","all_active_children":[]}]},{"id":4,"name_en":"طعام","name_pt":"طعام","name_ar":"طعام","status":1,"parent_id":null,"created_at":"2022-06-22T07:38:56.000000Z","updated_at":"2022-06-23T07:00:25.000000Z","all_active_children":[{"id":5,"name_en":"فواكه","name_pt":"فواكه","name_ar":"فواكه","status":1,"parent_id":4,"created_at":"2022-06-22T07:39:09.000000Z","updated_at":"2022-06-23T07:00:01.000000Z","all_active_children":[{"id":6,"name_en":"موز","name_pt":"موز","name_ar":"موز","status":1,"parent_id":5,"created_at":"2022-06-22T07:39:23.000000Z","updated_at":"2022-06-23T06:25:23.000000Z","all_active_children":[]}]}]}]';
 Future<void> main() async {
-  var file = File('assets/xd.rar');
-  var file2 = File('assets/22.rar');
-  Stream<List<int>> stream = file.openRead();
-  int fileLength =  file.lengthSync();
-  int currentBytesWritten = 0;
 
-  print(fileLength);
-  IOSink  writeSink = file2.openWrite();
-  await for (var bytes in stream){
-    currentBytesWritten += bytes.length;
-    writeSink.add(bytes);
-    print('${100*(currentBytesWritten)/(fileLength)}');
-  }
-  // stream.listen((event) {
-  //
-  //   sink.add(event);
-  //
-  // });
-  // sink.addStream(stream);
-  // stream.listen((event) async {
-  //   // print(event);
-  //      file2.writeAsBytes(event,mode: FileMode.append);
-  //
-  // });
-  // await for(var bytes in stream) {
-  //
-  //   stdout.write(bytes);
-  //   await file2.writeAsBytes(bytes,mode: FileMode.append);
-  // }
+  var decodedJson = jsonDecode(json);
 
-  // var bytess = await _readFileByte(file.path);
-  // var bytsess = await readFileBytes(file.path,file.lengthSync());
-  // file.openRead().listen((event) {
-  //   // bytes.addAll(event);
-  //   print(event);
-  // });
-  //
-  // var bytes = bytess.toList();
-  // var newFile = File('assets/32aasd3.jpg');
-  //
-  // var chunck2 = [];
-  // for(int i = 0 ; i< bytes.length;i++){
-  //    // chunck2= bytes.sublist(chunck2.);
-  //
-  // }
-  //
-  // newFile.writeAsBytes(bytes,mode: FileMode.append);
-  //
+  makeTreeFlat(decodedJson);
 
-//   print(await file.length());
-//  var rawPath =  await readFileBytes(file.path,await file.length());
-// // print(rawPath.toString());
-//   await file.copy('assets/newwwwwwwww.jpg');
-//   // var newFile = File('assets/22.jpg');
-//   //
-//   // await newFile.writeAsBytes(rawPath);
-//   // await newFile.copy('assets/sda.txt');
-//   print('dor : : :A :SAD :ASD: ');
+  var file = File('1.txt');
+  file.writeAsString(array.toString());
+  Map map ={};
 }
 
-Future<Uint8List> readFileBytes(String path, int len) async {
-  final File file = File(path);
-  // final File file1 = File('assets/2.jpg');
-  RandomAccessFile fileOpen = await file.open(mode: FileMode.read);
-  // RandomAccessFile fileWrite = await file1.open(mode: FileMode.write);
+var array = [];
 
-  int count = 0;
-  List<int> bytes = [];
-  int byte = 0;
 
-  while (byte != -1 && count < len) {
-    // byte = await   fileOpen.readIntoSync(buffer);
-     // fileWrite.writeByteSync(byte);
-    bytes.add(byte);
-    count++;
+void makeTreeFlat(dynamic category){
+
+
+  for(var subCatgory in category){
+
+
+    if(subCatgory['all_active_children'] != null)
+    array.add(subCatgory.remove('all_active_children'));
+
+
+      if(subCatgory['all_active_children'] != null)
+      makeTreeFlat(subCatgory['all_active_children']);
   }
 
-  await fileOpen.close();
-  // await fileWrite.close();
 
-  return Uint8List.fromList(bytes);
-}
-
-
-
-Future<Uint8List> _readFileByte(String filePath) async {
-  File audioFile = new File(filePath);
-  late Uint8List bytes;
-  await audioFile.readAsBytes().then((value) {
-    // for (var kza in value) print(kza);
-    bytes = Uint8List.fromList(value);
-    var length = bytes.length;
-    var chunk = length / 5 ;
-    // for(int i = 0 ; i<length ; i+= chunk )
-    print('reading of bytes is completed');
-  }).catchError((onError) {
-    print(
-        'Exception Error while reading audio from path:' + onError.toString());
-  });
-  return bytes;
 }

@@ -28,13 +28,11 @@ class MatrixRecordWidget extends FormElementWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-      builder: (context, state) {
-          log('build');
+    log('  matrix record widget build');
 
-        return Re(children: children,isLast: isLast,index: index,matrixName: matrixName,);
-      },
-    );
+
+    return RecordCard(children: children.map((e) => e.toWidget()).toList(),isLast: isLast,index: index,matrixName: matrixName,);
+
   }
 
   @override
@@ -51,17 +49,20 @@ class MatrixRecordWidget extends FormElementWidget {
 }
 
 
-class Re extends StatefulWidget {
-  final List<IFormModel> children;
+class RecordCard extends StatefulWidget {
+  final List<FormElementWidget> children;
+
+
+
 
   int index;
   bool isLast;
   final matrixName;
 
   @override
-  _ReState createState() => _ReState();
+  _RecordCardState createState() => _RecordCardState();
 
-  Re({
+  RecordCard({
     required this.children,
     required this.index,
     required this.isLast,
@@ -69,11 +70,20 @@ class Re extends StatefulWidget {
   });
 }
 
-class _ReState extends State<Re> {
 
 
+class _RecordCardState extends State<RecordCard> {
 
-  List<bool> isExpanded = [false];
+  var bloc ;
+  @override
+  void initState() {
+    print(widget.index);
+    super.initState();
+
+    bloc = context.read<MatrixRecordCubit>();
+  }
+
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
 
@@ -101,10 +111,10 @@ class _ReState extends State<Re> {
                     },
                     child: ExpansionPanelList(
                       expandedHeaderPadding: EdgeInsets.all(0),
-                      animationDuration: Duration(milliseconds: 600),
-                    expansionCallback: (i,isOpen){
+                      animationDuration: Duration(milliseconds:600 ),
+                    expansionCallback: (index,isOpen){
                         setState(() {
-                          isExpanded[0] = !isOpen;
+                         isExpanded = !isOpen;
                         });
                     },
                       children: [
@@ -124,7 +134,7 @@ class _ReState extends State<Re> {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Expanded(child: Text(widget.children[index+1].label)),
-                                      Expanded(child: Text(widget.children[index+1].value ?? '',overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
+                                      Expanded(child: Text(widget.children[index+1].valueToString() ?? '',overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
                                     ],
                                   ),
                                 );
@@ -134,7 +144,9 @@ class _ReState extends State<Re> {
 
                           ],
                         ),
-                            ),isExpanded: isExpanded[0], headerBuilder: (BuildContext context, bool isExpanded) {
+                            ),
+                            isExpanded: isExpanded,
+                            headerBuilder: (BuildContext context, bool isExpanded) {
                           return Padding(
                             padding: const EdgeInsets.only( left: 15.0),
                             child: Row(
@@ -161,7 +173,7 @@ class _ReState extends State<Re> {
               child: IconButton(
                   onPressed: () {
                     context.read<MatrixRecordCubit>().addRecord(widget.matrixName);
-                    // showRecordDialog(context );
+
                   },
                   icon: Icon(Icons.add_circle)),
             )
@@ -169,101 +181,102 @@ class _ReState extends State<Re> {
             Expanded(
               child: IconButton(
                   onPressed: () {
+                    if(isExpanded){
+                      isExpanded = false;
+                    }
                     context.read<MatrixRecordCubit>().removeRecord(widget.index);
                   },
                   icon: Icon(Icons.remove)),
             ),
-          // IconButton(
-          //     onPressed: () {
-          //       setState(() {
-          //         // isExpanded = !isExpanded;
-          //       });
-          //     },
-          //     icon : Icon(    Icons.arrow_drop_up : Icons.arrow_drop_down)) ,
+
 
         ],
       ),
     );
   }
 
-  Widget setupAlertDialoadContainer(List<IFormModel> children) {
+  Widget setupAlertDialoadContainer(List<Widget> children) {
 
-    return BlocBuilder<ValidationBloc, ValidationState>(
-      builder: (context, state) {
-        return Container(
-          height: 300.0, // Change as per your requirement
-          width: 300.0, // Change as per your requirement
-          child: Form(
-            key: state.key,
-            child: Scrollbar(
-              radius: Radius.circular(10),
-              thickness: 1,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: children.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.all(10),
-                    child: children[index].toWidget(),
+      return Container(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: Form(
+        // key: state.key,
+        child: Scrollbar(
+          radius: Radius.circular(10),
+          thickness: 1,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: children.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: EdgeInsets.all(10),
+                child: children[index],
 
-                  );
-                },
-              ),
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   void showRecordDialog(BuildContext context) {
     context.read<MatrixRecordCubit>().set(widget.index);
     showDialog(
+      useRootNavigator: false,
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Add'),
-            content: setupAlertDialoadContainer(widget.children),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
+          return BlocProvider<MatrixRecordCubit>.value(
+            value: bloc,
+            child: AlertDialog(
+              title: Text('Add'),
+              content: setupAlertDialoadContainer(widget.children),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                            onPressed: () {
+
+
+                              setState(() {
+
+                          });
+                              Navigator.pop(context);
+
+                            },
+                            child: Text('submit')),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20))),
                           onPressed: () {
-
+                            // widget.children.forEach((element) {
+                            //   element.value = null;
+                            // });
                             Navigator.pop(context);
-
                           },
-                          child: Text('submit')),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20))),
-                        onPressed: () {
-                          widget.children.forEach((element) {
-                            element.value = null;
-                          });
-                          Navigator.pop(context);
-                        },
-                        child: Text('clear'),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                          child: Text('clear'),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         });
   }

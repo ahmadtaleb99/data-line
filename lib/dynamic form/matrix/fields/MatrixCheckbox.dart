@@ -53,7 +53,8 @@ class MatrixCheckbox implements IFormModel {
     return MatrixCheckbox(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value ?? this.value,
+      value: value,
+
 
     );
 

@@ -18,12 +18,11 @@ class MatrixWidget extends FormElementWidget {
     required this.required,
     required this.name,
     this.value,
-    // required   this.records,
+    required   this.records,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
     required this.maxRecordCount,
-    required this.records,
     required this.fields})
       : super(
       label: label,
@@ -40,56 +39,60 @@ class MatrixWidget extends FormElementWidget {
   final bool required;
   dynamic value;
   bool? visible;
-
+    List <FormElementWidget> records;
   final bool showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
   final int maxRecordCount;
   final List<FormElementWidget> fields;
 
-  List<MatrixRecordWidget> records = [];
 
   @override
   Widget build(BuildContext context) {
-    log(this.value.toString() + ' the value of matrix widget');
 
     return Builder(
-      builder: (context) {
-        context.read<MatrixRecordCubit>().fetchRecords(name);
-        return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-          builder: (context, state) {
-            return FormFieldWidget(
-                visible: visible,
-                required: required,
-                widget: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, bottom: 10),
-                      child: Text(
-                        label,
-                        style: TextStyle(fontSize: 18),
+        builder: (context) {
+          context.read<MatrixRecordCubit>().fetchRecords(name);
+          return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+            buildWhen: (p,c){
+              return p.recordsModel.length == c.recordsModel.length ? false : true ;
+            },
+            builder: (context, state) {
+              log('  matrix widget build');
+
+              return FormFieldWidget(
+                  visible: visible,
+                  required: required,
+                  widget: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, bottom: 10),
+                        child: Text(
+                          label,
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    ...List.generate(
-                        state.recordsModel.length,
-                            (i) =>
-                            MatrixRecordWidget(
-                              children: state.recordsModel[i].fields
-                                 ,
-                                    matrixName: this.name,
-                              isLast: i == state.recordsModel.length - 1,
-                              index: i,
-                            )),
-                  ],
-                ));
-          },
-        );
-      }
+                      SizedBox(
+                        height: 5,
+                      ),
+                      ...List.generate(
+                          state.recordsModel.length,
+                              (i) =>
+                              MatrixRecordWidget(
+
+                                children: state.recordsModel[i].fields
+                                ,
+                                matrixName: this.name,
+                                isLast: i == state.recordsModel.length - 1,
+                                index: i,
+                              )),
+                    ],
+                  ));
+            },
+          );
+        }
     );
   }
 

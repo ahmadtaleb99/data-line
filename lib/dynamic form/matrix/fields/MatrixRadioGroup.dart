@@ -67,14 +67,15 @@ class MatrixRadioGroup implements IFormModel {
   IFormModel copyWith({
     String? name,
     String? label,
-    String? value,
+    dynamic value,
+
     List<RadioItem>? values
   }) {
 
     return MatrixRadioGroup(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value ?? this.value,
+      value: value,
       values: values ?? this.values,
 
     );

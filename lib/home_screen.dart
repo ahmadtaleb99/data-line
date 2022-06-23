@@ -9,14 +9,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:form_builder_test/NewSubmitPage.dart';
 import 'package:form_builder_test/SubmittionsPage.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'data/FormRepository.dart';
 import 'logic/form__bloc.dart';
 import 'logic/validation__bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
+
   Future<void> _refresh(BuildContext context) async {
     context.read<ValidationBloc>().add(FormsRequested());
   }
@@ -30,7 +33,6 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         appBar: AppBar(actions: [
-
         ]),
         body: RefreshIndicator(
           onRefresh: () async {
@@ -46,13 +48,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                   BlocConsumer<ValidationBloc, ValidationState>(
                     listener: (context, state) {
-
-
                       if (state.status == Status.newFormLoaded)
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NewSubmitPage(
+                                builder: (context) =>
+                                    NewSubmitPage(
                                       form: state.form!,
                                     )));
                     },
@@ -85,14 +86,18 @@ class HomeScreen extends StatelessWidget {
                                         context.read<ValidationBloc>().add(
                                             FormRequested(
                                                 formName:
-                                                    state.forms![index].name));
+                                                state.forms![index].name));
 
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    NewSubmitPage(
-                                                      form: state.forms![index],
+                                                    BlocProvider(
+                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+                                                      child: NewSubmitPage(
+                                                        form: state
+                                                            .forms![index],
+                                                      ),
                                                     )));
                                         // print(state.form!.value);
                                       },
@@ -100,7 +105,7 @@ class HomeScreen extends StatelessWidget {
                                         context.read<ValidationBloc>().add(
                                             SubmittionsFormsRequested(
                                                 formName:
-                                                    state.forms![index].name));
+                                                state.forms![index].name));
 
                                         Navigator.push(
                                             context,
@@ -113,11 +118,11 @@ class HomeScreen extends StatelessWidget {
                                     );
                                   },
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10.0,
-                                          mainAxisSpacing: 20.0,
-                                          childAspectRatio: 1),
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10.0,
+                                      mainAxisSpacing: 20.0,
+                                      childAspectRatio: 1),
                                 ),
                               ),
 
@@ -140,15 +145,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class FormCard extends StatelessWidget {
-  const FormCard(
-      {Key? key,
-      required this.viewSubmittedCallBack,
-      required this.formName,
-      required this.submitNewFormCallBack})
+  const FormCard({Key? key,
+    required this.viewSubmittedCallBack,
+    required this.formName,
+    required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
   final void Function()? submitNewFormCallBack;
+
   @override
   Widget build(BuildContext context) {
     return Container(

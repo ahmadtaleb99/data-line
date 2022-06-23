@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/RecordCubit/matrix_record_cubit.dart';
+import 'package:form_builder_test/data/FormRepository.dart';
 import 'package:form_builder_test/submissionDetailsPage.dart';
 import 'package:form_builder_test/UpdateFormPage.dart';
 
@@ -44,15 +46,21 @@ class SubmittionsPage extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UpdateFormPage(
+                                        builder: (context) => BlocProvider(
+  create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+  child: UpdateFormPage(
                                             index: index,
-                                            form: state.subedForms![index])));
+                                            form: state.subedForms![index]),
+)));
                               },
                               onViewCallBack: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SubmittionsDetailsPage(formWidget: state.subedForms![index])));
+                                        builder: (context) => BlocProvider(
+  create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+  child: SubmittionsDetailsPage(formWidget: state.subedForms![index]),
+)));
                               },
                               onDeleteCallBack: () {
 

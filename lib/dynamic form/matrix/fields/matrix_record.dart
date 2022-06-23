@@ -28,7 +28,7 @@ class MatrixRecordModel implements IFormModel{
 
   @override
   FormElementWidget toWidget() {
-    throw UnimplementedError();
+    return MatrixRecordWidget(children: this.fields, index: 2, matrixName: this.name);
 
   }
 
@@ -45,11 +45,11 @@ class MatrixRecordModel implements IFormModel{
 
   @override
   // TODO: implement label
-  String get label => throw UnimplementedError();
+  String get label => 'throw UnimplementedError()';
 
   @override
   // TODO: implement name
-  String get name => throw UnimplementedError();
+  String get name =>' throw UnimplementedError()';
 
 
 }

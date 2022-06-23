@@ -63,11 +63,6 @@ class MyApp extends StatelessWidget {
               ..add(ServiceRegistered())..add(FormsRequested()),
 
           ),
-          BlocProvider(
-            create: (context) =>
-            MatrixRecordCubit(context.read<FormRepository>()),
-
-          ),
 
         ],
         child: MaterialApp(

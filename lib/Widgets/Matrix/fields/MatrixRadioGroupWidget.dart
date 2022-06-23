@@ -6,6 +6,7 @@ import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixRadioGroup.
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import 'package:form_builder_test/logic/validation__bloc.dart';
 import '../../IDrawable.dart';
+import 'RecordCubit/matrix_record_cubit.dart';
 
 class MatrixRadioGroupWidget extends FormElementWidget {
   final String label;
@@ -32,6 +33,8 @@ class MatrixRadioGroupWidget extends FormElementWidget {
               ),
               ...children.map((e) =>
                   RadioListTile<String>(groupValue: value,contentPadding: EdgeInsets.only(right: 15), onChanged: (value) {
+                    context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+
                     this.value = value;
                     context.read<ValidationBloc>().add(Refresher());
                   }, value: e.value, title: Text(e.value),))

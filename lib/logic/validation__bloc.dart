@@ -549,7 +549,6 @@ var mimi = lookupMimeType(cachedFile.path);
 
       var matrixModel = formModelField as Matrix;
         matrixModel.records = List<MatrixRecordModel>.from(widgetField.records.map((dynamic e) => e.toModel()));
-     // x
     }
       formModelField.value = widgetField.value;
     }
@@ -618,9 +617,9 @@ var mimi = lookupMimeType(cachedFile.path);
     MatrixWidget matrix = state.form!.fields.firstWhere((element) =>
     element.name == event.matrixName) as MatrixWidget;
 
-    for(var record in matrix.records){
-      // record.isLast = false;
-    }
+    // for(var record in matrix.records){
+    //   // record.isLast = false;
+    // }
   Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
 
     // matrix.records.add(MatrixRecordWidget(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),index: matrix.records.length,));
@@ -638,8 +637,8 @@ var mimi = lookupMimeType(cachedFile.path);
     element.name == event.matrixName) as MatrixWidget;
 
 
-    matrix.records.remove(event.matrixRecord);
-    emit(state.copyWith());
+    // matrix.records.remove(event.matrixRecord);
+    // emit(state.copyWith());
   }
 
 
