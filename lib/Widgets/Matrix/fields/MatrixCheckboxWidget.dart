@@ -14,7 +14,7 @@ class MatrixCheckboxWidget extends FormElementWidget {
   Widget build(BuildContext context) {
     return CheckboxListTile(value: value ?? false,title: Text(label),contentPadding: EdgeInsets.only(right:19), onChanged: (value){
 
-      context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+      context.read<MatrixRecordCubit>().fieldValueChanged(value, name);
 
 
       this.value = value;

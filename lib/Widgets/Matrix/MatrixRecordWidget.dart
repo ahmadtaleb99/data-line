@@ -15,13 +15,13 @@ import '../IDrawable.dart';
 
 class MatrixRecordWidget extends FormElementWidget {
 
-   MatrixRecordWidget({Key? key, this.isLast = true,
+   MatrixRecordWidget({Key? key, this.isFirst = true,
     required this.children,
      required this.index,
      required this.matrixName,
   })
       : super(key: key, name: 'sad', label: '');
-  final bool isLast;
+  final bool isFirst;
   final List<IFormModel> children;
    final String   matrixName;
    final int   index;
@@ -31,7 +31,7 @@ class MatrixRecordWidget extends FormElementWidget {
     log('  matrix record widget build');
 
 
-    return RecordCard(children: children.map((e) => e.toWidget()).toList(),isLast: isLast,index: index,matrixName: matrixName,);
+    return RecordCard(children: children.map((e) => e.toWidget()).toList(),isFirst: isFirst,index: index,matrixName: matrixName,);
 
   }
 
@@ -56,7 +56,7 @@ class RecordCard extends StatefulWidget {
 
 
   int index;
-  bool isLast;
+  bool isFirst;
   final matrixName;
 
   @override
@@ -65,7 +65,7 @@ class RecordCard extends StatefulWidget {
   RecordCard({
     required this.children,
     required this.index,
-    required this.isLast,
+    required this.isFirst,
     required this.matrixName,
   });
 }
@@ -88,7 +88,15 @@ class _RecordCardState extends State<RecordCard> {
   Widget build(BuildContext context) {
 
 
-    return  Container(
+    return  BlocListener<MatrixRecordCubit, MatrixRecordState>(
+  listener: (context, state) {
+    // print(this.widget.index);
+    // print(state.recordsModel.indexOf(state.recordsModel.last));
+    // print(state.recordAdded.toString()+' added  ?');
+    // if(state.recordAdded )
+    //   showNewRecordDialog(context);
+  },
+  child: Container(
 
 
       child: Row(
@@ -167,18 +175,8 @@ class _RecordCardState extends State<RecordCard> {
                   ),
                 ),
               )),
-          if (widget.isLast)
-            Expanded(
 
-              child: IconButton(
-                  onPressed: () {
-                    context.read<MatrixRecordCubit>().addRecord(widget.matrixName);
-
-                  },
-                  icon: Icon(Icons.add_circle)),
-            )
-          else
-            Expanded(
+            if(!widget.isFirst) Expanded(
               child: IconButton(
                   onPressed: () {
                     if(isExpanded){
@@ -192,93 +190,96 @@ class _RecordCardState extends State<RecordCard> {
 
         ],
       ),
-    );
+    ),
+);
   }
 
-  Widget setupAlertDialoadContainer(List<Widget> children) {
 
-      return Container(
-      height: 300.0, // Change as per your requirement
-      width: 300.0, // Change as per your requirement
-      child: Form(
-        // key: state.key,
-        child: Scrollbar(
-          radius: Radius.circular(10),
-          thickness: 1,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: children.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: EdgeInsets.all(10),
-                child: children[index],
 
-              );
-            },
-          ),
+Widget setupAlertDialoadContainer(List<Widget> children) {
+
+  return Container(
+    height: 300.0, // Change as per your requirement
+    width: 300.0, // Change as per your requirement
+    child: Form(
+      // key: state.key,
+      child: Scrollbar(
+        radius: Radius.circular(10),
+        thickness: 1,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: children.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.all(10),
+              child: children[index],
+
+            );
+          },
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  void showRecordDialog(BuildContext context) {
-    context.read<MatrixRecordCubit>().set(widget.index);
-    showDialog(
+void showRecordDialog(BuildContext context) {
+  context.read<MatrixRecordCubit>().set(widget.index);
+  showDialog(
       useRootNavigator: false,
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return BlocProvider<MatrixRecordCubit>.value(
-            value: bloc,
-            child: AlertDialog(
-              title: Text('Add'),
-              content: setupAlertDialoadContainer(widget.children),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {
-
-
-                              setState(() {
-
-                          });
-                              Navigator.pop(context);
-
-                            },
-                            child: Text('submit')),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return BlocProvider<MatrixRecordCubit>.value(
+          value: bloc,
+          child: AlertDialog(
+            title: Text('Add'),
+            content: setupAlertDialoadContainer(widget.children),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20))),
                           onPressed: () {
-                            // widget.children.forEach((element) {
-                            //   element.value = null;
+
+
+                            // setState(() {
+                            //
                             // });
                             Navigator.pop(context);
+
                           },
-                          child: Text('clear'),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        });
-  }
+                          child: Text('Submit')),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
+                        onPressed: () {
+                          // widget.children.forEach((element) {
+                          //   element.value = null;
+                          // });
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      });
+}
 }
 

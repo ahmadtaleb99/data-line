@@ -33,7 +33,7 @@ class MatrixRadioGroupWidget extends FormElementWidget {
               ),
               ...children.map((e) =>
                   RadioListTile<String>(groupValue: value,contentPadding: EdgeInsets.only(right: 15), onChanged: (value) {
-                    context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+                    context.read<MatrixRecordCubit>().fieldValueChanged(value, name);
 
                     this.value = value;
                     context.read<ValidationBloc>().add(Refresher());

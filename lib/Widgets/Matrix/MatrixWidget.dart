@@ -18,7 +18,7 @@ class MatrixWidget extends FormElementWidget {
     required this.required,
     required this.name,
     this.value,
-    required   this.records,
+    required this.records,
     required this.showIfValueSelected,
     required this.showIfFieldValue,
     required this.showIfIsRequired,
@@ -39,23 +39,28 @@ class MatrixWidget extends FormElementWidget {
   final bool required;
   dynamic value;
   bool? visible;
-    List <FormElementWidget> records;
+  List <FormElementWidget> records;
   final bool showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
   final int maxRecordCount;
   final List<FormElementWidget> fields;
+  var bloc;
 
 
   @override
   Widget build(BuildContext context) {
+    bloc = context.read<MatrixRecordCubit>();
 
     return Builder(
         builder: (context) {
           context.read<MatrixRecordCubit>().fetchRecords(name);
           return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-            buildWhen: (p,c){
-              return p.recordsModel.length == c.recordsModel.length ? false : true ;
+
+            buildWhen: (p, c) {
+              return p.recordsModel.length == c.recordsModel.length
+                  ? false
+                  : true;
             },
             builder: (context, state) {
               log('  matrix widget build');
@@ -65,7 +70,7 @@ class MatrixWidget extends FormElementWidget {
                   required: required,
                   widget: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 16, bottom: 10),
@@ -85,9 +90,19 @@ class MatrixWidget extends FormElementWidget {
                                 children: state.recordsModel[i].fields
                                 ,
                                 matrixName: this.name,
-                                isLast: i == state.recordsModel.length - 1,
+                                isFirst: state.recordsModel.length == 1,
                                 index: i,
                               )),
+                      IconButton(
+
+
+                          onPressed: () {
+                            // showRecordDialog(context);
+                            context.read<MatrixRecordCubit>().showNewRecordDialog(context,name);
+                            // context.read<MatrixRecordCubit>().addRecord(name);
+
+                          },
+                          icon: Icon(Icons.add_circle, size: 33,))
                     ],
                   ));
             },
@@ -101,4 +116,95 @@ class MatrixWidget extends FormElementWidget {
   String valueToString() {
     return this.value.toString();
   }
+
+  //
+  // Widget setupAlertDialoadContainer(List<Widget> children) {
+  //   return Container(
+  //     height: 300.0, // Change as per your requirement
+  //     width: 300.0, // Change as per your requirement
+  //     child: Form(
+  //       // key: state.key,
+  //       child: Scrollbar(
+  //         radius: Radius.circular(10),
+  //         thickness: 1,
+  //         child: ListView.builder(
+  //           shrinkWrap: true,
+  //           itemCount: children.length,
+  //           itemBuilder: (BuildContext context, int index) {
+  //             return Padding(
+  //               padding: EdgeInsets.all(10),
+  //               child: children[index],
+  //
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+  //
+  // void showRecordDialog(BuildContext context) {
+  //   // context.read<MatrixRecordCubit>().set(widget.index);
+  //
+  //   showDialog(
+  //       useRootNavigator: false,
+  //       barrierDismissible: false,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return BlocProvider<MatrixRecordCubit>.value(
+  //           value: bloc,
+  //           child: BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+  //             builder: (context, state) {
+  //
+  //               return AlertDialog(
+  //                 title: Text('Add'),
+  //                 content: setupAlertDialoadContainer(fields),
+  //                 actions: [
+  //                   Padding(
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                       children: [
+  //                         Expanded(
+  //                           child: ElevatedButton(
+  //                               style: ElevatedButton.styleFrom(
+  //                                   shape: RoundedRectangleBorder(
+  //                                       borderRadius: BorderRadius.circular(
+  //                                           20))),
+  //                               onPressed: () {
+  //                                 context.read<MatrixRecordCubit>().addRecord(name);
+  //                                 // setState(() {
+  //                                 //
+  //                                 // });
+  //                                 Navigator.pop(context);
+  //                               },
+  //                               child: Text('Submit')),
+  //                         ),
+  //                         SizedBox(
+  //                           width: 10,
+  //                         ),
+  //                         Expanded(
+  //                           child: ElevatedButton(
+  //                             style: ElevatedButton.styleFrom(
+  //                                 shape: RoundedRectangleBorder(
+  //                                     borderRadius: BorderRadius.circular(20))),
+  //                             onPressed: () {
+  //                               // widget.children.forEach((element) {
+  //                               //   element.value = null;
+  //                               // });
+  //                               Navigator.pop(context);
+  //                             },
+  //                             child: Text('Cancel'),
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   )
+  //                 ],
+  //               );
+  //             },
+  //           ),
+  //         );
+  //       });
+  // }
 }

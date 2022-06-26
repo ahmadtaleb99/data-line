@@ -75,6 +75,8 @@ class NewSubmitPage extends StatelessWidget {
   return Padding(
   padding:
   const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+
+
   child: Column(
   children: [state.form!],
 

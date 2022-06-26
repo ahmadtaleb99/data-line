@@ -24,17 +24,15 @@ class MatrixDatePickerWidget extends FormElementWidget {
           // initialValue: value != null
           //       ? DateFormat('d - MMMM - y').format(value)
           //       : '',
-          initialValue:
-          DateFormat('d - MMMM - y').format(
-              state ?? DateTime(1999)),
+          initialValue: state != null ?
+          DateFormat('d - MMMM - y').format(state) : '',
           readOnly: true,
           onTap: () async {
             value = await
             context.read<MatrixRecordCubit>().dateChanged(context, name);
           },
           decoration: InputDecoration(
-              fillColor: Colors.deepOrange,
-              filled: state == null,
+
               hintText: label
           ),
         );

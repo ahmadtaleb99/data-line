@@ -54,7 +54,7 @@ class MatrixDropDownWidget extends FormElementWidget {
                       ))
                       .toList(),
                   onChanged: (value) {
-                    context.read<MatrixRecordCubit>().textFieldValueChanged(value, name);
+                    context.read<MatrixRecordCubit>().fieldValueChanged(value, name);
 
                     context.read<ValidationBloc>().add(Refresher());
                     this.value = value;

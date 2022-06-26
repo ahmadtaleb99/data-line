@@ -17,7 +17,7 @@ class MatrixNumberWidget extends FormElementWidget with FormValidation {
     return TextFormField(
       initialValue:  value,
       onChanged: (value) {
-        context.read<MatrixRecordCubit>().textFieldValueChanged(value,name);
+        context.read<MatrixRecordCubit>().fieldValueChanged(value,name);
         this.value = value;
       },
       autovalidateMode: AutovalidateMode.onUserInteraction  ,

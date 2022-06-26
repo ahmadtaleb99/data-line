@@ -12,11 +12,13 @@ class  MatrixRecordState extends Equatable{
  List<MatrixRecordWidget>   pressedItems = [];
  int recordNumber = 0 ;
  DateTime? dateTime  ;
+ bool recordAdded;
 
   MatrixRecordState({
     required this.records,
     required this.recordsModel,
      this.dateTime,
+     this.recordAdded = false,
     required    this.pressedItems,
   });
 
@@ -24,15 +26,16 @@ class  MatrixRecordState extends Equatable{
     List<MatrixRecordWidget>? records,
     List<MatrixRecordModel>? recordsModel,
     List<MatrixRecordWidget>? pressedItems,
-    List<bool>? isExpanded,
-    DateTime? dateTime
-
+    int? recordNumber,
+    DateTime? dateTime,
+    bool? recordAdded,
   }) {
     return MatrixRecordState(
       records: records ?? this.records,
       recordsModel: recordsModel ?? this.recordsModel,
       pressedItems: pressedItems ?? this.pressedItems,
       dateTime: dateTime ?? this.dateTime,
+      recordAdded: recordAdded ?? this.recordAdded,
     );
   }
 }
