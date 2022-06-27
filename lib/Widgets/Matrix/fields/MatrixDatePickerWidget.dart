@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/MatrixDatePicker.dart';
@@ -15,30 +17,29 @@ class MatrixDatePickerWidget extends FormElementWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MatrixRecordCubit, MatrixRecordState, DateTime?>(
-      selector: (state) => state.dateTime ,
-
+    return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+      buildWhen: (p,c) => true,
       builder: (context, state) {
-        return TextFormField(
-          key: Key(state.toString()),
-          // initialValue: value != null
-          //       ? DateFormat('d - MMMM - y').format(value)
-          //       : '',
-          initialValue: state != null ?
-          DateFormat('d - MMMM - y').format(state) : '',
-          readOnly: true,
-          onTap: () async {
-            value = await
-            context.read<MatrixRecordCubit>().dateChanged(context, name);
-          },
-          decoration: InputDecoration(
+        var date=  state.currentRecord!.fields.firstWhere((element) => element.name == this.name).value;
+          return TextFormField(
+            key: Key(date.toString()),
+            // initialValue: value != null
+            //       ? DateFormat('d - MMMM - y').format(value)
+            //       : '',
+            initialValue: date != null ?
+            DateFormat('d - MMMM - y').format(date) : '',
+            readOnly: true,
+            onTap: () async {
+              value = await
+              context.read<MatrixRecordCubit>().dateChanged(context, name);
+            },
+            decoration: InputDecoration(
 
-              hintText: label
-          ),
-        );
+                hintText: label
+            ),
+          );
       },
     );
-
   }
 
   MatrixDatePickerWidget({

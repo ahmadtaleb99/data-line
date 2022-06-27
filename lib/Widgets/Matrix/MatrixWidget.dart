@@ -12,34 +12,35 @@ import '../IDrawable.dart';
 import 'MatrixRecordWidget.dart';
 
 class MatrixWidget extends FormElementWidget {
-  MatrixWidget({Key? key,
-    required this.label,
-    required this.visible,
-    required this.required,
-    required this.name,
-    this.value,
-    required this.records,
-    required this.showIfValueSelected,
-    required this.showIfFieldValue,
-    required this.showIfIsRequired,
-    required this.maxRecordCount,
-    required this.fields})
+  MatrixWidget(
+      {Key? key,
+      required this.label,
+      required this.visible,
+      required this.required,
+      required this.name,
+      this.value,
+      required this.records,
+      required this.showIfValueSelected,
+      required this.showIfFieldValue,
+      required this.showIfIsRequired,
+      required this.maxRecordCount,
+      required this.fields})
       : super(
-      label: label,
-      key: key,
-      name: name,
-      visible: visible,
-      required: required,
-      showIfValueSelected: showIfValueSelected,
-      showIfFieldValue: showIfFieldValue,
-      showIfIsRequired: showIfIsRequired);
+            label: label,
+            key: key,
+            name: name,
+            visible: visible,
+            required: required,
+            showIfValueSelected: showIfValueSelected,
+            showIfFieldValue: showIfFieldValue,
+            showIfIsRequired: showIfIsRequired);
 
   final String label;
   final String name;
   final bool required;
   dynamic value;
   bool? visible;
-  List <FormElementWidget> records;
+  List<FormElementWidget> records;
   final bool showIfValueSelected;
   final String? showIfFieldValue;
   final bool? showIfIsRequired;
@@ -47,70 +48,72 @@ class MatrixWidget extends FormElementWidget {
   final List<FormElementWidget> fields;
   var bloc;
 
-
   @override
   Widget build(BuildContext context) {
     bloc = context.read<MatrixRecordCubit>();
 
-    return Builder(
-        builder: (context) {
-          context.read<MatrixRecordCubit>().fetchRecords(name);
-          return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+    return Builder(builder: (context) {
+      context.read<MatrixRecordCubit>().fetchRecords(name);
+      return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+        // buildWhen: (p, c) {
+        //   return p.recordsModel.length == c.recordsModel.length
+        //       ? false
+        //       : true;
+        // },
+        builder: (context, state) {
 
-            buildWhen: (p, c) {
-              return p.recordsModel.length == c.recordsModel.length
-                  ? false
-                  : true;
-            },
-            builder: (context, state) {
-              log('  matrix widget build');
-
-              return FormFieldWidget(
-                  visible: visible,
-                  required: required,
-                  widget: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 10),
-                        child: Text(
-                          label,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      ...List.generate(
-                          state.recordsModel.length,
-                              (i) =>
-                              MatrixRecordWidget(
-
-                                children: state.recordsModel[i].fields
-                                ,
-                                matrixName: this.name,
-                                isFirst: state.recordsModel.length == 1,
-                                index: i,
-                              )),
-                      IconButton(
+          var matrix =state.matrixList
+              .firstWhere(
+                  (element) => element.name == this.name);
 
 
-                          onPressed: () {
-                            // showRecordDialog(context);
-                            context.read<MatrixRecordCubit>().showNewRecordDialog(context,name);
-                            // context.read<MatrixRecordCubit>().addRecord(name);
+          log('  matrix widget build');
 
-                          },
-                          icon: Icon(Icons.add_circle, size: 33,))
-                    ],
-                  ));
-            },
-          );
-        }
-    );
+          return FormFieldWidget(
+              visible: visible,
+              required: required,
+              widget: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, bottom: 10),
+                    child: Text(
+                      label,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ...List.generate(
+                      matrix.records.length,
+                      (i) => MatrixRecordWidget(
+                            children:
+                                matrix.records[i]
+                                .fields,
+                            matrixName: this.name,
+                            isFirst: state.recordsModel.length == 1,
+                            index: i,
+                          )),
+                  IconButton(
+                      onPressed: () {
+                        // showRecordDialog(context);
+                        context
+                            .read<MatrixRecordCubit>()
+                            .showNewRecordDialog(context, name);
+                        // context.read<MatrixRecordCubit>().addRecord(name);
+                      },
+                      icon: Icon(
+                        Icons.add_circle,
+                        size: 33,
+                      ))
+                ],
+              ));
+        },
+      );
+    });
   }
-
 
   @override
   String valueToString() {

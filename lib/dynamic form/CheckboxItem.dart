@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/DrawCheckboxGroupItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -6,7 +7,7 @@ import 'package:hive/hive.dart';
 part 'CheckboxItem.g.dart';
 
 @HiveType(typeId: 40)
-class CheckboxItem implements IFormModel{
+class CheckboxItem extends Equatable implements IFormModel{
 
   @HiveField(1)
   String label;
@@ -57,4 +58,8 @@ class CheckboxItem implements IFormModel{
   @override
   // TODO: implement name
   String get name => throw UnimplementedError();
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [groupName,label,value];
 }

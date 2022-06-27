@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/Widgets/Matrix/MatrixRecordWidget.dart';
 import 'package:form_builder_test/data/FormRepository.dart';
+import 'package:form_builder_test/dynamic%20form/FormModel.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
 import 'package:form_builder_test/dynamic%20form/matrix/fields/matrix_record.dart';
 
@@ -19,35 +20,37 @@ import '../../../../dynamic form/matrix/matrix.dart';
 part 'matrix_record_state.dart';
 
 class MatrixRecordCubit extends Cubit<MatrixRecordState> {
+
+  late FormModel _currentForm;
   MatrixRecordCubit(this._formRepository)
       : super(MatrixRecordState(
-            records: [], pressedItems: [], recordsModel: []));
+    matrixList: [],
+             recordsModel: []));
 
   FormRepository _formRepository;
 
-  void toggleExpanded(MatrixRecordWidget matrixRecordWidget, int index) {
-    List<MatrixRecordWidget> list = List.from(state.pressedItems);
 
-    list.contains(matrixRecordWidget)
-        ? list.remove(matrixRecordWidget)
-        : list.add(matrixRecordWidget);
 
-    emit(state.copyWith(pressedItems: list));
+
+  void loadMatrices(){
+    List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
+    emit(state.copyWith(matrixList: matrixList));
   }
 
-
-
+  void setCurrentForm(String formModel){
+    _currentForm= _formRepository.availableForms.firstWhere((element) => element.name == formModel);
+  }
   void fetchRecords(String name) {
-    var matrix = (_formRepository.availableForms[1].fields
-        .firstWhere((dynamic element) => element.name == name) as Matrix);
 
-    var records = matrix.records;
-    emit(state.copyWith(recordsModel: records));
+    List<Matrix> matrixList = List<Matrix>.from(state.matrixList);
+    for(var matrix in matrixList){
+      if (matrix.records.isEmpty) matrix.records.add(MatrixRecordModel(fields: matrix.values));
 
 
-    if (records.isEmpty) records.add(MatrixRecordModel(fields: matrix.values));
+    }
 
-    emit(state.copyWith());
+
+    emit(state.copyWith(matrixList: [...matrixList]));
   }
 
   void addRecord(String matrixName,MatrixRecordModel record) {
@@ -63,11 +66,7 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     emit(state.copyWith(recordsModel: list));
     emit(state.copyWith(recordAdded: true));
   }
-  void submit(){
 
-    List<MatrixRecordModel> list = List.from(state.recordsModel);
-    emit(state.copyWith(recordsModel: list));
-  }
 
   void removeRecord(int index) {
     List<MatrixRecordModel> list = List.from(state.recordsModel);
@@ -76,30 +75,60 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     emit(state.copyWith(recordsModel: list));
   }
 
-  void  fieldValueChanged(dynamic value,String fieldName,int recordNumber) {
-    var tf = state.recordsModel[state.recordNumber].fields.firstWhere((dynamic element) => element.name == fieldName).value = value;
+  void  fieldValueChanged(dynamic value,String fieldName) {
+    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+
+    record.fields.firstWhere((dynamic element) => element.name == fieldName).value = value;
+
+    emit(state.copyWith(currentRecord: record));
+
   }
+void submited (MatrixRecordModel record,String matrixName,int index){
+      Matrix matrix = _currentForm.fields.firstWhere((element) => element.name ==matrixName) as Matrix;
+    matrix.records[index]= state.currentRecord!;
+          var list = List<Matrix>.from(state.matrixList);
+          list[0] = matrix.copyWith();
+          log((list == state.matrixList).toString()+ '  same list ? ? ');
+
+      log((state == state.copyWith( matrixList: list )).toString()+ '  same state ? ? ');
+
+
+         emit(state.copyWith( matrixList: list));
+}
+
+
 
  Future<DateTime?>  dateChanged(BuildContext context,fieldName) async {
+
+   MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+
 
     final date = await  showDatePicker(firstDate: DateTime(1940)
         , initialDate: DateTime(1999),
         lastDate: DateTime.now(), context: context);
-    emit(state.copyWith( dateTime : date));
 
-    state.recordsModel[state.recordNumber].fields.firstWhere((dynamic element) => element.name == fieldName).value = date;
 
-    emit(state.copyWith( dateTime : date));
+  record.fields.firstWhere((dynamic element) => element.name == fieldName).value=date;
 
+
+    emit(state.copyWith(currentRecord: record));
     return  date;
-
-
 
  }
 
 
-  void set(int record){
-    state.recordNumber = record;
+  void setCurrentRecord(int recordNumber,String matrixName){
+
+    var newState = state.copyWith();
+    var matrix = newState.matrixList.firstWhere((element) => element.name ==matrixName);
+
+   MatrixRecordModel record = matrix.records[recordNumber] as MatrixRecordModel;
+
+   state.currentRecord = record;
+    emit(state.copyWith(currentRecord: record));
+
+
+
   }
 
 
@@ -136,7 +165,7 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
 var record = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
 
-    context.read<MatrixRecordCubit>().set(state.recordNumber+1);
+    // context.read<MatrixRecordCubit>().set(state.recordNumber);
     showDialog(
         useRootNavigator: false,
         barrierDismissible: false,

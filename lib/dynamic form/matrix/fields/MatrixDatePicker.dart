@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/fields/MatrixDatePickerWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -10,7 +11,7 @@ part 'MatrixDatePicker.g.dart';
 
 
 @HiveType(typeId: 64)
-class MatrixDatePicker implements IFormModel {
+class MatrixDatePicker extends Equatable implements IFormModel {
 
   @HiveField(1)
   String name;
@@ -55,11 +56,16 @@ class MatrixDatePicker implements IFormModel {
     return MatrixDatePicker(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value,
+      value: value  ?? this.value,
+
 
 
     );
 
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,label,value];
 
 }

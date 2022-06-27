@@ -39,8 +39,10 @@ class MatrixDropDownWidget extends FormElementWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder<ValidationBloc, ValidationState>(
+            child: BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
               builder: (context, state) {
+                var selectedValue=  state.currentRecord!.fields.firstWhere((element) => element.name == this.name).value;
+
                 return DropdownButton<String>(
                   isDense: true,
 
@@ -55,11 +57,9 @@ class MatrixDropDownWidget extends FormElementWidget {
                       .toList(),
                   onChanged: (value) {
                     context.read<MatrixRecordCubit>().fieldValueChanged(value, name);
-
-                    context.read<ValidationBloc>().add(Refresher());
                     this.value = value;
                   },
-                  value: value,
+                  value: selectedValue ?? value,
                   underline: Container(),
                   icon: Padding(
                     padding: const EdgeInsets.only(left: 99),

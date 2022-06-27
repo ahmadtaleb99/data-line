@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/DrawRadioItem.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -7,7 +8,7 @@ part 'RadioItem.g.dart';
 
 
 @HiveType(typeId: 56)
-class RadioItem implements IFormModel  {
+class RadioItem extends Equatable implements IFormModel  {
 
   @HiveField(1)
    String label;
@@ -72,5 +73,9 @@ class RadioItem implements IFormModel  {
   @override
   // TODO: implement name
   String get name => throw UnimplementedError();
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [parent,label,value];
 
 }

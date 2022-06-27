@@ -93,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     BlocProvider(
-                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentForm(state.forms![index].name)..loadMatrices(),
                                                       child: NewSubmitPage(
                                                         form: state
                                                             .forms![index],

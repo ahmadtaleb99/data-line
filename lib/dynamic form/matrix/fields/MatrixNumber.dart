@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/fields/MatrixNumberWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -10,7 +11,7 @@ part 'MatrixNumber.g.dart';
 
 
 @HiveType(typeId: 72)
-class MatrixNumber implements IFormModel {
+class MatrixNumber extends Equatable implements IFormModel {
 
   @HiveField(1)
   String name;
@@ -56,11 +57,14 @@ class MatrixNumber implements IFormModel {
     return MatrixNumber(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value ,
+      value: value  ?? this.value,
+
 
     );
 
   }
-
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,label,value];
 
 }

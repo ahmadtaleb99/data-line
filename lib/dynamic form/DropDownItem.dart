@@ -8,7 +8,7 @@ import 'package:hive/hive.dart';
 part 'DropDownItem.g.dart';
 @HiveType(typeId: 41)
 
-class DropDownItem  extends  IFormModel {
+class DropDownItem  extends  IFormModel with EquatableMixin{
 
   @HiveField(1)
   final String? parent;
@@ -64,4 +64,8 @@ class DropDownItem  extends  IFormModel {
   String valueToString() {
     return this.value.toString();
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [parent,value,status];
 }

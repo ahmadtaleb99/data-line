@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -9,7 +10,7 @@ part 'MatrixCheckboxGroup.g.dart';
 
 
 @HiveType(typeId: 65)
-class MatrixCheckboxGroup implements IFormModel {
+class MatrixCheckboxGroup  extends Equatable implements IFormModel {
 
   @HiveField(1)
   String name;
@@ -68,13 +69,16 @@ class MatrixCheckboxGroup implements IFormModel {
     return MatrixCheckboxGroup(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value,
+      value: value  ?? this.value,
+
 
       values: values ?? this.values,
 
     );
 
   }
-
+@override
+// TODO: implement props
+List<Object?> get props => [name,label,value,values];
 
 }

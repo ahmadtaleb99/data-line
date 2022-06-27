@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/fields/MatrixDropDownWidget.dart';
@@ -17,7 +18,7 @@ part 'MatrixDropDown.g.dart';
 
 @HiveType(typeId: 63)
 
-class MatrixDropDown implements IFormModel {
+class MatrixDropDown  extends Equatable implements IFormModel {
 
   @HiveField(1)
   String name;
@@ -78,7 +79,8 @@ class MatrixDropDown implements IFormModel {
     return MatrixDropDown(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value,
+      value: value  ?? this.value,
+
 
       values: values ?? this.values,
 
@@ -86,4 +88,8 @@ class MatrixDropDown implements IFormModel {
 
   }
 
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,label,values,value];
 }

@@ -5,21 +5,15 @@ part of 'matrix_record_cubit.dart';
 class  MatrixRecordState extends Equatable{
   @override
   // TODO: implement props
-  List<Object?> get props => [records,pressedItems,recordsModel,dateTime];
+  List<Object?> get props => [recordsModel,currentRecord,matrixList];
 
- List<MatrixRecordWidget> records;
  List<MatrixRecordModel> recordsModel;
- List<MatrixRecordWidget>   pressedItems = [];
- int recordNumber = 0 ;
- DateTime? dateTime  ;
- bool recordAdded;
-
+ List<Matrix> matrixList;
+ MatrixRecordModel ?  currentRecord ;
   MatrixRecordState({
-    required this.records,
     required this.recordsModel,
-     this.dateTime,
-     this.recordAdded = false,
-    required    this.pressedItems,
+      required this.matrixList,
+    this.currentRecord,
   });
 
   MatrixRecordState copyWith({
@@ -27,15 +21,15 @@ class  MatrixRecordState extends Equatable{
     List<MatrixRecordModel>? recordsModel,
     List<MatrixRecordWidget>? pressedItems,
     int? recordNumber,
-    DateTime? dateTime,
     bool? recordAdded,
+    List<Matrix>? matrixList,
+    MatrixRecordModel? currentRecord,
   }) {
+
     return MatrixRecordState(
-      records: records ?? this.records,
       recordsModel: recordsModel ?? this.recordsModel,
-      pressedItems: pressedItems ?? this.pressedItems,
-      dateTime: dateTime ?? this.dateTime,
-      recordAdded: recordAdded ?? this.recordAdded,
+      matrixList: matrixList ?? this.matrixList,
+      currentRecord: currentRecord ?? this.currentRecord,
     );
   }
 }

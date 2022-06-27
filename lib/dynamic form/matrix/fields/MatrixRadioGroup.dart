@@ -1,4 +1,5 @@
-  import 'package:form_builder_test/Widgets/IDrawable.dart';
+  import 'package:equatable/equatable.dart';
+import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/fields/MatrixRadioGroupWidget.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -13,7 +14,7 @@ part 'MatrixRadioGroup.g.dart';
 
 
 @HiveType(typeId: 71)
-class MatrixRadioGroup implements IFormModel {
+class MatrixRadioGroup extends Equatable implements IFormModel {
 
 
   @HiveField(1)
@@ -75,12 +76,15 @@ class MatrixRadioGroup implements IFormModel {
     return MatrixRadioGroup(
       name: name ?? this.name,
       label: label ?? this.label,
-      value: value,
+      value: value  ?? this.value,
+
       values: values ?? this.values,
 
     );
 
   }
 
-
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,label,value,values];
 }

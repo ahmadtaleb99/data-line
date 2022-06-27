@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/Widgets/DrawTextField.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
@@ -26,7 +27,7 @@ part 'matrix.g.dart';
 
 
 @HiveType(typeId: 54)
-class Matrix implements IFormModel {
+class Matrix extends Equatable  implements IFormModel {
 
   static IFormModel? _getFieldFromType(String type, dynamic json) {
     switch (type) {
@@ -76,7 +77,6 @@ class Matrix implements IFormModel {
 
   @HiveField(4)
   bool isHidden;
-
   @HiveField(5)
   bool required;
 
@@ -95,6 +95,7 @@ class Matrix implements IFormModel {
   @HiveField(10)
   bool? showIfIsRequired;
 
+
   @HiveField(11)
   dynamic value;
 
@@ -103,6 +104,7 @@ class Matrix implements IFormModel {
 
   @HiveField(13)
   int maxRecordsCount;
+
 
 
   @HiveField(14)
@@ -145,36 +147,7 @@ class Matrix implements IFormModel {
     );
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is Matrix &&
-              runtimeType == other.runtimeType &&
-              label == other.label &&
-              name == other.name &&
-              deactivate == other.deactivate &&
-              isHidden == other.isHidden &&
-              required == other.required &&
-              isReadOnly == other.isReadOnly &&
-              visible == other.visible &&
-              showIfValueSelected == other.showIfValueSelected &&
-              showIfFieldValue == other.showIfFieldValue &&
-              showIfIsRequired == other.showIfIsRequired &&
-              value == other.value;
 
-  @override
-  int get hashCode =>
-      label.hashCode ^
-      name.hashCode ^
-      deactivate.hashCode ^
-      isHidden.hashCode ^
-      required.hashCode ^
-      isReadOnly.hashCode ^
-      visible.hashCode ^
-      showIfValueSelected.hashCode ^
-      showIfFieldValue.hashCode ^
-      showIfIsRequired.hashCode ^
-      value.hashCode;
 
   @override
   FormElementWidget toWidget() {
@@ -184,7 +157,7 @@ class Matrix implements IFormModel {
         name: name,
 
         value: value,
-        records: this.records.map((e) => e.toWidget()).toList().cast() ?? [],
+        records: this.records.map((e) => e.toWidget()).toList().cast(),
         showIfValueSelected: showIfValueSelected,
         showIfFieldValue: showIfFieldValue,
         showIfIsRequired: showIfIsRequired,
@@ -213,7 +186,7 @@ class Matrix implements IFormModel {
     dynamic? value,
   }) {
     return Matrix(
-      records: []   ,
+      records: records.map((e) => e.copyWith()).toList()   ,
       label: label ?? this.label,
       name: name ?? this.name,
       deactivate: deactivate ?? this.deactivate,
@@ -235,4 +208,11 @@ class Matrix implements IFormModel {
   String valueToString() {
     return this.value.toString();
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>  [label,name,deactivate,isHidden,required,
+    isReadOnly,visible,showIfValueSelected,showIfFieldValue,showIfIsRequired,value,values,maxRecordsCount,records];
+
+
 }

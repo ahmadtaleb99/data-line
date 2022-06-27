@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/MatrixWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -8,28 +9,21 @@ import '../../../Widgets/Matrix/MatrixRecordWidget.dart';
 part 'matrix_record.g.dart';
 
 @HiveType(typeId: 67)
-class MatrixRecordModel implements IFormModel{
+class MatrixRecordModel  extends Equatable implements IFormModel {
 
   @HiveField(1)
-   List<IFormModel> fields;
-
-
+  List<IFormModel> fields;
 
 
   @override
   @HiveField(2)
   var value;
 
-  @override
-  IFormModel copyWith({dynamic value}) {
-    // TODO: implement copyWith
-    throw UnimplementedError();
-  }
 
   @override
   FormElementWidget toWidget() {
-    return MatrixRecordWidget(children: this.fields, index: 2, matrixName: this.name);
-
+    return MatrixRecordWidget(
+        children: this.fields, index: 2, matrixName: this.name);
   }
 
   @override
@@ -40,7 +34,7 @@ class MatrixRecordModel implements IFormModel{
 
   MatrixRecordModel({
     required this.fields,
-     this.value,
+    this.value,
   });
 
   @override
@@ -49,7 +43,21 @@ class MatrixRecordModel implements IFormModel{
 
   @override
   // TODO: implement name
-  String get name =>' throw UnimplementedError()';
+  String get name => ' throw UnimplementedError()';
 
+  @override
+  MatrixRecordModel copyWith({
+    dynamic value,
+    List<IFormModel> ? fields
+  }) {
+    return MatrixRecordModel(
+        value: value,
+        fields: fields ?? this.fields.map((e) => e.copyWith()).toList()
 
+    );
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [value,fields];
 }
