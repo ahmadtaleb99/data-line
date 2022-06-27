@@ -163,9 +163,9 @@ void submited (MatrixRecordModel record,String matrixName,int index){
 
   void showNewRecordDialog(BuildContext context,matrixName) {
     var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
-var record = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
+var tempRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
 
-    // context.read<MatrixRecordCubit>().set(state.recordNumber);
+    context.read<MatrixRecordCubit>().setCurrentRecord(state.recordNumber);
     showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
@@ -175,7 +175,7 @@ var record = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value
             value: this,
             child: AlertDialog(
               title: Text('Add'),
-              content: setupAlertDialoadContainer(record),
+              content: setupAlertDialoadContainer(tempRecord),
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -189,7 +189,7 @@ var record = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value
                                     borderRadius: BorderRadius.circular(20))),
                             onPressed: () {
 
-                              addRecord(matrixName,record);
+                              addRecord(matrixName,tempRecord);
                               // submit();
                             Navigator.pop(context);
 

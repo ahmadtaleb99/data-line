@@ -101,7 +101,7 @@ class MatrixWidget extends FormElementWidget {
                         // showRecordDialog(context);
                         context
                             .read<MatrixRecordCubit>()
-                            .showNewRecordDialog(context, name);
+                            .showNewRecordDialog(context,this, name);
                         // context.read<MatrixRecordCubit>().addRecord(name);
                       },
                       icon: Icon(
