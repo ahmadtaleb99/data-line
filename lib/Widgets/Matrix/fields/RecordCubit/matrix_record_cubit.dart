@@ -16,7 +16,7 @@ import '../../../../dynamic form/matrix/fields/matrix_record.dart';
 import '../../../../dynamic form/matrix/matrix.dart';
 
 
-
+import 'package:collection/collection.dart';
 part 'matrix_record_state.dart';
 
 class MatrixRecordCubit extends Cubit<MatrixRecordState> {
@@ -25,7 +25,7 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   MatrixRecordCubit(this._formRepository)
       : super(MatrixRecordState(
     matrixList: [],
-             recordsModel: []));
+           ));
 
   FormRepository _formRepository;
 
@@ -55,24 +55,23 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
 
   void addRecord(String matrixName,MatrixRecordModel record) {
 
+    var matrixList = List<Matrix>.from(state.matrixList);
 
-    List<MatrixRecordModel> list = List.from(state.recordsModel);
+    // List<MatrixRecordModel> list = List.from(matrix.records);
+                  log(record.fields[1].value.toString());
 
-    var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
 
+    // list.add(record);
 
-    list.add(record);
-
-    emit(state.copyWith(recordsModel: list));
-    emit(state.copyWith(recordAdded: true));
+    emit(state.copyWith(matrixList: [...state.matrixList..firstWhere((element) => element.name == matrixName).records.add(record)]));
   }
 
 
   void removeRecord(int index) {
-    List<MatrixRecordModel> list = List.from(state.recordsModel);
-    // matrix.records.add(MatrixRecordModel(fields: matrix.values));
-    list.removeAt(index);
-    emit(state.copyWith(recordsModel: list));
+    // List<MatrixRecordModel> list = List.from(state.recordsModel);
+    // // matrix.records.add(MatrixRecordModel(fields: matrix.values));
+    // list.removeAt(index);
+    // emit(state.copyWith(recordsModel: list));
   }
 
   void  fieldValueChanged(dynamic value,String fieldName) {
@@ -84,16 +83,13 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
 
   }
 void submited (MatrixRecordModel record,String matrixName,int index){
-      Matrix matrix = _currentForm.fields.firstWhere((element) => element.name ==matrixName) as Matrix;
-    matrix.records[index]= state.currentRecord!;
+      Matrix matrix = (_currentForm.fields.firstWhere((element) => element.name == matrixName) as Matrix).copyWith();
+    matrix.records[index]= state.currentRecord!.copyWith();
+
           var list = List<Matrix>.from(state.matrixList);
-          list[0] = matrix.copyWith();
-          log((list == state.matrixList).toString()+ '  same list ? ? ');
-
-      log((state == state.copyWith( matrixList: list )).toString()+ '  same state ? ? ');
 
 
-         emit(state.copyWith( matrixList: list));
+      emit(state.copyWith( matrixList: list));
 }
 
 
@@ -116,7 +112,12 @@ void submited (MatrixRecordModel record,String matrixName,int index){
 
  }
 
+  void _setNewCurrentRecord(MatrixRecordModel record){
 
+    state.currentRecord = record;
+    emit(state.copyWith(currentRecord: record));
+
+  }
   void setCurrentRecord(int recordNumber,String matrixName){
 
     var newState = state.copyWith();
@@ -163,9 +164,9 @@ void submited (MatrixRecordModel record,String matrixName,int index){
 
   void showNewRecordDialog(BuildContext context,matrixName) {
     var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
-var tempRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
+var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
 
-    context.read<MatrixRecordCubit>().setCurrentRecord(state.recordNumber);
+    _setNewCurrentRecord(newRecord);
     showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
@@ -175,7 +176,7 @@ var tempRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(v
             value: this,
             child: AlertDialog(
               title: Text('Add'),
-              content: setupAlertDialoadContainer(tempRecord),
+              content: setupAlertDialoadContainer(newRecord),
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -189,8 +190,8 @@ var tempRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(v
                                     borderRadius: BorderRadius.circular(20))),
                             onPressed: () {
 
-                              addRecord(matrixName,tempRecord);
-                              // submit();
+                              addRecord(matrixName,state.currentRecord!);
+                              submited(newRecord, matrixName, state.matrixList.length-1);
                             Navigator.pop(context);
 
                             },

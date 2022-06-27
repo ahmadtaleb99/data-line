@@ -23,7 +23,6 @@ class MatrixTextFieldWidget extends FormElementWidget {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
       builder: (context, state) {
 
-        print(state.recordsModel.toString());
         return TextFormField(
             // initialValue:  state.recordsModel[state.recordNumber].fields.firstWhere((dynamic element) => element.name == this.name).value,
           initialValue:  value,

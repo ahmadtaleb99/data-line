@@ -1,13 +1,39 @@
+import 'package:equatable/equatable.dart';
+
 void main(){
 
 
-  Person person = Person();
-  Person.name;
-  Person.name  = 'as d1';
+ List<Person> p = [
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+ ];
+
+ List<Person> p1 = [
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+   Person('ahmad'),
+ ];
+
+ Person person = Person('ahmad');
+ Person person1 = Person('ahmad');
+ print((person == person1).toString());
+ print((p == p1).toString());
+
 }
 
-class Person {
+class Person extends Equatable{
 
-  static String name = 'asd';
+   String name = 'asd';
+
+  Person(this.name);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name];
 
 }

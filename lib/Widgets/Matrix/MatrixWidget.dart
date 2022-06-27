@@ -93,7 +93,7 @@ class MatrixWidget extends FormElementWidget {
                                 matrix.records[i]
                                 .fields,
                             matrixName: this.name,
-                            isFirst: state.recordsModel.length == 1,
+                            isFirst: true,
                             index: i,
                           )),
                   IconButton(
@@ -101,7 +101,7 @@ class MatrixWidget extends FormElementWidget {
                         // showRecordDialog(context);
                         context
                             .read<MatrixRecordCubit>()
-                            .showNewRecordDialog(context,this, name);
+                            .showNewRecordDialog(context,this.name);
                         // context.read<MatrixRecordCubit>().addRecord(name);
                       },
                       icon: Icon(
