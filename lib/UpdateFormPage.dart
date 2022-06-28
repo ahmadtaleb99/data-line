@@ -10,6 +10,8 @@ import 'logic/utils.dart';
 import 'logic/validation__bloc.dart';
 
 class UpdateFormPage extends StatelessWidget {
+  
+  
   FormWidget form;
   UpdateFormPage({Key? key, required this.form, required this.index})
       : super(key: key);
@@ -19,6 +21,7 @@ class UpdateFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(form.fields[2].name);
     return Scaffold(
         floatingActionButton: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -32,8 +35,6 @@ class UpdateFormPage extends StatelessWidget {
                 context
                     .read<ValidationBloc>()
                     .add(FormUpdated(formName: form.name, index: this.index));
-                // context.read<FormRepository>().savetoLocal();
-                // context.read<FormRepository>().getForm();
 
               }
             },
@@ -57,7 +58,7 @@ class UpdateFormPage extends StatelessWidget {
                         _loadingOverlay.hide();
 
 
-                      if(state.submitted! && state.status == Status.success) {
+                      if(state.updated! && state.status == Status.success) {
                         log('message');
                         CoolAlert.show(
                             context: context,

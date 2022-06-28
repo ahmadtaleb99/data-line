@@ -78,4 +78,12 @@ class RadioItem extends Equatable implements IFormModel  {
   // TODO: implement props
   List<Object?> get props => [parent,label,value];
 
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
+
+
+
 }

@@ -14,7 +14,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'data/FormRepository.dart';
-import 'logic/form__bloc.dart';
 import 'logic/validation__bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,6 +25,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: BlocBuilder<ValidationBloc, ValidationState>(
           builder: (context, state) {
@@ -73,8 +73,6 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 10),
-                              MyStatefulWidget(),
-
                               Expanded(
                                 child: GridView.builder(
                                   padding: EdgeInsets.all(40),
@@ -93,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     BlocProvider(
-                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentForm(state.forms![index].name)..loadMatrices(),
+                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentForm(index)..loadMatrices(),
                                                       child: NewSubmitPage(
                                                         form: state
                                                             .forms![index],
@@ -196,51 +194,4 @@ class FormCard extends StatelessWidget {
 }
 
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
 
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  bool _customTileExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const ExpansionTile(
-          title: Text('ExpansionTile 1'),
-          subtitle: Text('Trailing expansion arrow icon'),
-          children: <Widget>[
-            ListTile(title: Text('This is tile number 1')),
-          ],
-        ),
-        ExpansionTile(
-          title: const Text('ExpansionTile 2'),
-          subtitle: const Text('Custom expansion arrow icon'),
-          trailing: Icon(
-            _customTileExpanded
-                ? Icons.arrow_drop_down_circle
-                : Icons.arrow_drop_down,
-          ),
-          children: const <Widget>[
-            ListTile(title: Text('This is tile number 2')),
-          ],
-          onExpansionChanged: (bool expanded) {
-            setState(() => _customTileExpanded = expanded);
-          },
-        ),
-        const ExpansionTile(
-          title: Text('ExpansionTile 3'),
-          subtitle: Text('Leading expansion arrow icon'),
-          controlAffinity: ListTileControlAffinity.leading,
-          children: <Widget>[
-            ListTile(title: Text('This is tile number 3')),
-          ],
-        ),
-      ],
-    );
-  }
-}

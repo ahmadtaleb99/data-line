@@ -44,19 +44,26 @@ class MatrixRecordModel  extends Equatable implements IFormModel {
   @override
   // TODO: implement name
   String get name => ' throw UnimplementedError()';
-
+  @override
+  // TODO: implement stringify
+  bool? get stringify => true;
   @override
   MatrixRecordModel copyWith({
     dynamic value,
     List<IFormModel> ? fields
   }) {
     return MatrixRecordModel(
-        value: value,
+        value: value ?? this.value,
         fields: fields ?? this.fields.map((e) => e.copyWith()).toList()
 
     );
   }
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    return true;
 
+  }
   @override
   // TODO: implement props
   List<Object?> get props => [value,fields];

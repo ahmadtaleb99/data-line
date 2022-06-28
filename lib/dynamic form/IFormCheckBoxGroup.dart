@@ -215,4 +215,10 @@ class IFormCheckBoxGroup extends IFormModel {
   String valueToString() {
     return (value as List).join(',');
   }
+
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 }

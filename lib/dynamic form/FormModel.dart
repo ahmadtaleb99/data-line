@@ -123,5 +123,9 @@ class FormModel extends HiveObject implements IFormModel {
     return this.value.toString();
   }
 
-
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 }

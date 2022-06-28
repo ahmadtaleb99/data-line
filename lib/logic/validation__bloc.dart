@@ -286,16 +286,15 @@ var mimi = lookupMimeType(cachedFile.path);
     _formRepository.updateSubmission(formModel);
     formModel = _formRepository.submittedForms[event.index];
     dynamic field = state.form!.fields.first;
-    log(field.isOtherSelected.toString()+ ' on asd asd asd');
     emit(state.copyWith(
-      submitted: true,
+      submitted: false,
+      updated: true,
       status: Status.success,
       subedForms: _formRepository.submittedForms
           .map((e) => e.toWidget() as FormWidget)
           .toList(),
       form: formModel.toWidget() as FormWidget,
     ));
-    emit(state.copyWith(submitted: false));
 
   }
 
@@ -457,10 +456,9 @@ var mimi = lookupMimeType(cachedFile.path);
         {
           radioGroup.isOtherSelected = false;
           radioGroup.otherValue = null;
-          log('other not selected');
         }
     var newForm = _toggleRelatedFields(event.value);
-    emit(state.copyWith(form: newForm, status: Status.success));
+    emit(state.copyWith(form: newForm, status: Status.success,updated: false));
   }
 
   FormWidget _toggleRelatedFields(String fieldValue) {
@@ -508,6 +506,7 @@ var mimi = lookupMimeType(cachedFile.path);
   Future<void> _onFormUpdateRequested(
       FormUpdateRequested event, Emitter<ValidationState> emit) async {
     var formModel = _formRepository.submittedForms[event.index];
+    log(formModel.name);
     var form = formModel.toWidget() as FormWidget;
 
     emit(state.copyWith(form: form, formModel: formModel,      submitted: false,
@@ -522,14 +521,16 @@ var mimi = lookupMimeType(cachedFile.path);
     _formRepository.addSubmittedForm(formModel);
     stateForm  = _getEmptyForm(stateForm.name).toWidget() as FormWidget;
 
-       emit(state.copyWith(submitted: true,form: stateForm,status: Status.success ));
+       emit(state.copyWith(submitted: true,form: stateForm,status: Status.success,updated: false ));
     emit(state.copyWith(submitted: false ));
   }
 
 
   FormModel _getEmptyForm(String name){
-   return _formRepository.availableForms
+
+    return _formRepository.availableForms
         .firstWhere((element) => element.name == name).copyWith();
+
   }
 
 
@@ -548,7 +549,9 @@ var mimi = lookupMimeType(cachedFile.path);
 
 
       var matrixModel = formModelField as Matrix;
-        matrixModel.records = List<MatrixRecordModel>.from(widgetField.records.map((dynamic e) => e.toModel()));
+      log('map tto model');
+      matrixModel.records = List<MatrixRecordModel>.from(widgetField.list);
+
     }
       formModelField.value = widgetField.value;
     }

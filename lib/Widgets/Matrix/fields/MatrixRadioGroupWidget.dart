@@ -16,7 +16,7 @@ class MatrixRadioGroupWidget extends FormElementWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationBloc, ValidationState>(
+    return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
       builder: (context, state) {
         return  Column(
             children: [
@@ -36,7 +36,6 @@ class MatrixRadioGroupWidget extends FormElementWidget {
                     context.read<MatrixRecordCubit>().fieldValueChanged(value, name);
 
                     this.value = value;
-                    context.read<ValidationBloc>().add(Refresher());
                   }, value: e.value, title: Text(e.value),))
             ]);
 

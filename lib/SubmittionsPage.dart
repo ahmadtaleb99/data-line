@@ -47,7 +47,7 @@ class SubmittionsPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider(
-  create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+  create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentSubmittedForm(index)..loadMatrices(),
   child: UpdateFormPage(
                                             index: index,
                                             form: state.subedForms![index]),

@@ -64,7 +64,11 @@ class MatrixTextField extends Equatable implements IFormModel {
     );
 
   }
-
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    return true;
+  }
   @override
   // TODO: implement props
   List<Object?> get props => [name,label,value];

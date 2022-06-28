@@ -158,7 +158,6 @@ class DrawDropDown extends FormElementWidget {
   List<DropdownMenuItem<dynamic>>? _buildItems(List<DropDownItem> items) {
     List<DropdownMenuItem<dynamic>>? list = [];
 
-    print('iteemsss to draw  ${items.toString()}');
     for (var item in items) {
       list.add(DropdownMenuItem(
         child: Text(item.value),

@@ -25,10 +25,8 @@ class MatrixRecordWidget extends FormElementWidget {
   final List<IFormModel> children;
   final String matrixName;
   final int index;
-
   @override
   Widget build(BuildContext context) {
-    log('  matrix record widget build');
 
     return RecordCard(
       children: children.map((e) => e.toWidget()).toList(),
@@ -44,8 +42,9 @@ class MatrixRecordWidget extends FormElementWidget {
   }
 
   MatrixRecordModel toModel() {
-    return MatrixRecordModel(
-        fields: this.children.map((dynamic e) => e.toModel()).toList().cast());
+
+    this.children.forEach((element) {log(element.value);} );
+    return MatrixRecordModel(fields: this.children);
   }
 }
 
@@ -66,6 +65,7 @@ class RecordCard extends StatefulWidget {
     required this.matrixName,
   });
 }
+GlobalKey<FormState> _key = GlobalKey();
 
 class _RecordCardState extends State<RecordCard> {
   var bloc;
@@ -80,6 +80,7 @@ class _RecordCardState extends State<RecordCard> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+
       builder: (context, state) {
 
 
@@ -103,19 +104,19 @@ class _RecordCardState extends State<RecordCard> {
                             context.read<MatrixRecordCubit>().setCurrentRecord(widget.index, widget.matrixName);
 
                             showRecordDialog(context, onSubmit: () {
-                              log(state.currentRecord!.fields[2].value
-                                      .toString() +
-                                  state.currentRecord!.fields[2].name);
+                                  if(_key.currentState!.validate()){
+                                    Navigator.pop(context);
+
+                                  }
 
 
-                              context.read<MatrixRecordCubit>().submited(
-                                  state.currentRecord!,
-                                  widget.matrixName,
-                                  widget.index);
+                            },
+                            onClosed: (){
+                              context.read<MatrixRecordCubit>().showRecordClosed();
 
                               Navigator.pop(context);
-
-                            });
+                            }
+                            );
 
                           },
                           child: ExpansionPanelList(
@@ -199,19 +200,21 @@ class _RecordCardState extends State<RecordCard> {
                           )),
                     ),
                   )),
-              if (!widget.isFirst)
+              // if (!(state.matrixList.firstWhere((element) => element.name == this.widget.matrixName).records.length == 1) )
                 Expanded(
                   child: IconButton(
                       onPressed: () {
+                        var record = state.matrixList.firstWhere((element) => element.name == this.widget.matrixName).records[widget.index];
                         if (isExpanded) {
                           isExpanded = false;
                         }
                         context
                             .read<MatrixRecordCubit>()
-                            .removeRecord(widget.index);
+                            .removeRecord(widget.matrixName,record);
                       },
                       icon: Icon(Icons.remove)),
-                ),
+                )
+              // else  Container(),
             ],
           ),
         );
@@ -219,12 +222,14 @@ class _RecordCardState extends State<RecordCard> {
     );
   }
 
-  Widget setupAlertDialoadContainer(List<Widget> children) {
+  Widget setupAlertDialoadContainer(List<FormElementWidget> children) {
+
+   children.forEach((element) {log(element.value.toString());});
     return Container(
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
       child: Form(
-        // key: state.key,
+        key: _key,
         child: Scrollbar(
           radius: Radius.circular(10),
           thickness: 1,
@@ -243,7 +248,7 @@ class _RecordCardState extends State<RecordCard> {
     );
   }
 
-  Future<void> showRecordDialog(BuildContext context, {void Function()? onSubmit}) async {
+  Future<void>  showRecordDialog(BuildContext context, {void Function()? onSubmit , void Function()? onClosed}) async {
     showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
@@ -276,12 +281,7 @@ class _RecordCardState extends State<RecordCard> {
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20))),
-                          onPressed: () {
-                            // widget.children.forEach((element) {
-                            //   element.value = null;
-                            // });
-                            Navigator.pop(context);
-                          },
+                          onPressed: onClosed,
                           child: Text('Cancel'),
                         ),
                       )

@@ -244,4 +244,10 @@ return valueToString;
 
     return value.toString();
   }
+
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 }

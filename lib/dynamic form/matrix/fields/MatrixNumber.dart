@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:form_builder_test/FormValidation.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/fields/MatrixNumberWidget.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
@@ -11,7 +12,7 @@ part 'MatrixNumber.g.dart';
 
 
 @HiveType(typeId: 72)
-class MatrixNumber extends Equatable implements IFormModel {
+class MatrixNumber extends Equatable  with FormValidation implements IFormModel  {
 
   @HiveField(1)
   String name;
@@ -31,9 +32,15 @@ class MatrixNumber extends Equatable implements IFormModel {
   @override
   @HiveField(3)
 
-  var value;
+  var  value;
 
+  bool isValid(){
+    if(this.value == null)
+      return true;
+    var realValue = this.value as String;
+    return   isNumeric(realValue) &&( realValue.isNotEmpty) ;
 
+  }
 
   @override
   FormElementWidget toWidget() {
@@ -61,6 +68,8 @@ class MatrixNumber extends Equatable implements IFormModel {
 
 
     );
+
+
 
   }
   @override

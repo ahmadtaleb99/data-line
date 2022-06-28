@@ -35,7 +35,6 @@ class DrawTextField extends  FormElementWidget {
   @override
   Widget build(BuildContext context) {
 
-    print('value [$value] in text field class ');
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
         return FormFieldWidget(

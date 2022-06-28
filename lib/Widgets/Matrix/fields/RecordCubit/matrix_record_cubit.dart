@@ -24,30 +24,41 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   late FormModel _currentForm;
   MatrixRecordCubit(this._formRepository)
       : super(MatrixRecordState(
-    matrixList: [],
+    matrixList: [],index: 0
            ));
 
   FormRepository _formRepository;
 
-
+    @override
+  Future<void> close() async {
+    // TODO: implement close
+     super.close();
+    log('cubit closed');
+  }
 
 
   void loadMatrices(){
     List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
     emit(state.copyWith(matrixList: matrixList));
+
+  }
+  void setCurrentSubmittedForm(int index){
+      _currentForm = _formRepository.submittedForms[index].copyWith();
+  }
+  void setCurrentForm(int index){
+    _currentForm = _formRepository.availableForms[index].copyWith();
+    List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
+    // log(matrixList.first.records.first.fields.first.value.toString());
   }
 
-  void setCurrentForm(String formModel){
-    _currentForm= _formRepository.availableForms.firstWhere((element) => element.name == formModel);
-  }
   void fetchRecords(String name) {
 
     List<Matrix> matrixList = List<Matrix>.from(state.matrixList);
-    for(var matrix in matrixList){
-      if (matrix.records.isEmpty) matrix.records.add(MatrixRecordModel(fields: matrix.values));
-
-
-    }
+    // for(var matrix in matrixList){
+    //   if (matrix.records.isEmpty) matrix.records.add(MatrixRecordModel(fields: matrix.values));
+    //
+    //
+    // }
 
 
     emit(state.copyWith(matrixList: [...matrixList]));
@@ -58,7 +69,6 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     var matrixList = List<Matrix>.from(state.matrixList);
 
     // List<MatrixRecordModel> list = List.from(matrix.records);
-                  log(record.fields[1].value.toString());
 
 
     // list.add(record);
@@ -67,31 +77,53 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   }
 
 
-  void removeRecord(int index) {
-    // List<MatrixRecordModel> list = List.from(state.recordsModel);
-    // // matrix.records.add(MatrixRecordModel(fields: matrix.values));
-    // list.removeAt(index);
-    // emit(state.copyWith(recordsModel: list));
+  void removeRecord(String matrixName,MatrixRecordModel record) {
+
+    emit(state.copyWith(matrixList: [...state.matrixList..firstWhere((element) => element.name == matrixName).records.remove(record)]));
+
   }
 
   void  fieldValueChanged(dynamic value,String fieldName) {
     MatrixRecordModel record =   state.currentRecord!.copyWith() ;
-
     record.fields.firstWhere((dynamic element) => element.name == fieldName).value = value;
 
-    emit(state.copyWith(currentRecord: record));
+    var list = List<Matrix>.from(state.matrixList);
+    list.first.records[state.index] = record;
+
+    emit(state.copyWith(matrixList: list,currentRecord: record));
 
   }
+  void formSubmited (){
+      _currentForm = _formRepository.availableForms.firstWhere((element) => element.name ==_currentForm.name);
+    List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
+    emit(state.copyWith(matrixList: matrixList));
+  }
 void submited (MatrixRecordModel record,String matrixName,int index){
-      Matrix matrix = (_currentForm.fields.firstWhere((element) => element.name == matrixName) as Matrix).copyWith();
-    matrix.records[index]= state.currentRecord!.copyWith();
-
-          var list = List<Matrix>.from(state.matrixList);
-
-
-      emit(state.copyWith( matrixList: list));
+    //   Matrix matrix = (_currentForm.fields.firstWhere((element) => element.name == matrixName) as Matrix).copyWith();
+    // matrix.records[index]= state.currentRecord!.copyWith();
+    //   log(state.currentRecord!.fields[2].value.toString()+ ' first submited ');
+    //
+    //   var list = List<Matrix>.from(state.matrixList);
+    //   list.firstWhere((element) => element.name == matrixName).records[index] = state.currentRecord!.copyWith();
+    //
+    //   state.currentRecord= null;
+    //   emit(state.copyWith( matrixList: list));
 }
 
+
+  void  showRecordClosed() {
+    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+    for (var field in record.fields){
+      if(!field.isValid())
+        field.value = null;
+    }
+
+    var list = List<Matrix>.from(state.matrixList);
+    list.first.records[state.index] = record;
+
+    emit(state.copyWith(matrixList: list,currentRecord: record));
+
+  }
 
 
  Future<DateTime?>  dateChanged(BuildContext context,fieldName) async {
@@ -102,23 +134,27 @@ void submited (MatrixRecordModel record,String matrixName,int index){
     final date = await  showDatePicker(firstDate: DateTime(1940)
         , initialDate: DateTime(1999),
         lastDate: DateTime.now(), context: context);
-
-
   record.fields.firstWhere((dynamic element) => element.name == fieldName).value=date;
 
 
-    emit(state.copyWith(currentRecord: record));
+   var list = List<Matrix>.from(state.matrixList);
+   list.first.records[state.index] = record;
+
+
+    emit(state.copyWith(matrixList: list  ,currentRecord: record));
     return  date;
 
  }
 
-  void _setNewCurrentRecord(MatrixRecordModel record){
+  void _setNewCurrentRecord(MatrixRecordModel record,String matrixName){
 
+    int index = state.matrixList.firstWhere((element) => element.name == matrixName).records.length-1;
     state.currentRecord = record;
-    emit(state.copyWith(currentRecord: record));
+    emit(state.copyWith(currentRecord: record,index: index));
 
   }
   void setCurrentRecord(int recordNumber,String matrixName){
+
 
     var newState = state.copyWith();
     var matrix = newState.matrixList.firstWhere((element) => element.name ==matrixName);
@@ -126,7 +162,7 @@ void submited (MatrixRecordModel record,String matrixName,int index){
    MatrixRecordModel record = matrix.records[recordNumber] as MatrixRecordModel;
 
    state.currentRecord = record;
-    emit(state.copyWith(currentRecord: record));
+    emit(state.copyWith(currentRecord: record,index: recordNumber));
 
 
 
@@ -165,59 +201,61 @@ void submited (MatrixRecordModel record,String matrixName,int index){
   void showNewRecordDialog(BuildContext context,matrixName) {
     var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
 var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
-
-    _setNewCurrentRecord(newRecord);
+    addRecord(matrixName, newRecord);
+    _setNewCurrentRecord(newRecord,matrixName);
     showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return BlocProvider<MatrixRecordCubit>.value(
-            value: this,
-            child: AlertDialog(
-              title: Text('Add'),
-              content: setupAlertDialoadContainer(newRecord),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
+          return WillPopScope(
+            onWillPop: () async {
+              removeRecord(matrixName, state.currentRecord!);
+              return true;
+            },
+            child: BlocProvider<MatrixRecordCubit>.value(
+              value: this,
+              child: AlertDialog(
+                title: Text('Add'),
+                content: setupAlertDialoadContainer(newRecord),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20))),
+                              onPressed: () {
+                                if(state.currentRecord!.fields.last.isValid())
+                                Navigator.pop(context);
+                              },
+
+                              child: Text('Submit')),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onPressed: () {
-
-                              addRecord(matrixName,state.currentRecord!);
-                              submited(newRecord, matrixName, state.matrixList.length-1);
-                            Navigator.pop(context);
-
+                              removeRecord(matrixName, state.currentRecord!);
+                              Navigator.pop(context);
                             },
-                            child: Text('Submit')),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          onPressed: () {
-                            // widget.children.forEach((element) {
-                            //   element.value = null;
-                            // });
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel'),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                            child: Text('Cancel'),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         });

@@ -161,7 +161,11 @@ class IFormDrawRadioGroup extends IFormModel {
     );
   }
 
-
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
   @override
   String valueToString() {
     return this.value.toString();

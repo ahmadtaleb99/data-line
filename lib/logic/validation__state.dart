@@ -11,6 +11,7 @@ enum Status {initial,loading,success,failure,newFormLoaded}
 class ValidationState{
 
   bool  ? submitted = false;
+  bool  ? updated = false;
   bool   filePicking = false;
   Status status;
   DrawCheckboxGroup ? drawCheckboxGroup;
@@ -40,6 +41,7 @@ class ValidationState{
     this.form,
     this.initialMulti ,
     this.submitted,
+    this.updated,
     this.formModel,
     required this.filePicking,
     this.status = Status.initial,
@@ -69,6 +71,7 @@ class ValidationState{
     bool  ? filePicking,
     bool ?   islocallyWorking,
     bool ?   submitted,
+    bool ?   updated,
 
     List<DropDownItem>? childItems,
     List<DrawChildList>? childLists,
@@ -84,6 +87,7 @@ class ValidationState{
         status: status ?? this.status,
         childLists: childLists ?? this.childLists,
         childList: childList ?? this.childList,
+        updated: updated ?? this.updated,
         submitted: submitted ?? this.submitted,
         childsMap: childsMap ?? this.childsMap,
         forms: forms ?? this.forms,

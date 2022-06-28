@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'IDrawable.dart';
@@ -49,6 +50,7 @@ class FormFieldWidget<T>  extends StatelessWidget {
         builder: (T){
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget,
               if (T.hasError)

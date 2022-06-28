@@ -62,4 +62,10 @@ class CheckboxItem extends Equatable implements IFormModel{
   @override
   // TODO: implement props
   List<Object?> get props => [groupName,label,value];
+
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 }

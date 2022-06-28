@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +18,13 @@ class MatrixCheckboxWidget extends FormElementWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
       builder: (context, state) {
-        var checked=  state.currentRecord!.fields.firstWhere((element) => element.name == this.name).value;
-
-        return CheckboxListTile(value: checked ?? value ?? false,
+        bool ? checked;
+        // if(state.currentRecord != null )
+        //   checked=  state.currentRecord!.fields.firstWhere((element) => element.name == this.name).value;
+        //
+        // else checked = this.value;
+        // return CheckboxListTile(value: checked ?? value ?? false,
+        return CheckboxListTile(value:  value ?? false,
             title: Text(label),
             contentPadding: EdgeInsets.only(right: 19),
             onChanged: (value) {

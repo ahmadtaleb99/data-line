@@ -80,5 +80,10 @@ class MatrixCheckboxGroup  extends Equatable implements IFormModel {
 @override
 // TODO: implement props
 List<Object?> get props => [name,label,value,values];
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    return true;
 
+  }
 }

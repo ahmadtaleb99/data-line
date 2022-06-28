@@ -68,4 +68,11 @@ class MatrixDatePicker extends Equatable implements IFormModel {
   // TODO: implement props
   List<Object?> get props => [name,label,value];
 
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    return true;
+
+  }
+
 }

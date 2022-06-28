@@ -213,6 +213,10 @@ class Matrix extends Equatable  implements IFormModel {
   // TODO: implement props
   List<Object?> get props =>  [label,name,deactivate,isHidden,required,
     isReadOnly,visible,showIfValueSelected,showIfFieldValue,showIfIsRequired,value,values,maxRecordsCount,records];
-
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 
 }

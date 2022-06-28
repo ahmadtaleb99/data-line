@@ -157,5 +157,11 @@ class IFormFilePicker extends IFormModel {
     throw UnimplementedError();
   }
 
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
+
 
 }

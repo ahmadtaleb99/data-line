@@ -162,4 +162,10 @@ class IFormTextField implements IFormModel {
   String valueToString() {
     return this.value.toString();
   }
+
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
 }

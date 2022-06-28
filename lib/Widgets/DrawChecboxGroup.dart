@@ -96,7 +96,6 @@ class DrawCheckboxGroup extends FormElementWidget {
 listener: (context, state) {},
 
     builder: (context, state) {
-                    print('state');
 
 
                     return GestureDetector(

@@ -64,7 +64,11 @@ class DropDownItem  extends  IFormModel with EquatableMixin{
   String valueToString() {
     return this.value.toString();
   }
-
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
   @override
   // TODO: implement props
   List<Object?> get props => [parent,value,status];

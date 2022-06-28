@@ -18,16 +18,19 @@ class MatrixDatePickerWidget extends FormElementWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-      buildWhen: (p,c) => true,
       builder: (context, state) {
-        var date=  state.currentRecord!.fields.firstWhere((element) => element.name == this.name).value;
+        // var date;
+        // if(value == null )
+        //   date=  state.matrixList.first.records.firstWhere((element) => element.name == this.name).value;
+        //
+        // else date = this.value;
           return TextFormField(
-            key: Key(date.toString()),
+            key: Key(value.toString()),
             // initialValue: value != null
             //       ? DateFormat('d - MMMM - y').format(value)
             //       : '',
-            initialValue: date != null ?
-            DateFormat('d - MMMM - y').format(date) : '',
+            initialValue: value != null ?
+            DateFormat('d - MMMM - y').format(value) : '',
             readOnly: true,
             onTap: () async {
               value = await

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class LoadingOverlay {
   OverlayEntry ? _overlay;
 
-  void show(BuildContext context, String msg)
-  {
+  void show(BuildContext context, String msg) {
     if (_overlay == null) {
       _overlay = OverlayEntry(
         // replace with your own layout

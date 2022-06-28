@@ -147,5 +147,11 @@ class IFormNumber extends IFormModel {
     return value.toString();
   }
 
+  @override
+  bool isValid() {
+    // TODO: implement isValid
+    throw UnimplementedError();
+  }
+
 
 }
