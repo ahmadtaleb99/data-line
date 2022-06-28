@@ -100,12 +100,12 @@ class _RecordCardState extends State<RecordCard> {
                           customBorder: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          onTap: () {
+                          onTap: () async {
                             context.read<MatrixRecordCubit>().setCurrentRecord(widget.index, widget.matrixName);
 
                             showRecordDialog(context, onSubmit: () {
                                   if(_key.currentState!.validate()){
-                                    Navigator.pop(context);
+                                    Navigator.pop(context,true);
 
                                   }
 
@@ -114,9 +114,14 @@ class _RecordCardState extends State<RecordCard> {
                             onClosed: (){
                               context.read<MatrixRecordCubit>().showRecordClosed();
 
-                              Navigator.pop(context);
-                            }
+                              Navigator.pop(context,false);
+                            },
+                              onWillPop: () async{
+                                context.read<MatrixRecordCubit>().showRecordClosed();
+                                return Future.value(true);
+                              }
                             );
+
 
                           },
                           child: ExpansionPanelList(
@@ -248,49 +253,54 @@ class _RecordCardState extends State<RecordCard> {
     );
   }
 
-  Future<void>  showRecordDialog(BuildContext context, {void Function()? onSubmit , void Function()? onClosed}) async {
-    showDialog(
+  Future<dynamic>  showRecordDialog(BuildContext context, {void Function()? onSubmit , void Function()? onClosed,Future<bool> Function()? onWillPop}) async {
+   var result =  await showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return BlocProvider<MatrixRecordCubit>.value(
             value: bloc,
-            child: AlertDialog(
-              title: Text('Add'),
-              content: setupAlertDialoadContainer(widget.children),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
+            child: WillPopScope(
+              onWillPop: onWillPop,
+              child: AlertDialog(
+                title: Text('Add'),
+                content: setupAlertDialoadContainer(widget.children),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20))),
+                              onPressed: onSubmit,
+                              child: Text('Submit')),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: onSubmit,
-                            child: Text('Submit')),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          onPressed: onClosed,
-                          child: Text('Cancel'),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                            onPressed: onClosed,
+                            child: Text('Cancel'),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         });
+
+   return result;
   }
 }

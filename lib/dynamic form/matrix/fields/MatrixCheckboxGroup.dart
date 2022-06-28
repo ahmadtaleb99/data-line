@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/MatrixCheckboxGroupWidget.dart';
 import 'package:form_builder_test/dynamic%20form/CheckboxItem.dart';
 import 'package:form_builder_test/dynamic%20form/IFormModel.dart';
 import 'package:hive/hive.dart';
@@ -34,7 +35,8 @@ class MatrixCheckboxGroup  extends Equatable implements IFormModel {
 
   factory MatrixCheckboxGroup.fromJson(dynamic json){
     return MatrixCheckboxGroup(name: json['fieldName'], label: json['label'],
-        values: List<CheckboxItem>.from(json['values'].map((e) => CheckboxItem.FromJson(e , json['name'])).toList())
+        value: [],
+        values: List<CheckboxItem>.from(json['multipleOptions'].map((e) => CheckboxItem.FromJson(e , json['fieldName'])).toList())
 
     );
   }
@@ -49,7 +51,8 @@ class MatrixCheckboxGroup  extends Equatable implements IFormModel {
   @override
   FormElementWidget toWidget() {
     // TODO: implement toWidget
-    throw UnimplementedError();
+    return MatrixCheckboxGroupWidget(label: label, name: name, children: values, value: value);
+
   }
 
   @override

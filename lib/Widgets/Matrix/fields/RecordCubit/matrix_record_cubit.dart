@@ -93,6 +93,28 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     emit(state.copyWith(matrixList: list,currentRecord: record));
 
   }
+
+     checkboxGroupValueChanged(bool checked,String fieldName,String boxValue) {
+    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+    var field =  record.fields.firstWhere((dynamic element) => element.name == fieldName);
+    if(checked == true )
+    field.value = List.from(field.value)..add(boxValue);
+    else
+      field.value = List.from(field.value)..remove(boxValue);
+
+
+
+    var list = List<Matrix>.from(state.matrixList);
+    log(state.index.toString());
+    list.first.records[state.index] = record;
+
+    emit(state.copyWith(matrixList: list,currentRecord: record));
+    list.first.records.forEach((element) {log(element.fields[4].value.toString());});
+    list.first.records.forEach((element) {log(element.fields[3].value.toString());});
+    return field.value;
+  }
+
+
   void formSubmited (){
       _currentForm = _formRepository.availableForms.firstWhere((element) => element.name ==_currentForm.name);
     List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
