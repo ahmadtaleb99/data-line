@@ -1,27 +1,27 @@
-import 'dart:convert';
+import 'dart:convert' as form_repository;
 import 'dart:io';
 
-import 'package:form_builder_test/data/data_providers/FlexFormApi.dart';
-import 'package:form_builder_test/data/FormApi.dart';
-import 'package:form_builder_test/data/data_providers/LocalStorageApi.dart';
-import 'package:form_builder_test/Widgets/DrawChildList.dart';
-import 'package:form_builder_test/Widgets/DrawForm.dart';
-import 'package:form_builder_test/Widgets/DrawMultiSelect.dart';
-import 'package:form_builder_test/Widgets/IDrawable.dart';
-import 'package:form_builder_test/dynamic%20form/FormModel.dart';
-import 'package:form_builder_test/dynamic%20form/IFormCheckBoxGroup.dart';
-import 'package:form_builder_test/dynamic%20form/IFormDrawRadioGroup.dart';
-import 'package:form_builder_test/dynamic%20form/IFormFilePicker.dart';
-import 'package:form_builder_test/dynamic%20form/IFormNumber.dart';
-import 'package:form_builder_test/dynamic%20form/IFormTextArea.dart';
+import 'package:form_builder_test/data/data_providers/flex_form_api.dart';
+import 'package:form_builder_test/data/form_api_abstract.dart';
+import 'package:form_builder_test/data/data_providers/local_storage_api.dart';
+import 'package:form_builder_test/Widgets/child_dropdown_widget.dart';
+import 'package:form_builder_test/Widgets/form_widget.dart';
+import 'package:form_builder_test/Widgets/multi_select_widget.dart';
+import 'package:form_builder_test/Widgets/form_element_widget.dart';
+import 'package:form_builder_test/model/FormModel.dart';
+import 'package:form_builder_test/model/IFormCheckBoxGroup.dart';
+import 'package:form_builder_test/model/IFormDrawRadioGroup.dart';
+import 'package:form_builder_test/model/IFormFilePicker.dart';
+import 'package:form_builder_test/model/IFormNumber.dart';
+import 'package:form_builder_test/model/IFormTextArea.dart';
 
-import '../Widgets/DrawChecboxGroup.dart';
-import '../Widgets/DrawRadioGroup.dart';
-import '../constants.dart';
-import '../dynamic form/IFormDropList.dart';
-import '../dynamic form/IFormEmail.dart';
-import '../dynamic form/IFormTextField.dart';
-import '../dynamic form/IFormModel.dart';
+import '../Widgets/checkbox_group_widget.dart';
+import '../Widgets/radio_group_widget.dart';
+import '../utils/constants.dart';
+import '../model/IFormDropList.dart';
+import '../model/IFormEmail.dart';
+import '../model/IFormTextField.dart';
+import '../model/IFormModel.dart';
 
 class FormRepository {
 
@@ -95,20 +95,20 @@ class FormRepository {
 
 
 
-  DrawCheckboxGroup getCheckBoxGroup (String name) {
+  CheckboxGroupWidget getCheckBoxGroup (String name) {
 
-    return _forms.firstWhere((element) => (element is DrawCheckboxGroup) && element.name == name) as DrawCheckboxGroup;
+    return _forms.firstWhere((element) => (element is CheckboxGroupWidget) && element.name == name) as CheckboxGroupWidget;
   }
 
-  DrawRadioGroup getRadioGroup (String name) {
+  RadioGroupWidget getRadioGroup (String name) {
 
-    return _forms.firstWhere((element) => (element is DrawRadioGroup) && element.name == name) as DrawRadioGroup;
+    return _forms.firstWhere((element) => (element is RadioGroupWidget) && element.name == name) as RadioGroupWidget;
   }
 
 
   List<FormElementWidget> getChildrenSelectsFor (String name) {
 
-    return _forms.where((dynamic element) =>(  (element is DrawChildList)  ||  (element is DrawMultiSelect ) ) &&  (  element.parentName == name)).toList().cast()  ;
+    return _forms.where((dynamic element) =>(  (element is ChildDropDownWidget)  ||  (element is MultiSelectWidget ) ) &&  (  element.parentName == name)).toList().cast()  ;
   }
 
 
