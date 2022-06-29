@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,10 +25,12 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   late FormModel _currentForm;
   MatrixRecordCubit(this._formRepository)
       : super(MatrixRecordState(
+    errorText: '',
     matrixList: [],index: 0
            ));
 
   FormRepository _formRepository;
+  List _oldValues = [ ] ;
 
     @override
   Future<void> close() async {
@@ -48,43 +51,32 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   void setCurrentForm(int index){
     _currentForm = _formRepository.availableForms[index].copyWith();
     List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
-    // log(matrixList.first.records.first.fields.first.value.toString());
   }
 
   void fetchRecords(String name) {
 
     List<Matrix> matrixList = List<Matrix>.from(state.matrixList);
-    // for(var matrix in matrixList){
-    //   if (matrix.records.isEmpty) matrix.records.add(MatrixRecordModel(fields: matrix.values));
-    //
-    //
-    // }
-
-
     emit(state.copyWith(matrixList: [...matrixList]));
   }
 
   void addRecord(String matrixName,MatrixRecordModel record) {
-
-    var matrixList = List<Matrix>.from(state.matrixList);
-
-    // List<MatrixRecordModel> list = List.from(matrix.records);
-
-
-    // list.add(record);
-
     emit(state.copyWith(matrixList: [...state.matrixList..firstWhere((element) => element.name == matrixName).records.add(record)]));
   }
 
 
   void removeRecord(String matrixName,MatrixRecordModel record) {
 
-    emit(state.copyWith(matrixList: [...state.matrixList..firstWhere((element) => element.name == matrixName).records.remove(record)]));
+              var matrix = state.matrixList.firstWhere((element) => element.name == matrixName);
+              matrix.records.remove(record);
+              if(matrix.records.length <= matrix.maxRecordsCount){
+                matrix.error = '';
+              }
+    emit(state.copyWith(matrixList: state.matrixList));
 
   }
 
   void  fieldValueChanged(dynamic value,String fieldName) {
-    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+    MatrixRecordModel record =   state.currentRecord! ;
     record.fields.firstWhere((dynamic element) => element.name == fieldName).value = value;
 
     var list = List<Matrix>.from(state.matrixList);
@@ -95,7 +87,7 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   }
 
      checkboxGroupValueChanged(bool checked,String fieldName,String boxValue) {
-    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
+    MatrixRecordModel record =   state.currentRecord! ;
     var field =  record.fields.firstWhere((dynamic element) => element.name == fieldName);
     if(checked == true )
     field.value = List.from(field.value)..add(boxValue);
@@ -105,12 +97,9 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
 
 
     var list = List<Matrix>.from(state.matrixList);
-    log(state.index.toString());
     list.first.records[state.index] = record;
 
     emit(state.copyWith(matrixList: list,currentRecord: record));
-    list.first.records.forEach((element) {log(element.fields[4].value.toString());});
-    list.first.records.forEach((element) {log(element.fields[3].value.toString());});
     return field.value;
   }
 
@@ -120,28 +109,20 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     List<Matrix> matrixList = _currentForm.fields.where((element) => element is Matrix).toList().cast();
     emit(state.copyWith(matrixList: matrixList));
   }
-void submited (MatrixRecordModel record,String matrixName,int index){
-    //   Matrix matrix = (_currentForm.fields.firstWhere((element) => element.name == matrixName) as Matrix).copyWith();
-    // matrix.records[index]= state.currentRecord!.copyWith();
-    //   log(state.currentRecord!.fields[2].value.toString()+ ' first submited ');
-    //
-    //   var list = List<Matrix>.from(state.matrixList);
-    //   list.firstWhere((element) => element.name == matrixName).records[index] = state.currentRecord!.copyWith();
-    //
-    //   state.currentRecord= null;
-    //   emit(state.copyWith( matrixList: list));
-}
+
 
 
   void  showRecordClosed() {
     MatrixRecordModel record =   state.currentRecord!.copyWith() ;
-    for (var field in record.fields){
-      if(!field.isValid())
-        field.value = null;
-    }
+
+        for(int i =0 ; i<record.fields.length ; i++){
+          record.fields[i].value = _oldValues[i];
+        }
+
 
     var list = List<Matrix>.from(state.matrixList);
     list.first.records[state.index] = record;
+
 
     emit(state.copyWith(matrixList: list,currentRecord: record));
 
@@ -182,6 +163,8 @@ void submited (MatrixRecordModel record,String matrixName,int index){
     var matrix = newState.matrixList.firstWhere((element) => element.name ==matrixName);
 
    MatrixRecordModel record = matrix.records[recordNumber] as MatrixRecordModel;
+    _oldValues = [ ];
+    record.fields.forEach((element) { _oldValues.add(element.value);});
 
    state.currentRecord = record;
     emit(state.copyWith(currentRecord: record,index: recordNumber));
@@ -221,7 +204,13 @@ void submited (MatrixRecordModel record,String matrixName,int index){
 
 
   void showNewRecordDialog(BuildContext context,matrixName) {
-    var matrix = _formRepository.availableForms[1].fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
+
+    var matrix = _currentForm.fields.firstWhere((dynamic element) => element.name == matrixName) as Matrix;
+    if(matrix.records.length == matrix.maxRecordsCount){
+      matrix.error = 'Maximum number of records is ${matrix.maxRecordsCount}';
+        emit(state.copyWith())      ;
+        return;
+    }
 var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(value: null)).toList());
     addRecord(matrixName, newRecord);
     _setNewCurrentRecord(newRecord,matrixName);
@@ -238,7 +227,7 @@ var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(va
             child: BlocProvider<MatrixRecordCubit>.value(
               value: this,
               child: AlertDialog(
-                title: Text('Add'),
+                title: Text('Add new record'),
                 content: setupAlertDialoadContainer(newRecord),
                 actions: [
                   Padding(
@@ -252,6 +241,16 @@ var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(va
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
                               onPressed: () {
+
+                                if (state.currentRecord!.isEmpty()) {
+                                  CoolAlert.show(
+                                      context: context,
+                                      type: CoolAlertType.error,
+                                      title: 'Can\'t add Record',
+                                      text: 'One field must have a value at least');
+                                  return;
+                                }
+
                                 if(state.currentRecord!.fields.last.isValid())
                                 Navigator.pop(context);
                               },

@@ -41,10 +41,8 @@ class FormWidget extends FormElementWidget {
             child: Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                children: this.fields,
-              ),
-            ));
+              child: Container(height:600,child: ListView.builder(itemBuilder: (context, index) => this.fields[index]))),
+            );
       },
     );
   }

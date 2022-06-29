@@ -12,7 +12,7 @@ part 'IFormModel.g.dart';
   final String label;
   final String name;
   FormElementWidget toWidget ();
-  String valueToString();
+  String ?  valueToString();
   bool isValid();
 
   IFormModel({

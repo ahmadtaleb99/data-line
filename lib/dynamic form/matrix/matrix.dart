@@ -106,7 +106,7 @@ class Matrix extends Equatable  implements IFormModel {
   int maxRecordsCount;
 
 
-
+    String error ='';
   @HiveField(14)
    List<MatrixRecordModel> records;
 

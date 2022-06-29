@@ -3,23 +3,24 @@ part of 'matrix_record_cubit.dart';
 @immutable
 
 class  MatrixRecordState{
-  // @override
-  // // TODO: implement props
-  // List<Object?> get props => [currentRecord,matrixList];
 
  List<Matrix> matrixList;
  MatrixRecordModel ?  currentRecord ;
  int   index ;
+ String   errorText ;
   MatrixRecordState({
       required this.matrixList,
     this.currentRecord,
-    required this.index
+    required this.index,
+    required this.errorText
   });
 
   MatrixRecordState copyWith({
     List<Matrix>? matrixList,
     MatrixRecordModel? currentRecord,
     int ? index ,
+    String ?  errorText
+
   }) {
 
 
@@ -27,6 +28,7 @@ class  MatrixRecordState{
       index: index ?? this.index,
       matrixList: matrixList ?? this.matrixList,
       currentRecord: currentRecord ?? this.currentRecord,
+      errorText: errorText ?? this.errorText,
     );
   }
 }

@@ -40,10 +40,10 @@ class MatrixDatePicker extends Equatable implements IFormModel {
     return MatrixDatePickerWidget(label: label, name: name, value: value);
   }
 
+
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    return value.toString();
+  String ? valueToString() {
+    return this.value != null ? this.value.toString() : this.value;
   }
   @override
   IFormModel copyWith({

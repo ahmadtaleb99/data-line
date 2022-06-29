@@ -296,6 +296,8 @@ var mimi = lookupMimeType(cachedFile.path);
       form: formModel.toWidget() as FormWidget,
     ));
 
+    emit(state.copyWith(updated: false));
+
   }
 
 

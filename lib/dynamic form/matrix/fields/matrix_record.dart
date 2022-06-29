@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/IDrawable.dart';
 import 'package:form_builder_test/Widgets/Matrix/MatrixWidget.dart';
@@ -67,4 +69,16 @@ class MatrixRecordModel  extends Equatable implements IFormModel {
   @override
   // TODO: implement props
   List<Object?> get props => [value,fields];
+
+
+  bool isEmpty () {
+    for (IFormModel field in this.fields){
+      if(field.valueToString() != null)
+          return false;
+    }
+
+    return true;
+  }
+
+
 }

@@ -12,27 +12,28 @@ import '../IDrawable.dart';
 import 'MatrixRecordWidget.dart';
 
 class MatrixWidget extends FormElementWidget {
-  MatrixWidget({Key? key,
-    required this.label,
-    required this.visible,
-    required this.required,
-    required this.name,
-    this.value,
-    required this.records,
-    required this.showIfValueSelected,
-    required this.showIfFieldValue,
-    required this.showIfIsRequired,
-    required this.maxRecordCount,
-    required this.fields})
+  MatrixWidget(
+      {Key? key,
+      required this.label,
+      required this.visible,
+      required this.required,
+      required this.name,
+      this.value,
+      required this.records,
+      required this.showIfValueSelected,
+      required this.showIfFieldValue,
+      required this.showIfIsRequired,
+      required this.maxRecordCount,
+      required this.fields})
       : super(
-      label: label,
-      key: key,
-      name: name,
-      visible: visible,
-      required: required,
-      showIfValueSelected: showIfValueSelected,
-      showIfFieldValue: showIfFieldValue,
-      showIfIsRequired: showIfIsRequired);
+            label: label,
+            key: key,
+            name: name,
+            visible: visible,
+            required: required,
+            showIfValueSelected: showIfValueSelected,
+            showIfFieldValue: showIfFieldValue,
+            showIfIsRequired: showIfIsRequired);
 
   final String label;
   final String name;
@@ -54,24 +55,23 @@ class MatrixWidget extends FormElementWidget {
 
     return BlocListener<ValidationBloc, ValidationState>(
       listener: (context, state) {
-        if(state.submitted! && state.status == Status.success) {
-              context.read<MatrixRecordCubit>().formSubmited();
+        if (state.submitted! && state.status == Status.success) {
+          context.read<MatrixRecordCubit>().formSubmited();
         }
       },
       child: Builder(builder: (context) {
         context.read<MatrixRecordCubit>().fetchRecords(name);
         return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-
           builder: (context, state) {
             var matrix = state.matrixList
-                .firstWhere(
-                    (element) => element.name == this.name);
+                .firstWhere((element) => element.name == this.name);
 
             list = matrix.records.map((e) => e.copyWith());
 
             return FormFieldWidget(
                 visible: visible,
                 required: required,
+
                 widget: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,9 @@ class MatrixWidget extends FormElementWidget {
                         padding: const EdgeInsets.only(left: 16, bottom: 10),
                         child: Text(
                           label,
-                          style: TextStyle(fontSize: 18,),
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -91,29 +93,26 @@ class MatrixWidget extends FormElementWidget {
                     ),
                     ...List.generate(
                         matrix.records.length,
-                            (i) =>
-                            MatrixRecordWidget(
-                              children:
-                              matrix.records[i]
-                                  .fields,
+                        (i) => MatrixRecordWidget(
+                              children: matrix.records[i].fields,
                               matrixName: this.name,
                               isFirst: true,
                               index: i,
                             )),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Center(
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
-                              primary: Colors.black
-                          ),
+                              primary: Colors.black),
                           onPressed: () {
-                            // showRecordDialog(context);
-                            context
-                                .read<MatrixRecordCubit>()
-                                .showNewRecordDialog(context, this.name);
-                            // context.read<MatrixRecordCubit>().addRecord(name);
+                              context
+                                  .read<MatrixRecordCubit>()
+                                  .showNewRecordDialog(context, this.name);
+
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -122,10 +121,22 @@ class MatrixWidget extends FormElementWidget {
                                 'Add Record',
                               ),
                               Icon(Icons.add, color: Colors.white)
-
                             ],
                           )),
-                    )
+
+
+                    ),
+                    if(matrix.error.isNotEmpty)
+                    Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 10),
+                        child: Text(
+                          matrix.error,
+                          style: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 13,
+                              color: Colors.red[700],
+                              height: 0.5),
+                        ))
                   ],
                 ));
           },
@@ -138,5 +149,4 @@ class MatrixWidget extends FormElementWidget {
   String valueToString() {
     return this.value.toString();
   }
-
 }

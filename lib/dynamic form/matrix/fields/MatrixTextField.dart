@@ -42,9 +42,12 @@ class MatrixTextField extends Equatable implements IFormModel {
   }
 
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ?  valueToString() {
+    String ? realValue = this.value;
+    if(realValue != null && realValue.isEmpty)
+      return null;
+
+    return realValue;
   }
 
   @override

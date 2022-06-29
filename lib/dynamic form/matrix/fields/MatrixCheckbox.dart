@@ -39,10 +39,10 @@ class MatrixCheckbox extends Equatable implements IFormModel {
     return MatrixCheckboxWidget(label: label, name: name, value: value);
   }
 
+
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ? valueToString() {
+    return this.value != null ? value.toString() : this.value;
   }
   @override
   IFormModel copyWith({

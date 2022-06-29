@@ -47,10 +47,14 @@ class MatrixNumber extends Equatable  with FormValidation implements IFormModel 
     return MatrixNumberWidget(label: label, name: name, value: value);
   }
 
+
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ?  valueToString() {
+    String ? realValue = this.value;
+    if(realValue != null && realValue.isEmpty)
+      return null;
+
+    return realValue;
   }
 
   @override

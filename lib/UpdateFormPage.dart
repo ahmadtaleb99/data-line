@@ -39,7 +39,10 @@ class UpdateFormPage extends StatelessWidget {
               }
             },
             child: Text('Update form ')),
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('Update Form Submission'),
+          centerTitle: true,
+        ),
         body: Center(
           child: SingleChildScrollView(
             child: Column(

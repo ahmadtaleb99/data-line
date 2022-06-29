@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,6 @@ class MatrixRecordWidget extends FormElementWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-
     return RecordCard(
       children: children.map((e) => e.toWidget()).toList(),
       isFirst: isFirst,
@@ -42,8 +42,9 @@ class MatrixRecordWidget extends FormElementWidget {
   }
 
   MatrixRecordModel toModel() {
-
-    this.children.forEach((element) {log(element.value);} );
+    this.children.forEach((element) {
+      log(element.value);
+    });
     return MatrixRecordModel(fields: this.children);
   }
 }
@@ -65,6 +66,7 @@ class RecordCard extends StatefulWidget {
     required this.matrixName,
   });
 }
+
 GlobalKey<FormState> _key = GlobalKey();
 
 class _RecordCardState extends State<RecordCard> {
@@ -80,11 +82,7 @@ class _RecordCardState extends State<RecordCard> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
-
       builder: (context, state) {
-
-
-
         return Container(
           child: Row(
             children: [
@@ -101,28 +99,30 @@ class _RecordCardState extends State<RecordCard> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           onTap: () async {
-                            context.read<MatrixRecordCubit>().setCurrentRecord(widget.index, widget.matrixName);
+                            context.read<MatrixRecordCubit>().setCurrentRecord(
+                                widget.index, widget.matrixName);
 
                             showRecordDialog(context, onSubmit: () {
-                                  if(_key.currentState!.validate()){
-                                    Navigator.pop(context,true);
-
-                                  }
-
-
-                            },
-                            onClosed: (){
-                              context.read<MatrixRecordCubit>().showRecordClosed();
-
-                              Navigator.pop(context,false);
-                            },
-                              onWillPop: () async{
-                                context.read<MatrixRecordCubit>().showRecordClosed();
-                                return Future.value(true);
+                              if (state.currentRecord!.isEmpty()) {
+                                CoolAlert.show(
+                                    context: context,
+                                    type: CoolAlertType.error,
+                                    title: 'Can\'t submit Record',
+                                    text:
+                                        'One field must have a value at least');
+                                return;
                               }
-                            );
 
+                              if (_key.currentState!.validate()) {
+                                Navigator.pop(context, true);
+                              }
+                            }, onClosed: () {
+                                _showCancelDialog();
 
+                            }, onWillPop: () async {
+                              _showCancelDialog();
+                              return true;
+                            });
                           },
                           child: ExpansionPanelList(
                             expandedHeaderPadding: EdgeInsets.all(0),
@@ -206,19 +206,37 @@ class _RecordCardState extends State<RecordCard> {
                     ),
                   )),
               // if (!(state.matrixList.firstWhere((element) => element.name == this.widget.matrixName).records.length == 1) )
-                Expanded(
-                  child: IconButton(
-                      onPressed: () {
-                        var record = state.matrixList.firstWhere((element) => element.name == this.widget.matrixName).records[widget.index];
+              Expanded(
+                child: IconButton(
+                  splashRadius: 15,
+                  onPressed: () {
+                    CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.warning,
+                      showCancelBtn: true,
+                      confirmBtnText: 'Confirm',
+                      cancelBtnText: 'Cancel',
+                      title: 'Warning',
+                      text: 'Are you sure you want to delete this record?',
+                      onConfirmBtnTap: () {
+                        var record = state.matrixList
+                            .firstWhere((element) =>
+                                element.name == this.widget.matrixName)
+                            .records[widget.index];
+
                         if (isExpanded) {
                           isExpanded = false;
                         }
                         context
                             .read<MatrixRecordCubit>()
-                            .removeRecord(widget.matrixName,record);
+                            .removeRecord(widget.matrixName, record);
+                        Navigator.pop(context);
                       },
-                      icon: Icon(Icons.remove)),
-                )
+                    );
+                  },
+                  icon: Icon(Icons.delete),
+                ),
+              )
               // else  Container(),
             ],
           ),
@@ -228,8 +246,9 @@ class _RecordCardState extends State<RecordCard> {
   }
 
   Widget setupAlertDialoadContainer(List<FormElementWidget> children) {
-
-   children.forEach((element) {log(element.value.toString());});
+    children.forEach((element) {
+      log(element.value.toString());
+    });
     return Container(
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
@@ -253,8 +272,11 @@ class _RecordCardState extends State<RecordCard> {
     );
   }
 
-  Future<dynamic>  showRecordDialog(BuildContext context, {void Function()? onSubmit , void Function()? onClosed,Future<bool> Function()? onWillPop}) async {
-   var result =  await showDialog(
+  Future<dynamic> showRecordDialog(BuildContext context,
+      {void Function()? onSubmit,
+      void Function()? onClosed,
+      Future<bool> Function()? onWillPop}) async {
+    var result = await showDialog(
         useRootNavigator: false,
         barrierDismissible: false,
         context: context,
@@ -264,7 +286,7 @@ class _RecordCardState extends State<RecordCard> {
             child: WillPopScope(
               onWillPop: onWillPop,
               child: AlertDialog(
-                title: Text('Add'),
+                title: Text('Update Record'),
                 content: setupAlertDialoadContainer(widget.children),
                 actions: [
                   Padding(
@@ -301,6 +323,27 @@ class _RecordCardState extends State<RecordCard> {
           );
         });
 
-   return result;
+    return result;
+  }
+
+  void _showCancelDialog({VoidCallback ? onConfirm}){
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      showCancelBtn: true,
+      confirmBtnText: 'Confirm',
+      cancelBtnText: 'back',
+      title: 'Warning',
+      text: 'New values will not be saved when canceling.',
+      onConfirmBtnTap: () {
+        context
+            .read<MatrixRecordCubit>()
+            .showRecordClosed();
+
+        Navigator.pop(context, false);
+        Navigator.pop(context);
+      },
+    );
+
   }
 }

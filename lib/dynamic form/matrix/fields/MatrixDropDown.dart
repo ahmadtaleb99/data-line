@@ -61,10 +61,10 @@ class MatrixDropDown  extends Equatable implements IFormModel {
     return MatrixDropDownWidget(label: label, name: name, value: value, values: values);
   }
 
+
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ? valueToString() {
+    return this.value;
   }
 
   @override

@@ -58,12 +58,11 @@ class MatrixRadioGroup extends Equatable implements IFormModel {
     return MatrixRadioGroupWidget(label: label, name: name, children: values, value: value);
   }
 
-  @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
-  }
 
+  @override
+  String ? valueToString() {
+    return this.value != null ? value.toString() : this.value;
+  }
   @override
   IFormModel copyWith({
     String? name,

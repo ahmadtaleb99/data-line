@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'IDrawable.dart';
 
 class FormFieldWidget<T>  extends StatelessWidget {
-  FormFieldWidget({
+    FormFieldWidget({
     Key ? key,
     this.validator,
     required this.visible,
@@ -43,11 +43,13 @@ class FormFieldWidget<T>  extends StatelessWidget {
       maintainSize: false,
       maintainState: false,
       child: FormField<T>(
+
         autovalidateMode: AutovalidateMode.onUserInteraction,
 
         validator: validator,
         initialValue: this.value,
         builder: (T){
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

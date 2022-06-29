@@ -56,9 +56,9 @@ class MatrixCheckboxGroup  extends Equatable implements IFormModel {
   }
 
   @override
-  String valueToString() {
-    // TODO: implement valueToString
-    throw UnimplementedError();
+  String ? valueToString() {
+
+    return this.value != null ?( this.value.isEmpty ? null : this.value.toString()) : this.value;
   }
 
   @override

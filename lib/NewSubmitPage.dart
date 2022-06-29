@@ -49,8 +49,9 @@ class NewSubmitPage extends StatelessWidget {
           result = await  CoolAlert.show(
               context: context,
               showCancelBtn: true,
+              title: 'Warning!',
               type: CoolAlertType.warning,
-              text: "Some fields have values!",
+              text: "Some fields have values, if you go back values will be erased",
               onConfirmBtnTap: () {
                 Navigator.pop(context,true);
 
@@ -85,7 +86,8 @@ class NewSubmitPage extends StatelessWidget {
             },
             child: Text('submit form ')),
       appBar: AppBar(
-
+  title: Text('New Form Submission'),
+        centerTitle: true,
       ),
       body: Center(
 
