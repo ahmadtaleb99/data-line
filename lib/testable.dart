@@ -1,30 +1,27 @@
+
+import 'dart:io';
+import 'dart:isolate';
+
 import 'package:equatable/equatable.dart';
 
-void main(){
+Future<void> main() async {
+  // ReceivePort receivePort = ReceivePort();
+  // late Isolate  isolate ;
+  //
+  // final data = {'port': receivePort.sendPort, };
+  // isolate = await Isolate.spawn(writeToFile, data);
+  //     receivePort.listen((message) {
+  //       print(message.toString());
+  //     });
+var file = File('2.txt');
+var array = await file.readAsString();
 
-
- List<Person> p = [
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
- ];
-
- List<Person> p1 = [
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
-   Person('ahmad'),
- ];
-
- Person person = Person('ahmad');
- Person person1 = Person('ahmad');
- print((person == person1).toString());
- print((p == p1).toString());
-
+print(array.length);
 }
+
+var array = [
+
+];
 
 class Person extends Equatable{
 
@@ -36,4 +33,19 @@ class Person extends Equatable{
   // TODO: implement props
   List<Object?> get props => [name];
 
+}
+
+void writeToFile(Map data) async{
+  SendPort sendPort = data['port'];
+
+  final file = await File('2.txt').create();
+  var sink = file.openWrite();
+  for(int i = 0; i< 10000000;i++){
+    sink.write(i);
+  }
+
+  sink.close();
+
+
+  sendPort.send('done');
 }

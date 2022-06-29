@@ -17,7 +17,7 @@ class UpdateFormPage extends StatelessWidget {
       : super(key: key);
   late GlobalKey<FormState> _key;
   final int index;
-  final LoadingOverlay _loadingOverlay = LoadingOverlay();
+  final _loadingOverlay = LoadingService.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class UpdateFormPage extends StatelessWidget {
 
           listener: (context,state) {
             if(state.status == Status.loading)
-              _loadingOverlay.show(context,'updating form ...');
+              _loadingOverlay.show(context,msg:'updating form ...');
             else
               _loadingOverlay.hide();
 

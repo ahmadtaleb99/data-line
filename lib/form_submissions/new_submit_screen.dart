@@ -16,7 +16,7 @@ class NewSubmitScreen extends StatelessWidget {
    FormWidget form;
    NewSubmitScreen ({Key? key, required this.form}) : super(key: key);
   late GlobalKey<FormState> _key;
- var _loadingOverlay =  LoadingOverlay;
+ var _loadingOverlay =  LoadingService.instance;
 
 
   bool _formHasValues(){
@@ -91,7 +91,7 @@ class NewSubmitScreen extends StatelessWidget {
   child: BlocConsumer<ValidationBloc, ValidationState>(
     listener: (context,state){
       if(state.status == Status.loading)
-        _loadingOverlay.show(context,'submitting ...');
+        _loadingOverlay.show(context,msg: 'submitting ...');
       else _loadingOverlay.hide();
 
       if(state.submitted! && state.status == Status.success) {

@@ -21,9 +21,7 @@ void copyIsolateFunc(Map data) async{
   var _readStream = file.openRead();
   int fileLength = await file.length();
   int currentBytesWritten = 0;
-  print('3');
 
-  print(fileLength.toString()+' file lengtg');
   var _writeSink = file2.openWrite();
   await for (var bytes in _readStream) {
     currentBytesWritten += bytes.length;
@@ -33,12 +31,9 @@ void copyIsolateFunc(Map data) async{
 
   }
 
-  print(currentBytesWritten.toString()+' file currentBytesWritten');
-  print(currentBytesWritten);
+
   _writeSink.close();
-  print('4 stream end');
   sendPort.send('done');
-  print('isolate :::::: ${file2.existsSync().toString() }  ${file2.path}');
 }
 class IoService {
 
