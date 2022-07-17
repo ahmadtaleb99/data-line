@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/form_submissions/new_submit_screen.dart';
 
 import '../Widgets/form_widget.dart';
 import '../utils/loading_overlay.dart';
@@ -40,7 +41,10 @@ class UpdateFormPage extends StatelessWidget {
             },
             child: Text('Update form ')),
         appBar: AppBar(
-          title: Text('Update Form Submission'),
+          actions: [
+            NodeWidget()
+          ],
+          title: Text('Update Submission',overflow: TextOverflow.clip,),
           centerTitle: true,
         ),
         body:               BlocConsumer<ValidationBloc, ValidationState>(

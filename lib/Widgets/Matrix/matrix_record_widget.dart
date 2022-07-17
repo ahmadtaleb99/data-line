@@ -246,9 +246,7 @@ class _RecordCardState extends State<RecordCard> {
   }
 
   Widget setupAlertDialoadContainer(List<FormElementWidget> children) {
-    children.forEach((element) {
-      log(element.value.toString());
-    });
+
     return Container(
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement

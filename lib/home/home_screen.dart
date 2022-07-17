@@ -33,7 +33,8 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         appBar: AppBar(  title: Text('Home Page '),
-          centerTitle: true,),
+          centerTitle: true,
+       ),
         body: RefreshIndicator(
           onRefresh: () async {
             context.read<ValidationBloc>().add(FormsRequested());

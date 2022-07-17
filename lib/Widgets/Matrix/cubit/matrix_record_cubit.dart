@@ -137,6 +137,7 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
     final date = await  showDatePicker(firstDate: DateTime(1940)
         , initialDate: DateTime(1999),
         lastDate: DateTime.now(), context: context);
+    if(date == null ) return date;
   record.fields.firstWhere((dynamic element) => element.name == fieldName).value=date;
 
 
@@ -152,7 +153,6 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
   void _setNewCurrentRecord(MatrixRecordModel record,String matrixName){
 
     int index = state.matrixList.firstWhere((element) => element.name == matrixName).records.length-1;
-    state.currentRecord = record;
     emit(state.copyWith(currentRecord: record,index: index));
 
   }
@@ -226,9 +226,11 @@ var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(va
             },
             child: BlocProvider<MatrixRecordCubit>.value(
               value: this,
-              child: AlertDialog(
+              child: BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
+  builder: (context, state) {
+    return AlertDialog(
                 title: Text('Add new record'),
-                content: setupAlertDialoadContainer(newRecord),
+                content: setupAlertDialoadContainer(state.currentRecord!),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -276,7 +278,9 @@ var newRecord = MatrixRecordModel(fields: matrix.values.map((e) => e.copyWith(va
                     ),
                   )
                 ],
-              ),
+              );
+  },
+),
             ),
           );
         });

@@ -38,6 +38,13 @@ class FormsRequested extends ValidationEvent {
 
 }
 
+class NodeChanged extends ValidationEvent {
+
+  Node node;
+
+  NodeChanged(this.node);
+}
+
 
 class MatrixDatePickerChanged extends ValidationEvent {
 

@@ -20,22 +20,16 @@ class MatrixDatePickerWidget extends FormElementWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MatrixRecordCubit, MatrixRecordState>(
       builder: (context, state) {
-        // var date;
-        // if(value == null )
-        //   date=  state.matrixList.first.records.firstWhere((element) => element.name == this.name).value;
-        //
-        // else date = this.value;
+              log(this.value.toString());
           return TextFormField(
             key: Key(value.toString()),
-            // initialValue: value != null
-            //       ? DateFormat('d - MMMM - y').format(value)
-            //       : '',
+
             initialValue: value != null ?
             DateFormat('d - MMMM - y').format(value) : '',
             readOnly: true,
             onTap: () async {
               value = await
-              context.read<MatrixRecordCubit>().dateChanged(context, name);
+              context.read<MatrixRecordCubit>().dateChanged(context, name) ?? value;
             },
             decoration: InputDecoration(
 

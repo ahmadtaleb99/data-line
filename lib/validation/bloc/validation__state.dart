@@ -13,12 +13,14 @@ class ValidationState{
   bool  ? submitted = false;
   bool  ? updated = false;
   bool   filePicking = false;
+  Node ? currentNode;
   Status status;
+  List<Node> nodes;
   CheckboxGroupWidget ? drawCheckboxGroup;
   DropDownWidget ? drawDropDownButton;
   RadioGroupWidget ? radioGroup;
   LoadingState ? loadingState;
-
+  String errorMsg ;
   List<ChildDropDownWidget> ? childLists;
 
   List<FormWidget> ? forms;
@@ -45,9 +47,12 @@ class ValidationState{
     required this.filePicking,
     this.status = Status.initial,
     this.drawDropDownButton,
+    this.errorMsg = '',
     this.radioGroup,
+    required this.nodes,
     this.childList,
     this.forms,
+    this.currentNode,
     this.loadingState,
     this.subedForms,
     this.islocallyWorking = false,
@@ -71,6 +76,9 @@ class ValidationState{
     bool ?   islocallyWorking,
     bool ?   submitted,
     bool ?   updated,
+    List<Node> ?   nodes,
+    Node ?   currentNode,
+    String ?  errorMsg,
 
     List<DropDownItem>? childItems,
     List<ChildDropDownWidget>? childLists,
@@ -92,10 +100,13 @@ class ValidationState{
         forms: forms ?? this.forms,
         loadingState: loadingState ?? this.loadingState,
         formModel: formModel ?? this.formModel,
+        errorMsg: errorMsg ?? this.errorMsg,
+        currentNode: currentNode ?? this.currentNode,
         subedForms: subedForms ?? this.subedForms,
         islocallyWorking: islocallyWorking ?? this.islocallyWorking,
         initialMulti: initialMulti ?? this.initialMulti,
-        filePicking: filePicking ?? this.filePicking
+        filePicking: filePicking ?? this.filePicking,
+        nodes: nodes ?? this.nodes
     );
   }
 

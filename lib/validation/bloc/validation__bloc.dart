@@ -8,6 +8,7 @@ import 'package:form_builder_test/Widgets/Matrix/fields/matrix_datepicker_widget
 import 'package:form_builder_test/Widgets/star_rating_widget.dart';
 import 'package:form_builder_test/model/IFormModel.dart';
 import 'package:form_builder_test/model/matrix/fields/matrix_record.dart';
+import 'package:form_builder_test/model/node/node.dart';
 import 'package:mime/mime.dart';
 
 import 'dart:ui';
@@ -60,6 +61,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   ValidationBloc(this._formRepository)
         : super(ValidationState(
     filePicking: false,
+          nodes: [],
           childsMap: {},
         )) {
 
@@ -108,15 +110,24 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<MatrixSubmitted>(_onMatrixSubmitted);
     on<Refresher>(_onRefresher);
     on<MatrixDatePickerChanged>(_onMatrixDatePickerChanged);
+    on<NodeChanged>(_onNodeChanged);
   }
 
   Future<void> _onFormsRequested(
       FormsRequested event, Emitter<ValidationState> emit) async {
     try {
+
+
       emit(state.copyWith(status: Status.loading));
+
+      List<Node> nodes  = [
+        Node(id: '1', name: 'syria'),
+        Node(id: '2', name: 'Latakia'),
+      ];
       var forms = await _formRepository.LoadFormsModel();
 
       emit(state.copyWith(
+        nodes: nodes,
           status: Status.success,
           forms: forms.map((e) => e.toWidget() as FormWidget).toList()));
     } on SocketException {
@@ -133,6 +144,11 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     select.value = event.value;
 
     emit(state.copyWith());
+  }
+
+ void _onNodeChanged(
+     NodeChanged event, Emitter<ValidationState> emit) {
+    emit(state.copyWith(currentNode: event.node));
   }
 
 
@@ -513,16 +529,25 @@ var mimi = lookupMimeType(cachedFile.path);
     ));
   }
 
+
   void _onFormSubmitted(FormSubmitted event, Emitter<ValidationState> emit) {
-    var formModel = _getEmptyForm(event.formName);
-    var stateForm = state.form!;
-    _mapWidgetValuesToModel(formModel, stateForm);
+    if(state.currentNode == null){
+      emit(state.copyWith(submitted: true,status: Status.failure,errorMsg: 'Please choose a node' ));
+      emit(state.copyWith(status: Status.success,submitted: false));
+        return;
+    }
+    else {
+      var formModel = _getEmptyForm(event.formName);
+      var stateForm = state.form!;
+      _mapWidgetValuesToModel(formModel, stateForm);
 
-    _formRepository.addSubmittedForm(formModel);
-    stateForm  = _getEmptyForm(stateForm.name).toWidget() as FormWidget;
+      _formRepository.addSubmittedForm(formModel);
+      stateForm  = _getEmptyForm(stateForm.name).toWidget() as FormWidget;
 
-       emit(state.copyWith(submitted: true,form: stateForm,status: Status.success,updated: false ));
-    emit(state.copyWith(submitted: false ));
+      emit(state.copyWith(submitted: true,form: stateForm,status: Status.success,updated: false ));
+      emit(state.copyWith(submitted: false ));
+    }
+
   }
 
 
