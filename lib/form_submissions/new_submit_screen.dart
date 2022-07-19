@@ -42,7 +42,7 @@ class NewSubmitScreen extends StatelessWidget {
               title: 'Warning!',
               type: CoolAlertType.warning,
               text:
-              "Some fields have values, if you go back values will be erased",
+                  "Some fields have values, if you go back values will be erased",
               onConfirmBtnTap: () {
                 Navigator.pop(context, true);
               },
@@ -71,11 +71,8 @@ class NewSubmitScreen extends StatelessWidget {
                   },
                   child: Text('submit form ')),
               appBar: AppBar(
-                actions: [
-                  NodeWidget()
-                ],
+                actions: [NodeWidget()],
                 title: Text('New Form Submission'),
-                centerTitle: true,
               ),
               body: Center(
                 child: BlocConsumer<ValidationBloc, ValidationState>(
@@ -85,8 +82,8 @@ class NewSubmitScreen extends StatelessWidget {
                     else
                       _loadingOverlay.hide();
 
-                    if (state.submitted!  ) {
-                      if(state.status == Status.success){
+                    if (state.submitted!) {
+                      if (state.status == Status.success) {
                         CoolAlert.show(
                             context: context,
                             type: CoolAlertType.success,
@@ -94,9 +91,7 @@ class NewSubmitScreen extends StatelessWidget {
                             onConfirmBtnTap: () {
                               Navigator.pop(context);
                             });
-                      }
-
-                      else if(state.status == Status.failure){
+                      } else if (state.status == Status.failure) {
                         CoolAlert.show(
                             context: context,
                             type: CoolAlertType.error,
@@ -122,7 +117,6 @@ class NewSubmitScreen extends StatelessWidget {
   }
 }
 
-
 class NodeWidget extends StatelessWidget {
   const NodeWidget({Key? key}) : super(key: key);
 
@@ -130,38 +124,58 @@ class NodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.only(left:10,right: 10  ),
-          child: DropdownButton<String>(
-            value: state.currentNode != null ? state.currentNode!.id : null,
-            items: state.nodes
-                .map((e) =>
-                DropdownMenuItem<String>(child: Text(e.name,style:TextStyle(fontSize: 15,fontStyle: FontStyle.italic)), value: e.id,))
-                .toList(),
-
-            onChanged: (value) {
-              print(value);
-              context.read<ValidationBloc>().add(NodeChanged(
-                  state.nodes.firstWhere((node) => value == node.id)));
-            },
-            icon: Padding(
-              padding: const EdgeInsets.only(left:12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-
-                    'assets/node.png',
-                      height: 18,
-                  ),
-                  Text('Node',style: TextStyle(fontSize: 13,fontStyle: FontStyle.italic),)
-                ],
+      return  Padding(
+        padding: const EdgeInsets.only(right: 11,left: 18.0,top: 10,bottom: 10),
+        child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius:
+                BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.2,
+                ),
               ),
-            ),
-          ),
-        );
+              child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Center(
+                    child:  DropdownButton<String>(
+
+                      underline: Container(),
+                      value: state.currentNode != null ? state.currentNode!.id : null,
+                      items: state.nodes
+                          .map((e) => DropdownMenuItem<String>(
+                        child: Text(e.name,
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black)),
+                        value: e.id,
+                      ))
+                          .toList(),
+                      onChanged: (value) {
+                        print(value);
+                        context.read<ValidationBloc>().add(NodeChanged(
+                            state.nodes.firstWhere((node) => value == node.id)));
+                      },
+                      selectedItemBuilder: (context){
+                        return state.nodes
+                            .map((e) => DropdownMenuItem<String>(
+                          child: Text(e.name,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white)),
+                          value: e.id,
+                        )).toList();
+                      },
+
+                      icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                    ),
+                  ))),
+      )
+        ;
       },
-    )
-    ;
+    );
   }
 }

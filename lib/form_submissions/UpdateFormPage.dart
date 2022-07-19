@@ -45,7 +45,6 @@ class UpdateFormPage extends StatelessWidget {
             NodeWidget()
           ],
           title: Text('Update Submission',overflow: TextOverflow.clip,),
-          centerTitle: true,
         ),
         body:               BlocConsumer<ValidationBloc, ValidationState>(
 
