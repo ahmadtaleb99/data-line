@@ -20,7 +20,8 @@ class MatrixDropDownAdapter extends TypeAdapter<MatrixDropDown> {
       name: fields[1] as String,
       label: fields[2] as String,
       values: (fields[3] as List).cast<DropDownItem>(),
-    )..value = fields[4] as dynamic;
+      value: fields[4] as dynamic,
+    );
   }
 
   @override

@@ -6,18 +6,18 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_builder_test/Widgets/Matrix/cubit/matrix_record_cubit.dart';
+import 'package:form_builder_test/data/FormRepository.dart';
 
-import 'package:form_builder_test/form_submissions/new_submit_screen.dart';
-import 'package:form_builder_test/form_submissions/SubmittionsPage.dart';
+import 'package:form_builder_test/presentation/new_form/view/new_submit_screen.dart';
+import 'package:form_builder_test/presentation/submissions/view/submissions_screen.dart';
+import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../Widgets/Matrix/cubit/matrix_record_cubit.dart';
-import '../data/FormRepository.dart';
-import '../validation/bloc/validation__bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   Future<void> _refresh(BuildContext context) async {
     context.read<ValidationBloc>().add(FormsRequested());
@@ -92,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     BlocProvider(
-                                                      create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentForm(index)..loadMatrices(),
+                                                      create: (context) => MatrixRecordCubit(context.read<OldFormRepository>())..setCurrentForm(index)..loadMatrices(),
                                                       child: NewSubmitScreen(
                                                         form: state
                                                             .forms![index],

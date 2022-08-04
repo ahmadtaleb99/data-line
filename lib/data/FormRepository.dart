@@ -23,36 +23,36 @@ import '../model/IFormEmail.dart';
 import '../model/IFormTextField.dart';
 import '../model/IFormModel.dart';
 
-class FormRepository {
+class OldFormRepository {
 
   FormApi _flexApi = FlexFormApi();
   LocalStorageApi _localApi = LocalStorageApi();
 
   List<FormWidget> _forms = [];
-  List<FormModel> _formsModel = [];
-  List<FormModel> _submittedForms = [];
+  List<OldFormModel> _formsModel = [];
+  List<OldFormModel> _submittedForms = [];
 
   List<FormWidget> get forms => _forms;
-  List<FormModel> get formsModel => _formsModel;
-  List<FormModel> get availableForms => _availableForms;
-  List<FormModel> get submittedForms => _submittedForms;
+  List<OldFormModel> get formsModel => _formsModel;
+  List<OldFormModel> get availableForms => _availableForms;
+  List<OldFormModel> get submittedForms => _submittedForms;
 
-  List<FormModel> _availableForms = [];
+  List<OldFormModel> _availableForms = [];
 
   Future<void> initLocal() async {
     await _localApi.init();
     }
 
 
-  FormRepository(){
+  OldFormRepository(){
     initLocal();
   }
 
-  void addSubmittedForm(FormModel formModel){
+  void addSubmittedForm(OldFormModel formModel){
     _localApi.addSubmittedForm(formModel);
   }
 
-  void updateSubmission(FormModel submittedForm){
+  void updateSubmission(OldFormModel submittedForm){
     _localApi.updateSubmittedForm(submittedForm);
   }
 
@@ -61,21 +61,21 @@ class FormRepository {
           return _localApi.getLastSubmissionID();
       }
 
-  int getSubmissionID (FormModel formModel){
+  int getSubmissionID (OldFormModel formModel){
     return _localApi.getSubmissionID(formModel);
   }
-  Future<List<FormModel>> getAvailableFormsFromLocal() async {
+  Future<List<OldFormModel>> getAvailableFormsFromLocal() async {
     return await  _localApi.getAvailableForms();
   }
 
-  Future<List<FormModel>> LoadFormsModel()  async {
+  Future<List<OldFormModel>> LoadFormsModel()  async {
       _availableForms = await _flexApi.getFormElements();
       _localApi.addAvailableForms(availableForms);
     return _availableForms;
   }
 
 
-  List<FormModel> getAllSubmissionByName(String formName){
+  List<OldFormModel> getAllSubmissionByName(String formName){
     _submittedForms = _localApi.getAllSubmissionByName(formName);
      return _submittedForms;
   }
@@ -83,7 +83,7 @@ class FormRepository {
 
 
 
-      void deleteForm(FormModel form){
+      void deleteForm(OldFormModel form){
           _submittedForms.remove(form);
           _localApi.deleteForm(form);
       }

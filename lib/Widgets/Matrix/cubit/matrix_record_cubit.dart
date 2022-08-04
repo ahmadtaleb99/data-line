@@ -22,14 +22,14 @@ part 'matrix_record_state.dart';
 
 class MatrixRecordCubit extends Cubit<MatrixRecordState> {
 
-  late FormModel _currentForm;
+  late OldFormModel _currentForm;
   MatrixRecordCubit(this._formRepository)
       : super(MatrixRecordState(
     errorText: '',
     matrixList: [],index: 0
            ));
 
-  FormRepository _formRepository;
+  OldFormRepository _formRepository;
   List _oldValues = [ ] ;
 
     @override

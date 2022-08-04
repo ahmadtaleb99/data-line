@@ -8,9 +8,9 @@ import 'package:form_builder_test/Widgets/Matrix/matrix_widget.dart';
 import 'package:form_builder_test/utils/loading_overlay.dart';
 import 'package:cool_alert/cool_alert.dart';
 
-import '../data/FormRepository.dart';
-import '../Widgets/form_widget.dart';
-import '../validation/bloc/validation__bloc.dart';
+import '../../../data/FormRepository.dart' as update_form;
+import '../../../Widgets/form_widget.dart';
+import '../../../validation/bloc/validation__bloc.dart';
 
 class NewSubmitScreen extends StatelessWidget {
   FormWidget form;

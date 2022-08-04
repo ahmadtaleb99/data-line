@@ -109,7 +109,7 @@ class IoService {
     }
   }
 
-  Future<void> deleteSubmissionCache(int id, FormModel formModel) async {
+  Future<void> deleteSubmissionCache(int id, OldFormModel formModel) async {
     var dir = Directory(_base + '/${id}-${formModel.name}');
     if (await dir.exists()) await dir.delete(recursive: true);
   }

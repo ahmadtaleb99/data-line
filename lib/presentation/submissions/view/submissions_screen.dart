@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/data/FormRepository.dart';
-import 'package:form_builder_test/form_submissions/submissionDetailsPage.dart';
+import 'package:form_builder_test/presentation/submission_details_screen/view/submisson_details_screen.dart';
 
-import '../Widgets/Matrix/cubit/matrix_record_cubit.dart';
-import '../Widgets/form_widget.dart';
-import '../validation/bloc/validation__bloc.dart';
-import 'UpdateFormPage.dart';
+import '../../../Widgets/Matrix/cubit/matrix_record_cubit.dart';
+import '../../../Widgets/form_widget.dart';
+import '../../../validation/bloc/validation__bloc.dart';
+import '../../update_form/view/update_form_screen.dart';
 
 class SubmittionsPage extends StatelessWidget {
   FormWidget form;
@@ -47,7 +47,7 @@ class SubmittionsPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider(
-  create: (context) => MatrixRecordCubit(context.read<FormRepository>())..setCurrentSubmittedForm(index)..loadMatrices(),
+  create: (context) => MatrixRecordCubit(context.read<OldFormRepository>())..setCurrentSubmittedForm(index)..loadMatrices(),
   child: UpdateFormPage(
                                             index: index,
                                             form: state.subedForms![index]),
@@ -58,7 +58,7 @@ class SubmittionsPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider(
-  create: (context) => MatrixRecordCubit(context.read<FormRepository>()),
+  create: (context) => MatrixRecordCubit(context.read<OldFormRepository>()),
   child: SubmittionsDetailsPage(formWidget: state.subedForms![index]),
 )));
                               },

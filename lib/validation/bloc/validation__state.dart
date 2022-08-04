@@ -4,9 +4,9 @@ part of 'validation__bloc.dart';
 
 @immutable
 enum Status {initial,loading,success,failure,newFormLoaded}
-  class LoadingState {String msg;
+  class OldLoadingState {String msg;
 
-  LoadingState(this.msg);
+  OldLoadingState(this.msg);
 }
 class ValidationState{
 
@@ -19,7 +19,7 @@ class ValidationState{
   CheckboxGroupWidget ? drawCheckboxGroup;
   DropDownWidget ? drawDropDownButton;
   RadioGroupWidget ? radioGroup;
-  LoadingState ? loadingState;
+  OldLoadingState ? loadingState;
   String errorMsg ;
   List<ChildDropDownWidget> ? childLists;
 
@@ -28,7 +28,7 @@ class ValidationState{
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   FormWidget  ?   form;
-  FormModel ?   formModel;
+  OldFormModel ?   formModel;
   bool ?   islocallyWorking;
 
 
@@ -69,8 +69,8 @@ class ValidationState{
     DropDownWidget? drawDropDownButton,
     RadioGroupWidget ? radioGroup,
     List<FormWidget> ? forms,
-    FormModel ?   formModel,
-    LoadingState ? loadingState,
+    OldFormModel ?   formModel,
+    OldLoadingState ? loadingState,
     List<FormWidget> ? subedForms,
     bool  ? filePicking,
     bool ?   islocallyWorking,

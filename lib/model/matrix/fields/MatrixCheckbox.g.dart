@@ -19,7 +19,8 @@ class MatrixCheckboxAdapter extends TypeAdapter<MatrixCheckbox> {
     return MatrixCheckbox(
       name: fields[1] as String,
       label: fields[2] as String,
-    )..value = fields[4] as dynamic;
+      value: fields[4] as dynamic,
+    );
   }
 
   @override

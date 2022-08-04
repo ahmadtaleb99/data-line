@@ -54,7 +54,7 @@ part 'validation__event.dart';
 part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
-  FormRepository _formRepository;
+  OldFormRepository _formRepository;
   IoService _ioService = IoService();
 
 
@@ -551,7 +551,7 @@ var mimi = lookupMimeType(cachedFile.path);
   }
 
 
-  FormModel _getEmptyForm(String name){
+  OldFormModel _getEmptyForm(String name){
 
     return _formRepository.availableForms
         .firstWhere((element) => element.name == name).copyWith();
@@ -560,7 +560,7 @@ var mimi = lookupMimeType(cachedFile.path);
 
 
 
-  void _mapWidgetValuesToModel(FormModel formModel, FormWidget formWidget) {
+  void _mapWidgetValuesToModel(OldFormModel formModel, FormWidget formWidget) {
     for (int i = 0; i < formModel.fields.length; i++) {
       var widgetField = formWidget.fields[i];
       if(widgetField is RadioGroupWidget)

@@ -11,15 +11,15 @@ class FlexFormApi extends FormApi{
 
 
   @override
-  Future<List<FormModel>> getFormElements() async {
-    List<FormModel> forms = [];
+  Future<List<OldFormModel>> getFormElements() async {
+    List<OldFormModel> forms = [];
     await Future.delayed(Duration(seconds: 2  ));
 
     var data ;
 
     data = jsonDecode(formsJson);
     for(var form in data ){
-      forms.add(FormModel.fromJson(form));
+      forms.add(OldFormModel.fromJson(form));
     }
 
     return forms;

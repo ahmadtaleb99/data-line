@@ -20,7 +20,7 @@ part 'FormModel.g.dart';
 
 
 @HiveType(typeId: 35)
-class FormModel extends HiveObject implements IFormModel {
+class OldFormModel extends HiveObject implements IFormModel {
 
   static IFormModel? _getFieldFromType(String type, dynamic json) {
     switch (type) {
@@ -72,14 +72,14 @@ class FormModel extends HiveObject implements IFormModel {
   @HiveField(4)
   dynamic value;
 
-  FormModel({
+  OldFormModel({
     this.value,
     required this.name,
     required this.directionality,
     required this.fields,
   });
-  factory FormModel.fromJson(json) {
-    return FormModel(
+  factory OldFormModel.fromJson(json) {
+    return OldFormModel(
         name: json['name'],
         directionality: json['directionality'],
         fields: List.from(json['fields']
@@ -98,7 +98,7 @@ class FormModel extends HiveObject implements IFormModel {
     return FormWidget(label: name, name: name, fields: fieldsList);
   }
 
-  FormModel copyWith({
+  OldFormModel copyWith({
     String? name,
     String? directionality,
     List<IFormModel>? fields,
@@ -110,7 +110,7 @@ class FormModel extends HiveObject implements IFormModel {
     for(var item in this.fields){
       list.add(item.copyWith());
     }
-    return FormModel(
+    return OldFormModel(
       name: name ?? this.name,
       directionality: directionality ?? this.directionality,
       fields: list ,

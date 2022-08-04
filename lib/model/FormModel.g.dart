@@ -6,17 +6,17 @@ part of 'FormModel.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FormModelAdapter extends TypeAdapter<FormModel> {
+class OldFormModelAdapter extends TypeAdapter<OldFormModel> {
   @override
   final int typeId = 35;
 
   @override
-  FormModel read(BinaryReader reader) {
+  OldFormModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return FormModel(
+    return OldFormModel(
       value: fields[4] as dynamic,
       name: fields[1] as String,
       directionality: fields[2] as String,
@@ -25,7 +25,7 @@ class FormModelAdapter extends TypeAdapter<FormModel> {
   }
 
   @override
-  void write(BinaryWriter writer, FormModel obj) {
+  void write(BinaryWriter writer, OldFormModel obj) {
     writer
       ..writeByte(4)
       ..writeByte(1)
@@ -44,7 +44,7 @@ class FormModelAdapter extends TypeAdapter<FormModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FormModelAdapter &&
+      other is OldFormModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/form_submissions/new_submit_screen.dart';
+import 'package:form_builder_test/presentation/new_form/view/new_submit_screen.dart';
 
-import '../Widgets/form_widget.dart';
-import '../utils/loading_overlay.dart';
-import '../validation/bloc/validation__bloc.dart';
+import '../../../Widgets/form_widget.dart';
+import '../../../utils/loading_overlay.dart';
+import '../../../validation/bloc/validation__bloc.dart';
 
 
 class UpdateFormPage extends StatelessWidget {

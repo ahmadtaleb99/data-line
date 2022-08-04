@@ -12,6 +12,10 @@ class IFormModelAdapter extends TypeAdapter<IFormModel> {
 
   @override
   IFormModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
     throw UnimplementedError();
   }
 
