@@ -43,7 +43,7 @@ class StateRenderer extends StatelessWidget {
         return _getPopUpDialog(context, [
           _getAnimatedImage(AnimationAssets.error),
           _getMessage(message),
-          _getRetryButton(AppStrings.retryAgain, context)
+          _getRetryButton(AppStrings.ok, context)
         ]);
       case StateRendererType.FULLSCREEN_LOADING:
         return   _getItemsColumn( [
@@ -111,7 +111,7 @@ class StateRenderer extends StatelessWidget {
     return SizedBox(
       height: AppSize.s100,
       width: AppSize.s100,
-      child: Lottie.asset(animation), // todo add json image here
+      child: Lottie.asset(animation),
     );
   }
 

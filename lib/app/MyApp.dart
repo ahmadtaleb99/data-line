@@ -40,13 +40,13 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(375, 667),
         builder: (context, child) {
           return  MultiBlocProvider(providers: [
-            BlocProvider(create:  (context) => StateRendererBloc()),
+            BlocProvider.value(value:  getIT<StateRendererBloc>()),
           ],
             child: MaterialApp(
 
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouteGenerator.getRoute,
-              initialRoute: Routes.loginRoute,
+              initialRoute: Routes.homeRoute,
               theme: getApplicationTheme(),
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,

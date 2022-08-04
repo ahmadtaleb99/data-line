@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 mixin FormValidation{
 
   bool isValidEmail(String email){
@@ -14,6 +16,7 @@ mixin FormValidation{
     Pattern pattern =
         r"^[a-zA-Z]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
     RegExp regex = RegExp(pattern.toString());
+    log( regex.hasMatch(userName).toString());
     return regex.hasMatch(userName);
   }
 
@@ -23,6 +26,8 @@ mixin FormValidation{
     Pattern pattern =
         r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
     RegExp regex = RegExp(pattern.toString());
+    log( regex.hasMatch(password).toString());
+
     return regex.hasMatch(password);
   }
 

@@ -29,6 +29,8 @@ Future<void> initAppModules() async {
   final _appPreferences = AppPreferences(getIT<SharedPreferences>());
   getIT.registerLazySingleton<AppPreferences>(() => _appPreferences);
 
+  //network info
+  getIT.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
   //dio Factoty
   getIT.registerLazySingleton(() => DioFactory(getIT<AppPreferences>()));

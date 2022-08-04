@@ -1,146 +1,68 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
 
-import 'dart:convert';
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/Widgets/Matrix/cubit/matrix_record_cubit.dart';
-import 'package:form_builder_test/data/FormRepository.dart';
-
-import 'package:form_builder_test/presentation/new_form/view/new_submit_screen.dart';
-import 'package:form_builder_test/presentation/submissions/view/submissions_screen.dart';
-import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
+import 'package:form_builder_test/presentation/resources/values_manager.dart';
+import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  Future<void> _refresh(BuildContext context) async {
-    context.read<ValidationBloc>().add(FormsRequested());
-  }
+
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        floatingActionButton: BlocBuilder<ValidationBloc, ValidationState>(
-          builder: (context, state) {
-            return Container();
-          },
-        ),
-        appBar: AppBar(  title: Text('Home Page '),
-          centerTitle: true,
-       ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            context.read<ValidationBloc>().add(FormsRequested());
-          },
-          child: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  BlocConsumer<ValidationBloc, ValidationState>(
-                    listener: (context, state) {
-                      if (state.status == Status.newFormLoaded)
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    NewSubmitScreen(
-                                      form: state.form!,
-                                    )));
-                    },
-                    builder: (context, state) {
-                      if (state.status == Status.loading)
-                        return CircularProgressIndicator();
-                      else if (state.status == Status.success) {
-                        if (state.forms!.isEmpty) {
-                          return Text('There are no Assigned forms yet. ');
-                        }
-                        return Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                'Assigned Forms',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              Expanded(
-                                child: GridView.builder(
-                                  padding: EdgeInsets.all(40),
-                                  itemCount: state.forms!.length,
-                                  itemBuilder: (context, index) {
-                                    return FormCard(
-                                      formName: state.forms![index].name,
-                                      submitNewFormCallBack: () async {
-                                        context.read<ValidationBloc>().add(
-                                            FormRequested(
-                                                formName:
-                                                state.forms![index].name));
-
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BlocProvider(
-                                                      create: (context) => MatrixRecordCubit(context.read<OldFormRepository>())..setCurrentForm(index)..loadMatrices(),
-                                                      child: NewSubmitScreen(
-                                                        form: state
-                                                            .forms![index],
-                                                      ),
-                                                    )));
-                                        // print(state.form!.value);
-                                      },
-                                      viewSubmittedCallBack: () {
-                                        context.read<ValidationBloc>().add(
-                                            SubmittionsFormsRequested(
-                                                formName:
-                                                state.forms![index].name));
-
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SubmittionsPage(
-                                                      form: state.forms![index],
-                                                    )));
-                                      },
-                                    );
-                                  },
-                                  gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 10.0,
-                                      mainAxisSpacing: 20.0,
-                                      childAspectRatio: 1),
-                                ),
-                              ),
-
-                            ],
-                          ),
-                        );
-                      } else
-                        return Container();
-                    },
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                ]),
-          ),
-        ));
+        appBar: AppBar(),
+        body:
+    BlocBuilder<StateRendererBloc, StateRendererState>(
+      builder: (context, state) {
+        if (state.flowState != null) {
+          var widget = state.flowState.getWidget(context,const  NewWidget(), () {
+            context.read<HomeBloc>().add(AssignedFormsRequested());
+          });
+          log(widget.hashCode.toString());
+          return widget;
+        } else {
+          return const NewWidget();
+        }
+      },
+    )
+//       body: _getWidget(context)
+    );
   }
+}
 
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return GridView.builder(
+            gridDelegate:
+          const   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemCount: state.assignedForms.length,
+            itemBuilder: (context, index) {
+              log(state.assignedForms.first.name.toString());
+              return Padding(
+                padding: EdgeInsets.all(AppPadding.p20),
+                child: FormCard(viewSubmittedCallBack: () {
+
+                },
+                    formName:state.assignedForms[index].name,
+                    submitNewFormCallBack: () {}),
+              );
+            });
+      },
+    );
+  }
 }
 
 class FormCard extends StatelessWidget {
@@ -162,37 +84,37 @@ class FormCard extends StatelessWidget {
           color: Colors.lightBlueAccent,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        children: [
-          Expanded(
-              flex: 5,
-              child: Center(
-                  child: Text(formName,
-                      style: TextStyle(color: Colors.black, fontSize: 18)))),
-          Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: submitNewFormCallBack,
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
-                  IconButton(
-                      onPressed: viewSubmittedCallBack,
-                      icon: Icon(
-                        Icons.visibility,
-                        color: Colors.white,
-                      )),
-                ],
-              )),
-        ],
+      child: Card(
+        elevation: 10,
+        color: Colors.lightBlueAccent,
+        child: Column(
+          children: [
+            Expanded(
+                flex: 5,
+                child: Center(
+                    child: Text(formName,style: Theme.of(context).textTheme.overline!.copyWith(fontWeight: FontWeight.bold,fontSize: 18),))),
+            Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: submitNewFormCallBack,
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                    IconButton(
+                        onPressed: viewSubmittedCallBack,
+                        icon: const Icon(
+                          Icons.visibility,
+                          color: Colors.white,
+                        )),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }
 }
-
-
-

@@ -5,11 +5,13 @@ import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
+import 'dart:developer';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_item_model/radio_group_item_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
 import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';
+import 'package:form_builder_test/domain/model/text_area_model/text_area_model.dart';
 import 'package:form_builder_test/domain/model/text_field_model/text_field_model.dart';
 import 'package:form_builder_test/app/extenstions.dart';
 
@@ -43,6 +45,26 @@ extension EmailTextFieldMapper on EmailTextFieldResponse? {
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
       showIfIsRequired: this?.showIfIsRequired ?? false,
       requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+    );
+  }
+}
+
+
+extension TextAreaMapper on TextAreaFieldResponse? {
+  TextAreaModel toDomain() {
+    return TextAreaModel(
+      name: this?.name.orEmpty() ?? '',
+      label: this?.label.orEmpty() ?? '',
+      type: this?.type.orEmpty() ?? '',
+      deactivate: this?.deactivate ?? false,
+      required: this?.required ?? false,
+      isHidden: this?.isHidden ?? false,
+      isReadOnly: this?.isReadOnly ?? false,
+      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
+      showIfIsRequired: this?.showIfIsRequired ?? false,
+      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+      maxLength: this?.maxLength.orZero() ?? 0,
+      minLength: this?.minLength.orZero() ?? 0,
     );
   }
 }
@@ -202,7 +224,9 @@ extension FormMapper on FormResponse? {
 extension FormFieldMapper on FormFieldResponse? {
 
   FormFieldModel toDomain() {
-    return _getModelField(this);
+     var field = _getModelField(this);
+     log(field.type.toString());
+     return field;
   }
 }
 FormFieldModel _getModelField (FormFieldResponse?  formFieldResponse){
