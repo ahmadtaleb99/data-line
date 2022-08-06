@@ -20,7 +20,8 @@ extension TextFieldMapper on TextFieldResponse? {
     return TextFieldModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -37,7 +38,8 @@ extension EmailTextFieldMapper on EmailTextFieldResponse? {
     return EmailTextFieldModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -55,7 +57,8 @@ extension TextAreaMapper on TextAreaFieldResponse? {
     return TextAreaModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -74,7 +77,8 @@ extension StarRatingMapper on StarRatingFieldResponse? {
     return StarRatingModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -91,7 +95,7 @@ extension NumberTextFieldMapper on NumberFieldResponse? {
     return NumberFieldModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -110,7 +114,8 @@ extension FilerPickerMapper on FilePickerFieldResponse? {
     return FilePickerModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
-      type: this?.type.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -129,7 +134,8 @@ extension CheckboxGroupMapper on CheckboxGroupFieldResponse? {
     return CheckboxGroupModel(
         name: this?.name.orEmpty() ?? '',
         label: this?.label.orEmpty() ?? '',
-        type: this?.type.orEmpty() ?? '',
+        type: this?.type ?? FieldType.UNKNOWN,
+
         deactivate: this?.deactivate ?? false,
         required: this?.required ?? false,
         isHidden: this?.isHidden ?? false,
@@ -180,7 +186,8 @@ extension RadioGroupMapper on RadioGroupFieldResponse? {
     return RadioGroupModel(
         name: this?.name.orEmpty() ?? '',
         label: this?.label.orEmpty() ?? '',
-        type: this?.type.orEmpty() ?? '',
+        type: this?.type ?? FieldType.UNKNOWN,
+
         deactivate: this?.deactivate ?? false,
         required: this?.required ?? false,
         isHidden: this?.isHidden ?? false,
@@ -198,8 +205,9 @@ extension DropDownMapper on DropDownFieldResponse? {
     return DropDownModel(
         name: this?.name.orEmpty() ?? '',
         label: this?.label.orEmpty() ?? '',
-        type: this?.type.orEmpty() ?? '',
-        deactivate: this?.deactivate ?? false,
+      type: this?.type ?? FieldType.UNKNOWN,
+
+      deactivate: this?.deactivate ?? false,
         required: this?.required ?? false,
         isHidden: this?.isHidden ?? false,
         isReadOnly: this?.isReadOnly ?? false,

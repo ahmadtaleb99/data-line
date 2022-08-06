@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
 import '../radio_group_item_model/radio_group_item_model.dart';
 
@@ -11,7 +12,7 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
     required this.values,
     required String name,
     required String label,
-    required String type,
+    required FieldType type,
     required bool deactivate,
     required bool required,
     required bool isHidden,
@@ -38,7 +39,7 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
     bool? other,
     String? name,
     String? label,
-    String? type,
+    FieldType? type,
     bool? deactivate,
     bool? required,
     bool? isHidden,

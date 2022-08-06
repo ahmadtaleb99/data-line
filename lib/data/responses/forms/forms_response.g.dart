@@ -25,7 +25,6 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
     };
 
 
-
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
@@ -37,7 +36,7 @@ FormFieldResponse _$FormFieldResponseFromJson(Map<String, dynamic> json) =>
     FormFieldResponse()
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -50,7 +49,7 @@ Map<String, dynamic> _$FormFieldResponseToJson(FormFieldResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -60,13 +59,26 @@ Map<String, dynamic> _$FormFieldResponseToJson(FormFieldResponse instance) =>
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
 
+const _$FieldTypeEnumMap = {
+  FieldType.TEXT: 'text',
+  FieldType.TEXT_AREA: 'textarea',
+  FieldType.NUMBER: 'number',
+  FieldType.EMAIL: 'email',
+  FieldType.DROPDOWN: 'select',
+  FieldType.STAR_RATING: 'starrating',
+  FieldType.CHECKBOX_GROUP: 'checkbox-group',
+  FieldType.CHECKBOX: 'checkbox',
+  FieldType.RADIO_GROUP: 'radio-group',
+  FieldType.FILE: 'file',
+};
+
 TextFieldResponse _$TextFieldResponseFromJson(Map<String, dynamic> json) =>
     TextFieldResponse(
       json['unique'] as bool?,
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -79,7 +91,7 @@ Map<String, dynamic> _$TextFieldResponseToJson(TextFieldResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -95,7 +107,7 @@ EmailTextFieldResponse _$EmailTextFieldResponseFromJson(
     EmailTextFieldResponse()
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -109,7 +121,7 @@ Map<String, dynamic> _$EmailTextFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -127,7 +139,7 @@ TextAreaFieldResponse _$TextAreaFieldResponseFromJson(
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -141,7 +153,7 @@ Map<String, dynamic> _$TextAreaFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -160,7 +172,7 @@ NumberFieldResponse _$NumberFieldResponseFromJson(Map<String, dynamic> json) =>
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -174,7 +186,7 @@ Map<String, dynamic> _$NumberFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -200,7 +212,7 @@ CheckboxGroupFieldResponse _$CheckboxGroupFieldResponseFromJson(
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -214,7 +226,7 @@ Map<String, dynamic> _$CheckboxGroupFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -258,7 +270,7 @@ RadioGroupFieldResponse _$RadioGroupFieldResponseFromJson(
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -272,7 +284,7 @@ Map<String, dynamic> _$RadioGroupFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -315,7 +327,7 @@ DropDownFieldResponse _$DropDownFieldResponseFromJson(
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -329,7 +341,7 @@ Map<String, dynamic> _$DropDownFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -367,7 +379,7 @@ StarRatingFieldResponse _$StarRatingFieldResponseFromJson(
     StarRatingFieldResponse()
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -381,7 +393,7 @@ Map<String, dynamic> _$StarRatingFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,
@@ -399,7 +411,7 @@ FilePickerFieldResponse _$FilePickerFieldResponseFromJson(
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
-      ..type = json['type'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
       ..deactivate = json['deactivate'] as bool?
       ..required = json['required'] as bool?
       ..isHidden = json['isHidden'] as bool?
@@ -413,7 +425,7 @@ Map<String, dynamic> _$FilePickerFieldResponseToJson(
     <String, dynamic>{
       'name': instance.name,
       'label': instance.label,
-      'type': instance.type,
+      'type': _$FieldTypeEnumMap[instance.type],
       'deactivate': instance.deactivate,
       'required': instance.required,
       'isHidden': instance.isHidden,

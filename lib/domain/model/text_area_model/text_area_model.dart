@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
 
 class TextAreaModel extends FormFieldModel with EquatableMixin {
@@ -10,7 +11,7 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
     required this.minLength,
     required String name,
     required String label,
-    required String type,
+    required FieldType type,
     required bool deactivate,
     required bool required,
     required bool isHidden,
@@ -36,7 +37,7 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
     int? minLength,
     String? name,
     String? label,
-    String? type,
+    FieldType? type,
     bool? deactivate,
     bool? required,
     bool? isHidden,

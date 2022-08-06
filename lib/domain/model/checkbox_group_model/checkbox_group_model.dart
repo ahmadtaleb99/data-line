@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../data/responses/forms/forms_response.dart';
 import '../checkbox_group_item_model/checkbox_group_item_model.dart';
 import '../form_model.dart';
 
@@ -17,7 +18,7 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
     required this.checkboxMaxValue,
     required String name,
     required String label,
-    required String type,
+    required FieldType type,
     required bool deactivate,
     required bool required,
     required bool isHidden,
@@ -47,7 +48,7 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
     List<CheckboxGroupItemModel>? values,
     String? name,
     String? label,
-    String? type,
+    FieldType? type,
     bool? deactivate,
     bool? required,
     bool? isHidden,

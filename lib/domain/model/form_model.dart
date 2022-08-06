@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 
 class AssignedForms with EquatableMixin {
   List<FormModel>? data;
@@ -41,7 +42,7 @@ class FormFieldModel with EquatableMixin {
 
   final String label;
 
-  final String type;
+  final FieldType type;
 
   final bool deactivate;
 
@@ -86,7 +87,7 @@ class FormFieldModel with EquatableMixin {
   FormFieldModel copyWith({
     String? name,
     String? label,
-    String? type,
+    FieldType? type,
     bool? deactivate,
     bool? required,
     bool? isHidden,
