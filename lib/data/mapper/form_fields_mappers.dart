@@ -289,4 +289,5 @@ extension AssignedFormMapper on AssignedFormsResponse? {
   AssignedForms toDomain() {
     return AssignedForms(this?.data?.map((e) => e.toDomain()).toList());
   }
+
 }

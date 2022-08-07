@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/presentation/new_form/view/new_submit_screen.dart';
 
 import '../../../Widgets/form_widget.dart';
 import '../../../utils/loading_overlay.dart';
@@ -42,7 +41,7 @@ class UpdateFormPage extends StatelessWidget {
             child: Text('Update form ')),
         appBar: AppBar(
           actions: [
-            NodeWidget()
+            // NodeWidget()
           ],
           title: Text('Update Submission',overflow: TextOverflow.clip,),
         ),

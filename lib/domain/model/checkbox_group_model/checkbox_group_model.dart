@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../checkbox_group_item_model/checkbox_group_item_model.dart';
@@ -82,5 +83,11 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
 
   @override
   List<Object?> get props => super.props..addAll([other,minMaxCheckbox,checkboxMinValue,checkboxMaxValue,values]);
+
+  @override
+  Widget toWidget() {
+    // TODO: implement toWidget
+    throw UnimplementedError();
+  }
 
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
@@ -60,4 +61,10 @@ class StarRatingModel extends FormFieldModel with EquatableMixin{
   @override
 
   List<Object?> get props => super.props;
+
+  @override
+  Widget toWidget() {
+    // TODO: implement toWidget
+    throw UnimplementedError();
+  }
 }

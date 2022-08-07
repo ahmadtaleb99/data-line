@@ -12,7 +12,7 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
 import '../model/DropDownItem.dart';
 
-class DropDownWidget extends FormElementWidget {
+class OldDropDownWidget extends FormElementWidget {
   final String label;
   final bool deactivate;
   final bool required;
@@ -32,7 +32,7 @@ class DropDownWidget extends FormElementWidget {
   final String? Function(dynamic)? validator;
   List<DropDownItem> items;
 
-  DropDownWidget(
+  OldDropDownWidget(
       {Key? key,
       required this.label,
       required this.showIfIsRequired,

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 
 class AssignedForms with EquatableMixin {
@@ -37,7 +38,9 @@ class FormModel with EquatableMixin {
   }
 }
 
-class FormFieldModel with EquatableMixin {
+abstract class FormFieldModel with EquatableMixin {
+
+  Widget toWidget();
   final String name;
 
   final String label;
@@ -84,32 +87,32 @@ class FormFieldModel with EquatableMixin {
     requiredIfLogicCheckbox,
       ];
 
-  FormFieldModel copyWith({
-    String? name,
-    String? label,
-    FieldType? type,
-    bool? deactivate,
-    bool? required,
-    bool? isHidden,
-    bool? isReadOnly,
-    bool? showIfLogicCheckbox,
-    bool? showIfIsRequired,
-    bool? requiredIfLogicCheckbox,
-  }) {
-    return FormFieldModel(
-      name: name ?? this.name,
-      label: label ?? this.label,
-      type: type ?? this.type,
-      deactivate: deactivate ?? this.deactivate,
-      required: required ?? this.required,
-      isHidden: isHidden ?? this.isHidden,
-      isReadOnly: isReadOnly ?? this.isReadOnly,
-      showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
-      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
-      requiredIfLogicCheckbox:
-          requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
-    );
-  }
+  // FormFieldModel copyWith({
+  //   String? name,
+  //   String? label,
+  //   FieldType? type,
+  //   bool? deactivate,
+  //   bool? required,
+  //   bool? isHidden,
+  //   bool? isReadOnly,
+  //   bool? showIfLogicCheckbox,
+  //   bool? showIfIsRequired,
+  //   bool? requiredIfLogicCheckbox,
+  // }) {
+  //   return FormFieldModel(
+  //     name: name ?? this.name,
+  //     label: label ?? this.label,
+  //     type: type ?? this.type,
+  //     deactivate: deactivate ?? this.deactivate,
+  //     required: required ?? this.required,
+  //     isHidden: isHidden ?? this.isHidden,
+  //     isReadOnly: isReadOnly ?? this.isReadOnly,
+  //     showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
+  //     showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+  //     requiredIfLogicCheckbox:
+  //         requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
+  //   );
+  // }
 }
 
 

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 
 import '../form_model.dart';
@@ -68,4 +69,10 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
   @override
 
   List<Object?> get props => super.props..addAll([maxFileSize,fileType]);
+
+  @override
+  Widget toWidget() {
+    // TODO: implement toWidget
+    throw UnimplementedError();
+  }
 }

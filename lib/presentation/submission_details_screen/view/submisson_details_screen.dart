@@ -84,7 +84,7 @@ Widget _getFormElementThumbnail(FormElementWidget field) {
   }
   if (field is MultiSelectWidget ||
       field is ChildDropDownWidget ||
-      field is DropDownWidget) {
+      field is OldDropDownWidget) {
     return FieldHintWidget(text: '(Select)');
   }
 

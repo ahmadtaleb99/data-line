@@ -9,6 +9,7 @@ import 'package:form_builder_test/data/repository_impl/repository_impl.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 import 'package:form_builder_test/domain/repository/form_repository.dart';
 import 'package:form_builder_test/domain/repository/repository.dart';
+import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,6 +61,10 @@ Future<void> initAppModules() async {
   getIT.registerLazySingleton<StateRendererBloc>(() => StateRendererBloc());
 
 
+}
+
+void initFormModule (){
+  getIT.registerLazySingleton<FormsBloc>(() => FormsBloc());
 }
 
 

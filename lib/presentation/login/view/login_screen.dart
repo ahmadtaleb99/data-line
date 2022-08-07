@@ -49,7 +49,7 @@ class NewWidget extends StatelessWidget {
     return BlocListener<LoginBloc, LoginState>(
   listener: (context, state) {
     if(state.hasLoggedIn) {
-      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         Navigator.pushReplacementNamed(context, Routes.homeRoute);
       });
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/domain/repository/form_repository.dart';
+import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
 import 'package:form_builder_test/presentation/home/view/home_screen.dart';
 import 'package:form_builder_test/presentation/login/bloc/login_bloc.dart';
@@ -25,10 +26,12 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.homeRoute:
+        initFormModule();
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                create: (context) => HomeBloc(getIT<AssignedFormRepository>()) ..add(AssignedFormsRequested()),
-                child: const HomeScreen()));
+            builder: (_) =>  MultiBlocProvider(providers: [
+              BlocProvider(create: (context) => HomeBloc(getIT<AssignedFormRepository>())..add(AssignedFormsRequested())),
+
+            ], child: const HomeScreen()));
 
       case Routes.loginRoute:
         return MaterialPageRoute(

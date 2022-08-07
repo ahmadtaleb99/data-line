@@ -146,7 +146,7 @@ class IFormDropList  extends IFormModel  {
       );
 
     } else
-      return DropDownWidget(
+      return OldDropDownWidget(
         label: label,
         deactivate:deactivate ,
         required: required,

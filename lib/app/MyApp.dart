@@ -5,6 +5,7 @@ import 'package:form_builder_test/app/dependency_injection.dart';
 
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/resources/routes_manager.dart';
 import 'package:form_builder_test/presentation/resources/theme_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
@@ -41,6 +42,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) {
           return  MultiBlocProvider(providers: [
             BlocProvider.value(value:  getIT<StateRendererBloc>()),
+
           ],
             child: MaterialApp(
 

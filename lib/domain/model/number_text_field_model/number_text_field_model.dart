@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/presentation/form_widgets/number_text_field_widget/number_text_field_widget.dart';
 
 import '../form_model.dart';
 
@@ -64,6 +65,14 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
 
     );
   }
+
+
+  NumberTextFieldWidget toWidget (){
+    return NumberTextFieldWidget(numberFieldModel: this,
+
+    );
+  }
+
   @override
   List<Object?> get props => super.props..addAll([operator,expressionsValue]);
 

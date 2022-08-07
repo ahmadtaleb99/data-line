@@ -225,7 +225,7 @@ class RadioGroupValueChanged extends ValidationEvent{
 
 class ParentDropListChanged extends ValidationEvent {
 
-  DropDownWidget drawDropDownButton ;
+  OldDropDownWidget drawDropDownButton ;
   String parent;
 
   ParentDropListChanged({

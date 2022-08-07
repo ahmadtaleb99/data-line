@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_item_model/radio_group_item_model.dart';
+import 'package:form_builder_test/presentation/form_widgets/dropdown_widget/dropdown_widget.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
@@ -77,6 +78,11 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
 
     );
+  }
+
+
+  DropDownWidget toWidget () {
+    return DropDownWidget(dropDownModel: this);
   }
 
   @override
