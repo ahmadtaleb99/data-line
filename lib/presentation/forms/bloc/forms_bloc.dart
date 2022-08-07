@@ -9,14 +9,14 @@ part 'forms_state.dart';
 
 class FormsBloc extends Bloc<FormsEvent, FormsState> {
   FormsBloc() : super(FormsState(submissionMap: {})) {
-    on<DropDownValueChanged>(_onDropDownValueChanged);
+    on<FieldValueChanged>(_onDropDownValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
   }
 
 
   Future<void> _onDropDownValueChanged(
-      DropDownValueChanged event, Emitter<FormsState> emit) async  {
+      FieldValueChanged event, Emitter<FormsState> emit) async  {
     var dropDown  = state.formModel!.fields.firstWhere((element) => element.name == event.fieldName);
     Map<String,dynamic> map = Map.from(state.submissionMap);
     map[event.fieldName] = event.value;

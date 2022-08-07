@@ -18,7 +18,7 @@ class DropDownWidget extends StatelessWidget {
         log(state.submissionMap[dropDownModel.name].toString());
 
         return DropdownButton<String>(
-          value: state.submissionMap[dropDownModel.name] ,
+          value: state.submissionMap[dropDownModel.name],
           items: dropDownModel.values
               .map((e) =>
               DropdownMenuItem(
@@ -27,7 +27,7 @@ class DropDownWidget extends StatelessWidget {
               ))
               .toList(),
           onChanged: (String? newValue) {
-            context.read<FormsBloc>().add(DropDownValueChanged(
+            context.read<FormsBloc>().add(FieldValueChanged(
                 fieldName: dropDownModel.name, value: newValue!));
           },
         );

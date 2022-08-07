@@ -141,3 +141,5 @@ class StoreDetails {
   String about;
 
 }
+
+

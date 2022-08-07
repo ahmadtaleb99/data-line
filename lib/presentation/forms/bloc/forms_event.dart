@@ -5,11 +5,11 @@ abstract class FormsEvent extends Equatable {
 }
 
 
-class DropDownValueChanged extends FormsEvent {
+class FieldValueChanged extends FormsEvent {
   final String fieldName;
   final String value;
 
-  const DropDownValueChanged({
+  const FieldValueChanged({
     required this.fieldName,
     required this.value,
   });
@@ -28,7 +28,19 @@ class NewFormRequested extends FormsEvent {
   @override
   List<Object?> get props => [formModel];
 
-}class SubmitCanceled extends FormsEvent {
+}
+
+class SubmissionsRequested extends FormsEvent {
+  FormModel formModel;
+
+  SubmissionsRequested(this.formModel,);
+
+  @override
+  List<Object?> get props => [formModel];
+
+}
+
+class SubmitCanceled extends FormsEvent {
   @override
   List<Object?> get props =>[];
 

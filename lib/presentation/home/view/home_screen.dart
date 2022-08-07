@@ -6,6 +6,7 @@ import 'package:form_builder_test/presentation/common/state_renderer/state_rende
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/view/new_submit_screen.dart';
+import 'package:form_builder_test/presentation/forms/submissions_screen/submissions_screen.dart';
 import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
@@ -53,7 +54,15 @@ class NewWidget extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.all(AppPadding.p20),
                 child: FormCard(
-                    viewSubmittedCallBack: () {},
+                    viewSubmittedCallBack: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
+                                child: SubmissionsScreen(),
+                              )));
+                    },
                     formName: state.assignedForms[index].name,
                     submitNewFormCallBack: () {
 

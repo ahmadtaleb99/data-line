@@ -125,3 +125,6 @@ abstract class FormFieldModel with EquatableMixin {
 
 
 
+class Submission {
+
+}
