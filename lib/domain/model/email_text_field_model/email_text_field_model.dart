@@ -1,9 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
 
+part 'email_text_field_model.g.dart';
+@HiveType(typeId: 5)
 class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
   EmailTextFieldModel({
     required String name,

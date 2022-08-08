@@ -1,16 +1,32 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../checkbox_group_item_model/checkbox_group_item_model.dart';
 import '../form_model.dart';
 
+part 'checkbox_group_model.g.dart';
+
+@HiveType(typeId: 2)
 class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
+
+  @HiveField(11)
   final bool other;
+
+  @HiveField(12)
   final bool minMaxCheckbox;
+
+  @HiveField(13)
   final int checkboxMinValue;
+
+  @HiveField(14)
   final int checkboxMaxValue;
+
+  @HiveField(15)
   List<CheckboxGroupItemModel> values;
+
+
   CheckboxGroupModel({
     required this.other,
     required this.values,

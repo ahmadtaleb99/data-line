@@ -46,18 +46,13 @@ void initNotifications() {
 }
 Future<void> test(  )  async {
 
-  final api = getIT<RemoteDataSource>();
-  var res = await  api.getAssignedForms();
-
-  log(res.data![1].fields![7].toDomain().toString());
 }
 
 Future<void> main() async {
-  await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
    EasyLocalization.ensureInitialized();
- await  initAppModules();
-
+  await Hive.initFlutter();
+  await  initAppModules();
   initNotifications();
   await NotificationService().init();
 
@@ -67,31 +62,4 @@ Future<void> main() async {
     child: MyApp() ,) );
 }
 
-
-// class MyApp extends StatelessWidget {
-//
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return RepositoryProvider(
-//       create: (context) => OldFormRepository(),
-//       child: MultiBlocProvider(
-//         providers: [
-//           BlocProvider(
-//             create: (context) =>
-//             ValidationBloc(context.read<OldFormRepository>())
-//               ..add(ServiceRegistered())..add(FormsRequested()),
-//
-//           ),
-//
-//         ],
-//         child: MaterialApp(
-//           debugShowCheckedModeBanner: false,
-//           home: HomeScreen(),
-//         ),
-//       ),
-//     );
-//   }
-// }
 

@@ -25,6 +25,7 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
     };
 
 
+
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
@@ -70,6 +71,7 @@ const _$FieldTypeEnumMap = {
   FieldType.CHECKBOX: 'checkbox',
   FieldType.RADIO_GROUP: 'radio-group',
   FieldType.FILE: 'file',
+  FieldType.UNKNOWN: 'UNKNOWN',
 };
 
 TextFieldResponse _$TextFieldResponseFromJson(Map<String, dynamic> json) =>

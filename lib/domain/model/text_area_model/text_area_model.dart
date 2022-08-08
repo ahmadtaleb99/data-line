@@ -1,10 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
 
+
+part 'text_area_model.g.dart';
+
+@HiveType(typeId: 11)
 class TextAreaModel extends FormFieldModel with EquatableMixin {
+
+  @HiveField(11)
   final int maxLength;
+
+  @HiveField(12)
   final int minLength;
 
   TextAreaModel({

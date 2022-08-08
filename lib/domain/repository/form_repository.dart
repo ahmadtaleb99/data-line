@@ -7,5 +7,6 @@ import 'package:dartz/dartz.dart';
 abstract class AssignedFormRepository{
 
   Future<Either<Failure,AssignedForms>> getAssignedForms();
+  Either<Failure,List<Submission>> getFormSubmissions(String formName);
 
 }

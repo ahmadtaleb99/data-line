@@ -1,12 +1,20 @@
 import 'dart:developer';
 
 import 'package:analyzer/error/error.dart';
+import 'package:form_builder_test/data/database/hive_database.dart';
 import 'package:form_builder_test/data/network/error_handler.dart';
+import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/domain/model/form_model.dart';
 
 
 abstract class LocalDataSource  {
   void clearCache();
-  void removeFromCache(String key); //if the user logged in as an example and we dont wanna chache his fav
+  void removeFromCache(String key); //if the user logged in as an example and we dont wanna cache his fav
+
+
+  AssignedForms getAssignedForms();
+  Future<void> saveFormsToDataBase(AssignedForms assignedForms);
+  List<Submission> getSubmissions(String formName);
 
 
  //  HomeResponse getHomeData();
@@ -26,6 +34,10 @@ const String keyStoreDetails = 'keyStoreDetails';
 const int keyStoreDetailsCacheTime = 60;
 
 class LocalDataSourceImpl implements LocalDataSource {
+
+  final HiveDatabase _hiveDatabase;
+
+  LocalDataSourceImpl(this._hiveDatabase);
   Map <String,CachedItem> _cacheMap  = {};
 
 
@@ -44,9 +56,26 @@ class LocalDataSourceImpl implements LocalDataSource {
       return cachedItem.data;
     }
     else {
-      throw CacheException();
+      throw CacheException('cache is expired');
     }
 
+  }
+
+  @override
+  AssignedForms getAssignedForms() {
+    return _hiveDatabase.getAssignedForms();
+
+  }
+
+  @override
+  List<Submission> getSubmissions(String formName) {
+    return _hiveDatabase.getAllSubmissions(formName) ?? [ ];
+
+  }
+
+  @override
+  Future<void> saveFormsToDataBase(AssignedForms assignedForms) async {
+    await _hiveDatabase.saveAssignedForms(assignedForms);
   }
 
 }
@@ -71,3 +100,7 @@ class CachedItem {
 // 1000 seconds when cached
 // 60 cache time
 //time now 1061
+// class SubmissionsException {
+//   final String message;
+//   SubmissionsException(this.message)
+// }

@@ -1,12 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
 import '../form_model.dart';
 import '../radio_group_item_model/radio_group_item_model.dart';
 
+part 'radio_group_model.g.dart';
+
+@HiveType(typeId: 9)
 class RadioGroupModel extends FormFieldModel with EquatableMixin {
+
+  @HiveField(11)
   final bool other;
+
+  @HiveField(12)
   final List<RadioGroupItemModel> values;
   RadioGroupModel({
     required this.other,

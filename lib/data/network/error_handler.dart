@@ -6,7 +6,12 @@ import 'package:form_builder_test/data/network/failure.dart';
 
 
 
-class CacheException implements Exception{}
+class CacheException  implements Exception{
+  final String message;
+CacheException(this.message);
+}
+
+
 class ErrorHandler implements Exception{
 
     late Failure failure;
@@ -67,7 +72,7 @@ enum ErrorTypeEnum {
   RECEIVE_TIMEOUT,
   SEND_TIMEOUT,
   CACHE_ERROR,
-  NO_INTERNET_CONNECTION
+  NO_INTERNET_CONNECTION,
 }
 
 extension ErrorTypeExtenstion on ErrorTypeEnum {

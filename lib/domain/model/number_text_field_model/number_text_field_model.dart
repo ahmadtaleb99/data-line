@@ -1,11 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 import 'package:form_builder_test/presentation/form_widgets/number_text_field_widget/number_text_field_widget.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../form_model.dart';
 
+part 'number_text_field_model.g.dart';
+
+@HiveType(typeId: 7)
 class NumberFieldModel extends FormFieldModel with EquatableMixin{
+
+
+
+
+
+  @HiveField(11)
   final String operator;
+
+  @HiveField(12)
   final int expressionsValue;
 
   NumberFieldModel({

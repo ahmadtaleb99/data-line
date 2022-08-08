@@ -307,35 +307,3 @@ class FilePickerFieldResponse extends FormFieldResponse {
   Map<String, dynamic> toJson() => _$FilePickerFieldResponseToJson(this);
 }
 
-enum FieldType {
-  @JsonValue('text')
-  TEXT,
-
-@JsonValue('textarea')
-  TEXT_AREA,
-
-@JsonValue('number')
-  NUMBER,
-
-@JsonValue('email')
-  EMAIL,
-
-@JsonValue('select')
-  DROPDOWN,
-
-@JsonValue('starrating')
-  STAR_RATING,
-
-@JsonValue('checkbox-group')
-  CHECKBOX_GROUP,
-
-@JsonValue('checkbox')
-  CHECKBOX,
-
-@JsonValue('radio-group')
-  RADIO_GROUP,
-
-@JsonValue('file')
-  FILE,
-    UNKNOWN
-}

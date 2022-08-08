@@ -65,8 +65,6 @@ class LocalStorageApi  extends form_repository.FormApi{
     Hive.registerAdapter(MatrixTextFieldAdapter());
     Hive.registerAdapter(MatrixRecordModelAdapter());
 
-   _formBox  = await Hive.openBox<OldFormModel>('form');
-   _availableBox   = await Hive.openBox('available');
 
 
   }

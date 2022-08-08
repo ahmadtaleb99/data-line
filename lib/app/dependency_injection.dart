@@ -1,6 +1,7 @@
 
 import 'package:form_builder_test/data/data_source/local_data_source.dart';
 import 'package:form_builder_test/data/data_source/remote_data_source.dart';
+import 'package:form_builder_test/data/database/hive_database.dart';
 import 'package:form_builder_test/data/network/api_client.dart';
 import 'package:form_builder_test/data/network/dio_factory.dart';
 import 'package:form_builder_test/data/network/network_info.dart';
@@ -18,7 +19,18 @@ import 'app_prefs.dart';
 
 final getIT = GetIt.instance;
 
-//di for all the app must be lazy and for specific module has to be factory so we use new instance every time 
+
+
+//di for all the app must be lazy and for specific module has to be factory so we use new instance every time
+
+
+
+Future<void> initHiveDatabase() async {
+
+
+
+}
+
 Future<void> initAppModules() async {
 
   //shared prefs
@@ -42,9 +54,17 @@ Future<void> initAppModules() async {
   getIT.registerLazySingleton<ApiClient>(() => ApiClient(dio));
 
   //remote data source
+
   getIT.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(getIT<ApiClient>()));
 
-  getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
+
+  //local
+
+  HiveDatabase _hiveDatabase = HiveDatabase();
+  await _hiveDatabase.init();
+  getIT.registerLazySingleton<HiveDatabase>(() => _hiveDatabase);
+  // await initHiveDatabase();
+  getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIT<HiveDatabase>()));
 
 
   //repository
@@ -64,8 +84,10 @@ Future<void> initAppModules() async {
 }
 
 void initFormModule (){
-  getIT.registerLazySingleton<FormsBloc>(() => FormsBloc());
+  getIT.registerLazySingleton<FormsBloc>(() => FormsBloc(getIT<AssignedFormRepository>()));
 }
+
+
 
 
 

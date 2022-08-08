@@ -1,15 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../form_model.dart';
 
+
+part 'file_picker_model.g.dart';
+
+@HiveType(typeId: 6)
 class FilePickerModel extends FormFieldModel with EquatableMixin {
+
+
+  @HiveField(11)
   final int maxFileSize;
+
+  @HiveField(12)
   final String fileType;
+
+
+
   FilePickerModel({
     required this.maxFileSize,
     required this.fileType,
+
+
     required String name,
     required String label,
     required FieldType type,
