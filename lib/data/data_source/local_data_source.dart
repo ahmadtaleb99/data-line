@@ -11,11 +11,12 @@ abstract class LocalDataSource  {
   void clearCache();
   void removeFromCache(String key); //if the user logged in as an example and we dont wanna cache his fav
 
-
+  void saveSubmission(Submission submission);
+  Future<void>  addSubmission(Submission submission);
   AssignedForms getAssignedForms();
   Future<void> saveFormsToDataBase(AssignedForms assignedForms);
   List<Submission> getSubmissions(String formName);
-
+  Future<void> deleteSubmission(Submission submission);
 
  //  HomeResponse getHomeData();
  // void saveHomeToCache(HomeResponse homeResponse);
@@ -77,6 +78,21 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<void> saveFormsToDataBase(AssignedForms assignedForms) async {
     await _hiveDatabase.saveAssignedForms(assignedForms);
   }
+
+  @override
+  Future<void> addSubmission(Submission submission) async {
+   await   _hiveDatabase.addSubmission(submission);
+  }
+
+  @override
+  void saveSubmission(Submission submission) {
+  }
+
+  @override
+  Future<void> deleteSubmission(Submission submission) async {
+  await  _hiveDatabase.deleteSubmission(submission);
+  }
+
 
 }
 

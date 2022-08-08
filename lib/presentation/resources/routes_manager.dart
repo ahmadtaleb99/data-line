@@ -23,7 +23,7 @@ class Routes {
 }
 
 class RouteGenerator {
-  static Route<dynamic> getRoute(RouteSettings settings) {
+  static Route<dynamic>? getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.homeRoute:
         initFormModule();
@@ -39,7 +39,7 @@ class RouteGenerator {
                 create: (context) => LoginBloc(), child: const LoginScreen()));
 
       default:
-        return unDefinedRoute();
+        return null;
     }
   }
 

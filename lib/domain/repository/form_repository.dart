@@ -8,5 +8,6 @@ abstract class AssignedFormRepository{
 
   Future<Either<Failure,AssignedForms>> getAssignedForms();
   Either<Failure,List<Submission>> getFormSubmissions(String formName);
-
+  Future<void> addSubmission(Submission submission);
+  Future<void> deleteSubmission(Submission submission);
 }

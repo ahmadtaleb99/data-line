@@ -25,14 +25,17 @@ class SubmissionsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => BlocProvider.value(
-                        value: getIT<FormsBloc>()..add(SubmissionUpdateRequested(this.formModel)),
+                        value: getIT<FormsBloc>()..add(SubmissionUpdateRequested(this.formModel,state.submissions[index])),
                         child:  UpdateSubmissionScreen(formModel: formModel, ),
                       )));
+            },
+            onDelete: (){
+              context.read<FormsBloc>().add(SubmissionDeleted(state.submissions[index]));
             },
           ),
           separatorBuilder: (context, index) =>
               const Padding(padding: EdgeInsets.all(AppPadding.p20)),
-          itemCount: 2);
+          itemCount: state.submissions.length);
   },
 ),
     );

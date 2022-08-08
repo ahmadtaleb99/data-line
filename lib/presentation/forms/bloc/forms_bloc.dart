@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,22 +18,25 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
 
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
-      : super(FormsState(submissionMap: {},submissions: [])) {
-    on<FieldValueChanged>(_onDropDownValueChanged);
+      : super(FormsState(submissionMap: {}, submissions: [])) {
+    on<FieldValueChanged>(_onFieldValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
     on<SubmissionsRequested>(_onSubmissionsRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<FormSubmitted>(_onFormSubmitted);
+    on<SubmissionDeleted>(_onSubmissionDeleted);
   }
 
-  Future<void> _onDropDownValueChanged(
+  Future<void> _onFieldValueChanged(
       FieldValueChanged event, Emitter<FormsState> emit) async {
     var dropDown = state.formModel!.fields
         .firstWhere((element) => element.name == event.fieldName);
     Map<String, dynamic> map = Map.from(state.submissionMap);
     map[event.fieldName] = event.value;
 
+
+    log(map.toString());
     emit(state.copyWith(submissionMap: map));
   }
 
@@ -46,24 +50,42 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     emit(state.copyWith(submissionMap: {}));
   }
 
-
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = {};
-
-    state.currentSubmission?.fieldEntries.forEach((FieldEntry fieldEntry) {
+    event.submission.fieldEntries.forEach((FieldEntry fieldEntry) {
       map[fieldEntry.name] = fieldEntry.value;
     });
-    emit(state.copyWith(submissionMap: map));
 
-  } 
-  
+    log(map.toString());
+    emit(state.copyWith(submissionMap: map));
+  }
+
+  Future<void> _onSubmissionDeleted(
+      SubmissionDeleted event, Emitter<FormsState> emit) async {
+    Map<String, dynamic> map = {};
+    await _assignedFormRepository.deleteSubmission(event.submission);
+    List<Submission> submissions = List.from(state.submissions);
+    submissions.remove(event.submission);
+    emit(state.copyWith(submissions: submissions));
+  }
+
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
     Map map = state.submissionMap;
-    Submission newSub = Submission(id: id, formName: formName, fieldEntries: fieldEntries)
 
+    List<FieldEntry> entries = map.entries
+        .map((e) => FieldEntry(name: e.key, value: e.value))
+        .toList();
+    Submission submission =
+        Submission(formName: state.formModel!.name, fieldEntries: entries);
+
+
+    log(submission.fieldEntries[0].value.toString());
+    log('form submitted');
+    await _assignedFormRepository.addSubmission(submission);
   }
+
   Future<void> _onSubmissionsRequested(
       SubmissionsRequested event, Emitter<FormsState> emit) async {
     final either =
@@ -73,12 +95,13 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
           stateRendererType: StateRendererType.FULLSCREEN_ERROR,
           message: failure.message)));
     }, (submissions) {
-      if (submissions.isEmpty)
-        stateBloc.add(StateRendererEvent(EmptyState( 'no data')));
+      // if (submissions.isEmpty)
+      //   stateBloc.add(StateRendererEvent(EmptyState('no data')));
+      // else
 
-      else emit(state.copyWith(submissions: submissions));
+
+      log(submissions.last.fieldEntries.first.value.toString());
+        emit(state.copyWith(submissions: submissions));
     });
-
-
   }
 }

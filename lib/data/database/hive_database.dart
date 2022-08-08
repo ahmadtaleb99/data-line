@@ -50,6 +50,8 @@ class HiveDatabase {
     Hive.registerAdapter(FormModelAdapter());
     Hive.registerAdapter(FormFieldModelAdapter());
     Hive.registerAdapter(FieldTypeAdapter());
+    Hive.registerAdapter(SubmissionAdapter());
+    Hive.registerAdapter(FieldEntryAdapter());
     //
     _assignedFormsBox  = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
     _submissionsBox  = await Hive.openBox<Submission>(submissionBoxKey);
@@ -57,7 +59,7 @@ class HiveDatabase {
 
   }
 
-  Future<void> saveSubmission (Submission submission) async {
+  Future<void> addSubmission (Submission submission) async {
     await   _submissionsBox.add(submission);
   }
   
@@ -69,6 +71,12 @@ class HiveDatabase {
   await   _assignedFormsBox.put(_assignedForm, assignedForms);
   }
 
+
+  int getSubmissionId(Submission submission){
+    final _submission = _submissionsBox.values.firstWhere((element) => element == submission);
+    final index = _submission.key as int ;
+    return index;
+  }
   AssignedForms getAssignedForms ()  {
      var assignedForms =  _assignedFormsBox.get(_assignedForm);
      if (assignedForms == null)
@@ -76,6 +84,12 @@ class HiveDatabase {
 
      return assignedForms;
   }
-  
+
+  Future<void> deleteSubmission(Submission submission) async {
+   await  _submissionsBox.delete(getSubmissionId(submission));
+  }
+
+
+
 
 }

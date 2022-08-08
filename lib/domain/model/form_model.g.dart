@@ -90,7 +90,7 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-  throw UnimplementedError();
+    throw UnimplementedError();
   }
 
   @override
@@ -126,6 +126,80 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FormFieldModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class SubmissionAdapter extends TypeAdapter<Submission> {
+  @override
+  final int typeId = 17;
+
+  @override
+  Submission read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Submission(
+      formName: fields[1] as String,
+      fieldEntries: (fields[2] as List).cast<FieldEntry>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Submission obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(1)
+      ..write(obj.formName)
+      ..writeByte(2)
+      ..write(obj.fieldEntries);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SubmissionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
+  @override
+  final int typeId = 18;
+
+  @override
+  FieldEntry read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FieldEntry(
+      name: fields[1] as String,
+      value: fields[2] as dynamic,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FieldEntry obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.value);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FieldEntryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

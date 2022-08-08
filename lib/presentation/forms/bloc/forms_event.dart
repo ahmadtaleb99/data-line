@@ -43,11 +43,11 @@ class FormSubmitted extends FormsEvent {
 
 class SubmissionUpdateRequested extends FormsEvent {
   FormModel formModel;
-
-  SubmissionUpdateRequested(this.formModel,);
+  Submission submission;
+  SubmissionUpdateRequested(this.formModel,this.submission);
 
   @override
-  List<Object?> get props => [formModel];
+  List<Object?> get props => [formModel,submission];
 
 }
 
@@ -64,5 +64,13 @@ class SubmissionsRequested extends FormsEvent {
 class SubmitCanceled extends FormsEvent {
   @override
   List<Object?> get props =>[];
+
+}class SubmissionDeleted extends FormsEvent {
+  Submission submission;
+
+
+  SubmissionDeleted(this.submission);
+  @override
+  List<Object?> get props =>[submission];
 
 }

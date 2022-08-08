@@ -16,7 +16,10 @@ class NewSubmitScreen extends StatelessWidget {
 
       ),
       floatingActionButton: ElevatedButton(
-        onPressed: () {  },
+        onPressed: () {
+
+          context.read<FormsBloc>().add(FormSubmitted(formModel));
+        },
         child: const Text(AppStrings.submit),
       ),
       body: Padding(
@@ -29,6 +32,7 @@ class NewSubmitScreen extends StatelessWidget {
           child: ListView.separated(
             separatorBuilder: (context, index) => const Padding(padding: EdgeInsets.all(AppPadding.p20)),
             itemBuilder: (context, index) {
+              print(formModel.fields[index].type);
               return formModel.fields[index].toWidget() ;
             },
             itemCount: formModel.fields.length

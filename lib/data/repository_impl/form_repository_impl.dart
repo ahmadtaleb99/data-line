@@ -68,4 +68,16 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
     }
   }
 
+  @override
+  Future<void> addSubmission(Submission submission) async {
+    await _localDataSource.addSubmission(submission);
+  }
+
+  @override
+  Future<void> deleteSubmission(Submission submission) async{
+   await _localDataSource.deleteSubmission(submission);
+  }
+
+
+
 }

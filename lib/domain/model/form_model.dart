@@ -209,24 +209,22 @@ enum FieldType {
 
 
 @HiveType(typeId: 17)
-class Submission {
+class Submission extends HiveObject{
+
 
     @HiveField(1)
-    final int id;
-
-    @HiveField(2)
     final String formName;
 
-    @HiveField(3)
+    @HiveField(2)
     final List<FieldEntry> fieldEntries;
 
-    const Submission({
-    required this.id,
+     Submission({
     required this.formName  ,
     required this.fieldEntries,
   });
 }
 
+@HiveType(typeId: 18)
 class FieldEntry {
 
   @HiveField(1)
