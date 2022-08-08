@@ -60,7 +60,7 @@ class NewWidget extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => BlocProvider.value(
                                 value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
-                                child: const SubmissionsScreen(),
+                                child:  SubmissionsScreen(formModel: state.assignedForms[index] ,),
                               )));
                     },
                     formName: state.assignedForms[index].name,

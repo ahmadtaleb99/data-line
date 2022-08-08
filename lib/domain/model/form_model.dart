@@ -218,12 +218,12 @@ class Submission {
     final String formName;
 
     @HiveField(3)
-    final List<FieldEntry> fieldEntry;
+    final List<FieldEntry> fieldEntries;
 
     const Submission({
     required this.id,
     required this.formName  ,
-    required this.fieldEntry,
+    required this.fieldEntries,
   });
 }
 

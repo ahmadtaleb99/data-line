@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/forms/update_submisson/view/update_submisson_screen.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class SubmissionsScreen extends StatelessWidget {
-  const SubmissionsScreen({Key? key}) : super(key: key);
+  const SubmissionsScreen({Key? key,required this.formModel}) : super(key: key);
+  final FormModel formModel;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.separated(
+      body: BlocBuilder<FormsBloc, FormsState>(
+  builder: (context, state) {
+    return ListView.separated(
           itemBuilder: (context, index) => SubmissionCard(
             onUpdate: (){
-
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                        value: getIT<FormsBloc>()..add(SubmissionUpdateRequested(this.formModel)),
+                        child:  UpdateSubmissionScreen(formModel: formModel, ),
+                      )));
             },
           ),
           separatorBuilder: (context, index) =>
               const Padding(padding: EdgeInsets.all(AppPadding.p20)),
-          itemCount: 2),
+          itemCount: 2);
+  },
+),
     );
   }
 }

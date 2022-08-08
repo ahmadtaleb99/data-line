@@ -30,6 +30,27 @@ class NewFormRequested extends FormsEvent {
 
 }
 
+
+class FormSubmitted extends FormsEvent {
+  FormModel formModel;
+
+  FormSubmitted(this.formModel,);
+
+  @override
+  List<Object?> get props => [formModel];
+
+}
+
+class SubmissionUpdateRequested extends FormsEvent {
+  FormModel formModel;
+
+  SubmissionUpdateRequested(this.formModel,);
+
+  @override
+  List<Object?> get props => [formModel];
+
+}
+
 class SubmissionsRequested extends FormsEvent {
   FormModel formModel;
 

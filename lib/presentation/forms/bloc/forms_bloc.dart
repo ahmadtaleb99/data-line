@@ -22,6 +22,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
     on<SubmissionsRequested>(_onSubmissionsRequested);
+    on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
+    on<FormSubmitted>(_onFormSubmitted);
   }
 
   Future<void> _onDropDownValueChanged(
@@ -44,6 +46,24 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     emit(state.copyWith(submissionMap: {}));
   }
 
+
+  Future<void> _onSubmissionUpdateRequested(
+      SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
+    Map<String, dynamic> map = {};
+
+    state.currentSubmission?.fieldEntries.forEach((FieldEntry fieldEntry) {
+      map[fieldEntry.name] = fieldEntry.value;
+    });
+    emit(state.copyWith(submissionMap: map));
+
+  } 
+  
+  Future<void> _onFormSubmitted(
+      FormSubmitted event, Emitter<FormsState> emit) async {
+    Map map = state.submissionMap;
+    Submission newSub = Submission(id: id, formName: formName, fieldEntries: fieldEntries)
+
+  }
   Future<void> _onSubmissionsRequested(
       SubmissionsRequested event, Emitter<FormsState> emit) async {
     final either =
