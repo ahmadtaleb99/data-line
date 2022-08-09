@@ -21,9 +21,9 @@ class FieldValueChanged extends FormsEvent {
 
 
 class NewFormRequested extends FormsEvent {
-  FormModel formModel;
+  final FormModel formModel;
 
-  NewFormRequested(this.formModel,);
+ const  NewFormRequested(this.formModel,);
 
   @override
   List<Object?> get props => [formModel];
@@ -38,6 +38,20 @@ class FormSubmitted extends FormsEvent {
 
   @override
   List<Object?> get props => [formModel];
+
+}
+
+
+class SubmissionUpdated extends FormsEvent {
+  FormModel formModel;
+  Submission submission;
+
+
+  SubmissionUpdated(this.formModel,this.submission);
+
+  @override
+  List<Object?> get props => [formModel,submission];
+
 
 }
 

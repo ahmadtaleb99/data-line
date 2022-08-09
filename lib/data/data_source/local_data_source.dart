@@ -17,6 +17,7 @@ abstract class LocalDataSource  {
   Future<void> saveFormsToDataBase(AssignedForms assignedForms);
   List<Submission> getSubmissions(String formName);
   Future<void> deleteSubmission(Submission submission);
+  Future<void> updateSubmission (Submission submission) ;
 
  //  HomeResponse getHomeData();
  // void saveHomeToCache(HomeResponse homeResponse);
@@ -81,7 +82,9 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> addSubmission(Submission submission) async {
-   await   _hiveDatabase.addSubmission(submission);
+    log('local is about to be added : '+submission.toString());
+
+    await   _hiveDatabase.addSubmission(submission);
   }
 
   @override
@@ -91,6 +94,11 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<void> deleteSubmission(Submission submission) async {
   await  _hiveDatabase.deleteSubmission(submission);
+  }
+
+  @override
+  Future<void> updateSubmission (Submission submission) async {
+    await   _hiveDatabase.updateSubmission(submission);
   }
 
 

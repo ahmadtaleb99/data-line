@@ -21,9 +21,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(body: BlocBuilder<StateRendererBloc, StateRendererState>(
       builder: (context, state) {
         if (state.flowState != null) {
-          log('if');
           var widget = state.flowState.getWidget(context, NewWidget(), () {
-            print('on re');
             context.read<LoginBloc>().add(UserLoggedIn());
           });
           log(widget.hashCode.toString());

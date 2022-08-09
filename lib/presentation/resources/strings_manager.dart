@@ -39,4 +39,6 @@ class AppStrings{
   static const String inviteYourFriends = "invite_your_friends";
   static const String logout = "logout";
   static const String submit = "Submit";
+  static const String update = "Update";
+  static const String emptySubs = "There are no submissions for this form.";
 }

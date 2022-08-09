@@ -18,9 +18,8 @@ class SubmittionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         appBar: AppBar(
-          title: Text(form.name+' submissions'),
+          title: Text(form.name + ' submissions'),
           centerTitle: true,
         ),
         body: Center(
@@ -29,7 +28,7 @@ class SubmittionsPage extends StatelessWidget {
             children: [
               BlocBuilder<ValidationBloc, ValidationState>(
                 builder: (context, state) {
-                  if(state.subedForms!.isEmpty)
+                  if (state.subedForms!.isEmpty)
                     return Text('There are no submitted forms yet');
                   return Expanded(
                     child: ListView.builder(
@@ -41,36 +40,52 @@ class SubmittionsPage extends StatelessWidget {
                             child: SubmissionCard(
                               form: state.subedForms![index],
                               onUpdateCallBack: () {
-                                context.read<ValidationBloc>()
-                                    .add(FormUpdateRequested(formName: state.subedForms![index].name,index: index));
+                                context.read<ValidationBloc>().add(
+                                    FormUpdateRequested(
+                                        formName: state.subedForms![index].name,
+                                        index: index));
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider(
-  create: (context) => MatrixRecordCubit(context.read<OldFormRepository>())..setCurrentSubmittedForm(index)..loadMatrices(),
-  child: UpdateFormPage(
-                                            index: index,
-                                            form: state.subedForms![index]),
-)));
+                                              create: (context) =>
+                                                  MatrixRecordCubit(
+                                                      context.read<
+                                                          OldFormRepository>())
+                                                    ..setCurrentSubmittedForm(
+                                                        index)
+                                                    ..loadMatrices(),
+                                              child: UpdateFormPage(
+                                                  index: index,
+                                                  form:
+                                                      state.subedForms![index]),
+                                            )));
                               },
                               onViewCallBack: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider(
-  create: (context) => MatrixRecordCubit(context.read<OldFormRepository>()),
-  child: SubmittionsDetailsPage(formWidget: state.subedForms![index]),
-)));
+                                              create: (context) =>
+                                                  MatrixRecordCubit(
+                                                      context.read<
+                                                          OldFormRepository>()),
+                                              child: SubmittionsDetailsPage(
+                                                  formWidget:
+                                                      state.subedForms![index]),
+                                            )));
                               },
                               onDeleteCallBack: () {
-
-                                _confirmDeleteDialog(context: context,onConfirm: (){
-                                  context.read<ValidationBloc>().add(FormDeleted(index: index,
-                                      formName: state.subedForms![index].name),);
-                                });
-
-
-
+                                _confirmDeleteDialog(
+                                    context: context,
+                                    onConfirm: () {
+                                      context.read<ValidationBloc>().add(
+                                            FormDeleted(
+                                                index: index,
+                                                formName: state
+                                                    .subedForms![index].name),
+                                          );
+                                    });
                               },
                             ),
                           );
@@ -85,76 +100,69 @@ class SubmittionsPage extends StatelessWidget {
 }
 
 class SubmissionCard extends StatelessWidget {
+  List<Widget> _build() {
+    List<Widget> list = [];
 
-  List<Widget> _build(){
-    List<Widget> list =[];
-
-    for(int i = 0; i<form.fields.length ; i++){
-        if(i == 3) {
-          list.add( Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-
-              children: [
-                Expanded(
-                  child: Text('. . .', textAlign:TextAlign.center,style: TextStyle(
-
-                      fontSize: 20,
-                    fontWeight: FontWeight.bold
-                  )),
-                ),
-
-
-              ],
-            ),
-          ));
-          break;
-
-        }
-
-        var field = form.fields[i];
-        var textValue = field.value;
-        if(textValue == null) textValue = 'empty';
-
-        else textValue =  field.valueToString();
-        list.add(   Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 2),
+    for (int i = 0; i < form.fields.length; i++) {
+      if (i == 3) {
+        list.add(Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text('. . .',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ));
+        break;
+      }
 
+      var field = form.fields[i];
+      var textValue = field.value;
+      if (textValue == null)
+        textValue = 'empty';
+      else
+        textValue = field.valueToString();
+      list.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 flex: 4,
-                child: Text(field.label,style: TextStyle(
-                    fontSize: 20
-                ),),
+                child: Text(
+                  field.label,
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
               Expanded(
                 flex: 2,
-                child: Text(textValue,style: TextStyle(
-                  overflow: TextOverflow.ellipsis,
-
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),),
+                child: Text(
+                  textValue,
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        );
-      }
+      );
+    }
 
     // if(form.fields.length>3)
     //   ,);
     return list;
-
-
-    }
-
-
-
+  }
 
   const SubmissionCard(
       {Key? key,
@@ -166,7 +174,7 @@ class SubmissionCard extends StatelessWidget {
   final void Function()? onDeleteCallBack;
   final void Function()? onViewCallBack;
   final void Function()? onUpdateCallBack;
-  final  FormWidget form;
+  final FormWidget form;
 
   @override
   Widget build(BuildContext context) {
@@ -179,20 +187,18 @@ class SubmissionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
-            Expanded(
-              flex: 13,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                 ..._build()
-                  ],
-                ),
+          Expanded(
+            flex: 13,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [..._build()],
               ),
             ),
+          ),
           Expanded(
-              flex: 5,
+            flex: 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -222,95 +228,97 @@ class SubmissionCard extends StatelessWidget {
     );
   }
 }
-void _confirmDeleteDialog ({required BuildContext context, void Function()? onConfirm}){
+
+void _confirmDeleteDialog(
+    {required BuildContext context, void Function()? onConfirm}) {
   showDialog(
       context: context,
       builder: (BuildContext ctx) {
         return AlertDialog(
-          title: Center(child: const Text('Please Confirm',style: TextStyle(
-            fontWeight: FontWeight.bold,color: Colors.redAccent
-          ),)),
+          title: Center(
+              child: const Text(
+            'Please Confirm',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent),
+          )),
           content: const Text('Are you sure to remove this submission?'),
           actions: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-               ElevatedButton(
-
-                   onPressed: () {
-                     onConfirm!();
-                     // Close the dialog
-                     Navigator.of(context).pop();
-                   }
-                   ,style: ElevatedButton.styleFrom(
-                   shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(20)
-                   ),
-                   primary: Colors.redAccent
-               )
-                   , child: Text('Yes')),
-               SizedBox(width: 20,),
-               ElevatedButton(
-
-                   onPressed: () {
-                     // Close the dialog
-                     Navigator.of(context).pop();
-                   },
-                   style: ElevatedButton.styleFrom(
-                       shape: RoundedRectangleBorder(
-                           borderRadius: BorderRadius.circular(20)
-                       ),
-                       primary: Colors.lightBlueAccent
-                   )
-                   , child: Text('No')),
-             ],
-           )
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      onConfirm!();
+                      // Close the dialog
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        primary: Colors.redAccent),
+                    child: Text('Yes')),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      // Close the dialog
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        primary: Colors.lightBlueAccent),
+                    child: Text('No')),
+              ],
+            )
           ],
         );
       });
 }
-void _formDetailsDialog ({required BuildContext context, void Function()? onConfirm,required FormWidget form}){
+
+void _formDetailsDialog(
+    {required BuildContext context,
+    void Function()? onConfirm,
+    required FormWidget form}) {
   showDialog(
       context: context,
       builder: (BuildContext ctx) {
         return AlertDialog(
-
           title: Center(child: const Text('Form Details')),
           content: Container(
             height: 300,
             width: 400,
-            child: ListView.builder(shrinkWrap: true,itemCount: form.fields.length,itemBuilder: (context,index){
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(form.fields[index].label),
-                    Text(form.fields[index].value.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-
-
-                  ],
-
-                ),
-              );
-            }),
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: form.fields.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(form.fields[index].label),
+                        Text(
+                          form.fields[index].value.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
           ),
           actions: [
             Center(
               child: ElevatedButton(
-                
-            onPressed: (){
-                  Navigator.of(context).pop();
-
-              }
-              ,style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                    primary: Colors.lightBlueAccent
-                  )
-              , child: Text('okay')),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      primary: Colors.lightBlueAccent),
+                  child: Text('okay')),
             )
           ],
           // actions: [

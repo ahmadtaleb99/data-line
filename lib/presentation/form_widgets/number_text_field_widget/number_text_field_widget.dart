@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
+import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 
 class NumberTextFieldWidget extends StatelessWidget {
@@ -12,15 +15,15 @@ class NumberTextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        return TextFormField(
-          initialValue: state.submissionMap[numberFieldModel.name],
+        log(state.valuesMap.toString() + '   NumberTextFieldWidget');
+        return FormFieldWidget(label: numberFieldModel.label, field: TextFormField(
+          initialValue: state.valuesMap[numberFieldModel.name],
 
           onChanged: (number) {
-            print(number.toString());
-            FieldValueChanged(
-                fieldName: numberFieldModel.name, value: number);
+            context.read<FormsBloc>().add(FieldValueChanged(
+                fieldName: numberFieldModel.name, value: number));
           },
-        );
+        ));
       },
     );
   }

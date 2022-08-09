@@ -16,42 +16,37 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final stateBloc = getIT<StateRendererBloc>();
-  final  AssignedFormRepository _assignedFormRepository;
+  final AssignedFormRepository _assignedFormRepository;
 
-
-
-  HomeBloc(this._assignedFormRepository) : super(HomeState(assignedForms: [])) {
-
-
+  HomeBloc(this._assignedFormRepository)
+      : super(HomeState(assignedForms: [], flowState: ContentState())) {
+    stateBloc.add(StateRendererEvent(ContentState()));
 
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
-
-
   }
-
-
-
 
   Future<void> _onAssignedFormsRequested(
       AssignedFormsRequested event, Emitter<HomeState> emit) async {
-    stateBloc.add(StateRendererEvent(LoadingState(stateRendererType:StateRendererType.FULLSCREEN_LOADING)));
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
 
-    try{
+    try {
       var either = await _assignedFormRepository.getAssignedForms();
       either.fold((failure) {
-        stateBloc.add(StateRendererEvent(ErrorState(stateRendererType:StateRendererType.FULLSCREEN_ERROR, message: failure.message)));
-
-      }
-          , (forms)  {
-            stateBloc.add(StateRendererEvent(ContentState()));
-            emit(state.copyWith(assignedForms: forms.data));
-          });
-    }
-    catch (e) {
-      log(e.toString());
-
-      stateBloc.add(StateRendererEvent(ErrorState(stateRendererType:StateRendererType.FULLSCREEN_ERROR, message: e.toString())));
-
+        emit(state.copyWith(
+            flowState: ErrorState(
+                stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+                message: failure.message)));
+      }, (forms) {
+        emit(state.copyWith(
+            assignedForms: forms.data, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
     }
   }
 }

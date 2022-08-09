@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: BlocBuilder<StateRendererBloc, StateRendererState>(
+        body: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state.flowState != null) {
               var widget =
@@ -53,34 +54,53 @@ class NewWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.all(AppPadding.p20),
-                child: FormCard(
-                    viewSubmittedCallBack: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
-                                child:  SubmissionsScreen(formModel: state.assignedForms[index] ,),
-                              )));
-                    },
-                    formName: state.assignedForms[index].name,
-                    submitNewFormCallBack: () {
+                child: BlocProvider.value(
+                  value: getIT<FormsBloc>(),
+                  child: Builder(
+                    builder: (newContext) {
+                      return FormCard(
+                          viewSubmittedCallBack: () {
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: getIT<FormsBloc>()..add(NewFormRequested(state.assignedForms[index])),
-                                child: NewSubmitScreen(
-                                    formModel: state.assignedForms[index]),
-                              )));
-                    }),
+                            SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BlocProvider.value(
+                                        value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
+                                        child: SubmissionsScreen(
+                                          formModel: state.assignedForms[index],
+                                        ),
+                                      )));                            });
+
+
+
+                          },
+                          formName: state.assignedForms[index].name,
+                          submitNewFormCallBack: () {
+
+                            newContext.read<FormsBloc>().add(NewFormRequested(
+                                  state.assignedForms[index]));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BlocProvider.value(
+                                          value: getIT<FormsBloc>(),
+                                          child: NewSubmitScreen(
+                                              formModel:
+                                                  state.assignedForms[index]),
+                                        )));
+                          });
+                    }
+                  ),
+                ),
               );
             });
       },
     );
   }
 }
+
+
 
 class FormCard extends StatelessWidget {
   const FormCard(

@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:collection/collection.dart';
 import '../../domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';
 import '../../domain/model/dropdown_item_model/dropdown_item_model.dart';
 import '../../domain/model/dropdown_model/dropdown_model.dart';
@@ -59,12 +61,19 @@ class HiveDatabase {
 
   }
 
+  Future<void> updateSubmission (Submission submission) async {
+    await   _submissionsBox.put(getSubmissionId(submission),submission);
+  }
+
   Future<void> addSubmission (Submission submission) async {
+      var sub = submission.copyWith(id: _getLastSubmissionId()+1);
+
     await   _submissionsBox.add(submission);
   }
   
   List<Submission>? getAllSubmissions (String formName){
     return _submissionsBox.values.where((element) => element.formName == formName).toList() ;
+
   }
 
   Future<void> saveAssignedForms (AssignedForms assignedForms) async {
@@ -72,8 +81,16 @@ class HiveDatabase {
   }
 
 
+ int  _getLastSubmissionId() {
+    final key = _submissionsBox.keys.lastOrNull ?? 0;
+    return key as int;
+  }
+
+
   int getSubmissionId(Submission submission){
-    final _submission = _submissionsBox.values.firstWhere((element) => element == submission);
+    log('sub id '+ submission.key.toString());
+    _submissionsBox.values.forEach((element) {log(element.key.toString());});
+    final _submission = _submissionsBox.values.firstWhere((element) => element.id == submission.id);
     final index = _submission.key as int ;
     return index;
   }

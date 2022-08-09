@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:form_builder_test/data/data_source/local_data_source.dart';
 import 'package:form_builder_test/data/data_source/remote_data_source.dart';
@@ -23,30 +25,45 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
     //from database
     try{
-      final forms = _localDataSource.getAssignedForms();
-      return Right(forms);
+      // final forms = _localDataSource.getAssignedForms();
+      // return Right(forms);
+      if(!await _networkInfo.isConnected){
+        print('no internet');
+        return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
+      }
+
+
+      final response =  await _remoteDataSource.getAssignedForms();
+      if (response.status == ApiInternal.FAILURE){
+        return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+      }
+
+      //save to database
+      _localDataSource.saveFormsToDataBase(response.toDomain());
+      return Right(response.toDomain());
     }
 
     //from api
-     on DatabaseException {
-
-       if(!await _networkInfo.isConnected){
-         return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
-       }
-
-
-       final response =  await _remoteDataSource.getAssignedForms();
-       if (response.status == ApiInternal.FAILURE){
-         return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
-       }
-
-       //save to database
-       _localDataSource.saveFormsToDataBase(response.toDomain());
-       return Right(response.toDomain());
-    }
+    //  on DatabaseException {
+    //
+    //    if(!await _networkInfo.isConnected){
+    //      return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
+    //    }
+    //
+    //
+    //    final response =  await _remoteDataSource.getAssignedForms();
+    //    if (response.status == ApiInternal.FAILURE){
+    //      return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+    //    }
+    //
+    //    //save to database
+    //    _localDataSource.saveFormsToDataBase(response.toDomain());
+    //    return Right(response.toDomain());
+    // }
 
 
     catch (error){
+      print(error.toString());
       return Left(ErrorHandler.handle(error).failure);
     }
 
@@ -70,12 +87,19 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
   @override
   Future<void> addSubmission(Submission submission) async {
+    log('repo sub is about to be added : '+submission.toString());
+
     await _localDataSource.addSubmission(submission);
   }
 
   @override
   Future<void> deleteSubmission(Submission submission) async{
    await _localDataSource.deleteSubmission(submission);
+  }
+
+  @override
+  Future<void> updateSubmission(Submission submission) async {
+  await   _localDataSource.updateSubmission(submission);
   }
 
 

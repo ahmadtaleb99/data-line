@@ -209,7 +209,16 @@ enum FieldType {
 
 
 @HiveType(typeId: 17)
-class Submission extends HiveObject{
+class Submission extends HiveObject with EquatableMixin{
+
+
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map =  {};
+   fieldEntries.forEach((FieldEntry fieldEntry) {
+      map[fieldEntry.name] = fieldEntry.value;
+    });
+   return map;
+  }
 
 
     @HiveField(1)
@@ -218,14 +227,45 @@ class Submission extends HiveObject{
     @HiveField(2)
     final List<FieldEntry> fieldEntries;
 
-     Submission({
+    @HiveField(3)
+     final int? id;
+
+     Submission( {
+
+     this.id  ,
     required this.formName  ,
     required this.fieldEntries,
   });
+
+  @override
+  String toString() {
+    return 'Submission{formName: $formName, fieldEntries: $fieldEntries}';
+  }
+
+  Submission copyWith({
+
+    String? formName  ,
+    int? id  ,
+    List<FieldEntry>? fieldEntries,
+
+
+  }) {
+    return Submission(
+      formName: formName ?? this.formName,
+      id: id ?? this.id,
+      fieldEntries: fieldEntries ?? this.fieldEntries,
+
+
+    );
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [formName,id,fieldEntries];
 }
 
 @HiveType(typeId: 18)
-class FieldEntry {
+class FieldEntry extends Equatable{
 
   @HiveField(1)
   final String name;
@@ -237,4 +277,13 @@ class FieldEntry {
     required this.name,
     required this.value,
   });
+
+  @override
+  String toString() {
+    return 'FieldEntry{name: $name}';
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,value];
 }
