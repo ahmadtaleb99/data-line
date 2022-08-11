@@ -20,15 +20,45 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
   AssignedFormRepositoryImpl(this._remoteDataSource, this._networkInfo, this._localDataSource);
   @override
-  Future<Either<Failure, AssignedForms>> getAssignedForms() async {
+  Future<Either<Failure, AssignedForms>> getAssignedForms(
+      {bool? forceFromRemote}) async {
 
 
     //from database
     try{
-      // final forms = _localDataSource.getAssignedForms();
-      // return Right(forms);
+
+
+      if(forceFromRemote != null && forceFromRemote) {
+        return _getFromRemote();
+      } else {
+        final forms = _localDataSource.getAssignedForms();
+        return Right(forms);
+      }
+
+    }
+
+    // from api
+     on DatabaseException {
+      return _getFromRemote();
+
+    }
+
+
+    catch (error){
+      print(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
+
+
+
+
+  }
+
+
+  Future<Either<Failure, AssignedForms>> _getFromRemote  ()  async {
+
+    try{
       if(!await _networkInfo.isConnected){
-        print('no internet');
         return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
       }
 
@@ -43,34 +73,12 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       return Right(response.toDomain());
     }
 
-    //from api
-    //  on DatabaseException {
-    //
-    //    if(!await _networkInfo.isConnected){
-    //      return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
-    //    }
-    //
-    //
-    //    final response =  await _remoteDataSource.getAssignedForms();
-    //    if (response.status == ApiInternal.FAILURE){
-    //      return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
-    //    }
-    //
-    //    //save to database
-    //    _localDataSource.saveFormsToDataBase(response.toDomain());
-    //    return Right(response.toDomain());
-    // }
-
-
     catch (error){
       print(error.toString());
       return Left(ErrorHandler.handle(error).failure);
     }
 
-
-
-
-  }
+}
 
   @override
   Either<Failure, List<Submission>> getFormSubmissions(String formName) {

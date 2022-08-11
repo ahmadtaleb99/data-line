@@ -23,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     stateBloc.add(StateRendererEvent(ContentState()));
 
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
+    on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
   }
 
   Future<void> _onAssignedFormsRequested(
@@ -49,4 +50,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               message: e.toString())));
     }
   }
+
+   Future<void> _onAssignedFormsRefreshRequested(
+       AssignedFormsRefreshRequested event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.POPUP_LOADING)));
+
+    try {
+      var either = await _assignedFormRepository.getAssignedForms(forceFromRemote: true);
+      either.fold((failure) {
+        emit(state.copyWith(
+            flowState: ErrorState(
+                stateRendererType: StateRendererType.POPUP_ERROR,
+                message: failure.message)));
+      }, (forms) {
+        emit(state.copyWith(
+            assignedForms: forms.data, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.POPUP_ERROR,
+              message: e.toString())));
+    }
+  }
+
+
 }

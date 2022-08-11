@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/domain/repository/form_repository.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer.dart';
@@ -14,13 +15,15 @@ import 'package:form_builder_test/presentation/state_renderer_bloc/state_rendere
 part 'forms_event.dart';
 part 'forms_state.dart';
 
-class FormsBloc extends Bloc<FormsEvent, FormsState>  {
+class FormsBloc extends Bloc<FormsEvent, FormsState> {
   final stateBloc = getIT<StateRendererBloc>();
 
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
-      : super(FormsState(valuesMap: {}, submissions: [],flowState: ContentState())) {
+      : super(FormsState(
+            valuesMap: {}, submissions: [], flowState: ContentState())) {
     on<FieldValueChanged>(_onFieldValueChanged);
+    on<DropDownValueChanged>(_onDropDownValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
@@ -37,33 +40,48 @@ class FormsBloc extends Bloc<FormsEvent, FormsState>  {
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
-
     log(map.toString());
     emit(state.copyWith(valuesMap: map));
   }
 
+  Future<void> _onDropDownValueChanged(
+      DropDownValueChanged event, Emitter<FormsState> emit) async {
+
+    var formModel  = state.formModel!.copyWith();
+    DropDownModel dropDown =
+        _getField(formModel, event.fieldName) as DropDownModel;
+    List<DropDownModel> children =
+        getChildrenDropDowns(formModel, dropDown.name);
+
+    children.forEach((childDropDown) {
+      childDropDown.copyWith(
+          values: childDropDown.values
+              .where((item) => item.parent == event.value)
+              .toList());
+    });
+
+    emit(state.copyWith(formModel: state.formModel!.copyWith()));
+  }
+
   Future<void> _onNewFormRequested(
       NewFormRequested event, Emitter<FormsState> emit) async {
-      log('_onNewFormRequested');
-      log(state.valuesMap.toString());
-    emit(state.copyWith(formModel: event.formModel,valuesMap: {}));
-      log(state.valuesMap.toString());
-
-
+    log('_onNewFormRequested');
+    log(state.valuesMap.toString());
+    emit(state.copyWith(formModel: event.formModel, valuesMap: {}));
+    log(state.valuesMap.toString());
   }
+
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = event.submission.toMap();
-    log(map.toString()+'emititn from event bloc ');
-    emit(state.copyWith(formModel: event.formModel,valuesMap: map));
+    log(map.toString() + 'emititn from event bloc ');
+    emit(state.copyWith(formModel: event.formModel, valuesMap: map));
   }
 
   Future<void> _onSubmitCanceled(
       SubmitCanceled event, Emitter<FormsState> emit) async {
     emit(state.copyWith(valuesMap: {}));
   }
-
-
 
   Future<void> _onSubmissionDeleted(
       SubmissionDeleted event, Emitter<FormsState> emit) async {
@@ -79,11 +97,13 @@ class FormsBloc extends Bloc<FormsEvent, FormsState>  {
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
     Map map = state.valuesMap;
-    var newSub = Submission(formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map) );
+    var newSub = Submission(
+        formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map));
 
     await _assignedFormRepository.addSubmission(newSub);
-  }
 
+    emit(state.copyWith(valuesMap: {}));
+  }
 
   Future<void> _onSubmissionUpdated(
       SubmissionUpdated event, Emitter<FormsState> emit) async {
@@ -92,40 +112,32 @@ class FormsBloc extends Bloc<FormsEvent, FormsState>  {
     int index = state.submissions.indexOf(event.submission);
     List<Submission> newSubmissions = List.from(state.submissions);
 
-
-    Submission newSub = submission.copyWith(fieldEntries: _mapValuesToEntries(map));
+    Submission newSub =
+        submission.copyWith(fieldEntries: _mapValuesToEntries(map));
     newSubmissions[index] = newSub;
     await _assignedFormRepository.updateSubmission(newSub);
 
-
     emit(state.copyWith(submissions: newSubmissions));
-
   }
 
   Future<void> _onSubmissionsRequested(
       SubmissionsRequested event, Emitter<FormsState> emit) async {
     final either =
         _assignedFormRepository.getFormSubmissions(event.formModel.name);
-    either.fold((failure) {
-
-    }, (submissions) {
+    either.fold((failure) {}, (submissions) {
       log(submissions.toString());
       if (submissions.isEmpty)
         emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
-
-      else    {
-        emit(state.copyWith(submissions: List.from(submissions),flowState: ContentState()));
+      else {
+        emit(state.copyWith(
+            submissions: List.from(submissions), flowState: ContentState()));
       }
-
     });
   }
 
-
-
-
   //private functions
 
-  Submission _mapValuesToSubmission(Map submissionMap,Submission   submission){
+  Submission _mapValuesToSubmission(Map submissionMap, Submission submission) {
     List<FieldEntry> entries = submissionMap.entries
         .map((e) => FieldEntry(name: e.key, value: e.value))
         .toList();
@@ -134,14 +146,26 @@ class FormsBloc extends Bloc<FormsEvent, FormsState>  {
     return submission;
   }
 
-
-
-  List<FieldEntry> _mapValuesToEntries(Map submissionMap){
+  List<FieldEntry> _mapValuesToEntries(Map submissionMap) {
     List<FieldEntry> entries = submissionMap.entries
         .map((e) => FieldEntry(name: e.key, value: e.value))
         .toList();
 
     return entries;
+  }
+
+  FormFieldModel _getField(FormModel formModel, String fieldName) {
+    return formModel.fields.firstWhere((element) => element.name == fieldName);
+  }
+
+  List<DropDownModel> getChildrenDropDowns(
+      FormModel formModel, String fieldName) {
+    return formModel.fields
+        .where((element) => (element is DropDownModel &&
+            element.relatedListCheckbox == true &&
+            element.relatedListFieldName == fieldName))
+        .toList()
+        .cast();
   }
 
   @override

@@ -19,6 +19,20 @@ class FieldValueChanged extends FormsEvent {
   List<Object?> get props => [fieldName,value];
 }
 
+class DropDownValueChanged extends FormsEvent {
+  final String fieldName;
+  final String value;
+
+  const DropDownValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,value];
+}
+
 
 class NewFormRequested extends FormsEvent {
   final FormModel formModel;

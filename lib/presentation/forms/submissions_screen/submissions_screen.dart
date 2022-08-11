@@ -55,11 +55,12 @@ class NewWidget extends StatelessWidget {
         return ListView.separated(
             itemBuilder: (context, index) => SubmissionCard(
               onUpdate: (){
+                context.read<FormsBloc>().add(SubmissionUpdateRequested(this.formModel,state.submissions[index]));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => BlocProvider.value(
-                          value: getIT<FormsBloc>()..add(SubmissionUpdateRequested(this.formModel,state.submissions[index])),
+                          value: getIT<FormsBloc>(),
                           child:  UpdateSubmissionScreen(formModel: formModel,submission:state.submissions[index]),
                         )));
               },

@@ -14,6 +14,7 @@ class NewSubmitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       key :  UniqueKey(),
       appBar: AppBar(
 
       ),

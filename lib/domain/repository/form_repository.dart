@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class AssignedFormRepository{
 
-  Future<Either<Failure,AssignedForms>> getAssignedForms();
+  Future<Either<Failure,AssignedForms>> getAssignedForms({bool? forceFromRemote});
   Either<Failure,List<Submission>> getFormSubmissions(String formName);
   Future<void> addSubmission(Submission submission);
   Future<void> deleteSubmission(Submission submission);

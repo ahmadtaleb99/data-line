@@ -9,3 +9,9 @@ class AssignedFormsRequested extends HomeEvent{
   List<Object?> get props => [];
 
 }
+
+class AssignedFormsRefreshRequested extends HomeEvent{
+  @override
+  List<Object?> get props => [];
+
+}

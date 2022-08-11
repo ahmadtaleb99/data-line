@@ -19,7 +19,7 @@ class ErrorHandler implements Exception{
     //error from api or from dio
     if(error is DioError){
           failure = _handleDioError(error);
-          print(error.type);
+          log('dio class : : : : '+error.type.toString());
     }
   }
 
@@ -47,7 +47,8 @@ class ErrorHandler implements Exception{
           return Failure(error.response!.statusCode!,(error.response!.statusMessage!));
 
         }
-        return Failure(ResponseCode.UNKNOWN, ResponseMessage.UNKNOWN);
+
+    return Failure(ResponseCode.UNKNOWN, ResponseMessage.UNKNOWN);
 
 
     }

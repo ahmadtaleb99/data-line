@@ -47,54 +47,59 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemCount: state.assignedForms.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.all(AppPadding.p20),
-                child: BlocProvider.value(
-                  value: getIT<FormsBloc>(),
-                  child: Builder(
-                    builder: (newContext) {
-                      return FormCard(
-                          viewSubmittedCallBack: () {
+        return RefreshIndicator(
+          onRefresh: () async {
+            context.read<HomeBloc>().add(AssignedFormsRefreshRequested());
+          },
+          child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              itemCount: state.assignedForms.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(AppPadding.p20),
+                  child: BlocProvider.value(
+                    value: getIT<FormsBloc>(),
+                    child: Builder(
+                      builder: (newContext) {
+                        return FormCard(
+                            viewSubmittedCallBack: () {
 
-                            SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BlocProvider.value(
+                                          value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
+                                          child: SubmissionsScreen(
+                                            formModel: state.assignedForms[index],
+                                          ),
+                                        )));                            });
+
+
+
+                            },
+                            formName: state.assignedForms[index].name,
+                            submitNewFormCallBack: () {
+
+                              newContext.read<FormsBloc>().add(NewFormRequested(
+                                    state.assignedForms[index]));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => BlocProvider.value(
-                                        value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
-                                        child: SubmissionsScreen(
-                                          formModel: state.assignedForms[index],
-                                        ),
-                                      )));                            });
-
-
-
-                          },
-                          formName: state.assignedForms[index].name,
-                          submitNewFormCallBack: () {
-
-                            newContext.read<FormsBloc>().add(NewFormRequested(
-                                  state.assignedForms[index]));
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BlocProvider.value(
-                                          value: getIT<FormsBloc>(),
-                                          child: NewSubmitScreen(
-                                              formModel:
-                                                  state.assignedForms[index]),
-                                        )));
-                          });
-                    }
+                                            value: getIT<FormsBloc>(),
+                                            child: NewSubmitScreen(
+                                                formModel:
+                                                    state.assignedForms[index]),
+                                          )));
+                            });
+                      }
+                    ),
                   ),
-                ),
-              );
-            });
+                );
+              }),
+        );
       },
     );
   }

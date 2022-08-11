@@ -13,10 +13,12 @@ class NumberTextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('number widget got built ');
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         log(state.valuesMap.toString() + '   NumberTextFieldWidget');
         return FormFieldWidget(label: numberFieldModel.label, field: TextFormField(
+          key: UniqueKey(),
           initialValue: state.valuesMap[numberFieldModel.name],
 
           onChanged: (number) {
