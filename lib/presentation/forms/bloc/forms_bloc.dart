@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/domain/repository/form_repository.dart';
@@ -21,7 +23,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
+    assignedForms: [],
             valuesMap: {}, submissions: [], flowState: ContentState())) {
+    on<AssignedFormsRequested>(_onAssignedFormsRequested);
+    on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
     on<DropDownValueChanged>(_onDropDownValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
@@ -32,6 +37,59 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<SubmissionDeleted>(_onSubmissionDeleted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
+
+
+  Future<void> _onAssignedFormsRequested(
+      AssignedFormsRequested event, Emitter<FormsState> emit) async {
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
+
+    try {
+      var either = await _assignedFormRepository.getAssignedForms();
+      either.fold((failure) {
+        emit(state.copyWith(
+            flowState: ErrorState(
+                stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+                message: failure.message)));
+      }, (forms) {
+        emit(state.copyWith(
+            assignedForms: forms.data, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
+    }
+  }
+
+  Future<void> _onAssignedFormsRefreshRequested(
+      AssignedFormsRefreshRequested event, Emitter<FormsState> emit) async {
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.POPUP_LOADING)));
+
+    try {
+      var either = await _assignedFormRepository.getAssignedForms(forceFromRemote: true);
+      either.fold((failure) {
+        emit(state.copyWith(
+            flowState: ErrorState(
+                stateRendererType: StateRendererType.POPUP_ERROR,
+                message: failure.message)));
+      }, (forms) {
+        emit(state.copyWith(
+            assignedForms: forms.data, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.POPUP_ERROR,
+              message: e.toString())));
+    }
+  }
+
+
 
   Future<void> _onFieldValueChanged(
       FieldValueChanged event, Emitter<FormsState> emit) async {
@@ -46,21 +104,26 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
 
   Future<void> _onDropDownValueChanged(
       DropDownValueChanged event, Emitter<FormsState> emit) async {
+    var formModel = state.formModel!.copyWith();
 
-    var formModel  = state.formModel!.copyWith();
-    DropDownModel dropDown =
-        _getField(formModel, event.fieldName) as DropDownModel;
-    List<DropDownModel> children =
-        getChildrenDropDowns(formModel, dropDown.name);
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+    map[event.fieldName] = event.value;
 
-    children.forEach((childDropDown) {
-      childDropDown.copyWith(
-          values: childDropDown.values
+    DropDownModel dropDown = formModel.getField(event.fieldName) as DropDownModel;
+
+    List<DropDownModel> children = formModel.getRelatedDropDowns(dropDown.name);
+   children.map((childDropDown) {
+        childDropDown = childDropDown.copyWith(
+          values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
+
               .where((item) => item.parent == event.value)
               .toList());
-    });
 
-    emit(state.copyWith(formModel: state.formModel!.copyWith()));
+      formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+        map[childDropDown.name] = null;
+    }).toList();
+
+    emit(state.copyWith(formModel: formModel, valuesMap: map));
   }
 
   Future<void> _onNewFormRequested(
@@ -158,7 +221,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     return formModel.fields.firstWhere((element) => element.name == fieldName);
   }
 
-  List<DropDownModel> getChildrenDropDowns(
+  List<DropDownModel> _getRelatedDropDowns(
       FormModel formModel, String fieldName) {
     return formModel.fields
         .where((element) => (element is DropDownModel &&

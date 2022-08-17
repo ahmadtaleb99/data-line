@@ -29,7 +29,7 @@ class RouteGenerator {
         initFormModule();
         return MaterialPageRoute(
             builder: (_) =>  MultiBlocProvider(providers: [
-              BlocProvider(create: (context) => HomeBloc(getIT<AssignedFormRepository>())..add(AssignedFormsRequested())),
+              BlocProvider(create: (context) => FormsBloc(getIT<AssignedFormRepository>())..add(AssignedFormsRequested())),
 
             ], child: const HomeScreen()));
 

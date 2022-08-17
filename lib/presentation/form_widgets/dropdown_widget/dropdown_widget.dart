@@ -49,7 +49,7 @@ class DropDownWidget extends StatelessWidget {
                         ))
                         .toList(),
                     onChanged: (String? newValue) {
-                      context.read<FormsBloc>().add(FieldValueChanged(
+                      context.read<FormsBloc>().add(DropDownValueChanged(
                           fieldName: dropDownModel.name, value: newValue!));
                     },
                   ),

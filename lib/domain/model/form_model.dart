@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -49,11 +50,23 @@ class FormModel with EquatableMixin {
     return FormModel(
       name: name ?? this.name,
       directionality: directionality ?? this.directionality,
-      fields: fields ?? this.fields,
+      fields: fields ?? this.fields.map((dynamic e) => e.copyWith()).toList().cast(),
     );
   }
 }
+extension xFormModel on FormModel {
+  FormFieldModel getField(String fieldName) => this.fields.firstWhere((element) => element.name == fieldName);
+  List<DropDownModel> getRelatedDropDowns(
+      String fieldName) {
+    return this.fields
+        .where((element) => (element is DropDownModel &&
+        element.relatedListCheckbox == true &&
+        element.relatedListFieldName == fieldName))
+        .toList()
+        .cast();
+  }
 
+}
 
 @HiveType(typeId: 13)
 abstract class FormFieldModel with EquatableMixin {

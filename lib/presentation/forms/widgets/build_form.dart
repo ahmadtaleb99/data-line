@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
@@ -20,10 +22,10 @@ class BuildForm extends StatelessWidget {
               const Padding(
                   padding: EdgeInsets.symmetric(vertical: AppPadding.p8)),
               itemBuilder: (context, index) {
-                print(formModel.fields[index].type);
+                // log(state.formModel!.fields[1].toString());
                 return state.formModel!.fields[index].toWidget();
               },
-              itemCount: formModel.fields.length
+              itemCount: state.formModel!.fields.length
           );
         },
       ),

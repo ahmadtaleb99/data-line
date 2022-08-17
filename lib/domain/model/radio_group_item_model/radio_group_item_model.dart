@@ -28,4 +28,17 @@ class RadioGroupItemModel extends Equatable{
   @override
   List<Object?> get props => [label,value,parent,status];
 
+  RadioGroupItemModel copyWith({
+    String? label,
+    String? value,
+    String? parent,
+    String? status,
+  }) {
+    return RadioGroupItemModel(
+      label: label ?? this.label,
+      value: value ?? this.value,
+      parent: parent ?? this.parent,
+      status: status ?? this.status,
+    );
+  }
 }

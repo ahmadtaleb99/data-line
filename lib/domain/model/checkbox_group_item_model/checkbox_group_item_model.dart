@@ -26,4 +26,18 @@ class CheckboxGroupItemModel  extends Equatable{
 
   @override
   List<Object?> get props => [label,value,parent,status];
+
+  CheckboxGroupItemModel copyWith({
+    String? label,
+    String? value,
+    String? parent,
+    String? status,
+  }) {
+    return CheckboxGroupItemModel(
+      label: label ?? this.label,
+      value: value ?? this.value,
+      parent: parent ?? this.parent,
+      status: status ?? this.status,
+    );
+  }
 }

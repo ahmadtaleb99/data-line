@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/domain/repository/form_repository.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
@@ -19,12 +20,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: BlocBuilder<HomeBloc, HomeState>(
+        body: BlocBuilder<FormsBloc, FormsState>(
+          buildWhen: (p,c) => p.flowState != c.flowState,
           builder: (context, state) {
             if (state.flowState != null) {
               var widget =
                   state.flowState.getWidget(context, const NewWidget(), () {
-                context.read<HomeBloc>().add(AssignedFormsRequested());
+                context.read<FormsBloc>().add(AssignedFormsRequested());
               });
               log(widget.hashCode.toString());
               return widget;
@@ -45,11 +47,11 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            context.read<HomeBloc>().add(AssignedFormsRefreshRequested());
+            context.read<FormsBloc>().add(AssignedFormsRefreshRequested());
           },
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,45 +60,38 @@ class NewWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.all(AppPadding.p20),
-                  child: BlocProvider.value(
-                    value: getIT<FormsBloc>(),
-                    child: Builder(
-                      builder: (newContext) {
-                        return FormCard(
-                            viewSubmittedCallBack: () {
+                  child: FormCard(
+                      viewSubmittedCallBack: () {
 
-                              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BlocProvider.value(
-                                          value: getIT<FormsBloc>()..add(SubmissionsRequested(state.assignedForms[index])),
-                                          child: SubmissionsScreen(
-                                            formModel: state.assignedForms[index],
-                                          ),
-                                        )));                            });
-
-
-
-                            },
-                            formName: state.assignedForms[index].name,
-                            submitNewFormCallBack: () {
-
-                              newContext.read<FormsBloc>().add(NewFormRequested(
-                                    state.assignedForms[index]));
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                            value: getIT<FormsBloc>(),
-                                            child: NewSubmitScreen(
-                                                formModel:
-                                                    state.assignedForms[index]),
-                                          )));
-                            });
-                      }
-                    ),
-                  ),
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => BlocProvider(
+                                  create:(context) => FormsBloc(context.read<AssignedFormRepository>()),
+                                  child: SubmissionsScreen(
+                                    formModel: state.assignedForms[index],
+                                  ),
+                                )));
+                        context
+                            .read<FormsBloc>()
+                            .add(SubmissionsRequested(
+                            state.assignedForms[index]));
+                      },
+                      formName: state.assignedForms[index].name,
+                      submitNewFormCallBack: () {
+                        context
+                            .read<FormsBloc>()
+                            .add(NewFormRequested(state.assignedForms[index]));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                      value: context.read<FormsBloc>(),
+                                      child: NewSubmitScreen(
+                                          formModel:
+                                              state.assignedForms[index]),
+                                    )));
+                      }),
                 );
               }),
         );
@@ -104,8 +99,6 @@ class NewWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 class FormCard extends StatelessWidget {
   const FormCard(

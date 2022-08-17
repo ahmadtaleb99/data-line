@@ -9,8 +9,10 @@ class FormsState extends Equatable {
   final  List<Submission> submissions;
   final Map<String,dynamic> valuesMap;
   final FlowState flowState;
+  final  List<FormModel> assignedForms;
+
   @override
-  List<Object?> get props => [valuesMap,submissions,formModel,currentSubmission,flowState];
+  List<Object?> get props => [valuesMap,submissions,formModel,currentSubmission,flowState,assignedForms];
 
   const FormsState({
     this.formModel,
@@ -18,6 +20,7 @@ class FormsState extends Equatable {
     required this.valuesMap,
     required this.submissions,
     required this.flowState,
+    required this.assignedForms,
   });
 
   FormsState copyWith({
@@ -25,7 +28,8 @@ class FormsState extends Equatable {
     Map<String, dynamic>? valuesMap,
     List<Submission>? submissions,
     Submission? currentSubmission,
-    FlowState? flowState
+    FlowState? flowState,
+    List<FormModel>? assignedForms
   }) {
     return FormsState(
       formModel: formModel ?? this.formModel,
@@ -33,6 +37,7 @@ class FormsState extends Equatable {
       submissions: submissions ?? this.submissions,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       flowState: flowState ?? this.flowState,
+      assignedForms: assignedForms ?? this.assignedForms,
     );
   }
 }

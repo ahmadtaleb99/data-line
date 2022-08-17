@@ -3,7 +3,17 @@ part of 'forms_bloc.dart';
 abstract class FormsEvent extends Equatable {
   const FormsEvent();
 }
+class AssignedFormsRequested extends FormsEvent{
+  @override
+  List<Object?> get props => [];
 
+}
+
+class AssignedFormsRefreshRequested extends FormsEvent{
+  @override
+  List<Object?> get props => [];
+
+}
 
 class FieldValueChanged extends FormsEvent {
   final String fieldName;

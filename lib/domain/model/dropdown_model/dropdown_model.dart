@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_item_model/radio_group_item_model.dart';
 import 'package:form_builder_test/presentation/form_widgets/dropdown_widget/dropdown_widget.dart';
@@ -11,6 +12,7 @@ import '../form_model.dart';
 
 part 'dropdown_model.g.dart';
 
+@immutable
 @HiveType(typeId: 4)
 class DropDownModel extends FormFieldModel with EquatableMixin{
 
@@ -80,7 +82,7 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
       relatedListCheckbox : relatedListCheckbox ?? this.relatedListCheckbox,
       relatedListFieldName : relatedListFieldName ?? this.relatedListFieldName,
       multiple : multiple ?? this.multiple,
-      values: values ?? this.values,
+      values: values ?? this.values.map((DropDownItemModel e) => e.copyWith()).toList(),
       name: name ?? this.name,
       label: label ?? this.label,
       type: type ?? this.type,
@@ -90,8 +92,7 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
-      requiredIfLogicCheckbox:
-      requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
+      requiredIfLogicCheckbox: requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
 
     );
   }
