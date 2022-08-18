@@ -8,6 +8,8 @@ import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
 
+import '../../../domain/model/form_model.dart';
+
 class DropDownWidget extends StatelessWidget {
   const DropDownWidget({Key? key, required this.dropDownModel})
       : super(key: key);
@@ -26,7 +28,7 @@ class DropDownWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: ColorManager.primary.withOpacity(0.1),
                   borderRadius:
-                  BorderRadius.all(Radius.circular(40)),
+                  const BorderRadius.all(Radius.circular(40)),
                   border: Border.all(
                     color: ColorManager.primary,
                     width: 2,
@@ -36,12 +38,12 @@ class DropDownWidget extends StatelessWidget {
                   child: DropdownButton<String>(
                     value: state.valuesMap[dropDownModel.name],
                       underline: Container(),
-                      icon: Padding(
+                      icon:const  Padding(
                         padding:
-                        const EdgeInsets.only(left: 99),
-                        child: Icon(Icons.arrow_drop_down),
+                         EdgeInsets.only(left: 99),
+                        child:  Icon(Icons.arrow_drop_down),
                       ),
-                    items: dropDownModel.values
+                    items: _getItems(state)
                         .map((e) =>
                         DropdownMenuItem(
                           value: e.value,
@@ -57,4 +59,15 @@ class DropDownWidget extends StatelessWidget {
       },
     );
   }
+
+    _getItems (FormsState state) {
+     if (dropDownModel.relatedListCheckbox) {
+       var parent = state.formModel!.fields.firstWhere((element) =>
+       element.name == dropDownModel.relatedListFieldName);
+       var items = dropDownModel.values.where((element) =>
+       element.parent == state.valuesMap[parent.name]).toList();
+       return items;
+     }
+     return this.dropDownModel.values;
+   }
 }

@@ -32,9 +32,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
-    on<SubmissionsRequested>(_onSubmissionsRequested);
+    // on<SubmissionsRequested>(_onSubmissionsRequested);
     on<FormSubmitted>(_onFormSubmitted);
-    on<SubmissionDeleted>(_onSubmissionDeleted);
+    // on<SubmissionDeleted>(_onSubmissionDeleted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
 
@@ -109,19 +109,20 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
-    DropDownModel dropDown = formModel.getField(event.fieldName) as DropDownModel;
-
-    List<DropDownModel> children = formModel.getRelatedDropDowns(dropDown.name);
-   children.map((childDropDown) {
-        childDropDown = childDropDown.copyWith(
-          values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
-
-              .where((item) => item.parent == event.value)
-              .toList());
-
-      formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
-        map[childDropDown.name] = null;
-    }).toList();
+   //  DropDownModel dropDown = formModel.getField(event.fieldName) as DropDownModel;
+   //
+   //  List<DropDownModel> children = formModel.getRelatedDropDowns(dropDown.name);
+   // children.map((childDropDown) {
+   //   log(state.assignedForms.toString()+'my log ');
+   //      childDropDown = childDropDown.copyWith(
+   //        values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
+   //
+   //            .where((item) => item.parent == event.value)
+   //            .toList());
+   //
+   //    formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+   //      map[childDropDown.name] = null;
+   //  }).toList();
 
     emit(state.copyWith(formModel: formModel, valuesMap: map));
   }
@@ -146,16 +147,16 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     emit(state.copyWith(valuesMap: {}));
   }
 
-  Future<void> _onSubmissionDeleted(
-      SubmissionDeleted event, Emitter<FormsState> emit) async {
-    Map<String, dynamic> map = {};
-    await _assignedFormRepository.deleteSubmission(event.submission);
-    List<Submission> submissions = List.from(state.submissions);
-    submissions.remove(event.submission);
-    if (submissions.isEmpty)
-      emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
-    emit(state.copyWith(submissions: submissions));
-  }
+  // Future<void> _onSubmissionDeleted(
+  //     SubmissionDeleted event, Emitter<FormsState> emit) async {
+  //   Map<String, dynamic> map = {};
+  //   await _assignedFormRepository.deleteSubmission(event.submission);
+  //   List<Submission> submissions = List.from(state.submissions);
+  //   submissions.remove(event.submission);
+  //   if (submissions.isEmpty)
+  //     emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
+  //   emit(state.copyWith(submissions: submissions));
+  // }
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
@@ -177,26 +178,26 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
 
     Submission newSub =
         submission.copyWith(fieldEntries: _mapValuesToEntries(map));
-    newSubmissions[index] = newSub;
+    // newSubmissions[index] = newSub;
     await _assignedFormRepository.updateSubmission(newSub);
 
-    emit(state.copyWith(submissions: newSubmissions));
+    // emit(state.copyWith(submissions: newSubmissions));
   }
 
-  Future<void> _onSubmissionsRequested(
-      SubmissionsRequested event, Emitter<FormsState> emit) async {
-    final either =
-        _assignedFormRepository.getFormSubmissions(event.formModel.name);
-    either.fold((failure) {}, (submissions) {
-      log(submissions.toString());
-      if (submissions.isEmpty)
-        emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
-      else {
-        emit(state.copyWith(
-            submissions: List.from(submissions), flowState: ContentState()));
-      }
-    });
-  }
+  // Future<void> _onSubmissionsRequested(
+  //     SubmissionsRequested event, Emitter<FormsState> emit) async {
+  //   final either =
+  //       _assignedFormRepository.getFormSubmissions(event.formModel.name);
+  //   either.fold((failure) {}, (submissions) {
+  //     log(submissions.toString());
+  //     if (submissions.isEmpty)
+  //       emit(state.copyWith(flowState: LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
+  //     else {
+  //       emit(state.copyWith(
+  //           submissions: List.from(submissions), flowState: ContentState()));
+  //     }
+  //   });
+  // }
 
   //private functions
 
@@ -233,6 +234,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
 
   @override
   Future<void> close() {
+    log('forms bloc closed');
     return super.close();
   }
 }

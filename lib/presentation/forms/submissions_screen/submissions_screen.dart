@@ -5,6 +5,7 @@ import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/update_submisson/view/update_submisson_screen.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
@@ -19,7 +20,7 @@ class SubmissionsScreen extends StatelessWidget {
 
    return Scaffold(
      appBar: AppBar(),
-    body : BlocBuilder<FormsBloc, FormsState>(
+    body : BlocBuilder<SubmissionsBloc, SubmissionsState>(
       buildWhen: (p,c) {
         return p.flowState != c.flowState;
       },
@@ -50,22 +51,23 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormsBloc, FormsState>(
+    return BlocBuilder<SubmissionsBloc, SubmissionsState>(
       builder: (context, state) {
         return ListView.separated(
             itemBuilder: (context, index) => SubmissionCard(
               onUpdate: (){
-                context.read<FormsBloc>().add(SubmissionUpdateRequested(this.formModel,state.submissions[index]));
+                var formsBloc = context.read<FormsBloc>();
+                formsBloc.add(SubmissionUpdateRequested(formModel,state.submissions[index]));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BlocProvider.value(
-                          value: getIT<FormsBloc>(),
+                        builder: (_) => BlocProvider.value(
+                          value: formsBloc,
                           child:  UpdateSubmissionScreen(formModel: formModel,submission:state.submissions[index]),
-                        )));
+                        ))).then((value) =>  context.read<SubmissionsBloc>().add(SubmissionsRequested(formModel)));
               },
               onDelete: (){
-                context.read<FormsBloc>().add(SubmissionDeleted(state.submissions[index]));
+                context.read<SubmissionsBloc>().add(SubmissionDeleted(state.submissions[index]));
               },
             ),
             separatorBuilder: (context, index) =>

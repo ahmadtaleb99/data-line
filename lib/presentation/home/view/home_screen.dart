@@ -8,6 +8,7 @@ import 'package:form_builder_test/presentation/common/state_renderer/state_rende
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/view/new_submit_screen.dart';
+import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/submissions_screen.dart';
 import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
@@ -21,11 +22,11 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(),
         body: BlocBuilder<FormsBloc, FormsState>(
-          buildWhen: (p,c) => p.flowState != c.flowState,
+          buildWhen: (p, c) => p.flowState != c.flowState,
           builder: (context, state) {
             if (state.flowState != null) {
               var widget =
-                  state.flowState.getWidget(context, const NewWidget(), () {
+              state.flowState.getWidget(context, const NewWidget(), () {
                 context.read<FormsBloc>().add(AssignedFormsRequested());
               });
               log(widget.hashCode.toString());
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           },
         )
 //       body: _getWidget(context)
-        );
+    );
   }
 }
 
@@ -62,20 +63,27 @@ class NewWidget extends StatelessWidget {
                   padding: EdgeInsets.all(AppPadding.p20),
                   child: FormCard(
                       viewSubmittedCallBack: () {
-
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => BlocProvider(
-                                  create:(context) => FormsBloc(context.read<AssignedFormRepository>()),
-                                  child: SubmissionsScreen(
-                                    formModel: state.assignedForms[index],
-                                  ),
-                                )));
-                        context
-                            .read<FormsBloc>()
-                            .add(SubmissionsRequested(
-                            state.assignedForms[index]));
+                                builder: (_) =>
+                                    MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider(
+                                          create: (context) =>
+                                          SubmissionsBloc(
+                                              getIT<AssignedFormRepository>())
+                                            ..add(SubmissionsRequested(
+                                                state.assignedForms[index])),
+                                        ),
+                                        BlocProvider.value(
+                                          value: context.read<FormsBloc>(),
+                                        ),
+                                      ],
+                                      child: SubmissionsScreen(
+                                        formModel: state.assignedForms[index],
+                                      ),
+                                    )));
                       },
                       formName: state.assignedForms[index].name,
                       submitNewFormCallBack: () {
@@ -85,11 +93,12 @@ class NewWidget extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => BlocProvider.value(
+                                builder: (_) =>
+                                    BlocProvider.value(
                                       value: context.read<FormsBloc>(),
                                       child: NewSubmitScreen(
                                           formModel:
-                                              state.assignedForms[index]),
+                                          state.assignedForms[index]),
                                     )));
                       }),
                 );
@@ -101,11 +110,10 @@ class NewWidget extends StatelessWidget {
 }
 
 class FormCard extends StatelessWidget {
-  const FormCard(
-      {Key? key,
-      required this.viewSubmittedCallBack,
-      required this.formName,
-      required this.submitNewFormCallBack})
+  const FormCard({Key? key,
+    required this.viewSubmittedCallBack,
+    required this.formName,
+    required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
@@ -129,12 +137,13 @@ class FormCard extends StatelessWidget {
                 flex: 5,
                 child: Center(
                     child: Text(
-                  formName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .overline!
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                ))),
+                      formName,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .overline!
+                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                    ))),
             Expanded(
                 flex: 2,
                 child: Row(

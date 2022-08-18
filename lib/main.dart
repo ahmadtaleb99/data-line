@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/app/MyApp.dart';
+import 'package:form_builder_test/app/MyBlocObserver.dart';
 import 'package:form_builder_test/data/data_source/remote_data_source.dart';
 import 'package:form_builder_test/data/mapper/form_fields_mappers.dart';
 import 'package:form_builder_test/presentation/home/view/home_screen.dart';
@@ -55,11 +56,16 @@ Future<void> main() async {
   await  initAppModules();
   initNotifications();
   await NotificationService().init();
+  BlocOverrides.runZoned(
+        () {
+          runApp(EasyLocalization(
+            supportedLocales: const [englishLocale,arabicLocale],
+            path: LanguageAssets.languageAssetBase,
+            child: MyApp() ,) );
+    },
+    blocObserver: MyBlocObserver(),
+  );
 
-  runApp(EasyLocalization(
-    supportedLocales: const [englishLocale,arabicLocale],
-    path: LanguageAssets.languageAssetBase,
-    child: MyApp() ,) );
 }
 
 
