@@ -90,13 +90,13 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    throw UnimplementedError();
+    throw Error();
   }
 
   @override
   void write(BinaryWriter writer, FormFieldModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
@@ -116,7 +116,11 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override
@@ -141,6 +145,7 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Submission(
+      id: fields[3] as int?,
       formName: fields[1] as String,
       fieldEntries: (fields[2] as List).cast<FieldEntry>(),
     );
@@ -149,11 +154,13 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
   @override
   void write(BinaryWriter writer, Submission obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(1)
       ..write(obj.formName)
       ..writeByte(2)
-      ..write(obj.fieldEntries);
+      ..write(obj.fieldEntries)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override

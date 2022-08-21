@@ -14,10 +14,10 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
 
 
 
-  @HiveField(11)
+  @HiveField(13)
   final String operator;
 
-  @HiveField(12)
+  @HiveField(14)
   final int expressionsValue;
 
   NumberFieldModel({
@@ -32,6 +32,8 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
     required bool isReadOnly,
     required bool showIfLogicCheckbox,
     required bool showIfIsRequired,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool requiredIfLogicCheckbox,
   }) : super(
       name: name,
@@ -41,6 +43,8 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
       required: required,
       isHidden: isHidden,
       isReadOnly: isReadOnly,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
@@ -50,6 +54,8 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
     int? expressionsValue,
     String? name,
     String? label,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     FieldType? type,
     bool? deactivate,
     bool? required,
@@ -70,6 +76,8 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
       required: required ?? this.required,
       isHidden: isHidden ?? this.isHidden,
       isReadOnly: isReadOnly ?? this.isReadOnly,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
       requiredIfLogicCheckbox:

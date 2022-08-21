@@ -24,13 +24,7 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
       'data': instance.data,
     };
 
-// FormResponse _$FormResponseFromJson(Map<String, dynamic> json) => FormResponse(
-//       json['name'] as String?,
-//       json['directionality'] as String?,
-//       (json['fields'] as List<dynamic>?)
-//           ?.map((e) => FormFieldResponse.fromJson(e as Map<String, dynamic>))
-//           .toList(),
-//     );
+
 
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{
@@ -49,6 +43,8 @@ FormFieldResponse _$FormFieldResponseFromJson(Map<String, dynamic> json) =>
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -62,6 +58,8 @@ Map<String, dynamic> _$FormFieldResponseToJson(FormFieldResponse instance) =>
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
@@ -92,6 +90,8 @@ TextFieldResponse _$TextFieldResponseFromJson(Map<String, dynamic> json) =>
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -105,6 +105,8 @@ Map<String, dynamic> _$TextFieldResponseToJson(TextFieldResponse instance) =>
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'unique': instance.unique,
@@ -121,6 +123,8 @@ EmailTextFieldResponse _$EmailTextFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -135,6 +139,8 @@ Map<String, dynamic> _$EmailTextFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
@@ -153,6 +159,8 @@ TextAreaFieldResponse _$TextAreaFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -167,6 +175,8 @@ Map<String, dynamic> _$TextAreaFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'minLength': instance.minLength,
@@ -186,6 +196,8 @@ NumberFieldResponse _$NumberFieldResponseFromJson(Map<String, dynamic> json) =>
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -200,6 +212,8 @@ Map<String, dynamic> _$NumberFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'operator': instance.operator,
@@ -226,6 +240,8 @@ CheckboxGroupFieldResponse _$CheckboxGroupFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -240,6 +256,8 @@ Map<String, dynamic> _$CheckboxGroupFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'other': instance.other,
@@ -284,6 +302,8 @@ RadioGroupFieldResponse _$RadioGroupFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -298,6 +318,8 @@ Map<String, dynamic> _$RadioGroupFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'other': instance.other,
@@ -341,6 +363,8 @@ DropDownFieldResponse _$DropDownFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -355,6 +379,8 @@ Map<String, dynamic> _$DropDownFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'prompt': instance.prompt,
@@ -393,6 +419,8 @@ StarRatingFieldResponse _$StarRatingFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -407,6 +435,8 @@ Map<String, dynamic> _$StarRatingFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
@@ -425,6 +455,8 @@ FilePickerFieldResponse _$FilePickerFieldResponseFromJson(
       ..isHidden = json['isHidden'] as bool?
       ..isReadOnly = json['isReadOnly'] as bool?
       ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
       ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
 
@@ -439,6 +471,8 @@ Map<String, dynamic> _$FilePickerFieldResponseToJson(
       'isHidden': instance.isHidden,
       'isReadOnly': instance.isReadOnly,
       'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'maxFileSize': instance.maxFileSize,

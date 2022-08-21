@@ -97,6 +97,12 @@ class FormFieldResponse {
   @JsonKey(name: 'showIfLogicCheckbox')
   bool? showIfLogicCheckbox;
 
+  @JsonKey(name: 'showIfFieldName')
+  String? showIfFieldName;
+
+  @JsonKey(name: 'showIfFieldValue')
+  String? showIfFieldValue;
+
   @JsonKey(name: 'showIfIsRequired')
   bool? showIfIsRequired;
 

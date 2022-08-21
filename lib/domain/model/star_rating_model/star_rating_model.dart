@@ -13,6 +13,8 @@ class StarRatingModel extends FormFieldModel with EquatableMixin{
   StarRatingModel({
     required String name,
     required String label,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required FieldType type,
     required bool deactivate,
     required bool required,
@@ -27,6 +29,8 @@ class StarRatingModel extends FormFieldModel with EquatableMixin{
       type: type,
       deactivate: deactivate,
       required: required,
+      showIfFieldValue: showIfFieldValue,
+      showIfFieldName: showIfFieldName,
       isHidden: isHidden,
       isReadOnly: isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox,
@@ -37,6 +41,8 @@ class StarRatingModel extends FormFieldModel with EquatableMixin{
 
     String? name,
     String? label,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     FieldType? type,
     bool? deactivate,
     bool? required,
@@ -56,6 +62,8 @@ class StarRatingModel extends FormFieldModel with EquatableMixin{
       isHidden: isHidden ?? this.isHidden,
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
       requiredIfLogicCheckbox:
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,

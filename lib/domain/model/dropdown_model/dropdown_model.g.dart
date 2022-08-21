@@ -17,11 +17,11 @@ class DropDownModelAdapter extends TypeAdapter<DropDownModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DropDownModel(
-      prompt: fields[11] as String,
-      relatedListCheckbox: fields[12] as bool,
-      relatedListFieldName: fields[13] as String,
-      multiple: fields[14] as bool,
-      values: (fields[15] as List).cast<DropDownItemModel>(),
+      prompt: fields[13] as String,
+      relatedListCheckbox: fields[14] as bool,
+      relatedListFieldName: fields[15] as String,
+      multiple: fields[16] as bool,
+      values: (fields[17] as List).cast<DropDownItemModel>(),
       name: fields[1] as String,
       label: fields[2] as String,
       type: fields[3] as FieldType,
@@ -30,6 +30,8 @@ class DropDownModelAdapter extends TypeAdapter<DropDownModel> {
       isHidden: fields[6] as bool,
       isReadOnly: fields[7] as bool,
       showIfLogicCheckbox: fields[8] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       showIfIsRequired: fields[9] as bool,
       requiredIfLogicCheckbox: fields[10] as bool,
     );
@@ -38,16 +40,16 @@ class DropDownModelAdapter extends TypeAdapter<DropDownModel> {
   @override
   void write(BinaryWriter writer, DropDownModel obj) {
     writer
-      ..writeByte(15)
-      ..writeByte(11)
-      ..write(obj.prompt)
-      ..writeByte(12)
-      ..write(obj.relatedListCheckbox)
+      ..writeByte(17)
       ..writeByte(13)
-      ..write(obj.relatedListFieldName)
+      ..write(obj.prompt)
       ..writeByte(14)
-      ..write(obj.multiple)
+      ..write(obj.relatedListCheckbox)
       ..writeByte(15)
+      ..write(obj.relatedListFieldName)
+      ..writeByte(16)
+      ..write(obj.multiple)
+      ..writeByte(17)
       ..write(obj.values)
       ..writeByte(1)
       ..write(obj.name)
@@ -68,7 +70,11 @@ class DropDownModelAdapter extends TypeAdapter<DropDownModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

@@ -17,11 +17,11 @@ class CheckboxGroupModelAdapter extends TypeAdapter<CheckboxGroupModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CheckboxGroupModel(
-      other: fields[11] as bool,
-      values: (fields[15] as List).cast<CheckboxGroupItemModel>(),
-      minMaxCheckbox: fields[12] as bool,
-      checkboxMinValue: fields[13] as int,
-      checkboxMaxValue: fields[14] as int,
+      other: fields[13] as bool,
+      values: (fields[17] as List).cast<CheckboxGroupItemModel>(),
+      minMaxCheckbox: fields[14] as bool,
+      checkboxMinValue: fields[15] as int,
+      checkboxMaxValue: fields[16] as int,
       name: fields[1] as String,
       label: fields[2] as String,
       type: fields[3] as FieldType,
@@ -29,6 +29,8 @@ class CheckboxGroupModelAdapter extends TypeAdapter<CheckboxGroupModel> {
       required: fields[5] as bool,
       isHidden: fields[6] as bool,
       isReadOnly: fields[7] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       showIfLogicCheckbox: fields[8] as bool,
       showIfIsRequired: fields[9] as bool,
       requiredIfLogicCheckbox: fields[10] as bool,
@@ -38,16 +40,16 @@ class CheckboxGroupModelAdapter extends TypeAdapter<CheckboxGroupModel> {
   @override
   void write(BinaryWriter writer, CheckboxGroupModel obj) {
     writer
-      ..writeByte(15)
-      ..writeByte(11)
-      ..write(obj.other)
-      ..writeByte(12)
-      ..write(obj.minMaxCheckbox)
+      ..writeByte(17)
       ..writeByte(13)
-      ..write(obj.checkboxMinValue)
+      ..write(obj.other)
       ..writeByte(14)
-      ..write(obj.checkboxMaxValue)
+      ..write(obj.minMaxCheckbox)
       ..writeByte(15)
+      ..write(obj.checkboxMinValue)
+      ..writeByte(16)
+      ..write(obj.checkboxMaxValue)
+      ..writeByte(17)
       ..write(obj.values)
       ..writeByte(1)
       ..write(obj.name)
@@ -68,7 +70,11 @@ class CheckboxGroupModelAdapter extends TypeAdapter<CheckboxGroupModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

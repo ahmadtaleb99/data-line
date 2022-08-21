@@ -10,10 +10,10 @@ part 'text_area_model.g.dart';
 @HiveType(typeId: 11)
 class TextAreaModel extends FormFieldModel with EquatableMixin {
 
-  @HiveField(11)
+  @HiveField(13)
   final int maxLength;
 
-  @HiveField(12)
+  @HiveField(14)
   final int minLength;
 
   TextAreaModel({
@@ -28,6 +28,9 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
     required bool isReadOnly,
     required bool showIfLogicCheckbox,
     required bool showIfIsRequired,
+    required String showIfFieldName,
+    required String showIfFieldValue,
+
     required bool requiredIfLogicCheckbox,
   }) : super(
       name: name,
@@ -36,9 +39,11 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
       deactivate: deactivate,
       required: required,
       isHidden: isHidden,
+      showIfFieldValue: showIfFieldValue,
       isReadOnly: isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
+      showIfFieldName: showIfFieldName,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
 
 
@@ -52,6 +57,8 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
     bool? required,
     bool? isHidden,
     bool? isReadOnly,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
     bool? requiredIfLogicCheckbox,
@@ -67,6 +74,8 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
       isHidden: isHidden ?? this.isHidden,
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
       requiredIfLogicCheckbox:
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,

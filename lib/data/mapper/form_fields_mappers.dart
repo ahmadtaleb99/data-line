@@ -21,9 +21,11 @@ extension TextFieldMapper on TextFieldResponse? {
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
+
       isHidden: this?.isHidden ?? false,
       isReadOnly: this?.isReadOnly ?? false,
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
@@ -39,7 +41,8 @@ extension EmailTextFieldMapper on EmailTextFieldResponse? {
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -58,7 +61,8 @@ extension TextAreaMapper on TextAreaFieldResponse? {
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -78,7 +82,8 @@ extension StarRatingMapper on StarRatingFieldResponse? {
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -105,6 +110,8 @@ extension NumberTextFieldMapper on NumberFieldResponse? {
       requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
       expressionsValue: this?.expressionsValue.orZero() ?? 0,
       operator: this?.operator.orEmpty() ?? '',
+        showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+        showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? ''
     );
   }
 }
@@ -115,7 +122,8 @@ extension FilerPickerMapper on FilePickerFieldResponse? {
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
       isHidden: this?.isHidden ?? false,
@@ -132,9 +140,12 @@ extension FilerPickerMapper on FilePickerFieldResponse? {
 extension CheckboxGroupMapper on CheckboxGroupFieldResponse? {
   CheckboxGroupModel toDomain() {
     return CheckboxGroupModel(
+
         name: this?.name.orEmpty() ?? '',
         label: this?.label.orEmpty() ?? '',
         type: this?.type ?? FieldType.UNKNOWN,
+        showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+        showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
 
         deactivate: this?.deactivate ?? false,
         required: this?.required ?? false,
@@ -196,7 +207,11 @@ extension RadioGroupMapper on RadioGroupFieldResponse? {
         showIfIsRequired: this?.showIfIsRequired ?? false,
         requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
         other: this?.other ?? false,
-        values: this?.values?.map((e) => e.toDomain()).toList() ?? []);
+        values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
+        showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
+
+    );
   }
 }
 
@@ -218,7 +233,10 @@ extension DropDownMapper on DropDownFieldResponse? {
         relatedListCheckbox: this?.relatedListCheckbox ?? false,
         multiple: this?.multiple ?? false,
         prompt: this?.prompt.orEmpty() ?? '',
-        relatedListFieldName: this?.relatedListFieldName.orEmpty() ?? '',);
+        relatedListFieldName: this?.relatedListFieldName.orEmpty() ?? '',
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
+    );
   }
 }
 extension FormMapper on FormResponse? {

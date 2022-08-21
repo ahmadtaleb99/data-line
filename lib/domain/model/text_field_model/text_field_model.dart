@@ -21,6 +21,8 @@ class TextFieldModel extends FormFieldModel with EquatableMixin{
     required bool required,
     required bool isHidden,
     required bool isReadOnly,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool showIfLogicCheckbox,
     required bool showIfIsRequired,
     required bool requiredIfLogicCheckbox,
@@ -31,6 +33,8 @@ class TextFieldModel extends FormFieldModel with EquatableMixin{
       deactivate: deactivate,
       required: required,
       isHidden: isHidden,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
       isReadOnly: isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
@@ -47,6 +51,8 @@ class TextFieldModel extends FormFieldModel with EquatableMixin{
     bool? isReadOnly,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     bool? requiredIfLogicCheckbox,
   }) {
     return TextFieldModel(
@@ -60,6 +66,8 @@ class TextFieldModel extends FormFieldModel with EquatableMixin{
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       requiredIfLogicCheckbox:
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
 

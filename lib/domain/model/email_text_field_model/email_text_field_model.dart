@@ -17,6 +17,8 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
     required bool isHidden,
     required bool isReadOnly,
     required bool showIfLogicCheckbox,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool showIfIsRequired,
     required bool requiredIfLogicCheckbox,
   }) : super(
@@ -26,7 +28,9 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
       deactivate: deactivate,
       required: required,
       isHidden: isHidden,
+      showIfFieldValue: showIfFieldValue,
       isReadOnly: isReadOnly,
+      showIfFieldName: showIfFieldName,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
@@ -35,6 +39,7 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
 
     String? name,
     String? label,
+    String? showIfFieldName,
     FieldType? type,
     bool? deactivate,
     bool? required,
@@ -42,6 +47,7 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
     bool? isReadOnly,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
+    String? showIfFieldValue,
     bool? requiredIfLogicCheckbox,
   }) {
     return EmailTextFieldModel(
@@ -51,7 +57,9 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
       type: type ?? this.type,
       deactivate: deactivate ?? this.deactivate,
       required: required ?? this.required,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       isHidden: isHidden ?? this.isHidden,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,

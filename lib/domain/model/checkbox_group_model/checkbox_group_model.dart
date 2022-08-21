@@ -11,19 +11,19 @@ part 'checkbox_group_model.g.dart';
 @HiveType(typeId: 2)
 class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
 
-  @HiveField(11)
+  @HiveField(13)
   final bool other;
 
-  @HiveField(12)
+  @HiveField(14)
   final bool minMaxCheckbox;
 
-  @HiveField(13)
+  @HiveField(15)
   final int checkboxMinValue;
 
-  @HiveField(14)
+  @HiveField(16)
   final int checkboxMaxValue;
 
-  @HiveField(15)
+  @HiveField(17)
   List<CheckboxGroupItemModel> values;
 
 
@@ -40,6 +40,8 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
     required bool required,
     required bool isHidden,
     required bool isReadOnly,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool showIfLogicCheckbox,
     required bool showIfIsRequired,
     required bool requiredIfLogicCheckbox,
@@ -50,6 +52,8 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
       deactivate: deactivate,
       required: required,
       isHidden: isHidden,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
       isReadOnly: isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
@@ -65,6 +69,8 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
     List<CheckboxGroupItemModel>? values,
     String? name,
     String? label,
+   String?  showIfFieldName,
+   String?  showIfFieldValue,
     FieldType? type,
     bool? deactivate,
     bool? required,
@@ -90,6 +96,8 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       requiredIfLogicCheckbox:
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
 

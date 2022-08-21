@@ -11,10 +11,10 @@ part 'radio_group_model.g.dart';
 @HiveType(typeId: 9)
 class RadioGroupModel extends FormFieldModel with EquatableMixin {
 
-  @HiveField(11)
+  @HiveField(13)
   final bool other;
 
-  @HiveField(12)
+  @HiveField(14)
   final List<RadioGroupItemModel> values;
   RadioGroupModel({
     required this.other,
@@ -26,6 +26,8 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
     required bool required,
     required bool isHidden,
     required bool isReadOnly,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool showIfLogicCheckbox,
     required bool showIfIsRequired,
     required bool requiredIfLogicCheckbox,
@@ -37,6 +39,9 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
             required: required,
             isHidden: isHidden,
             isReadOnly: isReadOnly,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
+
             showIfLogicCheckbox: showIfLogicCheckbox,
             showIfIsRequired: showIfIsRequired,
             requiredIfLogicCheckbox: requiredIfLogicCheckbox);
@@ -55,6 +60,8 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
     bool? isReadOnly,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     bool? requiredIfLogicCheckbox,
   }) {
     return RadioGroupModel(
@@ -62,10 +69,12 @@ class RadioGroupModel extends FormFieldModel with EquatableMixin {
       other: other ?? this.other,
       name: name ?? this.name,
       label: label ?? this.label,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
       type: type ?? this.type,
       deactivate: deactivate ?? this.deactivate,
       required: required ?? this.required,
       isHidden: isHidden ?? this.isHidden,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       isReadOnly: isReadOnly ?? this.isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,

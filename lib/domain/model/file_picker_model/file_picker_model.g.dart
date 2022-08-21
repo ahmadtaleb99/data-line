@@ -17,10 +17,12 @@ class FilePickerModelAdapter extends TypeAdapter<FilePickerModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FilePickerModel(
-      maxFileSize: fields[11] as int,
-      fileType: fields[12] as String,
+      maxFileSize: fields[13] as int,
+      fileType: fields[14] as String,
       name: fields[1] as String,
       label: fields[2] as String,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       type: fields[3] as FieldType,
       deactivate: fields[4] as bool,
       required: fields[5] as bool,
@@ -35,10 +37,10 @@ class FilePickerModelAdapter extends TypeAdapter<FilePickerModel> {
   @override
   void write(BinaryWriter writer, FilePickerModel obj) {
     writer
-      ..writeByte(12)
-      ..writeByte(11)
+      ..writeByte(14)
+      ..writeByte(13)
       ..write(obj.maxFileSize)
-      ..writeByte(12)
+      ..writeByte(14)
       ..write(obj.fileType)
       ..writeByte(1)
       ..write(obj.name)
@@ -59,7 +61,11 @@ class FilePickerModelAdapter extends TypeAdapter<FilePickerModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

@@ -16,19 +16,19 @@ part 'dropdown_model.g.dart';
 @HiveType(typeId: 4)
 class DropDownModel extends FormFieldModel with EquatableMixin{
 
-  @HiveField(11)
+  @HiveField(13)
   final String prompt;
 
-  @HiveField(12)
+  @HiveField(14)
   final bool relatedListCheckbox;
 
-  @HiveField(13)
+  @HiveField(15)
   final String relatedListFieldName;
 
-  @HiveField(14)
+  @HiveField(16)
   final bool multiple;
 
-  @HiveField(15)
+  @HiveField(17)
   final List<DropDownItemModel> values;
   
   DropDownModel({
@@ -45,6 +45,8 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
     required bool isHidden,
     required bool isReadOnly,
     required bool showIfLogicCheckbox,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required bool showIfIsRequired,
     required bool requiredIfLogicCheckbox,
   }) : super(
@@ -57,6 +59,8 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
       isReadOnly: isReadOnly,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
 
 
@@ -73,6 +77,8 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
     bool? required,
     bool? isHidden,
     bool? isReadOnly,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
     bool? requiredIfLogicCheckbox,
@@ -90,6 +96,8 @@ class DropDownModel extends FormFieldModel with EquatableMixin{
       required: required ?? this.required,
       isHidden: isHidden ?? this.isHidden,
       isReadOnly: isReadOnly ?? this.isReadOnly,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,

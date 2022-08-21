@@ -17,8 +17,8 @@ class TextAreaModelAdapter extends TypeAdapter<TextAreaModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TextAreaModel(
-      maxLength: fields[11] as int,
-      minLength: fields[12] as int,
+      maxLength: fields[13] as int,
+      minLength: fields[14] as int,
       name: fields[1] as String,
       label: fields[2] as String,
       type: fields[3] as FieldType,
@@ -28,6 +28,8 @@ class TextAreaModelAdapter extends TypeAdapter<TextAreaModel> {
       isReadOnly: fields[7] as bool,
       showIfLogicCheckbox: fields[8] as bool,
       showIfIsRequired: fields[9] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       requiredIfLogicCheckbox: fields[10] as bool,
     );
   }
@@ -35,10 +37,10 @@ class TextAreaModelAdapter extends TypeAdapter<TextAreaModel> {
   @override
   void write(BinaryWriter writer, TextAreaModel obj) {
     writer
-      ..writeByte(12)
-      ..writeByte(11)
+      ..writeByte(14)
+      ..writeByte(13)
       ..write(obj.maxLength)
-      ..writeByte(12)
+      ..writeByte(14)
       ..write(obj.minLength)
       ..writeByte(1)
       ..write(obj.name)
@@ -59,7 +61,11 @@ class TextAreaModelAdapter extends TypeAdapter<TextAreaModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

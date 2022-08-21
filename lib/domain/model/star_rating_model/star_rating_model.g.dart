@@ -19,6 +19,8 @@ class StarRatingModelAdapter extends TypeAdapter<StarRatingModel> {
     return StarRatingModel(
       name: fields[1] as String,
       label: fields[2] as String,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       type: fields[3] as FieldType,
       deactivate: fields[4] as bool,
       required: fields[5] as bool,
@@ -33,7 +35,7 @@ class StarRatingModelAdapter extends TypeAdapter<StarRatingModel> {
   @override
   void write(BinaryWriter writer, StarRatingModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
@@ -53,7 +55,11 @@ class StarRatingModelAdapter extends TypeAdapter<StarRatingModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

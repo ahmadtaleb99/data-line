@@ -109,6 +109,13 @@ abstract class FormFieldModel with EquatableMixin {
   @HiveField(10)
   final bool requiredIfLogicCheckbox;
 
+    @HiveField(11)
+  final  String showIfFieldName;
+
+    @HiveField(12)
+  final  String showIfFieldValue;
+
+
   FormFieldModel({
     required this.name,
     required this.label,
@@ -119,6 +126,8 @@ abstract class FormFieldModel with EquatableMixin {
     required this.isReadOnly,
     required this.showIfLogicCheckbox,
     required this.showIfIsRequired,
+    required this.showIfFieldName,
+    required this.showIfFieldValue,
     required this.requiredIfLogicCheckbox,
   });
 
@@ -132,6 +141,7 @@ abstract class FormFieldModel with EquatableMixin {
         isReadOnly,
         showIfLogicCheckbox,
     showIfIsRequired,
+    showIfFieldName,
     requiredIfLogicCheckbox,
       ];
 

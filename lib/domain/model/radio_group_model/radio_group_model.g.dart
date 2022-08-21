@@ -17,8 +17,8 @@ class RadioGroupModelAdapter extends TypeAdapter<RadioGroupModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RadioGroupModel(
-      other: fields[11] as bool,
-      values: (fields[12] as List).cast<RadioGroupItemModel>(),
+      other: fields[13] as bool,
+      values: (fields[14] as List).cast<RadioGroupItemModel>(),
       name: fields[1] as String,
       label: fields[2] as String,
       type: fields[3] as FieldType,
@@ -26,6 +26,8 @@ class RadioGroupModelAdapter extends TypeAdapter<RadioGroupModel> {
       required: fields[5] as bool,
       isHidden: fields[6] as bool,
       isReadOnly: fields[7] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       showIfLogicCheckbox: fields[8] as bool,
       showIfIsRequired: fields[9] as bool,
       requiredIfLogicCheckbox: fields[10] as bool,
@@ -35,10 +37,10 @@ class RadioGroupModelAdapter extends TypeAdapter<RadioGroupModel> {
   @override
   void write(BinaryWriter writer, RadioGroupModel obj) {
     writer
-      ..writeByte(12)
-      ..writeByte(11)
+      ..writeByte(14)
+      ..writeByte(13)
       ..write(obj.other)
-      ..writeByte(12)
+      ..writeByte(14)
       ..write(obj.values)
       ..writeByte(1)
       ..write(obj.name)
@@ -59,7 +61,11 @@ class RadioGroupModelAdapter extends TypeAdapter<RadioGroupModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

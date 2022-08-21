@@ -24,6 +24,8 @@ class TextFieldModelAdapter extends TypeAdapter<TextFieldModel> {
       required: fields[5] as bool,
       isHidden: fields[6] as bool,
       isReadOnly: fields[7] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
       showIfLogicCheckbox: fields[8] as bool,
       showIfIsRequired: fields[9] as bool,
       requiredIfLogicCheckbox: fields[10] as bool,
@@ -33,7 +35,7 @@ class TextFieldModelAdapter extends TypeAdapter<TextFieldModel> {
   @override
   void write(BinaryWriter writer, TextFieldModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
@@ -53,7 +55,11 @@ class TextFieldModelAdapter extends TypeAdapter<TextFieldModel> {
       ..writeByte(9)
       ..write(obj.showIfIsRequired)
       ..writeByte(10)
-      ..write(obj.requiredIfLogicCheckbox);
+      ..write(obj.requiredIfLogicCheckbox)
+      ..writeByte(11)
+      ..write(obj.showIfFieldName)
+      ..writeByte(12)
+      ..write(obj.showIfFieldValue);
   }
 
   @override

@@ -12,10 +12,10 @@ part 'file_picker_model.g.dart';
 class FilePickerModel extends FormFieldModel with EquatableMixin {
 
 
-  @HiveField(11)
+  @HiveField(13)
   final int maxFileSize;
 
-  @HiveField(12)
+  @HiveField(14)
   final String fileType;
 
 
@@ -27,6 +27,8 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
 
     required String name,
     required String label,
+    required String showIfFieldName,
+    required String showIfFieldValue,
     required FieldType type,
     required bool deactivate,
     required bool required,
@@ -43,6 +45,8 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
       required: required,
       isHidden: isHidden,
       isReadOnly: isReadOnly,
+      showIfFieldName: showIfFieldName,
+      showIfFieldValue: showIfFieldValue,
       showIfLogicCheckbox: showIfLogicCheckbox,
       showIfIsRequired: showIfIsRequired,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
@@ -52,6 +56,8 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
      String? fileType,
     String? name,
     String? label,
+    String? showIfFieldName,
+    String? showIfFieldValue,
     FieldType? type,
     bool? deactivate,
     bool? required,
@@ -66,6 +72,8 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
       fileType : fileType ?? this.fileType,
       name: name ?? this.name,
       label: label ?? this.label,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
       type: type ?? this.type,
       deactivate: deactivate ?? this.deactivate,
       required: required ?? this.required,
