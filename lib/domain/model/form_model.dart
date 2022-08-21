@@ -56,7 +56,7 @@ class FormModel with EquatableMixin {
 }
 extension xFormModel on FormModel {
   FormFieldModel getField(String fieldName) => this.fields.firstWhere((element) => element.name == fieldName);
-  List<DropDownModel> getRelatedDropDowns(
+  List<DropDownModel> getRelatedDropDownsFor(
       String fieldName) {
     return this.fields
         .where((element) => (element is DropDownModel &&
@@ -64,6 +64,10 @@ extension xFormModel on FormModel {
         element.relatedListFieldName == fieldName))
         .toList()
         .cast();
+  }
+
+  List<DropDownModel> getChildrenDropDowns(){
+    return fields.where((element) => element is DropDownModel && element.relatedListCheckbox == true).toList().cast();
   }
 
 }

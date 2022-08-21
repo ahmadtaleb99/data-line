@@ -8,6 +8,7 @@ import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
 
+import '../../../domain/model/dropdown_item_model/dropdown_item_model.dart';
 import '../../../domain/model/form_model.dart';
 
 class DropDownWidget extends StatelessWidget {
@@ -43,7 +44,7 @@ class DropDownWidget extends StatelessWidget {
                          EdgeInsets.only(left: 99),
                         child:  Icon(Icons.arrow_drop_down),
                       ),
-                    items: _getItems(state)
+                    items: dropDownModel.values
                         .map((e) =>
                         DropdownMenuItem(
                           value: e.value,
@@ -60,13 +61,15 @@ class DropDownWidget extends StatelessWidget {
     );
   }
 
-    _getItems (FormsState state) {
-     if (dropDownModel.relatedListCheckbox) {
+List<DropDownItemModel>  _getItems (FormsState state) {
+
+
+  if (dropDownModel.relatedListCheckbox) {
        var parent = state.formModel!.fields.firstWhere((element) =>
        element.name == dropDownModel.relatedListFieldName);
        var items = dropDownModel.values.where((element) =>
        element.parent == state.valuesMap[parent.name]).toList();
-       return items;
+       return items.cast();
      }
      return this.dropDownModel.values;
    }

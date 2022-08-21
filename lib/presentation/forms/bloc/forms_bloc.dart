@@ -109,20 +109,21 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
-   //  DropDownModel dropDown = formModel.getField(event.fieldName) as DropDownModel;
-   //
-   //  List<DropDownModel> children = formModel.getRelatedDropDowns(dropDown.name);
-   // children.map((childDropDown) {
-   //   log(state.assignedForms.toString()+'my log ');
-   //      childDropDown = childDropDown.copyWith(
-   //        values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
-   //
-   //            .where((item) => item.parent == event.value)
-   //            .toList());
-   //
-   //    formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
-   //      map[childDropDown.name] = null;
-   //  }).toList();
+    DropDownModel dropDown = formModel.getField(event.fieldName) as DropDownModel;
+
+    List<DropDownModel> children = formModel.getRelatedDropDownsFor(dropDown.name);
+   children.map((childDropDown) {
+     log(state.assignedForms.toString()+'my log ');
+        childDropDown = childDropDown.copyWith(
+          values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
+
+              .where((item) => item.parent == event.value)
+              .toList());
+log(childDropDown.values.toString());
+      formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+        map[childDropDown.name] = null;
+
+   }).toList();
 
     emit(state.copyWith(formModel: formModel, valuesMap: map));
   }
@@ -130,16 +131,43 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
   Future<void> _onNewFormRequested(
       NewFormRequested event, Emitter<FormsState> emit) async {
     log('_onNewFormRequested');
-    log(state.valuesMap.toString());
-    emit(state.copyWith(formModel: event.formModel, valuesMap: {}));
-    log(state.valuesMap.toString());
+
+    var formModel = event.formModel.copyWith();
+    _initFields(formModel);
+    emit(state.copyWith(formModel: formModel, valuesMap: {}));
+  }
+  void _initFields(FormModel formModel){
+    // init drop downs
+    List<DropDownModel> childrenDropDowns = formModel.getChildrenDropDowns();
+    childrenDropDowns.forEach((childDropDown) {
+
+      childDropDown = childDropDown.copyWith(values: []);
+      formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+
+    });
+
   }
 
+
+  void _initFieldsUpdate(FormModel formModel,Map valuesMap){
+    // init drop downs
+    List<DropDownModel> childrenDropDowns = formModel.getChildrenDropDowns();
+    childrenDropDowns.forEach((childDropDown) {
+
+      List<DropDownItemModel> values = childDropDown.values.where((item) => item.parent == valuesMap[childDropDown.relatedListFieldName]).toList().cast();
+      childDropDown = childDropDown.copyWith(values: values);
+      formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+
+    });
+
+  }
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = event.submission.toMap();
     log(map.toString() + 'emititn from event bloc ');
-    emit(state.copyWith(formModel: event.formModel, valuesMap: map));
+    var form =  event.formModel.copyWith();
+    _initFieldsUpdate(form,map);
+    emit(state.copyWith(formModel: form, valuesMap: map));
   }
 
   Future<void> _onSubmitCanceled(
@@ -166,7 +194,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
 
     await _assignedFormRepository.addSubmission(newSub);
 
-    emit(state.copyWith(valuesMap: {}));
+    add(NewFormRequested(event.formModel));
+    // emit(state.copyWith(valuesMap: {}));
   }
 
   Future<void> _onSubmissionUpdated(
