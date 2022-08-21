@@ -9,7 +9,6 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 class BuildForm extends StatelessWidget {
   const BuildForm({Key? key, required this.formModel}) : super(key: key);
   final FormModel formModel;
-
   @override
   Widget build(BuildContext context) {
     return Padding(

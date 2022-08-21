@@ -17,28 +17,25 @@ class NumberTextFieldWidget extends StatelessWidget {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         log(state.valuesMap.toString() + '   NumberTextFieldWidget');
-        return FormFieldWidget(label: numberFieldModel.label, field: Visibility(
-          visible: showField(state),
+        return FormFieldWidget(label: numberFieldModel.label, widget: Visibility(
+          // visible: showField(state),
           child: TextFormField(
             key: UniqueKey(),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             initialValue: state.valuesMap[numberFieldModel.name],
-
+          validator: (value) {
+              return context.read<FormsBloc>().validateNumber(numberFieldModel,state.valuesMap[numberFieldModel.name]);
+          },
             onChanged: (number) {
               context.read<FormsBloc>().add(FieldValueChanged(
                   fieldName: numberFieldModel.name, value: number));
             },
           ),
-        ));
+        ), fieldModel: numberFieldModel,);
       },
     );
   }
 
-  bool showField (FormsState state){
-    if(numberFieldModel.showIfLogicCheckbox == false) return true;
 
-    if(state.valuesMap[numberFieldModel.showIfFieldName] == numberFieldModel.showIfFieldValue) return true;
-
-    return false;
-  }
 
 }

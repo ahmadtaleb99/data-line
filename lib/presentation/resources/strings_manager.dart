@@ -41,4 +41,5 @@ class AppStrings{
   static const String submit = "Submit";
   static const String update = "Update";
   static const String emptySubs = "There are no submissions for this form.";
+  static const String fieldReqired = "Field cannot be empty.";
 }

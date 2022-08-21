@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';

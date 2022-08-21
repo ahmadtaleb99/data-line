@@ -8,9 +8,9 @@ import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class NewSubmitScreen extends StatelessWidget {
-  const NewSubmitScreen({Key? key, required this.formModel}) : super(key: key);
+   NewSubmitScreen({Key? key, required this.formModel}) : super(key: key);
   final FormModel formModel;
-
+    final _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +20,13 @@ class NewSubmitScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          context.read<FormsBloc>().add(FormSubmitted(formModel));
+
+          // context.read<FormsBloc>().add(FormSubmitted(formModel));
+          _key.currentState!.validate();
         },
         child: const Text(AppStrings.submit),
       ),
-      body: BuildForm(formModel: formModel,),
+      body: Form(key:_key,child: BuildForm(formModel: formModel,)),
     );
 
 

@@ -1,5 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:form_builder_test/Widgets/text_field_widget.dart';
 import 'package:form_builder_test/Widgets/form_element_widget.dart';
 import 'package:form_builder_test/Widgets/star_rating_widget.dart';
 import 'package:form_builder_test/model/IFormModel.dart';

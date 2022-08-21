@@ -10,6 +10,7 @@ class FormsState extends Equatable {
   final Map<String,dynamic> valuesMap;
   final FlowState flowState;
   final  List<FormModel> assignedForms;
+  final Map<String,String> validationMap;
 
   @override
   List<Object?> get props => [valuesMap,submissions,formModel,currentSubmission,flowState,assignedForms];
@@ -18,6 +19,7 @@ class FormsState extends Equatable {
     this.formModel,
     this.currentSubmission,
     required this.valuesMap,
+    required this.validationMap,
     required this.submissions,
     required this.flowState,
     required this.assignedForms,
@@ -34,6 +36,7 @@ class FormsState extends Equatable {
     return FormsState(
       formModel: formModel ?? this.formModel,
       valuesMap: valuesMap ?? this.valuesMap,
+      validationMap: validationMap ?? this.validationMap,
       submissions: submissions ?? this.submissions,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       flowState: flowState ?? this.flowState,

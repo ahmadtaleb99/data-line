@@ -14,6 +14,8 @@ import 'package:form_builder_test/presentation/common/state_renderer/state_rende
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
+import '../../../domain/model/number_text_field_model/number_text_field_model.dart';
+
 part 'forms_event.dart';
 part 'forms_state.dart';
 
@@ -24,7 +26,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
     assignedForms: [],
-            valuesMap: {}, submissions: [], flowState: ContentState())) {
+            valuesMap: {}, submissions: [], flowState: ContentState(), validationMap: {})) {
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
@@ -38,7 +40,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
 
+    String? validateNumber(NumberFieldModel model,String?  value){
+      if(value == null ) return 'null';
 
+      if(value.isEmpty) return 'required';
+          if(value.length < 5) return 'small';
+
+          return  null;
+    }
   Future<void> _onAssignedFormsRequested(
       AssignedFormsRequested event, Emitter<FormsState> emit) async {
     emit(state.copyWith(

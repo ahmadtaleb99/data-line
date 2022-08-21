@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
