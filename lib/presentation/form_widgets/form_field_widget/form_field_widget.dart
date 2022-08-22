@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,10 +12,15 @@ class FormFieldWidget<T> extends StatelessWidget {
   final String label;
   final Widget widget;
   final FormFieldModel fieldModel;
+  final T? initialValue;
   final String? Function(T?)? validator;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormsBloc, FormsState>(builder: (context, state) {
+    return BlocBuilder<FormsBloc, FormsState>(
+
+
+        builder: (context, state) {
+
       return AnimatedSwitcher(
           transitionBuilder: (Widget child, Animation<double> animation) =>
               SlideTransition(
@@ -24,26 +31,21 @@ class FormFieldWidget<T> extends StatelessWidget {
               ),
           duration: const Duration(milliseconds: 700),
           reverseDuration: const Duration(milliseconds: 100),
-          child: showField(state)
+          child: isFieldVisible(state)
               ? FormField<T>(
+            enabled: true,
+                  initialValue: initialValue,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (T? value) {
-                    if (state.valuesMap[fieldModel.name] == null)
-                      return AppStrings.fieldReqired;
-                    else
-                      return validator?.call(value);
+                    log('validator');
+                    if (state.valuesMap[fieldModel.name] !=  null)
+                      validator?.call(value);
+
+                else    return AppStrings.fieldReqired;
                   },
-                  builder: (fieldState) => BlocListener<FormsBloc, FormsState>(
-                    listener: (context, state) {
-                      fieldState.validate();
-                    },
-                    listenWhen: (p,c) {
-                      if(p.valuesMap[fieldModel.name] != c.valuesMap[fieldModel.name]){
-                        return true;
-                      }
-                      return false;
-                    },
-                    child: Column(
+                  builder: (fieldState)
+                  {
+                 return   Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -68,8 +70,8 @@ class FormFieldWidget<T> extends StatelessWidget {
                                     height: 1.5),
                               ))
                       ],
-                    ),
-                  ),
+                    );
+                  },
                 )
               : Container());
     });
@@ -79,10 +81,11 @@ class FormFieldWidget<T> extends StatelessWidget {
     required this.label,
     required this.widget,
     required this.fieldModel,
+     this.initialValue,
     this.validator,
   });
 
-  bool showField(FormsState state) {
+  bool isFieldVisible(FormsState state) {
     if (fieldModel.showIfLogicCheckbox == false) return true;
 
     if (state.valuesMap[fieldModel.showIfFieldName] ==

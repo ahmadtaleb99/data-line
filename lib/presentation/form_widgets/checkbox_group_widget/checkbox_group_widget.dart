@@ -12,10 +12,11 @@ class CheckboxGroupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        return FormFieldWidget(
+        return FormFieldWidget<List>(
           validator: (value){
            return context.read<FormsBloc>().validateCheckboxGroup(model);
           },
+            initialValue: state.valuesMap[model.name],
             label: model.label,
             fieldModel: model,
             widget: Column(

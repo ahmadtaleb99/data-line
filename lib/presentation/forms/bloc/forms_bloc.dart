@@ -78,12 +78,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     }
     String? validateCheckboxGroup(CheckboxGroupModel model){
     List list  = List.from(state.valuesMap[model.name]);
-    log(model.minMaxCheckbox.toString());
-    log(list.length.toString());
     if(model.minMaxCheckbox){
-
       if(!((list.length >= model.checkboxMinValue )&&( list.length <= model.checkboxMaxValue ))){
-        log('we have enterewjrnqorqioniqoejrieqjorjqwiorowekop)wkeop  kprokqwopkri');
         return  AppStrings.checkboxMustBeBetween(model.checkboxMinValue.toString(), model.checkboxMaxValue.toString());
       }
     }
