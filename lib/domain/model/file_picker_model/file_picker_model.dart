@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../data/responses/forms/enums.dart';
 import '../form_model.dart';
 
 

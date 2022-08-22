@@ -1,4 +1,5 @@
 import 'package:form_builder_test/Widgets/number_field_widget.dart';
+import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/utils/expression/Expression.dart';
 
 mixin FormValidation{

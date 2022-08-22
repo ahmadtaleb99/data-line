@@ -52,7 +52,7 @@ class LocalStorageApi  extends form_repository.FormApi{
     Hive.registerAdapter(RadioItemAdapter());
     Hive.registerAdapter(FileTypeEnumAdapter());
     Hive.registerAdapter(ExpressionAdapter());
-    Hive.registerAdapter(OperatorAdapter());
+    // Hive.registerAdapter(OperatorAdapter());
     Hive.registerAdapter(StarRatingAdapter());
 
     Hive.registerAdapter(MatrixAdapter());

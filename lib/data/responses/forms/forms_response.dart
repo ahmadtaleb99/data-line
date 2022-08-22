@@ -1,3 +1,4 @@
+import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/data/responses/responses.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -148,11 +149,15 @@ class TextAreaFieldResponse extends FormFieldResponse {
 
 @JsonSerializable()
 class NumberFieldResponse extends FormFieldResponse {
-  @JsonKey(name: 'operator')
-  String? operator;
+
+  @JsonEnum()
+  Operator? operator;
 
   @JsonKey(name: 'expressionsValue')
   int? expressionsValue;
+
+  @JsonKey(name: 'expressionsValue2')
+  int? expressionsValue2;
 
   factory NumberFieldResponse.fromJson(Map<String, dynamic> json) =>
       _$NumberFieldResponseFromJson(json);

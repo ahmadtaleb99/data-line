@@ -90,7 +90,7 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    throw Error();
+    return throw Error();
   }
 
   @override
@@ -207,85 +207,6 @@ class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FieldEntryAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class FieldTypeAdapter extends TypeAdapter<FieldType> {
-  @override
-  final int typeId = 16;
-
-  @override
-  FieldType read(BinaryReader reader) {
-    switch (reader.readByte()) {
-      case 1:
-        return FieldType.TEXT;
-      case 2:
-        return FieldType.TEXT_AREA;
-      case 3:
-        return FieldType.NUMBER;
-      case 4:
-        return FieldType.EMAIL;
-      case 5:
-        return FieldType.DROPDOWN;
-      case 6:
-        return FieldType.STAR_RATING;
-      case 7:
-        return FieldType.CHECKBOX_GROUP;
-      case 8:
-        return FieldType.CHECKBOX;
-      case 9:
-        return FieldType.RADIO_GROUP;
-      case 10:
-        return FieldType.FILE;
-      default:
-        return FieldType.TEXT;
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, FieldType obj) {
-    switch (obj) {
-      case FieldType.TEXT:
-        writer.writeByte(1);
-        break;
-      case FieldType.TEXT_AREA:
-        writer.writeByte(2);
-        break;
-      case FieldType.NUMBER:
-        writer.writeByte(3);
-        break;
-      case FieldType.EMAIL:
-        writer.writeByte(4);
-        break;
-      case FieldType.DROPDOWN:
-        writer.writeByte(5);
-        break;
-      case FieldType.STAR_RATING:
-        writer.writeByte(6);
-        break;
-      case FieldType.CHECKBOX_GROUP:
-        writer.writeByte(7);
-        break;
-      case FieldType.CHECKBOX:
-        writer.writeByte(8);
-        break;
-      case FieldType.RADIO_GROUP:
-        writer.writeByte(9);
-        break;
-      case FieldType.FILE:
-        writer.writeByte(10);
-        break;
-    }
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FieldTypeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

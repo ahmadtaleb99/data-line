@@ -95,9 +95,9 @@ class OldFormRepository {
 
 
 
-  CheckboxGroupWidget getCheckBoxGroup (String name) {
+  CheckboxGroupWidgetOld getCheckBoxGroup (String name) {
 
-    return _forms.firstWhere((element) => (element is CheckboxGroupWidget) && element.name == name) as CheckboxGroupWidget;
+    return _forms.firstWhere((element) => (element is CheckboxGroupWidgetOld) && element.name == name) as CheckboxGroupWidgetOld;
   }
 
   RadioGroupWidget getRadioGroup (String name) {

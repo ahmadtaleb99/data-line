@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
-class FormFieldWidget<T>  extends StatelessWidget {
+class FormFieldWidget<T> extends StatelessWidget {
   final String label;
   final Widget widget;
   final FormFieldModel fieldModel;
@@ -16,47 +17,60 @@ class FormFieldWidget<T>  extends StatelessWidget {
       return AnimatedSwitcher(
           transitionBuilder: (Widget child, Animation<double> animation) =>
               SlideTransition(
-                position:
-                    Tween<Offset>(begin: const Offset(0, -0.3), end: const  Offset(0, 0))
-                        .animate(animation),
+                position: Tween<Offset>(
+                        begin: const Offset(0, -0.3), end: const Offset(0, 0))
+                    .animate(animation),
                 child: child,
               ),
           duration: const Duration(milliseconds: 700),
-          reverseDuration: const  Duration(milliseconds: 100),
+          reverseDuration: const Duration(milliseconds: 100),
           child: showField(state)
               ? FormField<T>(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (T? value){
-              if(state.valuesMap[fieldModel.name])
-                },
-                builder:(fieldState)=> Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(AppPadding.p8),
-                        child: Text(label,
-                            style: Theme.of(context).textTheme.subtitle1),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      widget,
-                      if (fieldState.hasError)
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (T? value) {
+                    if (state.valuesMap[fieldModel.name] == null)
+                      return AppStrings.fieldReqired;
+                    else
+                      return validator?.call(value);
+                  },
+                  builder: (fieldState) => BlocListener<FormsBloc, FormsState>(
+                    listener: (context, state) {
+                      fieldState.validate();
+                    },
+                    listenWhen: (p,c) {
+                      if(p.valuesMap[fieldModel.name] != c.valuesMap[fieldModel.name]){
+                        return true;
+                      }
+                      return false;
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Padding(
-                            padding:
-                            const EdgeInsets.only(left: 8, top: 10),
-                            child: Text(
-                              fieldState.errorText!,
-                              style: TextStyle(
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 13,
-                                  color: Colors.red[700],
-                                  height: 0.5),
-                            ))
-                    ],
+                          padding: const EdgeInsets.all(AppPadding.p8),
+                          child: Text(label,
+                              style: Theme.of(context).textTheme.subtitle1),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        widget,
+                        if (fieldState.hasError)
+                          Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Text(
+                                fieldState.errorText!,
+                                style: TextStyle(
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 15,
+                                    color: Colors.red[700],
+                                    height: 1.5),
+                              ))
+                      ],
+                    ),
                   ),
-              )
+                )
               : Container());
     });
   }
@@ -65,7 +79,7 @@ class FormFieldWidget<T>  extends StatelessWidget {
     required this.label,
     required this.widget,
     required this.fieldModel,
-     this.validator,
+    this.validator,
   });
 
   bool showField(FormsState state) {
@@ -80,6 +94,5 @@ class FormFieldWidget<T>  extends StatelessWidget {
   String getText(FormsState state) {
     String? error = state.validationMap[fieldModel.name];
     return error != null ? error : '';
-
   }
 }

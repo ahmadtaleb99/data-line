@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
+import '../../../data/responses/forms/enums.dart';
 import '../form_model.dart';
 
 part 'email_text_field_model.g.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
+import '../../../data/responses/forms/enums.dart';
 import '../form_model.dart';
 import '../radio_group_item_model/radio_group_item_model.dart';
 

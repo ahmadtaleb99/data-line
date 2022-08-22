@@ -20,9 +20,9 @@ class NewSubmitScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-
-          // context.read<FormsBloc>().add(FormSubmitted(formModel));
-          _key.currentState!.validate();
+            if(          _key.currentState!.validate())  {
+              context.read<FormsBloc>().add(FormSubmitted(formModel));
+            }
         },
         child: const Text(AppStrings.submit),
       ),

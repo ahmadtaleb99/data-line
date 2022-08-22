@@ -76,7 +76,7 @@ class LabelWidget extends StatelessWidget {
 }
 
 Widget _getFormElementThumbnail(FormElementWidget field) {
-  if (field is CheckboxGroupWidget) {
+  if (field is CheckboxGroupWidgetOld) {
     return FieldHintWidget(text: '(Checkbox Group)');
   }
   if (field is RadioGroupWidget) {

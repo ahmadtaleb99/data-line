@@ -42,4 +42,13 @@ class AppStrings{
   static const String update = "Update";
   static const String emptySubs = "There are no submissions for this form.";
   static const String fieldReqired = "Field cannot be empty.";
+  static const String mustBeANumber = "value must be a number.";
+  static const String cantBeSmaller = "value cannot be smaller than ";
+  static const String cantBeGreater = "value cannot be smaller than ";
+  static const String mustBeEqual = "value cannot equal to ";
+  static const String and = "and";
+  static const String mustBeBetween = "value must be between ";
+  static  String checkboxMustBeBetween(String first, String second){
+    return "you must choose at least  $first and no more than $second values";
+  }
 }

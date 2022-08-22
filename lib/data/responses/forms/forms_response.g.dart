@@ -185,7 +185,7 @@ Map<String, dynamic> _$TextAreaFieldResponseToJson(
 
 NumberFieldResponse _$NumberFieldResponseFromJson(Map<String, dynamic> json) =>
     NumberFieldResponse(
-      json['operator'] as String?,
+      $enumDecodeNullable(_$OperatorEnumMap, json['operator']),
       json['expressionsValue'] as int?,
     )
       ..name = json['name'] as String?
@@ -199,7 +199,8 @@ NumberFieldResponse _$NumberFieldResponseFromJson(Map<String, dynamic> json) =>
       ..showIfFieldName = json['showIfFieldName'] as String?
       ..showIfFieldValue = json['showIfFieldValue'] as String?
       ..showIfIsRequired = json['showIfIsRequired'] as bool?
-      ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
+      ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?
+      ..expressionsValue2 = json['expressionsValue2'] as int?;
 
 Map<String, dynamic> _$NumberFieldResponseToJson(
         NumberFieldResponse instance) =>
@@ -216,9 +217,17 @@ Map<String, dynamic> _$NumberFieldResponseToJson(
       'showIfFieldValue': instance.showIfFieldValue,
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
-      'operator': instance.operator,
+      'operator': _$OperatorEnumMap[instance.operator],
       'expressionsValue': instance.expressionsValue,
+      'expressionsValue2': instance.expressionsValue2,
     };
+
+const _$OperatorEnumMap = {
+  Operator.MORE: 'more',
+  Operator.LESS: 'less',
+  Operator.EQUAL: 'equal',
+  Operator.BETWEEN: 'between',
+};
 
 CheckboxGroupFieldResponse _$CheckboxGroupFieldResponseFromJson(
         Map<String, dynamic> json) =>

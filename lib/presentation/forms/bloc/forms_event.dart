@@ -42,6 +42,21 @@ class DropDownValueChanged extends FormsEvent {
   @override
   List<Object?> get props => [fieldName,value];
 }
+class CheckboxGroupValueChanged extends FormsEvent {
+  final String fieldName;
+  final bool isChecked;
+  final String value;
+
+  const CheckboxGroupValueChanged({
+    required this.fieldName,
+    required this.isChecked,
+    required this.value,
+  });
+
+
+    @override
+    List<Object?> get props => [fieldName,isChecked,value];
+}
 
 
 class NewFormRequested extends FormsEvent {

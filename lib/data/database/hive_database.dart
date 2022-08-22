@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:collection/collection.dart';
@@ -54,6 +55,7 @@ class HiveDatabase {
     Hive.registerAdapter(FieldTypeAdapter());
     Hive.registerAdapter(SubmissionAdapter());
     Hive.registerAdapter(FieldEntryAdapter());
+    Hive.registerAdapter(OperatorAdapter());
     //
     _assignedFormsBox  = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
     _submissionsBox  = await Hive.openBox<Submission>(submissionBoxKey);

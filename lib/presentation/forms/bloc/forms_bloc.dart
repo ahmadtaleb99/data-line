@@ -5,6 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/app/form_validation.dart';
+import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
@@ -14,12 +16,13 @@ import 'package:form_builder_test/presentation/common/state_renderer/state_rende
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
+import '../../../domain/model/checkbox_group_model/checkbox_group_model.dart';
 import '../../../domain/model/number_text_field_model/number_text_field_model.dart';
 
 part 'forms_event.dart';
 part 'forms_state.dart';
 
-class FormsBloc extends Bloc<FormsEvent, FormsState> {
+class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
   final stateBloc = getIT<StateRendererBloc>();
 
   final AssignedFormRepository _assignedFormRepository;
@@ -31,6 +34,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
     on<DropDownValueChanged>(_onDropDownValueChanged);
+    on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
@@ -40,12 +44,49 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> {
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
 
-    String? validateNumber(NumberFieldModel model,String?  value){
+    String? validateNumber(NumberFieldModel model,String  value){
       if(value == null ) return 'null';
 
       if(value.isEmpty) return 'required';
-          if(value.length < 5) return 'small';
 
+      if(!isNumeric(value)) return  AppStrings.mustBeANumber;
+
+      int intValue = int.parse(value);
+      switch(model.operator){
+
+        case Operator.MORE:
+          if(intValue <= model.expressionsValue!)
+            return AppStrings.cantBeSmaller+model.expressionsValue!.toString();
+          break;
+
+
+        case Operator.LESS:
+          return AppStrings.cantBeGreater+model.expressionsValue!.toString();
+
+
+        case Operator.EQUAL:
+          return AppStrings.mustBeEqual+model.expressionsValue!.toString();
+
+
+        case Operator.BETWEEN:
+        return AppStrings.mustBeBetween+model.expressionsValue!.toString()+
+            AppStrings.and+' '+model.expressionsValue2.toString();
+
+      }
+
+          return  null;
+    }
+    String? validateCheckboxGroup(CheckboxGroupModel model){
+    List list  = List.from(state.valuesMap[model.name]);
+    log(model.minMaxCheckbox.toString());
+    log(list.length.toString());
+    if(model.minMaxCheckbox){
+
+      if(!((list.length >= model.checkboxMinValue )&&( list.length <= model.checkboxMaxValue ))){
+        log('we have enterewjrnqorqioniqoejrieqjorjqwiorowekop)wkeop  kprokqwopkri');
+        return  AppStrings.checkboxMustBeBetween(model.checkboxMinValue.toString(), model.checkboxMaxValue.toString());
+      }
+    }
           return  null;
     }
   Future<void> _onAssignedFormsRequested(
@@ -177,6 +218,26 @@ log(childDropDown.values.toString());
     var form =  event.formModel.copyWith();
     _initFieldsUpdate(form,map);
     emit(state.copyWith(formModel: form, valuesMap: map));
+  }
+
+
+  Future<void> _onCheckboxGroupValueChanged(
+      CheckboxGroupValueChanged event, Emitter<FormsState> emit) async {
+    var formModel = state.formModel!.copyWith();
+
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+    if ( map[event.fieldName] == null )  map[event.fieldName] = [];
+    List list = List.from( map[event.fieldName]);
+
+    if(event.isChecked)
+   list.add(event.value);
+   else
+     list.remove(event.value);
+
+    map[event.fieldName] = list ;
+    // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+    // map[childDropDown.name] = null;
+    emit(state.copyWith(formModel: formModel, valuesMap:map));
   }
 
   Future<void> _onSubmitCanceled(

@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:form_builder_test/presentation/form_widgets/checkbox_group_widget/checkbox_group_widget.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
+import '../../../data/responses/forms/enums.dart';
 import '../checkbox_group_item_model/checkbox_group_item_model.dart';
 import '../form_model.dart';
 
@@ -110,8 +112,7 @@ class CheckboxGroupModel extends FormFieldModel with EquatableMixin{
 
   @override
   Widget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+   return CheckboxGroupWidget(model : this);
   }
 
 }

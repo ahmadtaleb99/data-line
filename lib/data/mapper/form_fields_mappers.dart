@@ -15,6 +15,8 @@ import 'package:form_builder_test/domain/model/text_area_model/text_area_model.d
 import 'package:form_builder_test/domain/model/text_field_model/text_field_model.dart';
 import 'package:form_builder_test/app/extenstions.dart';
 
+import '../responses/forms/enums.dart';
+
 extension TextFieldMapper on TextFieldResponse? {
   TextFieldModel toDomain() {
     return TextFieldModel(
@@ -108,8 +110,9 @@ extension NumberTextFieldMapper on NumberFieldResponse? {
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
       showIfIsRequired: this?.showIfIsRequired ?? false,
       requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-      expressionsValue: this?.expressionsValue.orZero() ?? 0,
-      operator: this?.operator.orEmpty() ?? '',
+      expressionsValue: this?.expressionsValue,
+      expressionsValue2: this?.expressionsValue2,
+      operator: this?.operator,
         showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
         showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? ''
     );

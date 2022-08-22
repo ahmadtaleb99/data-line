@@ -5,6 +5,7 @@ import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 import 'package:form_builder_test/presentation/form_widgets/number_text_field_widget/number_text_field_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../data/responses/forms/enums.dart';
 import '../form_model.dart';
 
 part 'number_text_field_model.g.dart';
@@ -17,14 +18,18 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
 
 
   @HiveField(13)
-  final String operator;
+  final Operator? operator;
 
   @HiveField(14)
-  final int expressionsValue;
+  final int? expressionsValue;
+
+  @HiveField(15)
+  final int? expressionsValue2;
 
   NumberFieldModel({
     required this.operator,
     required this.expressionsValue,
+    required this.expressionsValue2,
     required String name,
     required String label,
     required FieldType type,
@@ -52,8 +57,9 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
 
   NumberFieldModel copyWith({
-    String? operator,
+    Operator? operator,
     int? expressionsValue,
+    int? expressionsValue2,
     String? name,
     String? label,
     String? showIfFieldName,
@@ -71,6 +77,7 @@ class NumberFieldModel extends FormFieldModel with EquatableMixin{
 
       operator: operator ?? this.operator,
       expressionsValue: expressionsValue ?? this.expressionsValue,
+      expressionsValue2: expressionsValue2 ?? this.expressionsValue2,
       name: name ?? this.name,
       label: label ?? this.label,
       type: type ?? this.type,

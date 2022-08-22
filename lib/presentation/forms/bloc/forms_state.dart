@@ -1,5 +1,10 @@
 part of 'forms_bloc.dart';
 
+// values map
+//the value of every field in the form, the key is the field name,
+// the value's type differs among fields,
+// checkboxgroup  and multi select drop down values are Lists of Strings,
+
 
 
 

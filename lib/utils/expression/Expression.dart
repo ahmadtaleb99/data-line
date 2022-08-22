@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+import '../../data/responses/forms/enums.dart';
 import '../../model/FileTypeEnum.dart';
 
 
@@ -56,18 +57,6 @@ class EnumValues<T> {
     }
     return reverseMap;
   }
-}
-
-@HiveType(typeId: 62)
-enum Operator {
-@HiveField(1)
-MORE,
-@HiveField(2)
-  LESS,
-@HiveField(3)
-  EQUAL,
-@HiveField(4)
-  BETWEEN
 }
 
 

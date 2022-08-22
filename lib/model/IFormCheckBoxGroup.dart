@@ -122,7 +122,7 @@ class IFormCheckBoxGroup extends IFormModel {
 
 
 
-      return CheckboxGroupWidget(
+      return CheckboxGroupWidgetOld(
         label: this.label,
         required: this.required,
         isReadOnly: this.isReadOnly,
@@ -150,7 +150,7 @@ class IFormCheckBoxGroup extends IFormModel {
 
   @override
   Map<String, dynamic> fomrElementtoJson(FormElementWidget formElement) {
-    var checkBoxGroup = formElement as CheckboxGroupWidget;
+    var checkBoxGroup = formElement as CheckboxGroupWidgetOld;
 
     return {
       'type'  : 'email',

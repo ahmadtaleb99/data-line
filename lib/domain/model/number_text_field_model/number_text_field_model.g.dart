@@ -17,8 +17,9 @@ class NumberFieldModelAdapter extends TypeAdapter<NumberFieldModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NumberFieldModel(
-      operator: fields[13] as String,
-      expressionsValue: fields[14] as int,
+      operator: fields[13] as Operator?,
+      expressionsValue: fields[14] as int?,
+      expressionsValue2: fields[15] as int?,
       name: fields[1] as String,
       label: fields[2] as String,
       type: fields[3] as FieldType,
@@ -37,11 +38,13 @@ class NumberFieldModelAdapter extends TypeAdapter<NumberFieldModel> {
   @override
   void write(BinaryWriter writer, NumberFieldModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(13)
       ..write(obj.operator)
       ..writeByte(14)
       ..write(obj.expressionsValue)
+      ..writeByte(15)
+      ..write(obj.expressionsValue2)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)

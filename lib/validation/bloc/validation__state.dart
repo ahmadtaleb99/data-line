@@ -16,7 +16,7 @@ class ValidationState{
   Node ? currentNode;
   Status status;
   List<Node> nodes;
-  CheckboxGroupWidget ? drawCheckboxGroup;
+  CheckboxGroupWidgetOld ? drawCheckboxGroup;
   OldDropDownWidget ? drawDropDownButton;
   RadioGroupWidget ? radioGroup;
   OldLoadingState ? loadingState;
@@ -65,7 +65,7 @@ class ValidationState{
     Status? status,
     List<String>? initialMulti,
 
-    CheckboxGroupWidget? drawCheckboxGroup,
+    CheckboxGroupWidgetOld? drawCheckboxGroup,
     OldDropDownWidget? drawDropDownButton,
     RadioGroupWidget ? radioGroup,
     List<FormWidget> ? forms,

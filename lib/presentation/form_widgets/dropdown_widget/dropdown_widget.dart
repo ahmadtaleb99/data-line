@@ -21,12 +21,9 @@ class DropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        log('drop widget got built ');
 
         return FormFieldWidget(
-          validator: (String? v){
-            return AppStrings.fieldReqired;
-          },
+
           label: dropDownModel.label,
           widget: Container(
               width: double.infinity,

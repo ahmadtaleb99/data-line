@@ -5,8 +5,8 @@ import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 
 import 'form_element_widget.dart';
 
-class CheckboxGroupWidget extends FormElementWidget {
-  CheckboxGroupWidget( {
+class CheckboxGroupWidgetOld extends FormElementWidget {
+  CheckboxGroupWidgetOld( {
     Key? key,
     required this.children,
     required this.minMaxCheckbox,

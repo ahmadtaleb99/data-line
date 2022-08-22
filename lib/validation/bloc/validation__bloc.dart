@@ -331,8 +331,8 @@ var mimi = lookupMimeType(cachedFile.path);
   void _onCheckboxGroupValueChanged(
       CheckboxGroupValueChanged event, Emitter<ValidationState> emit) {
     var group = state.form!.fields.firstWhere((element) =>
-            (element is CheckboxGroupWidget) && element.name == event.groupName)
-        as CheckboxGroupWidget;
+            (element is CheckboxGroupWidgetOld) && element.name == event.groupName)
+        as CheckboxGroupWidgetOld;
 
     List<String> valuesList = group.value;
 
