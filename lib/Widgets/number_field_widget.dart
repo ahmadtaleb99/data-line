@@ -38,9 +38,9 @@ class NumberFieldWidget extends FormElementWidget with FormValidation {
 
   @override
   Widget build(BuildContext context) {
-    return FormFieldWidget(
+    return khF(
       visible: visible,
-     required: required,
+     // required: required,
      widget :TextFormField(
         initialValue: value,
         onChanged: (value){

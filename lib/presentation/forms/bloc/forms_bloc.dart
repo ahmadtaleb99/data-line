@@ -56,21 +56,27 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
 
         case Operator.MORE:
           if(intValue <= model.expressionsValue!)
-            return AppStrings.cantBeSmaller+model.expressionsValue!.toString();
+            return AppStrings.mustBeGreater+model.expressionsValue!.toString();
           break;
 
 
         case Operator.LESS:
-          return AppStrings.cantBeGreater+model.expressionsValue!.toString();
+          if(intValue >= model.expressionsValue!)
+            return AppStrings.mustBeSmaller+model.expressionsValue!.toString();
+          break;
 
 
         case Operator.EQUAL:
-          return AppStrings.mustBeEqual+model.expressionsValue!.toString();
+          if(intValue != model.expressionsValue!)
+            return AppStrings.mustBeEqual+model.expressionsValue!.toString();
+          break;
 
 
         case Operator.BETWEEN:
-        return AppStrings.mustBeBetween+model.expressionsValue!.toString()+
+          if(!(intValue >= model.expressionsValue! && intValue <= model.expressionsValue2!))
+            return AppStrings.mustBeBetween+model.expressionsValue!.toString()+
             AppStrings.and+' '+model.expressionsValue2.toString();
+        break;
 
       }
 

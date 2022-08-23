@@ -7,9 +7,10 @@ import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class UpdateSubmissionScreen extends StatelessWidget {
-  const UpdateSubmissionScreen({Key? key,required this.formModel,required this.submission}) : super(key: key);
+   UpdateSubmissionScreen({Key? key,required this.formModel,required this.submission}) : super(key: key);
   final FormModel formModel;
   final Submission submission;
+  final _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +20,15 @@ class UpdateSubmissionScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          context.read<FormsBloc>().add(SubmissionUpdated(formModel,submission));
+
+          if(          _key.currentState!.validate())  {
+            context.read<FormsBloc>().add(SubmissionUpdated(formModel,submission));
+
+          }
         },
         child: const Text(AppStrings.update),
       ),
-      body: BuildForm(formModel: formModel,),
+      body: Form(key:_key,child: BuildForm(formModel: formModel,)),
     );
   }
 }

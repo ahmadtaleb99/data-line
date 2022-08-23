@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'form_element_widget.dart';
 
-class FormFieldWidget<T> extends StatelessWidget {
-  FormFieldWidget({
+class khF<T> extends StatelessWidget {
+  khF({
     Key? key,
     this.validator,
     required this.visible,
-    required this.required,
     required this.widget,
     this.value,
   }) : super(key: key);
 
-  final bool required;
   dynamic value;
   bool? visible;
   String? Function(T?)? validator;

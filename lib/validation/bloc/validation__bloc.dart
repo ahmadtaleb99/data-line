@@ -503,11 +503,8 @@ var mimi = lookupMimeType(cachedFile.path);
 
   void _onTextFieldValueChanged(
       TextFieldValueChanged event, Emitter<ValidationState> emit) {
-    var textField = state.form!.fields
-            .firstWhere((element) => element.name == event.textFieldName)
-        as TextFieldWidget;
+    throw UnimplementedError();
 
-    textField.value = event.value;
   }
 
   Future<void> _onFormRequested(

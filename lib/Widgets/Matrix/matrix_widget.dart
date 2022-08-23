@@ -68,9 +68,9 @@ class MatrixWidget extends FormElementWidget {
 
             list = matrix.records.map((e) => e.copyWith());
 
-            return FormFieldWidget(
+            return khF(
                 visible: visible,
-                required: required,
+                // required: required,
 
                 widget: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

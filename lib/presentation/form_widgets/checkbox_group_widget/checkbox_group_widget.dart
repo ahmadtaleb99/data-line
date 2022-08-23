@@ -42,11 +42,11 @@ class CheckboxGroupWidget extends StatelessWidget {
     );
   }
 
-  bool getValue(FormsState state, String value) {
-    List? list = state.valuesMap[model.name];
-    if (list == null) return false;
-    return list.contains(value) ? true : false;
-  }
+    bool getValue(FormsState state, String value) {
+      List? list = state.valuesMap[model.name];
+      if (list == null) return false;
+      return list.contains(value) ? true : false;
+    }
 
   const CheckboxGroupWidget({
     required this.model,

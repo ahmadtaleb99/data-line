@@ -47,9 +47,9 @@ class StarRatingWidget extends FormElementWidget {
                 .firstWhere((element) => element.name == this.name)
             as StarRatingWidget;
 
-        return FormFieldWidget<double>(
+        return khF<double>(
             visible: visible,
-            required: required,
+            // required: required,
             validator: (rate) {
               if (required && this.value == null) {
                 return 'required';
