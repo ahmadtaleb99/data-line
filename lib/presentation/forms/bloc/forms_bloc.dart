@@ -33,7 +33,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
+    on<MultiDropDownValueTapped>(_onMultiDropDownValueTapped);
     on<DropDownValueChanged>(_onDropDownValueChanged);
+    on<MultiDropDownValueChanged>(_onMultiDropDownValueChanged);
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
@@ -45,9 +47,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
   }
 
     String? validateNumber(NumberFieldModel model,String  value){
-      if(value == null ) return 'null';
 
-      if(value.isEmpty) return 'required';
 
       if(!isNumeric(value)) return  AppStrings.mustBeANumber;
 
@@ -76,9 +76,17 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
 
           return  null;
     }
+
+  String? validateDropDown(DropDownModel model){
+    return  null;
+  }
     String? validateCheckboxGroup(CheckboxGroupModel model){
-    List list  = List.from(state.valuesMap[model.name]);
-    if(model.minMaxCheckbox){
+
+
+      List list  = state.valuesMap[model.name] ?? [ ] ;
+      if( list.isEmpty && model.required  )
+        return AppStrings.fieldReqired;
+      if(model.minMaxCheckbox){
       if(!((list.length >= model.checkboxMinValue )&&( list.length <= model.checkboxMaxValue ))){
         return  AppStrings.checkboxMustBeBetween(model.checkboxMinValue.toString(), model.checkboxMaxValue.toString());
       }
@@ -144,14 +152,48 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
+
+    Map<String,bool> newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.fieldName] = true;
     log(map.toString());
-    emit(state.copyWith(valuesMap: map));
+    emit(state.copyWith(valuesMap: map,validationMap: newValidationMap));
+  }Future<void>
+
+
+  _onMultiDropDownValueTapped(
+      MultiDropDownValueTapped event, Emitter<FormsState> emit) async {
+    var dropDown = state.formModel!.fields
+        .firstWhere((element) => element.name == event.fieldName);
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+
+    List<String> selectedValues = List.from(map[event.fieldName]);
+
+    map[event.fieldName] = selectedValues..remove(event.value);
+
+
+
+    Map<String,bool> newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.fieldName] = true;
+    emit(state.copyWith(valuesMap: map,validationMap: newValidationMap));
+  }
+  Future<void> _onMultiDropDownValueChanged(
+      MultiDropDownValueChanged event, Emitter<FormsState> emit) async {
+    var dropDown = state.formModel!.fields
+        .firstWhere((element) => element.name == event.fieldName);
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+    map[event.fieldName] = event.values;
+
+
+    Map<String,bool> newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.fieldName] = true;
+    log(map.toString());
+    emit(state.copyWith(valuesMap: map,validationMap: newValidationMap));
   }
 
   Future<void> _onDropDownValueChanged(
       DropDownValueChanged event, Emitter<FormsState> emit) async {
     var formModel = state.formModel!.copyWith();
-
+    Map<String,bool> newValidationMap = Map.from(state.validationMap);
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
@@ -165,13 +207,17 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
 
               .where((item) => item.parent == event.value)
               .toList());
-log(childDropDown.values.toString());
+
+        add(DropDownValueChanged(fieldName: childDropDown.name, value: null));
+log(childDropDown.values.toString()+' asdasda');
       formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
         map[childDropDown.name] = null;
 
    }).toList();
 
-    emit(state.copyWith(formModel: formModel, valuesMap: map));
+    newValidationMap[event.fieldName] = true;
+
+    emit(state.copyWith(formModel: formModel, valuesMap: map,validationMap: newValidationMap));
   }
 
   Future<void> _onNewFormRequested(
@@ -180,7 +226,7 @@ log(childDropDown.values.toString());
 
     var formModel = event.formModel.copyWith();
     _initFields(formModel);
-    emit(state.copyWith(formModel: formModel, valuesMap: {}));
+    emit(state.copyWith(formModel: formModel, valuesMap: {},validationMap: {}));
   }
   void _initFields(FormModel formModel){
     // init drop downs
@@ -213,7 +259,7 @@ log(childDropDown.values.toString());
     log(map.toString() + 'emititn from event bloc ');
     var form =  event.formModel.copyWith();
     _initFieldsUpdate(form,map);
-    emit(state.copyWith(formModel: form, valuesMap: map));
+    emit(state.copyWith(formModel: form, valuesMap: map,validationMap: {}));
   }
 
 
@@ -233,7 +279,10 @@ log(childDropDown.values.toString());
     map[event.fieldName] = list ;
     // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
     // map[childDropDown.name] = null;
-    emit(state.copyWith(formModel: formModel, valuesMap:map));
+
+    Map newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.fieldName] = true;
+    emit(state.copyWith(formModel: formModel, valuesMap:map,validationMap: newValidationMap.cast()));
   }
 
   Future<void> _onSubmitCanceled(
@@ -310,6 +359,8 @@ log(childDropDown.values.toString());
         .map((e) => FieldEntry(name: e.key, value: e.value))
         .toList();
 
+
+    log('entreis nowo wowekf a- rkwq-0dkq-0 rkqw-k -q0kq k- ${entries.toString()}');
     return entries;
   }
 

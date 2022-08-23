@@ -17,9 +17,22 @@ class AssignedFormsRefreshRequested extends FormsEvent{
 
 class FieldValueChanged extends FormsEvent {
   final String fieldName;
-  final String value;
+  final dynamic value;
 
   const FieldValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,value];
+}
+class MultiDropDownValueTapped extends FormsEvent {
+  final String fieldName;
+  final String value;
+
+  const MultiDropDownValueTapped({
     required this.fieldName,
     required this.value,
   });
@@ -31,7 +44,7 @@ class FieldValueChanged extends FormsEvent {
 
 class DropDownValueChanged extends FormsEvent {
   final String fieldName;
-  final String value;
+  final String? value;
 
   const DropDownValueChanged({
     required this.fieldName,
@@ -41,6 +54,20 @@ class DropDownValueChanged extends FormsEvent {
 
   @override
   List<Object?> get props => [fieldName,value];
+}
+
+class MultiDropDownValueChanged extends FormsEvent {
+  final String fieldName;
+  final List<String> values;
+
+  const MultiDropDownValueChanged({
+    required this.fieldName,
+    required this.values,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,values];
 }
 class CheckboxGroupValueChanged extends FormsEvent {
   final String fieldName;

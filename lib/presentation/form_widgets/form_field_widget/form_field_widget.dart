@@ -9,8 +9,8 @@ import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class FormFieldWidget<T> extends StatelessWidget {
-  final String label;
   final Widget widget;
+  final bool? didChange;
   final FormFieldModel fieldModel;
   final T? initialValue;
   final String? Function(T?)? validator;
@@ -20,7 +20,6 @@ class FormFieldWidget<T> extends StatelessWidget {
 
 
         builder: (context, state) {
-
       return AnimatedSwitcher(
           transitionBuilder: (Widget child, Animation<double> animation) =>
               SlideTransition(
@@ -33,25 +32,32 @@ class FormFieldWidget<T> extends StatelessWidget {
           reverseDuration: const Duration(milliseconds: 100),
           child: isFieldVisible(state)
               ? FormField<T>(
+
             enabled: true,
                   initialValue: initialValue,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (T? value) {
-                    log('validator');
-                    if (state.valuesMap[fieldModel.name] !=  null)
-                      validator?.call(value);
+                  validator: (value){
+              log('form field ${fieldModel.required.toString()}');
 
-                else    return AppStrings.fieldReqired;
+
+                  if( state.valuesMap[fieldModel.name] == null && fieldModel.required   )
+               return AppStrings.fieldReqired;
+
+                    else return validator?.call(value);
                   },
                   builder: (fieldState)
                   {
-                 return   Column(
+                    if(state.validationMap[fieldModel.name] == true) {
+                      log(state.validationMap.toString());
+                      fieldState.validate();
+                    }
+                    return   Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(AppPadding.p8),
-                          child: Text(label,
+                          child: Text(fieldModel.label,
                               style: Theme.of(context).textTheme.subtitle1),
                         ),
                         SizedBox(
@@ -77,9 +83,9 @@ class FormFieldWidget<T> extends StatelessWidget {
     });
   }
 
-  const FormFieldWidget({
-    required this.label,
+  const   FormFieldWidget({
     required this.widget,
+     this.didChange,
     required this.fieldModel,
      this.initialValue,
     this.validator,
@@ -94,8 +100,8 @@ class FormFieldWidget<T> extends StatelessWidget {
     return false;
   }
 
-  String getText(FormsState state) {
-    String? error = state.validationMap[fieldModel.name];
-    return error != null ? error : '';
-  }
+  // String getText(FormsState state) {
+  //   String? error = state.validationMap[fieldModel.name];
+  //   return error != null ? error : '';
+  // }
 }

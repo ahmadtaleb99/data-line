@@ -24,7 +24,6 @@ class DropDownWidget extends StatelessWidget {
 
         return FormFieldWidget(
 
-          label: dropDownModel.label,
           widget: Container(
               width: double.infinity,
               child: DecoratedBox(
@@ -38,20 +37,24 @@ class DropDownWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: DropdownButton<String>(
+                      hint:Text( dropDownModel.prompt),
                       value: state.valuesMap[dropDownModel.name],
+                        // isExpanded: true,
                       underline: Container(),
                       icon: const Padding(
-                        padding: EdgeInsets.only(left: 99),
+                        padding: EdgeInsets.symmetric(horizontal: 50),
                         child: Icon(Icons.arrow_drop_down),
                       ),
-                      items: dropDownModel.values
-                          .map((e) => DropdownMenuItem(
+                      // items: hasItems()? [DropdownMenuItem<String>(child: Container(),)] :
+                      items:
+                      dropDownModel.values.map((e) => DropdownMenuItem(
                                 value: e.value,
                                 child: Text(e.label),
                               ))
                           .toList(),
                       onChanged: (String? newValue) {
-                        context.read<FormsBloc>().add(DropDownValueChanged(
+                        // if(!hasItems()) return;
+                         context.read<FormsBloc>().add(DropDownValueChanged(
                             fieldName: dropDownModel.name, value: newValue!));
                       },
                     ),
@@ -62,15 +65,7 @@ class DropDownWidget extends StatelessWidget {
     );
   }
 
-  List<DropDownItemModel> _getItems(FormsState state) {
-    if (dropDownModel.relatedListCheckbox) {
-      var parent = state.formModel!.fields.firstWhere(
-          (element) => element.name == dropDownModel.relatedListFieldName);
-      var items = dropDownModel.values
-          .where((element) => element.parent == state.valuesMap[parent.name])
-          .toList();
-      return items.cast();
-    }
-    return this.dropDownModel.values;
+  bool hasItems(){
+    return dropDownModel.values.isEmpty;
   }
 }

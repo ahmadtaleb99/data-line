@@ -11,23 +11,19 @@ class BuildForm extends StatelessWidget {
   final FormModel formModel;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 50, vertical: AppPadding.p20),
-      child: BlocBuilder<FormsBloc, FormsState>(
-        builder: (context, state) {
-          return ListView.separated(
-              separatorBuilder: (context, index) =>
-              const Padding(
-                  padding: EdgeInsets.symmetric(vertical: AppPadding.p8)),
-              itemBuilder: (context, index) {
-                // log(state.formModel!.fields[1].toString());
-                return state.formModel!.fields[index].toWidget();
-              },
-              itemCount: state.formModel!.fields.length
-          );
-        },
-      ),
+    return BlocBuilder<FormsBloc, FormsState>(
+      builder: (context, state) {
+        return ListView.builder(
+
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppPadding.p14, vertical: AppPadding.p8),
+                child: state.formModel!.fields[index].toWidget(),
+              );
+            },
+            itemCount: state.formModel!.fields.length);
+      },
     );
   }
 }

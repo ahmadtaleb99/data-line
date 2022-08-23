@@ -16,14 +16,12 @@ class NumberTextFieldWidget extends StatelessWidget {
     log('number widget got built ');
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        log(state.valuesMap.toString() + '   NumberTextFieldWidget');
         return FormFieldWidget(
-          label: numberFieldModel.label ,
           validator: (value) {
           return context.read<FormsBloc>().validateNumber(numberFieldModel,state.valuesMap[numberFieldModel.name]);
         }, widget: TextFormField(
           key: UniqueKey(),
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode  : AutovalidateMode.onUserInteraction,
           initialValue: state.valuesMap[numberFieldModel.name],
 
           onChanged: (number) {

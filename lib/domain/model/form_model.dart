@@ -258,7 +258,7 @@ class FieldEntry extends Equatable{
 
   @override
   String toString() {
-    return 'FieldEntry{name: $name}';
+    return 'FieldEntry{name: $name, value: $value}';
   }
 
   @override
