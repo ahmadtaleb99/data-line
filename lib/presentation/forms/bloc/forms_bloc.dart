@@ -85,6 +85,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     }
 
   String? validateDropDown(DropDownModel model){
+    List list  = state.valuesMap[model.name] ?? [ ] ;
+    if( list.isEmpty && model.required  )
+      return AppStrings.fieldReqired;
+
     return  null;
   }
     String? validateCheckboxGroup(CheckboxGroupModel model){
@@ -299,7 +303,7 @@ log(childDropDown.values.toString()+' asdasda');
 
     Map<String, dynamic> map = Map.from(state.valuesMap);
 
-    map[event.fieldName] = list ;
+    map[event.fieldName] = event.value;
     // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
     // map[childDropDown.name] = null;
 

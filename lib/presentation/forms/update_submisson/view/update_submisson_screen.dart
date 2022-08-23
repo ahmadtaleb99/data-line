@@ -22,6 +22,8 @@ class UpdateSubmissionScreen extends StatelessWidget {
         onPressed: () {
 
           if(          _key.currentState!.validate())  {
+
+
             context.read<FormsBloc>().add(SubmissionUpdated(formModel,submission));
 
           }

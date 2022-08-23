@@ -47,6 +47,7 @@ class AppStrings{
   static const String mustBeGreater = "Value must greater than ";
   static const String mustBeEqual = "Value cannot equal to ";
   static const String and = "and";
+  static const String other = "other";
   static const String mustBeBetween = "Value must be between ";
   static  String checkboxMustBeBetween(String first, String second){
     return "You must choose at least  $first and no more than $second values";
