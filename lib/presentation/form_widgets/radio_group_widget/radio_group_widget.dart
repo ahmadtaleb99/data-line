@@ -29,14 +29,13 @@ class RadioGroupWidget extends StatelessWidget {
 
                 onChanged: (isChecked) {
 
-                  // context.read<FormsBloc>().add(
-                  //     CheckboxGroupValueChanged(
-                  //         fieldName: model.name,
-                  //         isChecked: isChecked!,
-                  //         value: e.value));
+                  context.read<FormsBloc>().add(
+                      RadioGroupValueChanged(
+                          fieldName: model.name,
+                          value: e.value));
 
                 },
-                title: Text(e.label), groupValue:  ,
+                title: Text(e.label), groupValue:  true,
               ))
                   .toList(),
             ));

@@ -37,6 +37,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     on<DropDownValueChanged>(_onDropDownValueChanged);
     on<MultiDropDownValueChanged>(_onMultiDropDownValueChanged);
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
+    on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
@@ -290,6 +291,24 @@ log(childDropDown.values.toString()+' asdasda');
     newValidationMap[event.fieldName] = true;
     emit(state.copyWith(formModel: formModel, valuesMap:map,validationMap: newValidationMap.cast()));
   }
+
+
+  Future<void> _onRadioGroupValueChanged(
+      RadioGroupValueChanged event, Emitter<FormsState> emit) async {
+    var formModel = state.formModel!.copyWith();
+
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+
+    map[event.fieldName] = list ;
+    // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
+    // map[childDropDown.name] = null;
+
+    Map newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.fieldName] = true;
+    emit(state.copyWith(formModel: formModel, valuesMap:map,validationMap: newValidationMap.cast()));
+  }
+
+
 
   Future<void> _onSubmitCanceled(
       SubmitCanceled event, Emitter<FormsState> emit) async {

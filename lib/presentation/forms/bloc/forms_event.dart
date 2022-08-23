@@ -85,6 +85,20 @@ class CheckboxGroupValueChanged extends FormsEvent {
     List<Object?> get props => [fieldName,isChecked,value];
 }
 
+class RadioGroupValueChanged extends FormsEvent {
+  final String fieldName;
+  final String value;
+
+  const RadioGroupValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+    @override
+    List<Object?> get props => [fieldName,value];
+}
+
 
 class NewFormRequested extends FormsEvent {
   final FormModel formModel;
