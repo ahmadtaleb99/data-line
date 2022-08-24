@@ -76,11 +76,11 @@ ThemeData getApplicationTheme() {
           borderRadius: BorderRadius. circular(25.0),
         ),
         errorBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 2.0),
           borderRadius: BorderRadius. circular(25.0),
         ),
         focusedErrorBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 2.0),
           borderRadius: BorderRadius. circular(25.0),
         ) ,
     )

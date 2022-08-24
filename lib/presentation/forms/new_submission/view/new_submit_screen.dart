@@ -22,6 +22,8 @@ class NewSubmitScreen extends StatelessWidget {
         onPressed: () {
 
             if(          _key.currentState!.validate())  {
+
+              _key.currentState!.save();
               context.read<FormsBloc>().add(FormSubmitted(formModel));
             }
 

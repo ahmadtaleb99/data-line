@@ -21,39 +21,60 @@ class RadioGroupWidget extends StatelessWidget {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         return FormFieldWidget<List>(
-            validator: (value){
+            validator: (value) {
+
             },
             fieldModel: model,
             widget: Column(
-              children: [...model.values
-                  .map((RadioGroupItemModel e) => RadioListTile<String> (
-                value: e.value,
-
-                onChanged: (isChecked) {
-
-                  context.read<FormsBloc>().add(
-                      RadioGroupValueChanged(
+              children: [
+                ...model.values
+                    .map((RadioGroupItemModel e) => RadioListTile<String>(
+                          value: e.value,
+                          onChanged: (isChecked) {
+                            context.read<FormsBloc>().add(
+                                RadioGroupValueChanged(
+                                    fieldName: model.name, value: e.value));
+                          },
+                          title: Text(e.label),
+                          groupValue: state.valuesMap[model.name],
+                        ))
+                    .toList(),
+                if (model.other)
+                  RadioOtherWidget(
+                    groupValue: isValueOther(state)
+                        ? AppStrings.otherDelimiter
+                        : state.valuesMap[model.name] ?? '',
+                    onSelected: (value) {
+                      context.read<FormsBloc>().add(RadioGroupValueChanged(
                           fieldName: model.name,
-                          value: e.value));
-
-                },
-                title: Text(e.label), groupValue:  state.valuesMap[model.name],
-              ))
-                  .toList(),
-                if(model.other)  RadioOtherWidget(groupValue: state.valuesMap[model.name] ?? '', onChanged: ( value ) {
-                  context.read<FormsBloc>().add(RadioGroupValueChanged(fieldName: model.name, value: value!));
-
-
-                },)
+                          value: AppStrings.otherDelimiter));
+                    },
+                    onOtherValueChanged: (value) {
+                      context.read<FormsBloc>().add(RadioGroupValueChanged(
+                          fieldName: model.name,
+                          value: AppStrings.otherDelimiter+value));
+                    },
+                    otherRealValue: getOtherRealValue(state),
+                  )
               ],
             ));
       },
     );
   }
 
-  bool getValue(FormsState state, String value) {
-    List? list = state.valuesMap[model.name];
-    if (list == null) return false;
-    return false;
+  bool isValueOther(FormsState state) {
+    String? value = state.valuesMap[model.name];
+    if (value == null || value.isEmpty) return false;
+
+    return value.startsWith(AppStrings.otherDelimiter);
+  }
+
+  String getOtherRealValue(FormsState state) {
+    String? value = state.valuesMap[model.name];
+    if (value == null || value.isEmpty) return '';
+
+    return value.startsWith(AppStrings.otherDelimiter)
+        ? value.split(AppStrings.otherDelimiter)[1]
+        : '';
   }
 }

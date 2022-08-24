@@ -47,8 +47,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
 
-    String? validateNumber(NumberFieldModel model,String  value){
+    String? validateNumber(NumberFieldModel model){
 
+        String value = state.valuesMap[model.name] ?? '' ;
 
       if(!isNumeric(value)) return  AppStrings.mustBeANumber;
 
