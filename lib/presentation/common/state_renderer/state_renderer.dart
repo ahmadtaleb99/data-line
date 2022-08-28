@@ -52,7 +52,7 @@ class StateRenderer extends StatelessWidget {
         ]);
       case StateRendererType.FULLSCREEN_LOADING:
         return   _getItemsColumn( [
-          _getAnimatedImage(AnimationAssets.loading)
+          _getAnimatedImage(AnimationAssets.loading,height: AppSize.s200)
         ]);
 
       case StateRendererType.FULLSCREEN_ERROR:
@@ -112,13 +112,13 @@ class StateRenderer extends StatelessWidget {
   }
 
 
-  Widget _getAnimatedImage(String animation) {
+  Widget _getAnimatedImage(String animation, {double? height, double? width}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
 
-        height: AppSize.s100,
-        width: AppSize.s100,
+        height: height ?? AppSize.s100,
+        width: width ?? AppSize.s100,
         child: Lottie.asset(animation),
       ),
     );

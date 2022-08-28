@@ -50,7 +50,7 @@ class RadioGroupWidget extends StatelessWidget {
                           value: AppStrings.otherDelimiter));
                     },
                     onOtherValueChanged: (value) {
-                      context.read<FormsBloc>().add(RadioGroupValueChanged(
+                      context.read<FormsBloc>().add(RadioGroupValueChanged( 
                           fieldName: model.name,
                           value: AppStrings.otherDelimiter+value));
                     },

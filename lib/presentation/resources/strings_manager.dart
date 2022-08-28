@@ -34,6 +34,8 @@ class AppStrings{
   static const String about = "about";
   static const String banners = "Banners";
   static const String details = "details";
+  static const String MB = "MB";
+  static const String fileCantBeLarger = "File can\'t be larger than";
   static const String changeLanguage = "change_language";
   static const String contactUs = "contact_us";
   static const String inviteYourFriends = "invite_your_friends";
@@ -48,6 +50,7 @@ class AppStrings{
   static const String mustBeEqual = "Value cannot equal to ";
   static const String and = "and";
   static const String other = "other";
+  static const String file = "file";
   static const String uploadFile = "Upload File";
   static const String otherDelimiter = "other_";
   static const String mustBeBetween = "Value must be between ";

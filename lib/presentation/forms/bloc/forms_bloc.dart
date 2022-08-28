@@ -93,6 +93,22 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
           return  null;
     }
 
+  String? validateFile(FilePickerModel model){
+    log('validate fike');
+    File? file  = state.valuesMap[model.name] as File?;
+    if(_isRequired(model) && file == null )  return AppStrings.fieldReqired;
+
+    log('size'+file!.lengthSync().toString());
+    if(   (file!.lengthSync() /1000000 > model.maxFileSize ) ) {
+      log(' larger');
+
+      return AppStrings.fileCantBeLarger+' '+model.maxFileSize.toString()+' '+AppStrings.MB;
+
+    }
+
+
+    return  null;
+  }
   String? validateDropDown(DropDownModel model){
     List list  = state.valuesMap[model.name] ?? [ ] ;
     if( list.isEmpty && model.required  )
@@ -192,7 +208,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
 
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: event.model.fileType.getFilePickerPackageEnum(),
+      // type: event.model.fileType.getFilePickerPackageEnum(),
 
 
     );
@@ -204,7 +220,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
       // User canceled the picker
     }
 
-    emit(state.copyWith(valuesMap: map));
+    Map<String,bool> newValidationMap = Map.from(state.validationMap);
+    newValidationMap[event.model.name] = true;
+    emit(state.copyWith(valuesMap: map,validationMap: newValidationMap));
 
   }
 
