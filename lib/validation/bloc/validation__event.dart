@@ -77,7 +77,7 @@ class RecordAdded extends ValidationEvent {
 
 class FilePickerSaved extends ValidationEvent {
    File file;
-    FilePickerWidget filePicker;
+    oldFilePicker filePicker;
   FilePickerSaved({
     required this.file,
     required this.filePicker,
@@ -184,10 +184,10 @@ class FormUpdatePageRequested extends ValidationEvent {
 }
 
 
-class FilePickerPressed extends ValidationEvent {
+class oldFilePickerPressed extends ValidationEvent {
 
-  FilePickerWidget drawFilePicker;
-  FilePickerPressed({required this.drawFilePicker});
+  oldFilePicker drawFilePicker;
+  oldFilePickerPressed({required this.drawFilePicker});
 }
 class MultiSelectChanged extends ValidationEvent {
 

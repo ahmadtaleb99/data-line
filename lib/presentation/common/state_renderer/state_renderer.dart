@@ -1,7 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 
+import 'package:analyzer/error/error.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/data/network/error_handler.dart';
 import 'package:form_builder_test/presentation/resources/assets_manager.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
 import 'package:form_builder_test/presentation/resources/font_manager.dart';
@@ -26,14 +28,15 @@ class StateRenderer extends StatelessWidget {
   final StateRendererType stateRendererType;
   final String title;
   final String message;
+  final int? code;
   final Function onRetryButton;
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: _getWidget(stateRendererType, context));
+    return Center(child: _getStateWidget(stateRendererType, context));
   }
 
-  Widget _getWidget(StateRendererType stateRendererType, BuildContext context) {
+  Widget _getStateWidget(StateRendererType stateRendererType, BuildContext context) {
     switch (stateRendererType) {
       case StateRendererType.POPUP_LOADING:
 
@@ -41,7 +44,9 @@ class StateRenderer extends StatelessWidget {
 
       case StateRendererType.POPUP_ERROR:
         return _getPopUpDialog(context, [
-          _getAnimatedImage(AnimationAssets.error),
+        code == ResponseCode.NO_INTERNET_CONNECTION ?
+        _getAnimatedImage(AnimationAssets.noInternet):
+        _getAnimatedImage(AnimationAssets.error),
           _getMessage(message),
           _getRetryButton(AppStrings.ok, context)
         ]);
@@ -96,7 +101,7 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getDialogContent(BuildContext context, List<Widget> children) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(AppPadding.p12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -108,10 +113,14 @@ class StateRenderer extends StatelessWidget {
 
 
   Widget _getAnimatedImage(String animation) {
-    return SizedBox(
-      height: AppSize.s100,
-      width: AppSize.s100,
-      child: Lottie.asset(animation),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+
+        height: AppSize.s100,
+        width: AppSize.s100,
+        child: Lottie.asset(animation),
+      ),
     );
   }
 
@@ -131,7 +140,7 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getRetryButton(String buttonTitle, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(AppPadding.p12),
       child: ElevatedButton(
           onPressed: () {
 
@@ -150,6 +159,7 @@ class StateRenderer extends StatelessWidget {
     required this.stateRendererType,
      this.title ='',
     required this.message,
+    this.code,
     required this.onRetryButton,
   });
 }

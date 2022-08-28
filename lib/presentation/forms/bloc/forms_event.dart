@@ -28,6 +28,30 @@ class FieldValueChanged extends FormsEvent {
   @override
   List<Object?> get props => [fieldName,value];
 }
+class FilePickerPressed extends FormsEvent {
+  final FilePickerModel model;
+
+  const FilePickerPressed({
+    required this.model,
+  });
+
+
+  @override
+  List<Object?> get props => [model];
+}
+class TextValueChanged extends FormsEvent {
+  final String fieldName;
+  final dynamic value;
+
+  const TextValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,value];
+}
 class MultiDropDownValueTapped extends FormsEvent {
   final String fieldName;
   final String value;

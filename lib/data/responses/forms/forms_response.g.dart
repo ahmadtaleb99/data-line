@@ -25,7 +25,6 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
     };
 
 
-
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
@@ -454,7 +453,7 @@ FilePickerFieldResponse _$FilePickerFieldResponseFromJson(
         Map<String, dynamic> json) =>
     FilePickerFieldResponse(
       json['maxFileSize'] as int?,
-      json['fileType'] as String?,
+      $enumDecodeNullable(_$FileTypeEnumMap, json['fileType']),
     )
       ..name = json['name'] as String?
       ..label = json['label'] as String?
@@ -485,5 +484,12 @@ Map<String, dynamic> _$FilePickerFieldResponseToJson(
       'showIfIsRequired': instance.showIfIsRequired,
       'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
       'maxFileSize': instance.maxFileSize,
-      'fileType': instance.fileType,
+      'fileType': _$FileTypeEnumMap[instance.fileType],
     };
+
+const _$FileTypeEnumMap = {
+  FileType.IMAGE: 'Image',
+  FileType.AUDIO: 'Audio',
+  FileType.VIDEO: 'Video',
+  FileType.CUSTOM: 'CUSTOM',
+};

@@ -11,7 +11,7 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 class FormFieldWidget<T> extends StatelessWidget {
   final Widget widget;
   final bool? didChange;
-  final FormFieldModel fieldModel;
+  final FormFieldModel model;
   final T? initialValue;
   final String? Function(T?)? validator;
   @override
@@ -37,17 +37,17 @@ class FormFieldWidget<T> extends StatelessWidget {
                   initialValue: initialValue,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value){
-              log('form field ${fieldModel.required.toString()}');
+              log('form field ${model.required.toString()}');
 
 
-                  if( state.valuesMap[fieldModel.name] == null && fieldModel.required   )
+                  if( state.valuesMap[model.name] == null && model.required   )
                return AppStrings.fieldReqired;
 
                     else return validator?.call(value);
                   },
                   builder: (fieldState)
                   {
-                    if(state.validationMap[fieldModel.name] == true) {
+                    if(state.validationMap[model.name] == true) {
                       log(state.validationMap.toString());
                       fieldState.validate();
                     }
@@ -57,7 +57,7 @@ class FormFieldWidget<T> extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(AppPadding.p8),
-                          child: Text(fieldModel.label,
+                          child: Text(model.label,
                               style: Theme.of(context).textTheme.subtitle1),
                         ),
                         SizedBox(
@@ -66,12 +66,12 @@ class FormFieldWidget<T> extends StatelessWidget {
                         widget,
                         if (fieldState.hasError)
                           Padding(
-                              padding: const EdgeInsets.only(top: 15),
+                              padding: const EdgeInsets.only(left: AppPadding.p13,top:AppPadding.p8),
                               child: Text(
                                 fieldState.errorText!,
                                 style: TextStyle(
                                     fontStyle: FontStyle.normal,
-                                    fontSize: 15,
+                                    fontSize: 13,
                                     color: Colors.red[700],
                                     height: 1.5),
                               ))
@@ -86,16 +86,16 @@ class FormFieldWidget<T> extends StatelessWidget {
   const   FormFieldWidget({
     required this.widget,
      this.didChange,
-    required this.fieldModel,
+    required this.model,
      this.initialValue,
     this.validator,
   });
 
   bool isFieldVisible(FormsState state) {
-    if (fieldModel.showIfLogicCheckbox == false) return true;
+    if (model.showIfLogicCheckbox == false) return true;
 
-    if (state.valuesMap[fieldModel.showIfFieldName] ==
-        fieldModel.showIfFieldValue) return true;
+    if (state.valuesMap[model.showIfFieldName] ==
+        model.showIfFieldValue) return true;
 
     return false;
   }

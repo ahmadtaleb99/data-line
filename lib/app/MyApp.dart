@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
 
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouteGenerator.getRoute,
-              initialRoute: Routes.homeRoute,
+              initialRoute: Routes.homeRoute ,
               theme: getApplicationTheme(),
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,

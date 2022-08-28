@@ -95,7 +95,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<TextFieldValueChanged>(_onTextFieldValueChanged);
     on<FormSubmitted>(_onFormSubmitted);
     on<MultiSelectChanged>(_onMultiSelectChanged);
-    on<FilePickerPressed>(_onFilePickerPressed);
+    on<oldFilePickerPressed>(_onFilePickerPressed);
     on<SubmittionsFormsRequested>(_onSubmittionsFormsRequested);
     on<FormUpdatePageRequested>(_onFormUpdatePageRequested);
     on<FormUpdated>(_onFormUpdated);
@@ -601,7 +601,7 @@ var mimi = lookupMimeType(cachedFile.path);
 
   void _onFilePickerPressed(
 
-  FilePickerPressed event, Emitter<ValidationState> emit) async {
+  oldFilePickerPressed event, Emitter<ValidationState> emit) async {
     emit(state.copyWith(submitted: false));
 
 

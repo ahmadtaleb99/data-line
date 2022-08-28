@@ -134,7 +134,7 @@ extension FilerPickerMapper on FilePickerFieldResponse? {
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
       showIfIsRequired: this?.showIfIsRequired ?? false,
       requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-      fileType: this?.fileType.orEmpty() ?? '',
+      fileType: this?.fileType ?? FileType.CUSTOM,
       maxFileSize: this?.maxFileSize.orZero() ?? 0,
     );
   }

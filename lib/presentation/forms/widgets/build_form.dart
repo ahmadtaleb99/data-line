@@ -14,11 +14,11 @@ class BuildForm extends StatelessWidget {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         return ListView.builder(
-
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: AppPadding.p14, vertical: AppPadding.p8),
+                    horizontal: AppPadding.p18, vertical: AppPadding.p8),
                 child: state.formModel!.fields[index].toWidget(),
               );
             },

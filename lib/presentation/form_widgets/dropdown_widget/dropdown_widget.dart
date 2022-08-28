@@ -59,7 +59,7 @@ class DropDownWidget extends StatelessWidget {
                       },
                     ),
                   ))),
-          fieldModel: dropDownModel,
+          model: dropDownModel,
         );
       },
     );

@@ -10,10 +10,10 @@ import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 import 'form_element_widget.dart';
 import 'package:path/path.dart';
-class FilePickerWidget extends  FormElementWidget {
+class oldFilePicker extends  FormElementWidget {
 
 
-  FilePickerWidget( {
+  oldFilePicker( {
     Key ? key,
     required this.label,
      this.visible,
@@ -106,7 +106,7 @@ class FilePickerWidget extends  FormElementWidget {
                        ),
 
                        onPressed: () async {
-                         context.read<ValidationBloc>().add(FilePickerPressed(drawFilePicker: this));
+                         context.read<ValidationBloc>().add(oldFilePickerPressed(drawFilePicker: this));
 
                        },
                        child: Row(

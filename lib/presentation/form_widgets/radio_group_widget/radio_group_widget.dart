@@ -24,7 +24,7 @@ class RadioGroupWidget extends StatelessWidget {
             validator: (value) {
 
             },
-            fieldModel: model,
+            model: model,
             widget: Column(
               children: [
                 ...model.values

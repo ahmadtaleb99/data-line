@@ -28,7 +28,7 @@ class TextFieldWidget extends StatelessWidget {
             context.read<FormsBloc>().add(FieldValueChanged(
                 fieldName: model.name, value: text));
           },
-        ), fieldModel: model,);
+        ), model: model,);
       },
     );
   }

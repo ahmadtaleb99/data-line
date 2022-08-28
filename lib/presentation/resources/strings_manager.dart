@@ -48,6 +48,7 @@ class AppStrings{
   static const String mustBeEqual = "Value cannot equal to ";
   static const String and = "and";
   static const String other = "other";
+  static const String uploadFile = "Upload File";
   static const String otherDelimiter = "other_";
   static const String mustBeBetween = "Value must be between ";
   static  String checkboxMustBeBetween(String first, String second){

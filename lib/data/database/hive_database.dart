@@ -42,6 +42,7 @@ class HiveDatabase {
     Hive.registerAdapter(DropDownItemModelAdapter());
     Hive.registerAdapter(DropDownModelAdapter());
     Hive.registerAdapter(EmailTextFieldModelAdapter());
+    Hive.registerAdapter(FileTypeAdapter());
     Hive.registerAdapter(FilePickerModelAdapter());
     Hive.registerAdapter(NumberFieldModelAdapter());
     Hive.registerAdapter(RadioGroupItemModelAdapter());

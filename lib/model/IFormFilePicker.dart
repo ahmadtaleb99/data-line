@@ -88,7 +88,7 @@ class IFormFilePicker extends IFormModel {
   
   @override
   FormElementWidget toWidget({parameters}) {
-    return FilePickerWidget(
+    return oldFilePicker(
       value:  value,
       label: this.label,
       required: this.required,

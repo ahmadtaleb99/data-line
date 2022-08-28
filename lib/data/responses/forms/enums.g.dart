@@ -133,3 +133,47 @@ class OperatorAdapter extends TypeAdapter<Operator> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class FileTypeAdapter extends TypeAdapter<FileType> {
+  @override
+  final int typeId = 20;
+
+  @override
+  FileType read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 1:
+        return FileType.IMAGE;
+      case 2:
+        return FileType.AUDIO;
+      case 3:
+        return FileType.VIDEO;
+      default:
+        return FileType.IMAGE;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, FileType obj) {
+    switch (obj) {
+      case FileType.IMAGE:
+        writer.writeByte(1);
+        break;
+      case FileType.AUDIO:
+        writer.writeByte(2);
+        break;
+      case FileType.VIDEO:
+        writer.writeByte(3);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FileTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

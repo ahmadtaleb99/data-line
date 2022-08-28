@@ -308,8 +308,8 @@ class FilePickerFieldResponse extends FormFieldResponse {
   @JsonKey(name: 'maxFileSize')
   int? maxFileSize;
 
-  @JsonKey(name: 'fileType')
-  String? fileType;
+  @JsonEnum()
+  FileType? fileType;
 
   FilePickerFieldResponse(this.maxFileSize, this.fileType);
 

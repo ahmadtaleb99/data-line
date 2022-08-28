@@ -88,7 +88,7 @@ Widget _getFormElementThumbnail(FormElementWidget field) {
     return FieldHintWidget(text: '(Select)');
   }
 
-  if (field is FilePickerWidget) {
+  if (field is oldFilePicker) {
     return Container();
   }
   if (field is StarRatingWidget) {
@@ -144,7 +144,7 @@ class ValueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if ( field is FilePickerWidget){
+    if ( field is oldFilePicker){
       log('field is DrawFilePicker :::::::::::::::::::::::::::: ') ;
       return
         ElevatedButton(

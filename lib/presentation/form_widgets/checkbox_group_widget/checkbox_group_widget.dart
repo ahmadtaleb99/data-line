@@ -15,12 +15,11 @@ class CheckboxGroupWidget extends StatelessWidget {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         return FormFieldWidget<List>(
-          didChange: false,
           validator: (value){
             log('CheckboxGroupWidget field');
             return context.read<FormsBloc>().validateCheckboxGroup(model);
           },
-            fieldModel: model,
+            model: model,
             widget: Column(
               children: model.values
                   .map((CheckboxGroupItemModel e) => CheckboxListTile(

@@ -27,6 +27,7 @@ class LoadingState extends FlowState {
 class ErrorState extends FlowState {
   StateRendererType stateRendererType;
   String message ;
+  int? code;
   @override
   String getMessage() => message ;
 
@@ -36,6 +37,7 @@ class ErrorState extends FlowState {
   ErrorState({
     required this.stateRendererType,
     required   this.message,
+       this.code,
   });
 }
 class ContentState extends FlowState {
@@ -105,7 +107,7 @@ extension xFlowState on FlowState {
           dismissOpenedDialog(context);
 
           // show popup error
-          showPopup(context, getStateRendererType(), getMessage());
+          showPopup(context, getStateRendererType(), getMessage(),code: (this as ErrorState).code);
           // show content ui of the screen
           return widget;
         } else {
@@ -149,7 +151,7 @@ extension xFlowState on FlowState {
         onRetryButton:   onRetry);
 }
   showPopup(BuildContext context, StateRendererType stateRendererType,
-      String message, ) {
+      String message, {int? code}) {
     WidgetsBinding.instance?.addPostFrameCallback((_) =>
         showDialog(
             context: context,

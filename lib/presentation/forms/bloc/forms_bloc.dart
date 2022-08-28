@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/app/form_validation.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
+import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/domain/repository/form_repository.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer.dart';
@@ -33,8 +36,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
+    on<TextValueChanged>(_onTextValueChanged);
     on<MultiDropDownValueTapped>(_onMultiDropDownValueTapped);
     on<DropDownValueChanged>(_onDropDownValueChanged);
+    on<FilePickerPressed>(_onFilePickerPressed);
     on<MultiDropDownValueChanged>(_onMultiDropDownValueChanged);
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
@@ -46,11 +51,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     // on<SubmissionDeleted>(_onSubmissionDeleted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
-
-    String? validateNumber(NumberFieldModel model){
+      bool _isRequired(FormFieldModel model){
+    return model.showIfIsRequired || model.required;
+      }
+    String? validateNumber(String value , NumberFieldModel model){
 
         String value = state.valuesMap[model.name] ?? '' ;
 
+      // if(_isRequired(model) && value.isEmpty) return AppStrings.fieldReqired;
       if(!isNumeric(value)) return  AppStrings.mustBeANumber;
 
       int intValue = int.parse(value);
@@ -116,6 +124,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
       either.fold((failure) {
         emit(state.copyWith(
             flowState: ErrorState(
+                code: failure.code,
+
                 stateRendererType: StateRendererType.FULLSCREEN_ERROR,
                 message: failure.message)));
       }, (forms) {
@@ -125,6 +135,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     } catch (e) {
       emit(state.copyWith(
           flowState: ErrorState(
+
               stateRendererType: StateRendererType.FULLSCREEN_ERROR,
               message: e.toString())));
     }
@@ -141,6 +152,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
       either.fold((failure) {
         emit(state.copyWith(
             flowState: ErrorState(
+              code: failure.code,
                 stateRendererType: StateRendererType.POPUP_ERROR,
                 message: failure.message)));
       }, (forms) {
@@ -150,6 +162,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     } catch (e) {
       emit(state.copyWith(
           flowState: ErrorState(
+
               stateRendererType: StateRendererType.POPUP_ERROR,
               message: e.toString())));
     }
@@ -169,10 +182,49 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
     newValidationMap[event.fieldName] = true;
     log(map.toString());
     emit(state.copyWith(valuesMap: map,validationMap: newValidationMap));
-  }Future<void>
+  }
 
 
-  _onMultiDropDownValueTapped(
+  Future<void> _onFilePickerPressed(
+      FilePickerPressed event, Emitter<FormsState> emit) async {
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+
+
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: event.model.fileType.getFilePickerPackageEnum(),
+
+
+    );
+
+    if (result != null) {
+      File pickedFile = File(result.files.single.path!);
+      map[event.model.name] = pickedFile;
+    } else {
+      // User canceled the picker
+    }
+
+    emit(state.copyWith(valuesMap: map));
+
+  }
+
+
+    Future<void> _onTextValueChanged(
+        TextValueChanged event, Emitter<FormsState> emit) async {
+
+    Map<String, dynamic> map =state.valuesMap;
+    map[event.fieldName] = event.value;
+
+
+    Map<String,bool> newValidationMap = state.validationMap;
+    newValidationMap[event.fieldName] = true;
+    log(map.toString());
+    // emit(state.copyWith(valuesMap: map,validationMap: newValidationMap  ));
+  }
+
+
+
+  Future<void> _onMultiDropDownValueTapped(
       MultiDropDownValueTapped event, Emitter<FormsState> emit) async {
     var dropDown = state.formModel!.fields
         .firstWhere((element) => element.name == event.fieldName);
@@ -213,7 +265,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
 
     List<DropDownModel> children = formModel.getRelatedDropDownsFor(dropDown.name);
    children.map((childDropDown) {
-     log(state.assignedForms.toString()+'my log ');
         childDropDown = childDropDown.copyWith(
           values: (state.assignedForms.firstWhere((element) => formModel.name == element.name).getField(childDropDown.name) as DropDownModel).values
 
@@ -221,7 +272,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation{
               .toList());
 
         add(DropDownValueChanged(fieldName: childDropDown.name, value: null));
-log(childDropDown.values.toString()+' asdasda');
       formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
         map[childDropDown.name] = null;
 
@@ -234,7 +284,6 @@ log(childDropDown.values.toString()+' asdasda');
 
   Future<void> _onNewFormRequested(
       NewFormRequested event, Emitter<FormsState> emit) async {
-    log('_onNewFormRequested');
 
     var formModel = event.formModel.copyWith();
     _initFields(formModel);
@@ -268,7 +317,6 @@ log(childDropDown.values.toString()+' asdasda');
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = event.submission.toMap();
-    log(map.toString() + 'emititn from event bloc ');
     var form =  event.formModel.copyWith();
     _initFieldsUpdate(form,map);
     emit(state.copyWith(formModel: form, valuesMap: map,validationMap: {}));
@@ -346,12 +394,14 @@ log(childDropDown.values.toString()+' asdasda');
   Future<void> _onSubmissionUpdated(
       SubmissionUpdated event, Emitter<FormsState> emit) async {
     Map map = state.valuesMap;
+    log(map.toString()+'values to submit : ');
     Submission submission = event.submission;
     int index = state.submissions.indexOf(event.submission);
     List<Submission> newSubmissions = List.from(state.submissions);
 
     Submission newSub =
         submission.copyWith(fieldEntries: _mapValuesToEntries(map));
+    log(newSub.fieldEntries.toString());
     // newSubmissions[index] = newSub;
     await _assignedFormRepository.updateSubmission(newSub);
 
@@ -390,7 +440,6 @@ log(childDropDown.values.toString()+' asdasda');
         .toList();
 
 
-    log('entreis nowo wowekf a- rkwq-0dkq-0 rkqw-k -q0kq k- ${entries.toString()}');
     return entries;
   }
 

@@ -1,6 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:file_picker/file_picker.dart' as fp;
+
 part 'enums.g.dart';
+
 @HiveType(typeId: 16)
 enum FieldType {
 
@@ -78,3 +81,45 @@ enum Operator {
 
 }
 
+@HiveType(typeId: 20)
+enum FileType {
+  @HiveField(1)
+  @JsonValue('Image')
+  IMAGE,
+
+  @JsonValue('Audio')
+  @HiveField(2)
+  AUDIO,
+
+  @JsonValue('Video')
+  @HiveField(3)
+  VIDEO,
+  CUSTOM
+
+
+
+}
+
+extension xFileType on FileType{
+  fp.FileType getFilePickerPackageEnum() {
+    switch(this){
+
+      case FileType.IMAGE:
+       return fp.FileType.image;
+        break;
+      case FileType.AUDIO:
+        return fp.FileType.audio;
+
+        break;
+      case FileType.VIDEO:
+        return fp.FileType.video;
+
+        break;
+      case FileType.CUSTOM:
+        return fp.FileType.custom;
+
+        break;
+    }
+  }
+
+}

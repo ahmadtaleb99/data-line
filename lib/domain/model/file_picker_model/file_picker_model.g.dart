@@ -18,7 +18,7 @@ class FilePickerModelAdapter extends TypeAdapter<FilePickerModel> {
     };
     return FilePickerModel(
       maxFileSize: fields[13] as int,
-      fileType: fields[14] as String,
+      fileType: fields[14] as FileType,
       name: fields[1] as String,
       label: fields[2] as String,
       showIfFieldName: fields[11] as String,

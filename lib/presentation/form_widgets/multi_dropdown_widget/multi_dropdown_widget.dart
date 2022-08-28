@@ -25,7 +25,6 @@ class MultiDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        // List<String>? items = state.valuesMap[dropDownModel.name];
         return FormFieldWidget(
           validator: (value){
             return context.read<FormsBloc>().validateDropDown(dropDownModel);
@@ -34,6 +33,7 @@ class MultiDropDownWidget extends StatelessWidget {
               width: double.infinity,
               child: Center(
                 child: MultiSelectDialogField<String>(
+
                   selectedItemsTextStyle: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                   barrierColor: Colors.grey.withOpacity(0.2),
@@ -69,12 +69,13 @@ class MultiDropDownWidget extends StatelessWidget {
                       .cast(),
                   initialValue: state.valuesMap[dropDownModel.name],
                   onConfirm: (values) {
+
                     context.read<FormsBloc>().add(FieldValueChanged(
                         fieldName: dropDownModel.name, value: values));
                   },
                 ),
               )),
-          fieldModel: dropDownModel,
+          model: dropDownModel,
         );
       },
     );

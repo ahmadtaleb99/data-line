@@ -12,7 +12,6 @@ class NumberTextFieldWidget extends StatelessWidget {
   const NumberTextFieldWidget({Key? key, required this.numberFieldModel})
       : super(key: key);
   final NumberFieldModel numberFieldModel;
-
   @override
   Widget build(BuildContext context) {
     log('number widget got built ');
@@ -20,28 +19,32 @@ class NumberTextFieldWidget extends StatelessWidget {
       builder: (context, state) {
         return FormFieldWidget(
           validator: (number) {
-            return context.read<FormsBloc>().validateNumber(numberFieldModel);
+
+            return context.read<FormsBloc>().validateNumber('',numberFieldModel);
 
           }, widget: TextFormField(
+
           key: UniqueKey(),
          validator: (number){
-            if(state.validationMap[numberFieldModel.name] == true ) return null; else return ' f';
+           // return  context.read<FormsBloc>().validateNumber(number!,numberFieldModel);
          },
           onChanged: (number) {
-              context.read<FormsBloc>().add(FieldValueChanged(
+              context.read<FormsBloc>().add(TextValueChanged(
                   fieldName: numberFieldModel.name, value: number));
           },
 
-          autovalidateMode  : AutovalidateMode.onUserInteraction,
+          autovalidateMode  : requireValidation(state)   ?  AutovalidateMode.always : AutovalidateMode.onUserInteraction,
           initialValue: state.valuesMap[numberFieldModel.name],
 
 
 
-        ), fieldModel: numberFieldModel,);
+        ), model: numberFieldModel,);
       },
     );
   }
 
 
-
+    bool requireValidation(FormsState state){
+    return state.validationMap[numberFieldModel.name] != null &&state.validationMap[numberFieldModel.name] == true;
+    }
 }

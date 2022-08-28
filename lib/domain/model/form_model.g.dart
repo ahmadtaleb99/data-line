@@ -90,7 +90,7 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return throw Error();
+    throw Error();
   }
 
   @override

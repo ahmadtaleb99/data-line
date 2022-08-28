@@ -3,6 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/presentation/form_widgets/file_picker_widget/file_picker_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../data/responses/forms/enums.dart';
@@ -19,7 +20,7 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
   final int maxFileSize;
 
   @HiveField(14)
-  final String fileType;
+  final FileType fileType;
 
 
 
@@ -56,7 +57,7 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
 
   FilePickerModel copyWith({
      int? maxFileSize,
-     String? fileType,
+    FileType? fileType,
     String? name,
     String? label,
     String? showIfFieldName,
@@ -98,7 +99,8 @@ class FilePickerModel extends FormFieldModel with EquatableMixin {
 
   @override
   Widget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return FilePickerWidget(
+      model: this,
+    );
   }
 }
