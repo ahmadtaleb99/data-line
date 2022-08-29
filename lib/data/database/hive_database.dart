@@ -69,9 +69,9 @@ class HiveDatabase {
   }
 
   Future<void> addSubmission (Submission submission) async {
-      var sub = submission.copyWith(id: _getLastSubmissionId()+1);
-
-    await   _submissionsBox.add(submission);
+      var sub = submission.copyWith(id: getLastSubmissionId()+1  );
+      log('addSubmission subid ${sub.id.toString()}  subKey: ${sub.key.toString()}');
+    await   _submissionsBox.add(sub);
   }
   
   List<Submission>? getAllSubmissions (String formName){
@@ -84,15 +84,16 @@ class HiveDatabase {
   }
 
 
- int  _getLastSubmissionId() {
-    final key = _submissionsBox.keys.lastOrNull ?? 0;
+ int  getLastSubmissionId() {
+    final key = _submissionsBox.keys.lastOrNull ?? -1 ;
+    _submissionsBox.keys.forEach((element) {
+      log(element.toString() + 'key : : : : : :V : :  : : : ::');
+    });
     return key as int;
   }
 
 
   int getSubmissionId(Submission submission){
-    log('sub id '+ submission.key.toString());
-    _submissionsBox.values.forEach((element) {log(element.key.toString());});
     final _submission = _submissionsBox.values.firstWhere((element) => element.id == submission.id);
     final index = _submission.key as int ;
     return index;

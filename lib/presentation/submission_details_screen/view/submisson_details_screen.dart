@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/Widgets/checkbox_group_widget.dart';
 import 'package:form_builder_test/Widgets/child_dropdown_widget.dart';
 import 'package:form_builder_test/Widgets/dropdown_widget.dart';
@@ -118,7 +119,6 @@ List<Widget> _buildRows(FormWidget formWidget) {
   List<Widget> rows = [];
   for (var field in formWidget.fields) {
     if (field.value != null) {
-      log('value isnt null ${field.label} ${field.value} ');
       rows.add(
 
           Padding(
@@ -194,9 +194,9 @@ class FieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return    Row(
       children: [
-        Text(field.label, style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+        Text(field.label, style: Theme.of(context).textTheme.subtitle1),
     SizedBox(
-    width: 5,
+    width: 5.w,
     ),
     _getFormElementThumbnail(field)
       ],

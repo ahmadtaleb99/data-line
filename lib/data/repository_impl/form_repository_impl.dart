@@ -95,7 +95,6 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
   @override
   Future<void> addSubmission(Submission submission) async {
-    log('repo sub is about to be added : '+submission.toString());
 
     await _localDataSource.addSubmission(submission);
   }
@@ -109,6 +108,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   Future<void> updateSubmission(Submission submission) async {
   await   _localDataSource.updateSubmission(submission);
   }
+
 
 
 

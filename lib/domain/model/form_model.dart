@@ -1,11 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
+import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
+import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
+import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
+import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../data/responses/forms/enums.dart';
+import '../../presentation/resources/strings_manager.dart';
+import 'text_area_model/text_area_model.dart';
+import 'text_field_model/text_field_model.dart';
 
 
 part 'form_model.g.dart';
@@ -175,7 +183,42 @@ abstract class FormFieldModel with EquatableMixin {
   // }
 }
 
+extension xFormFieldModel on FormFieldModel{
+    String getHintName(){
+      switch (this.runtimeType){
+        case CheckboxGroupModel:
+          return AppStrings.checkgroupBoxHint;
 
+        case RadioGroupModel:
+          return AppStrings.radioGroupBoxHint;
+
+        case DropDownModel:
+          return AppStrings.dropdownHint;
+
+        case EmailTextFieldModel:
+          return AppStrings.emailHint;
+
+        case NumberFieldModel:
+          return AppStrings.numberHint;
+
+        case StarRatingModel:
+          return AppStrings.starRatingHint;
+
+        case TextAreaModel:
+          return AppStrings.textAreaHint;
+
+        case TextFieldModel:
+          return AppStrings.textFieldHint;
+
+        default:
+          return AppStrings.unknown;
+
+
+
+      }
+    }
+
+}
 
 
 
@@ -238,7 +281,6 @@ class Submission extends HiveObject with EquatableMixin{
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [formName,id,fieldEntries];
 }
 

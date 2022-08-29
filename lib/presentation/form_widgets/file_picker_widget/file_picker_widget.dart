@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:form_builder_test/app/extenstions.dart';
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
 import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
+
+import '../../resources/color_manager.dart';
 
 class FilePickerWidget extends StatelessWidget {
 
@@ -23,7 +26,9 @@ class FilePickerWidget extends StatelessWidget {
 
           children: [
             FormFieldWidget(
-
+              onSaved: (value){
+                context.read<FormsBloc>().add(FilePickerSaved(model: model));
+              },
                 validator: (value){
                   return context.read<FormsBloc>().validateFile(model);
                 },
@@ -39,6 +44,10 @@ class FilePickerWidget extends StatelessWidget {
                     }, child: const Text(AppStrings.uploadFile),
                   ),
                 ),
+       if(_isFileLoading(state)) SpinKitThreeInOut(
+        color: ColorManager.primary,
+          size: 25,
+     ),
                if(_getValue(state) != null)  Column(
                   children: [
                     const SizedBox(height: AppSize.s8),
@@ -59,8 +68,20 @@ class FilePickerWidget extends StatelessWidget {
   });
 
   File? _getValue(FormsState state){
-    return state.valuesMap[model.name] as File?;
+    String? path = state.valuesMap[model.name];
 
+    if(path != null){
+      return File(path);
+    }
+    return null;
+
+  }
+
+  bool _isFileLoading(FormsState state){
+    bool? isLoading = state.isFilePicking[model.name];
+    if(isLoading == null) return false;
+
+    return isLoading;
   }
 
 

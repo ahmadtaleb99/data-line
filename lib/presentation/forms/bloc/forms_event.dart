@@ -39,6 +39,17 @@ class FilePickerPressed extends FormsEvent {
   @override
   List<Object?> get props => [model];
 }
+class FilePickerSaved extends FormsEvent {
+  final FilePickerModel model;
+
+  const FilePickerSaved({
+    required this.model,
+  });
+
+
+  @override
+  List<Object?> get props => [model];
+}
 class TextValueChanged extends FormsEvent {
   final String fieldName;
   final dynamic value;

@@ -7,6 +7,7 @@ import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/forms/submission_details_screen/view/submission_details_screen.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/update_submisson/view/update_submisson_screen.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
@@ -69,7 +70,11 @@ class NewWidget extends StatelessWidget {
                         ))).then((value) =>  context.read<SubmissionsBloc>().add(SubmissionsRequested(formModel)));
               },
               onDelete: (){
+
                 context.read<SubmissionsBloc>().add(SubmissionDeleted(state.submissions[index]));
+              },
+              onView: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SubmissionDetailsScreen(fields: formModel.fields,submission: state.submissions[index])));
               },
             ),
             separatorBuilder: (context, index) =>

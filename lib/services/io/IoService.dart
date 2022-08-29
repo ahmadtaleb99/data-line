@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:flutter/services.dart';
@@ -50,14 +51,14 @@ class IoService {
   Future<void> init() async {
 
 
-    streamSubscription = receivePort.listen((message) {
-        if(message is String && message == 'done') {
-          print('5');
-          _streamController.close();
-
-        } else  _streamController.add(message);
-
-      });
+    // streamSubscription = receivePort.listen((message) {
+    //     if(message is String && message == 'done') {
+    //       print('5');
+    //       _streamController.close();
+    //
+    //     } else  _streamController.add(message);
+    //
+    //   });
 
 
     _appDir = await getApplicationDocumentsDirectory();
@@ -71,13 +72,14 @@ class IoService {
     _writeSink.close();
 
   }
-  Future<String> cacheFile(int submissionKey, String formName,
-      File file) async {
+  Future<String> cacheFile(File file,String fileToCachePath) async {
+    /*caching picked file to appDirectory/filePickerCache/submissionId-FormName
+    example: app dir -> /data/'app name'/app-flutter/filePickerCache/5-Third Form/
+     */
     String fileName = basename(file.path);
-    Directory appDirectory = await getApplicationDocumentsDirectory();
 
 
-    String newFilePath = '$_base/${submissionKey}-${formName}';
+    String newFilePath = '$_base/$fileToCachePath';
 
     var newDir = await Directory(newFilePath).create(recursive: true);
     var newPath = '$newFilePath/${fileName}';
@@ -109,8 +111,10 @@ class IoService {
     }
   }
 
-  Future<void> deleteSubmissionCache(int id, OldFormModel formModel) async {
-    var dir = Directory(_base + '/${id}-${formModel.name}');
+  Future<void> deleteSubmissionCache(String path) async {
+
+    log((_base + path));
+    var dir = Directory(_base + path);
     if (await dir.exists()) await dir.delete(recursive: true);
   }
 

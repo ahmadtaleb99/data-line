@@ -14,6 +14,7 @@ class FormFieldWidget<T> extends StatelessWidget {
   final FormFieldModel model;
   final T? initialValue;
   final String? Function(T?)? validator;
+  final Function(T?)? onSaved;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
@@ -32,12 +33,11 @@ class FormFieldWidget<T> extends StatelessWidget {
           reverseDuration: const Duration(milliseconds: 100),
           child: isFieldVisible(state)
               ? FormField<T>(
-
+                onSaved: onSaved,
             enabled: true,
                   initialValue: initialValue,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value){
-              log('form field ${model.required.toString()}');
 
 
                   if( state.valuesMap[model.name] == null && model.required   )
@@ -89,6 +89,7 @@ class FormFieldWidget<T> extends StatelessWidget {
     required this.model,
      this.initialValue,
     this.validator,
+    this.onSaved,
   });
 
   bool isFieldVisible(FormsState state) {

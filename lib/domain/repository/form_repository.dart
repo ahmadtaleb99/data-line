@@ -11,5 +11,6 @@ abstract class AssignedFormRepository{
   Future<void> addSubmission(Submission submission);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
+  // int getLastSubmissionId();
 
 }

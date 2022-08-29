@@ -320,7 +320,7 @@ var mimi = lookupMimeType(cachedFile.path);
       FormDeleted event, Emitter<ValidationState> emit) async {
     var formModel = _formRepository.submittedForms[event.index];
     print(formModel.key.toString() + 'asdasdasdasd');
-    await _ioService.deleteSubmissionCache(formModel.key, formModel);
+    // await _ioService.deleteSubmissionCache(formModel.key, formModel);
 
     _formRepository.deleteForm(formModel);
     var forms = _formRepository.submittedForms;
@@ -593,9 +593,9 @@ var mimi = lookupMimeType(cachedFile.path);
     }
 
 
-   var newPath =  await _ioService.cacheFile(submissionKey, formName, fileToCopy);
+   // var newPath =  await _ioService.cacheFile(submissionKey, formName, fileToCopy);
 
-    event.filePicker.value = newPath;
+    // event.filePicker.value = newPath;
     emit(state.copyWith(status: Status.success));
   }
 

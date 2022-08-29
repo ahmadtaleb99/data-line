@@ -14,11 +14,13 @@ class FormsState extends Equatable {
   final  List<Submission> submissions;
   final Map<String,dynamic> valuesMap;
   final FlowState flowState;
+  final FlowState newFlowState;
   final  List<FormModel> assignedForms;
   final Map<String,bool> validationMap;
+  final Map<String,bool> isFilePicking;
 
   @override
-  List<Object?> get props => [valuesMap,submissions,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
@@ -27,6 +29,8 @@ class FormsState extends Equatable {
     required this.validationMap,
     required this.submissions,
     required this.flowState,
+    required this.newFlowState,
+    required this.isFilePicking,
     required this.assignedForms,
 
   });
@@ -37,16 +41,20 @@ class FormsState extends Equatable {
     List<Submission>? submissions,
     Submission? currentSubmission,
     FlowState? flowState,
+    FlowState? newFlowState,
     List<FormModel>? assignedForms,
-    Map<String,bool>? validationMap
+    Map<String,bool>? validationMap,
+    Map<String,bool>? isFilePicking
   }) {
     return FormsState(
       formModel: formModel ?? this.formModel,
       valuesMap: valuesMap ?? this.valuesMap,
       validationMap: validationMap ?? this.validationMap,
+      isFilePicking: isFilePicking ?? this.isFilePicking,
       submissions: submissions ?? this.submissions,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       flowState: flowState ?? this.flowState,
+      newFlowState: newFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,
     );
   }

@@ -13,8 +13,10 @@ class AppStrings{
   static const String onboardingSubTitle3 ='on_boarding_desc3';
   static const String onboardingSubTitle4 ='on_boarding_desc4';
   static const String login ='login_button';
+  static const String downloadFile ='Download file';
   static const String forgetPassword ='forgot_password_text';
   static const String notAMember ='register_text';
+  static const String unknown ='unknown';
   static const String username ='username_hint';
   static const String password ='password_hint';
 
@@ -26,8 +28,18 @@ class AppStrings{
 
   static const String home = "Home";
   static const String search = "Search";
+  static const String checkgroupBoxHint = "(Checkbox Group)";
+  static const String radioGroupBoxHint = "(Radio Group)";
+  static const String dropdownHint = "(DropDown)";
+  static const String emailHint = "(Email)";
+  static const String numberHint = "(Number)";
+  static const String starRatingHint = "(Star Rating)";
+  static const String textFieldHint = "(Text Field)";
+  static const String textAreaHint = "(Text Area)";
   static const String notifications = "Notifications";
   static const String settings = "settings";
+  static const String field = "Field";
+  static const String value = "value";
 
   static const String services = "services";
   static const String stores = "stores";

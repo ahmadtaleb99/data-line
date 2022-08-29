@@ -1,11 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:analyzer/error/error.dart';
 import 'package:form_builder_test/data/database/hive_database.dart';
 import 'package:form_builder_test/data/network/error_handler.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
-
-
+import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 abstract class LocalDataSource  {
   void clearCache();
   void removeFromCache(String key); //if the user logged in as an example and we dont wanna cache his fav
@@ -17,6 +19,8 @@ abstract class LocalDataSource  {
   List<Submission> getSubmissions(String formName);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
+  Future<String> saveFileToCache(String path,int SubmissionId,String formName);
+  Future<void> deleteFileFromCache(String path);
 
  //  HomeResponse getHomeData();
  // void saveHomeToCache(HomeResponse homeResponse);
@@ -37,8 +41,10 @@ const int keyStoreDetailsCacheTime = 60;
 class LocalDataSourceImpl implements LocalDataSource {
 
   final HiveDatabase _hiveDatabase;
+  final IoService _ioService;
 
-  LocalDataSourceImpl(this._hiveDatabase);
+  LocalDataSourceImpl(this._hiveDatabase, this._ioService);
+
   Map <String,CachedItem> _cacheMap  = {};
 
 
@@ -81,7 +87,6 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> addSubmission(Submission submission) async {
-    log('local is about to be added : '+submission.toString());
 
     await   _hiveDatabase.addSubmission(submission);
   }
@@ -99,6 +104,18 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<void> updateSubmission (Submission submission) async {
     await   _hiveDatabase.updateSubmission(submission);
   }
+
+  @override
+  Future<void> deleteFileFromCache(String path) {
+    // TODO: implement deleteFileFromCache
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> saveFileToCache(String path,int SubmissionId,String formName) async {
+   return await _ioService.cacheFile(File(''), 'SubmissionId, formName');
+  }
+
 
 
 }
