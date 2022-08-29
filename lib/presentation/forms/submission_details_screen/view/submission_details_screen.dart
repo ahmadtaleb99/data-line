@@ -24,13 +24,15 @@ class SubmissionDetailsScreen extends StatelessWidget {
           vertical: AppPadding.p20,
         ),
         itemCount: fields.length+1,
+
         itemBuilder: (context, index) {
+
           return index == 0
               ? const Padding(
             padding:  EdgeInsets.symmetric(horizontal: AppPadding.p37),
             child:  LabelWidget(),
           )
-              :   Padding(
+              :   submission.fieldEntries[index-1].value != null  ? Padding(
             padding: const EdgeInsets.symmetric(vertical: AppPadding.p14,horizontal: AppPadding.p12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,11 +41,9 @@ class SubmissionDetailsScreen extends StatelessWidget {
                 Expanded(child: ValueWidget(field: fields[index-1],value: submission.fieldEntries[index-1].value),flex: 2,)
               ],
             ),
-          );
+          ) :  Container();
         },
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          thickness: 2,
-        ),
+        separatorBuilder: (BuildContext context, int index) =>  submission.fieldEntries[index].value != null ? const Divider(thickness: 2) : SizedBox(),
       ),
     );
   }

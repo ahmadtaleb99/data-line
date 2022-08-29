@@ -32,6 +32,7 @@ class AppStrings{
   static const String radioGroupBoxHint = "(Radio Group)";
   static const String dropdownHint = "(DropDown)";
   static const String emailHint = "(Email)";
+  static const String fileHint = "(File)";
   static const String numberHint = "(Number)";
   static const String starRatingHint = "(Star Rating)";
   static const String textFieldHint = "(Text Field)";

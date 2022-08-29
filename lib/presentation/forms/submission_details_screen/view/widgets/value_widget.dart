@@ -5,8 +5,8 @@ import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 
 class ValueWidget extends StatelessWidget {
- FormFieldModel field;
-  dynamic value;
+final FormFieldModel field;
+  final dynamic value;
   @override
   Widget build(BuildContext context) {
     if (field.type == FieldType.FILE){
@@ -33,13 +33,14 @@ class ValueWidget extends StatelessWidget {
 
 
 
-      return Text(value.toString() ?? 'empty',
+      return Text(value.toString() ,
           overflow: TextOverflow.fade,
           softWrap: true,
+        style: Theme.of(context).textTheme.subtitle1,
        );
     }
 
- ValueWidget({
+ const ValueWidget({
    required this.field,
    required this.value,
  });

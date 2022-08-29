@@ -260,10 +260,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
    int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
    String newFilePath = '${submissionId}-${currentFormName}';
   //
-   await _ioService.cacheFile(file,newFilePath);
+   String newPath = await _ioService.cacheFile(file,newFilePath);
 
+
+    map[event.model.name] = newPath;
+
+    log(map[event.model.name] );
    emit(state.copyWith(
-       newFlowState: ContentState()));
+       newFlowState: ContentState(),valuesMap: map));
   }
 
 
@@ -347,7 +351,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     var formModel = event.formModel.copyWith();
     _initFields(formModel);
     emit(
-        state.copyWith(formModel: formModel, valuesMap: {}, validationMap: {}));
+        state.copyWith(formModel: formModel, validationMap: {}));
   }
 
   void _initFields(FormModel formModel) {
@@ -359,6 +363,15 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
               .indexWhere((element) => element.name == childDropDown.name)] =
           childDropDown;
     });
+
+
+    Map map = {};
+    formModel.fields.forEach((field) {
+      map[field.name] = null;
+    });
+
+    emit(state.copyWith(valuesMap: map.cast()));
+
   }
 
   void _initFieldsUpdate(FormModel formModel, Map valuesMap) {
@@ -499,8 +512,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     return submission;
   }
 
-  List<FieldEntry> _mapValuesToEntries(Map submissionMap) {
-    List<FieldEntry> entries = submissionMap.entries
+  List<FieldEntry> _mapValuesToEntries(Map valuesMap) {
+    List<FieldEntry> entries = valuesMap.entries
         .map((e) => FieldEntry(name: e.key, value: e.value))
         .toList();
 

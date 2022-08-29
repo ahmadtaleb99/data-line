@@ -10,7 +10,7 @@ class FieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return    Row(
       children: [
-        Text(field.label, style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+        Text(field.label, style: Theme.of(context).textTheme.subtitle1),
         SizedBox(
           width: 5.w,
         ),
