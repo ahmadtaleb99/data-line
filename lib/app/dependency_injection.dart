@@ -14,7 +14,7 @@ import 'package:form_builder_test/domain/repository/form_repository.dart';
 import 'package:form_builder_test/domain/repository/repository.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
-import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:form_builder_test/services/io/FileCachingService.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,14 +64,14 @@ Future<void> initAppModules() async {
   //local
 
 
-  IoService _ioService = IoService();
+  FileCachingService _ioService = FileCachingService();
   await _ioService.init();
-  getIT.registerLazySingleton<IoService>(() => _ioService);
+  getIT.registerLazySingleton<FileCachingService>(() => _ioService);
 
   HiveDatabase _hiveDatabase = HiveDatabase();
   await _hiveDatabase.init();
   getIT.registerLazySingleton<HiveDatabase>(() => _hiveDatabase);
-  getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIT<HiveDatabase>(),getIT<IoService>()));
+  getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIT<HiveDatabase>(),getIT<FileCachingService>()));
 
 
   //repository

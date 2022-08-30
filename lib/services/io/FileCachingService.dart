@@ -12,13 +12,14 @@ import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+ const String _copyFinish = 'copyFinish';
 
 void copyIsolateFunc(Map data) async{
   SendPort sendPort = data['port'];
   File file = File(data['filePath']);
 
   var file2 = File(data['newPath']);
-
+try {
   var _readStream = file.openRead();
   int fileLength = await file.length();
   int currentBytesWritten = 0;
@@ -28,37 +29,48 @@ void copyIsolateFunc(Map data) async{
     currentBytesWritten += bytes.length;
     _writeSink.add(bytes);
     var percentage = 100 * (currentBytesWritten) / (fileLength);
-   sendPort.send(percentage);
+    sendPort.send(percentage);
 
   }
 
 
-  _writeSink.close();
-  sendPort.send('done');
+  await _writeSink.close();
+  sendPort.send(_copyFinish);
 }
-class IoService {
+catch  (e){
+
+  sendPort.send(_copyFinish);
+  print(e.toString());
+
+}
 
 
-  ReceivePort receivePort = ReceivePort();
+}
+class FileCachingService {
+
+
+ late ReceivePort receivePort;
   late Directory _appDir;
-  late String _base = ' ';
+  late String _base ;
   static const _cacheBase = 'filePickerCache';
    StreamController<double>    _streamController = StreamController.broadcast();
   late IOSink _writeSink;
-  late Stream<List<int>> _readStream;
   late Isolate  isolate ;
-  late StreamSubscription  streamSubscription ;
+
+void _listenToPort(){
+
+  receivePort.listen((message) {
+    if(message is String && message == _copyFinish) {
+      dispose();
+
+    } else  _streamController.sink.add(message);
+
+  });
+}
   Future<void> init() async {
 
 
-    // streamSubscription = receivePort.listen((message) {
-    //     if(message is String && message == 'done') {
-    //       print('5');
-    //       _streamController.close();
-    //
-    //     } else  _streamController.add(message);
-    //
-    //   });
+
 
 
     _appDir = await getApplicationDocumentsDirectory();
@@ -90,8 +102,6 @@ class IoService {
 
   Future<String?> copyToDownloads(File file) async {
 
-
-
     var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
 
     if (downloadsDirectory == null)
@@ -104,7 +114,6 @@ class IoService {
         .request()
         .isGranted) {
       newFilePath = downloadsDirectory.path + '/$fileName';
-      print('1');
 
         await   copyFileWithProgress(file, newFilePath);
       return newFilePath;
@@ -127,19 +136,19 @@ class IoService {
 
   }
   Future<void> copyFileWithProgress(File file ,String newPath) async {
-      _streamController = StreamController.broadcast();
-    print('2');
+    receivePort  = ReceivePort();
+    _listenToPort();
+
+    _streamController = StreamController.broadcast();
 
     final data = {'port': receivePort.sendPort, 'filePath':file.path,'newPath':newPath};
-    isolate = await Isolate.spawn(copyIsolateFunc, data);
-    print('b4 rp');
+    isolate = await Isolate.spawn(copyIsolateFunc, data,);
 
   }
 
 
   Stream<double> get  copyProgress => _streamController.stream;
-  StreamController<double> get  copyProgressSub => _streamController;
-  void closeStream(){
+  void dispose(){
     _streamController.close();
   }
 

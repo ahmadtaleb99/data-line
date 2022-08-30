@@ -13,7 +13,7 @@ import 'package:mime/mime.dart';
 
 import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:form_builder_test/services/io/FileCachingService.dart';
 import 'package:form_builder_test/testable.dart';
 import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
@@ -55,7 +55,7 @@ part 'validation__state.dart';
 
 class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
   OldFormRepository _formRepository;
-  IoService _ioService = IoService();
+  FileCachingService _ioService = FileCachingService();
 
 
   ValidationBloc(this._formRepository)
@@ -102,7 +102,7 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
     on<FormDeleted>(_onFormDeleted);
     on<FormUpdateRequested>(_onFormUpdateRequested);
     on<FilePickerSaved>(_onFilePickerSaved);
-    on<FilePreviewRequested>(_onFilePreviewRequested);
+    on<oldFilePreviewRequested>(_onFilePreviewRequested);
     on<FileDownloadedNotification>(_onFileDownloadedNotification);
     on<StarRatingUpdated>(_onStarRatingUpdated);
     on<RecordAdded>(_onRecordAdded);
@@ -210,7 +210,7 @@ void _onStarRatingUpdated(
   /////////////////////////////
   /////////////////////////////
   Future<void> _onFilePreviewRequested(
-      FilePreviewRequested event, Emitter<ValidationState> emit) async {
+      oldFilePreviewRequested event, Emitter<ValidationState> emit) async {
     File cachedFile = File(event.path);
     String fileName = basename(cachedFile.path);
     bool  kza  = false;

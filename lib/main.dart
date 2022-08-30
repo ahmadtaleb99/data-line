@@ -25,39 +25,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'data/network/api_client.dart';
 import 'presentation/resources/language_manager.dart';
 
-void initNotifications() {
-  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    if (!isAllowed) {
-      // This is just a basic example. For real apps, you must show some
-      // friendly dialog box before call the request method.
-      // This is very important to not harm the user experience
-      AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-  });
-  AwesomeNotifications().initialize(
-    // senullt the icon to null if you want to use the default app icon
-      null,
-      NotificationManager.channels,
-      // Channel groups are only visual and are not required
-      channelGroups: [
-        NotificationChannelGroup(
-            channelGroupkey: 'basic_channel_group',
-            channelGroupName: 'Basic group')
-      ],
-      debug: false
-  );
-}
-Future<void> test(  )  async {
-
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
    EasyLocalization.ensureInitialized();
   await Hive.initFlutter();
   await  initAppModules();
-  initNotifications();
-  await NotificationService().init();
+  NotificationService().initNotifications();
   BlocOverrides.runZoned(
         () {
           runApp(EasyLocalization(

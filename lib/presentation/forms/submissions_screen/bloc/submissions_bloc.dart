@@ -8,7 +8,7 @@ import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
-import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:form_builder_test/services/io/FileCachingService.dart';
 
 import '../../../../domain/repository/form_repository.dart';
 import '../../../common/state_renderer/state_renderer_impl.dart';
@@ -18,7 +18,7 @@ part 'submissions_state.dart';
 
 class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
   final AssignedFormRepository _assignedFormRepository;
-  final _ioService = getIT<IoService>();
+  final _ioService = getIT<FileCachingService>();
 
     SubmissionsBloc(this._assignedFormRepository) : super(SubmissionsState(flowState: ContentState(),submissions: [])) {
     on<SubmissionsRequested>(_onSubmissionsRequested);

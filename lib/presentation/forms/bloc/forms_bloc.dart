@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/app/form_validation.dart';
 import 'package:form_builder_test/data/database/hive_database.dart';
@@ -19,7 +21,8 @@ import 'package:form_builder_test/presentation/common/state_renderer/state_rende
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
-import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:form_builder_test/services/io/FileCachingService.dart';
+import 'package:form_builder_test/utils/constants.dart';
 
 import '../../../domain/model/checkbox_group_model/checkbox_group_model.dart';
 import '../../../domain/model/number_text_field_model/number_text_field_model.dart';
@@ -29,7 +32,7 @@ part 'forms_state.dart';
 
 class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   final stateBloc = getIT<StateRendererBloc>();
-  final  _ioService = getIT<IoService>();
+  final  _ioService = getIT<FileCachingService>();
   final _hiveDatabase = getIT<HiveDatabase>();
 
   final AssignedFormRepository _assignedFormRepository;
@@ -54,6 +57,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
+    on<FilePreviewRequested>(_onFilePreviewRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
     // on<SubmissionsRequested>(_onSubmissionsRequested);
@@ -269,6 +273,69 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
    emit(state.copyWith(
        newFlowState: ContentState(),valuesMap: map));
   }
+
+
+ Future<void> _onFilePreviewRequested(
+     FilePreviewRequested event, Emitter<FormsState> emit) async {
+   File cachedFile = File(event.filePath);
+   String fileName = basename(cachedFile.path);
+
+   String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
+   int progress  = 0 ;
+   // var mimi = lookupMimeType(cachedFile.path);
+
+   await for (var event in _ioService.copyProgress) {
+     progress = event.toInt();
+
+   }
+   AwesomeNotifications().createNotification(
+       actionButtons: [
+         NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
+       ],
+       content: NotificationContent(
+
+           id:  1,
+           channelKey: 'second',
+           title: 'downloading: $fileName',
+           body: '$progress',
+           progress: progress,
+           locked: true,
+           notificationLayout: NotificationLayout.ProgressBar,
+           category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
+   print('first noti is done ');
+   // if (mimi != defaultExtensionMap['jpg']){
+   //   print(mimi);
+   //   kza =     await AwesomeNotifications().createNotification(
+   //       content: NotificationContent(
+   //           id:  1,
+   //           channelKey: 'second',
+   //           title: ' download complete for file $fileName',
+   //           body: ' tap to preview',
+   //           notificationLayout: NotificationLayout.Default,
+   //           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+   //   AwesomeNotifications().createNotification(
+   //       content: NotificationContent(
+   //           id:  8,
+   //           channelKey: 'second',
+   //           title: ' download complete for file',
+   //           body: ' tap to preview',
+   //           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+   //   print('second note should be done :: $kza');
+   // }
+
+    await AwesomeNotifications().createNotification(
+       content: NotificationContent(
+           id:  1,
+           channelKey: 'second',
+           title: ' download complete for file $fileName',
+           body: ' tap to preview',
+           bigPicture: 'file://$newFilePath',
+           notificationLayout: NotificationLayout.BigPicture,
+           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+
+
+
+ }
 
 
 

@@ -13,14 +13,7 @@ static  List<NotificationChannel> channels =   [
         importance: NotificationImportance.Max,
 
         ledColor: Colors.white),
-  NotificationChannel(
-        channelGroupKey: 'basic_channel_group',
-        channelKey: 'second',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        importance: NotificationImportance.Max,
 
-        ledColor: Colors.white),
   ];
 }
 

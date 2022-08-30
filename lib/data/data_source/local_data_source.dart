@@ -5,7 +5,7 @@ import 'package:analyzer/error/error.dart';
 import 'package:form_builder_test/data/database/hive_database.dart';
 import 'package:form_builder_test/data/network/error_handler.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/services/io/IoService.dart';
+import 'package:form_builder_test/services/io/FileCachingService.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 abstract class LocalDataSource  {
@@ -41,7 +41,7 @@ const int keyStoreDetailsCacheTime = 60;
 class LocalDataSourceImpl implements LocalDataSource {
 
   final HiveDatabase _hiveDatabase;
-  final IoService _ioService;
+  final FileCachingService _ioService;
 
   LocalDataSourceImpl(this._hiveDatabase, this._ioService);
 

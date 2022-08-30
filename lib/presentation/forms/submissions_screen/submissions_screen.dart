@@ -10,6 +10,7 @@ import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submission_details_screen/view/submission_details_screen.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/widgets/submission_card.dart';
@@ -18,34 +19,30 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 class SubmissionsScreen extends StatelessWidget {
-  const SubmissionsScreen({Key? key,required this.formModel}) : super(key: key);
+  const SubmissionsScreen({Key? key, required this.formModel})
+      : super(key: key);
   final FormModel formModel;
-
 
   @override
   Widget build(BuildContext context) {
-
-   return Scaffold(
-     appBar: AppBar(),
-    body : BlocBuilder<SubmissionsBloc, SubmissionsState>(
-      buildWhen: (p,c) {
-        return p.flowState != c.flowState;
-      },
+    return Scaffold(
+      appBar: AppBar(),
+      body: BlocBuilder<SubmissionsBloc, SubmissionsState>(
+        buildWhen: (p, c) {
+          return p.flowState != c.flowState;
+        },
         builder: (context, state) {
-
           if (state.flowState != null) {
-            var widget =
-            state.flowState.getWidget(context,  NewWidget(formModel: formModel), () {
-            });
+            var widget = state.flowState
+                .getWidget(context, NewWidget(formModel: formModel), () {});
             return widget;
           } else {
             return NewWidget(formModel: formModel);
           }
         },
       ),
-    // body : NewWidget(formModel: formModel,),
-   );
-
+      // body : NewWidget(formModel: formModel,),
+    );
   }
 }
 
@@ -61,33 +58,48 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SubmissionsBloc, SubmissionsState>(
       builder: (context, state) {
+        FormsBloc formsBloc = context.read<FormsBloc>();
+
         return ListView.separated(
             itemBuilder: (context, index) => SubmissionCard(
-              formModel: formModel,
-              onUpdate: (){
-                var formsBloc = context.read<FormsBloc>();
-                formsBloc.add(SubmissionUpdateRequested(formModel,state.submissions[index]));
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: formsBloc,
-                          child:  UpdateSubmissionScreen(formModel: formModel,submission:state.submissions[index]),
-                        ))).then((value) =>  context.read<SubmissionsBloc>().add(SubmissionsRequested(formModel)));
-              },
-              onDelete: (){
-
-                context.read<SubmissionsBloc>().add(SubmissionDeleted(state.submissions[index]));
-              },
-              onView: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SubmissionDetailsScreen(fields: formModel.fields,submission: state.submissions[index])));
-              }, entries: state.submissions[index].fieldEntries,
-            ),
+                  formModel: formModel,
+                  onUpdate: () {
+                    formsBloc.add(SubmissionUpdateRequested(
+                        formModel, state.submissions[index]));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                                  value: formsBloc,
+                                  child: UpdateSubmissionScreen(
+                                      formModel: formModel,
+                                      submission: state.submissions[index]),
+                                ))).then((value) => context
+                        .read<SubmissionsBloc>()
+                        .add(SubmissionsRequested(formModel)));
+                  },
+                  onDelete: () {
+                    context
+                        .read<SubmissionsBloc>()
+                        .add(SubmissionDeleted(state.submissions[index]));
+                  },
+                  onView: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+  create: (_) => SubmissionDetailsBloc(),
+  child: SubmissionDetailsScreen(
+                                fields: formModel.fields,
+                                submission: state.submissions[index]),
+)));
+                  },
+                  entries: state.submissions[index].fieldEntries,
+                ),
             separatorBuilder: (context, index) =>
-            const Padding(padding: EdgeInsets.all(AppPadding.p20)),
+                const Padding(padding: EdgeInsets.all(AppPadding.p20)),
             itemCount: state.submissions.length);
       },
     );
   }
 }
-

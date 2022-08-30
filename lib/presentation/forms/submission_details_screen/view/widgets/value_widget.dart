@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 
 class ValueWidget extends StatelessWidget {
@@ -13,6 +15,10 @@ final FormFieldModel field;
       return
         ElevatedButton(
             onPressed: () async {
+              context.read<SubmissionDetailsBloc>().add(FilePreviewRequested(filePath: value));
+
+
+              print(value.toString());
             },
             child: const Text(AppStrings.downloadFile));
     }

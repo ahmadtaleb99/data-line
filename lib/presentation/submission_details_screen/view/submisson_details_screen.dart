@@ -19,8 +19,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubmittionsDetailsPage extends StatelessWidget {
-  FormWidget formWidget;
-  SubmittionsDetailsPage({Key? key, required this.formWidget})
+  final FormWidget formWidget;
+  const SubmittionsDetailsPage({Key? key, required this.formWidget})
       : super(key: key);
 
   @override
@@ -28,22 +28,22 @@ class SubmittionsDetailsPage extends StatelessWidget {
     var rows = _buildRows(formWidget);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form Details'),
+        title: const Text('Form Details'),
       ),
       body: ListView.separated(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 20,
         ),
         itemCount: rows.length+1,
         itemBuilder: (context, index) {
           return index == 0
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+              ? const Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 30),
                   child: LabelWidget(),
                 )
               :  rows[index-1];
         },
-        separatorBuilder: (BuildContext context, int index) => Divider(
+        separatorBuilder: (BuildContext context, int index) => const Divider(
           thickness: 2,
         ),
       ),
@@ -78,27 +78,27 @@ class LabelWidget extends StatelessWidget {
 
 Widget _getFormElementThumbnail(FormElementWidget field) {
   if (field is CheckboxGroupWidgetOld) {
-    return FieldHintWidget(text: '(Checkbox Group)');
+    return const FieldHintWidget(text: '(Checkbox Group)');
   }
   if (field is RadioGroupWidget) {
-    return FieldHintWidget(text: '(Radio Group)');
+    return const FieldHintWidget(text: '(Radio Group)');
   }
   if (field is MultiSelectWidget ||
       field is ChildDropDownWidget ||
       field is OldDropDownWidget) {
-    return FieldHintWidget(text: '(Select)');
+    return const FieldHintWidget(text: '(Select)');
   }
 
   if (field is oldFilePicker) {
     return Container();
   }
   if (field is StarRatingWidget) {
-    return FieldHintWidget(text: '(Star Rating)');
+    return const FieldHintWidget(text: '(Star Rating)');
   }
   if (field is NumberFieldWidget) {
-    return FieldHintWidget(text: '(Number)');
+    return const FieldHintWidget(text: '(Number)');
   } else
-    return FieldHintWidget(text: '(Text)');
+    return const FieldHintWidget(text: '(Text)');
 }
 
 class FieldHintWidget extends StatelessWidget {
@@ -110,7 +110,7 @@ class FieldHintWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return Text(text, style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.lightBlueAccent,fontStyle: FontStyle.italic));
+   return Text(text, style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.lightBlueAccent,fontStyle: FontStyle.italic));
 
   }
 }
@@ -151,16 +151,16 @@ class ValueWidget extends StatelessWidget {
             onPressed: () async {
               context
                   .read<ValidationBloc>()
-                  .add(FilePreviewRequested(path: field.value));
+                  .add(oldFilePreviewRequested(path: field.value));
             },
-            child: Text('download file'));
+            child: const Text('download file'));
     }
    if ( field is StarRatingWidget){
       log('field is DrawFilePicker :::::::::::::::::::::::::::: ') ;
       return
         RatingBarIndicator(
           rating: field.value,
-          itemBuilder: (context, index) => Icon(
+          itemBuilder: (context, index) => const Icon(
             Icons.star,
             color: Colors.amber,
           ),
@@ -176,7 +176,7 @@ class ValueWidget extends StatelessWidget {
       return Text(field.valueToString() ?? 'empty',
           overflow: TextOverflow.fade,
           softWrap: true,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 15,
               color: Colors.blueGrey,
               fontWeight: FontWeight.bold));

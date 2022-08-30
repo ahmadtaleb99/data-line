@@ -132,9 +132,9 @@ class FormUpdated extends ValidationEvent {
 }
 
 
-class FilePreviewRequested extends ValidationEvent {
+class oldFilePreviewRequested extends ValidationEvent {
     String path;
-    FilePreviewRequested({required this.path});
+    oldFilePreviewRequested({required this.path});
 }
 
 
