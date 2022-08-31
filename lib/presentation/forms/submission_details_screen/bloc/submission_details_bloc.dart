@@ -1,8 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/services/io/FileCachingService.dart';
+import 'package:form_builder_test/services/notification/NotificationManager.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,8 +17,14 @@ part 'submission_details_state.dart';
 
 class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetailsState> {
   final _ioService = getIT<FileCachingService>();
-
+  static const String _stopDownload = '_stopDownload';
   SubmissionDetailsBloc() : super(SubmissionDetailsState()) {
+
+    AwesomeNotifications().actionStream.listen((action) {
+        OpenFile.open(action.payload!['value']);
+    });
+
+
     on<FilePreviewRequested>(_onFilePreviewRequested);
   }
 
@@ -33,19 +43,18 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
     }
     AwesomeNotifications().createNotification(
         actionButtons: [
-          NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
+          NotificationActionButton(key: _stopDownload, label: AppStrings.stopDownload)
         ],
         content: NotificationContent(
 
             id:  1,
-            channelKey: 'second',
-            title: 'downloading: $fileName',
+            channelKey: NotificationManager.filesChannel,
+            title: '${AppStrings.downloading}: $fileName',
             body: '$progress',
             progress: progress,
             locked: true,
             notificationLayout: NotificationLayout.ProgressBar,
             category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
-    print('first noti is done ');
     // if (mimi != defaultExtensionMap['jpg']){
     //   print(mimi);
     //   kza =     await AwesomeNotifications().createNotification(
@@ -69,9 +78,9 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id:  1,
-            channelKey: 'second',
-            title: ' download complete for file $fileName',
-            body: ' tap to preview',
+            channelKey: NotificationManager.filesChannel,
+            title: ' ${AppStrings.downloadFileComplete} $fileName',
+            body: ' ${AppStrings.tapToPreview}',
             bigPicture: 'file://$newFilePath',
             notificationLayout: NotificationLayout.BigPicture,
             category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
@@ -79,5 +88,12 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
 
 
   }
+@override
+  Future<void> close() {
+  AwesomeNotifications().actionSink.close();
+  log('******* bloc created submission details bloc  *********');
 
+  _ioService.dispose();
+    return super.close();
+  }
 }

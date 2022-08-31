@@ -16,9 +16,6 @@ final FormFieldModel field;
         ElevatedButton(
             onPressed: () async {
               context.read<SubmissionDetailsBloc>().add(FilePreviewRequested(filePath: value));
-
-
-              print(value.toString());
             },
             child: const Text(AppStrings.downloadFile));
     }

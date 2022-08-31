@@ -13,6 +13,12 @@ class AppStrings{
   static const String onboardingSubTitle3 ='on_boarding_desc3';
   static const String onboardingSubTitle4 ='on_boarding_desc4';
   static const String login ='login_button';
+  static const String downloading ='Downloading';
+  static const String downloadFileComplete ='Download is complete for file';
+  static const String tapToPreview ='Tap to preview';
+  static const String fileChannel ='Files Management Channel';
+  static const String fileChannelDescription ='Files management channel for downloading files';
+  static const String stopDownload ='Stop Download';
   static const String downloadFile ='Download file';
   static const String forgetPassword ='forgot_password_text';
   static const String notAMember ='register_text';

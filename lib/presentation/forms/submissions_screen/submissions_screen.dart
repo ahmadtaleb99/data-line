@@ -87,12 +87,9 @@ class NewWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => BlocProvider(
-  create: (_) => SubmissionDetailsBloc(),
-  child: SubmissionDetailsScreen(
-                                fields: formModel.fields,
-                                submission: state.submissions[index]),
-)));
+                            builder: (context) => SubmissionDetailsScreen(
+                                                          fields: formModel.fields,
+                                                          submission: state.submissions[index])));
                   },
                   entries: state.submissions[index].fieldEntries,
                 ),

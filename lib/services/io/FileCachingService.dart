@@ -128,8 +128,8 @@ void _listenToPort(){
   }
 
   void stopCopying(){
-    _streamController.close();
     _writeSink.close();
+    _streamController.close();
 
   }
   void downloadFile (){
