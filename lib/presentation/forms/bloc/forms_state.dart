@@ -18,9 +18,10 @@ class FormsState extends Equatable {
   final  List<FormModel> assignedForms;
   final Map<String,bool> validationMap;
   final Map<String,bool> isFilePicking;
+  final bool allSaved;
 
   @override
-  List<Object?> get props => [newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
@@ -31,6 +32,7 @@ class FormsState extends Equatable {
     required this.flowState,
     required this.newFlowState,
     required this.isFilePicking,
+    required this.allSaved,
     required this.assignedForms,
 
   });
@@ -44,7 +46,8 @@ class FormsState extends Equatable {
     FlowState? newFlowState,
     List<FormModel>? assignedForms,
     Map<String,bool>? validationMap,
-    Map<String,bool>? isFilePicking
+    Map<String,bool>? isFilePicking,
+    bool? allSaved
   }) {
     return FormsState(
       formModel: formModel ?? this.formModel,
@@ -56,6 +59,7 @@ class FormsState extends Equatable {
       flowState: flowState ?? this.flowState,
       newFlowState: newFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,
+      allSaved: allSaved ?? this.allSaved,
     );
   }
 }

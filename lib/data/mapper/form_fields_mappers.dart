@@ -254,7 +254,6 @@ extension FormFieldMapper on FormFieldResponse? {
 
   FormFieldModel toDomain() {
      var field = _getModelField(this);
-     log(field.type.toString());
      return field;
   }
 }

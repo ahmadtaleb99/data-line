@@ -115,7 +115,7 @@ void _listenToPort(){
         .isGranted) {
       newFilePath = downloadsDirectory.path + '/$fileName';
 
-        await   copyFileWithProgress(file, newFilePath);
+           copyFileWithProgress(file, newFilePath);
       return newFilePath;
     }
   }
@@ -135,14 +135,14 @@ void _listenToPort(){
   void downloadFile (){
 
   }
-  Future<void> copyFileWithProgress(File file ,String newPath) async {
+  void copyFileWithProgress(File file ,String newPath) async {
     receivePort  = ReceivePort();
     _listenToPort();
 
     _streamController = StreamController.broadcast();
 
     final data = {'port': receivePort.sendPort, 'filePath':file.path,'newPath':newPath};
-    isolate = await Isolate.spawn(copyIsolateFunc, data,);
+    Isolate.spawn(copyIsolateFunc, data,);
 
   }
 

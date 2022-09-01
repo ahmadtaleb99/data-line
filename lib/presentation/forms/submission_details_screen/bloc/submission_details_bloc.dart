@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
+import 'package:form_builder_test/app/notification_bloc/notifications_bloc.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/services/io/FileCachingService.dart';
 import 'package:form_builder_test/services/notification/NotificationManager.dart';
@@ -17,12 +19,9 @@ part 'submission_details_state.dart';
 
 class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetailsState> {
   final _ioService = getIT<FileCachingService>();
-  static const String _stopDownload = '_stopDownload';
   SubmissionDetailsBloc() : super(SubmissionDetailsState()) {
 
-    AwesomeNotifications().actionStream.listen((action) {
-        OpenFile.open(action.payload!['value']);
-    });
+
 
 
     on<FilePreviewRequested>(_onFilePreviewRequested);
@@ -32,29 +31,36 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
       FilePreviewRequested event, Emitter<SubmissionDetailsState> emit) async {
     File cachedFile = File(event.filePath);
     String fileName = basename(cachedFile.path);
-
     String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
+
     int progress  = 0 ;
-    // var mimi = lookupMimeType(cachedFile.path);
+    if( await cachedFile.length() / 1000000 > 50) {
+      await for (var event in _ioService.copyProgress) {
+        log('progress');
+        progress = event.toInt();
 
-    await for (var event in _ioService.copyProgress) {
-      progress = event.toInt();
-
+      }
     }
-    AwesomeNotifications().createNotification(
-        actionButtons: [
-          NotificationActionButton(key: _stopDownload, label: AppStrings.stopDownload)
-        ],
-        content: NotificationContent(
+    getIT<NotificationsBloc>().add(FileDownloadingNotificationEvent(
+        paylaod: newFilePath.toString(), progress: progress));
 
-            id:  1,
-            channelKey: NotificationManager.filesChannel,
-            title: '${AppStrings.downloading}: $fileName',
-            body: '$progress',
-            progress: progress,
-            locked: true,
-            notificationLayout: NotificationLayout.ProgressBar,
-            category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
+
+    getIT<NotificationsBloc>().add(FileDownloadedNotificationEvent(paylaod: newFilePath.toString()));
+
+    // AwesomeNotifications().createNotification(
+    //     actionButtons: [
+    //       NotificationActionButton(key: _stopDownload, label: AppStrings.stopDownload)
+    //     ],
+    //     content: NotificationContent(
+    //
+    //         id:  1,
+    //         channelKey: NotificationManager.filesChannel,
+    //         title: '${AppStrings.downloading}: $fileName',
+    //         body: '$progress',
+    //         progress: progress,
+    //         locked: true,
+    //         notificationLayout: NotificationLayout.ProgressBar,
+    //         category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
     // if (mimi != defaultExtensionMap['jpg']){
     //   print(mimi);
     //   kza =     await AwesomeNotifications().createNotification(
@@ -75,23 +81,22 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
     //   print('second note should be done :: $kza');
     // }
 
-    await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id:  1,
-            channelKey: NotificationManager.filesChannel,
-            title: ' ${AppStrings.downloadFileComplete} $fileName',
-            body: ' ${AppStrings.tapToPreview}',
-            bigPicture: 'file://$newFilePath',
-            notificationLayout: NotificationLayout.BigPicture,
-            category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
+    // await AwesomeNotifications().createNotification(
+    //     content: NotificationContent(
+    //         id:  1,
+    //         channelKey: NotificationManager.filesChannel,
+    //         title: ' ${AppStrings.downloadFileComplete} $fileName',
+    //         body: ' ${AppStrings.tapToPreview}',
+    //         bigPicture: 'file://$newFilePath',
+    //         notificationLayout: NotificationLayout.BigPicture,
+    //         category: NotificationCategory.LocalSharing,payload:{'value' : newFilePath} ));
 
 
 
   }
 @override
   Future<void> close() {
-  AwesomeNotifications().actionSink.close();
-  log('******* bloc created submission details bloc  *********');
+  log('******* bloc closed submission details bloc  *********');
 
   _ioService.dispose();
     return super.close();

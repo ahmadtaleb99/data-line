@@ -38,6 +38,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
+    allSaved: false,
             assignedForms: [],
             isFilePicking: {},
             valuesMap: {},
@@ -57,12 +58,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<CheckboxGroupValueChanged>(_onCheckboxGroupValueChanged);
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
-    on<FilePreviewRequested>(_onFilePreviewRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
     on<SubmitCanceled>(_onSubmitCanceled);
-    // on<SubmissionsRequested>(_onSubmissionsRequested);
     on<FormSubmitted>(_onFormSubmitted);
-    // on<SubmissionDeleted>(_onSubmissionDeleted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
   bool _isRequired(FormFieldModel model) {
@@ -107,7 +105,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   }
 
   String? validateFile(FilePickerModel model) {
-    log('validate fike');
 
     String? path = state.valuesMap[model.name];
     if (_isRequired(model) && path == null)
@@ -252,90 +249,40 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
  Future<void> _onFilePickerSaved(
      FilePickerSaved event, Emitter<FormsState> emit) async {
 
-   emit(state.copyWith(
-       newFlowState: LoadingState(
-           stateRendererType: StateRendererType.POPUP_LOADING)));
-   String  currentFormName = state.formModel!.name;
-   Map<String, dynamic> map = Map.from(state.valuesMap);
-    String path = map[event.model.name];
-    var file = File(path);
+    try{
+      Map<String, dynamic> map = state.valuesMap;
+      String? path = map[event.model.name];
+      {
+        if (path == null) return;
+
+      }
+      emit(state.copyWith(
+          newFlowState: LoadingState(
+              stateRendererType: StateRendererType.POPUP_LOADING)));
+      String  currentFormName = state.formModel!.name;
+
+      var file = File(path);
+
+      int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
+      String newFilePath = '${submissionId}-${currentFormName}';
+      //
+      String newPath = await _ioService.cacheFile(file,newFilePath);
 
 
-   int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
-   String newFilePath = '${submissionId}-${currentFormName}';
-  //
-   String newPath = await _ioService.cacheFile(file,newFilePath);
+      map[event.model.name] = newPath;
 
+      log(map[event.model.name] );
+      emit(state.copyWith(
+          newFlowState: ContentState()));
+    }
+  catch(e){
+    emit(state.copyWith(
+        newFlowState: ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message: e.toString())));
+  }
 
-    map[event.model.name] = newPath;
-
-    log(map[event.model.name] );
-   emit(state.copyWith(
-       newFlowState: ContentState(),valuesMap: map));
   }
 
 
- Future<void> _onFilePreviewRequested(
-     FilePreviewRequested event, Emitter<FormsState> emit) async {
-   File cachedFile = File(event.filePath);
-   String fileName = basename(cachedFile.path);
-
-   String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
-   int progress  = 0 ;
-   // var mimi = lookupMimeType(cachedFile.path);
-
-   await for (var event in _ioService.copyProgress) {
-     progress = event.toInt();
-
-   }
-   AwesomeNotifications().createNotification(
-       actionButtons: [
-         NotificationActionButton(key: 'stopDownload', label: 'Stop Download')
-       ],
-       content: NotificationContent(
-
-           id:  1,
-           channelKey: 'second',
-           title: 'downloading: $fileName',
-           body: '$progress',
-           progress: progress,
-           locked: true,
-           notificationLayout: NotificationLayout.ProgressBar,
-           category: NotificationCategory.Progress,payload:{'value' : newFilePath!} ));
-   print('first noti is done ');
-   // if (mimi != defaultExtensionMap['jpg']){
-   //   print(mimi);
-   //   kza =     await AwesomeNotifications().createNotification(
-   //       content: NotificationContent(
-   //           id:  1,
-   //           channelKey: 'second',
-   //           title: ' download complete for file $fileName',
-   //           body: ' tap to preview',
-   //           notificationLayout: NotificationLayout.Default,
-   //           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
-   //   AwesomeNotifications().createNotification(
-   //       content: NotificationContent(
-   //           id:  8,
-   //           channelKey: 'second',
-   //           title: ' download complete for file',
-   //           body: ' tap to preview',
-   //           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
-   //   print('second note should be done :: $kza');
-   // }
-
-    await AwesomeNotifications().createNotification(
-       content: NotificationContent(
-           id:  1,
-           channelKey: 'second',
-           title: ' download complete for file $fileName',
-           body: ' tap to preview',
-           bigPicture: 'file://$newFilePath',
-           notificationLayout: NotificationLayout.BigPicture,
-           category: NotificationCategory.Event,payload:{'value' : newFilePath} ));
-
-
-
- }
 
 
 
@@ -413,13 +360,30 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         formModel: formModel, valuesMap: map, validationMap: newValidationMap));
   }
 
+
+
+
+
+
+
   Future<void> _onNewFormRequested(
       NewFormRequested event, Emitter<FormsState> emit) async {
     var formModel = event.formModel.copyWith();
     _initFields(formModel);
-    emit(
-        state.copyWith(formModel: formModel, validationMap: {}));
+
+    //init values map with fields names with null values;
+    Map<String,dynamic> map = {};
+    formModel.fields.forEach((field) {
+      map[field.name] = null;
+    });
+
+      log(map.toString());
+    emit(state.copyWith(valuesMap:map,formModel: formModel, validationMap: {}));
+
+    log('_onNewFormRequested ************** emiting state  : ${map.toString()}');
+
   }
+
 
   void _initFields(FormModel formModel) {
     // init drop downs
@@ -427,18 +391,26 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     childrenDropDowns.forEach((childDropDown) {
       childDropDown = childDropDown.copyWith(values: []);
       formModel.fields[formModel.fields
-              .indexWhere((element) => element.name == childDropDown.name)] =
+          .indexWhere((element) => element.name == childDropDown.name)] =
           childDropDown;
     });
 
 
-    Map map = {};
-    formModel.fields.forEach((field) {
-      map[field.name] = null;
-    });
 
-    emit(state.copyWith(valuesMap: map.cast()));
 
+    // emit(state.copyWith(valuesMap: map.cast()));
+
+  }
+
+  Future<void> _onFormSubmitted(
+      FormSubmitted event, Emitter<FormsState> emit) async {
+    Map map = state.valuesMap;
+    var newSub = Submission(
+        formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map));
+
+    await _assignedFormRepository.addSubmission(newSub);
+
+    add(NewFormRequested(event.formModel));
   }
 
   void _initFieldsUpdate(FormModel formModel, Map valuesMap) {
@@ -457,6 +429,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     });
   }
 
+
+
+
+
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = event.submission.toMap();
@@ -471,16 +447,15 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     Map<String, dynamic> map = Map.from(state.valuesMap);
     if (map[event.fieldName] == null) map[event.fieldName] = [];
-    List list = List.from(map[event.fieldName]);
+    List groupValuesList = List.from(map[event.fieldName]);
 
     if (event.isChecked)
-      list.add(event.value);
+      groupValuesList.add(event.value);
     else
-      list.remove(event.value);
+      groupValuesList.remove(event.value);
 
-    map[event.fieldName] = list;
-    // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
-    // map[childDropDown.name] = null;
+    map[event.fieldName] = groupValuesList;
+
 
     Map newValidationMap = Map.from(state.validationMap);
     newValidationMap[event.fieldName] = true;
@@ -513,29 +488,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     emit(state.copyWith(valuesMap: {}));
   }
 
-  // Future<void> _onSubmissionDeleted(
-  //     SubmissionDeleted event, Emitter<FormsState> emit) async {
-  //   Map<String, dynamic> map = {};
-  //   await _assignedFormRepository.deleteSubmission(event.submission);
-  //   List<Submission> submissions = List.from(state.submissions);
-  //   submissions.remove(event.submission);
-  //   if (submissions.isEmpty)
-  //     emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
-  //   emit(state.copyWith(submissions: submissions));
-  // }
-
-  Future<void> _onFormSubmitted(
-      FormSubmitted event, Emitter<FormsState> emit) async {
-    Map map = state.valuesMap;
-    var newSub = Submission(
-        formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map));
-
-    await _assignedFormRepository.addSubmission(newSub);
-
-    add(NewFormRequested(event.formModel));
-    // emit(state.copyWith(valuesMap: {}));
-  }
-
   Future<void> _onSubmissionUpdated(
       SubmissionUpdated event, Emitter<FormsState> emit) async {
     Map map = state.valuesMap;
@@ -553,22 +505,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     // emit(state.copyWith(submissions: newSubmissions));
   }
 
-  // Future<void> _onSubmissionsRequested(
-  //     SubmissionsRequested event, Emitter<FormsState> emit) async {
-  //   final either =
-  //       _assignedFormRepository.getFormSubmissions(event.formModel.name);
-  //   either.fold((failure) {}, (submissions) {
-  //     log(submissions.toString());
-  //     if (submissions.isEmpty)
-  //       emit(state.copyWith(flowState: LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
-  //     else {
-  //       emit(state.copyWith(
-  //           submissions: List.from(submissions), flowState: ContentState()));
-  //     }
-  //   });
-  // }
-
-  //private functions
 
   Submission _mapValuesToSubmission(Map submissionMap, Submission submission) {
     List<FieldEntry> entries = submissionMap.entries

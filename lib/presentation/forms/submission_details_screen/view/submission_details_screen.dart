@@ -17,9 +17,9 @@ class SubmissionDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(submission.fieldEntries.toString());
-    log(fields.toString());
     return BlocProvider(
       create: (_) => SubmissionDetailsBloc(),
+      lazy: false,
       child: Scaffold(
         appBar: AppBar(
         ),

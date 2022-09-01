@@ -152,7 +152,7 @@ extension xFlowState on FlowState {
 }
   showPopup(BuildContext context, StateRendererType stateRendererType,
       String message, {int? code}) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) =>
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
         showDialog(
             context: context,
             builder: (BuildContext context) =>

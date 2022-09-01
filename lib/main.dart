@@ -17,6 +17,7 @@ import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'app/dependency_injection.dart';
+import 'app/notification_bloc/notifications_bloc.dart';
 import 'data/FormRepository.dart';
 import 'data/FormRepository.dart';
 import 'package:form_builder_test/services/notification/NotificationManager.dart';
@@ -28,20 +29,22 @@ import 'presentation/resources/language_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   EasyLocalization.ensureInitialized();
+  EasyLocalization.ensureInitialized();
   await Hive.initFlutter();
-  await  initAppModules();
+  await initAppModules();
   NotificationService().initNotifications();
   BlocOverrides.runZoned(
         () {
-          runApp(EasyLocalization(
-            supportedLocales: const [englishLocale,arabicLocale],
-            path: LanguageAssets.languageAssetBase,
-            child: MyApp() ,) );
+      runApp(EasyLocalization(
+        supportedLocales: const [englishLocale, arabicLocale],
+        path: LanguageAssets.languageAssetBase,
+        child: BlocProvider.value(
+          value: getIT<NotificationsBloc>(),
+          child: MyApp(),
+        ),));
     },
     blocObserver: MyBlocObserver(),
   );
-
 }
 
 

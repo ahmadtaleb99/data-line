@@ -1,6 +1,7 @@
 
 // ignore_for_file: unused_import
 
+import 'package:form_builder_test/app/notification_bloc/notifications_bloc.dart';
 import 'package:form_builder_test/data/data_source/local_data_source.dart';
 import 'package:form_builder_test/data/data_source/remote_data_source.dart';
 import 'package:form_builder_test/data/database/hive_database.dart';
@@ -15,6 +16,7 @@ import 'package:form_builder_test/domain/repository/repository.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 import 'package:form_builder_test/services/io/FileCachingService.dart';
+import 'package:form_builder_test/services/notification/NotificationsService.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,6 +74,13 @@ Future<void> initAppModules() async {
   await _hiveDatabase.init();
   getIT.registerLazySingleton<HiveDatabase>(() => _hiveDatabase);
   getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIT<HiveDatabase>(),getIT<FileCachingService>()));
+
+
+
+  //notifications
+  getIT.registerLazySingleton<NotificationsBloc>(() => NotificationsBloc(NotificationService()));
+
+
 
 
   //repository
