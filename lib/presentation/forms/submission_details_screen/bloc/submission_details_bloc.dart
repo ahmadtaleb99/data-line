@@ -30,6 +30,10 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
   Future<void> _onFilePreviewRequested(
       FilePreviewRequested event, Emitter<SubmissionDetailsState> emit) async {
     File cachedFile = File(event.filePath);
+    if(await cachedFile.exists()) {
+      log('    if(await cachedFile.exists()) {');
+      log(await cachedFile.length().toString());
+    }
     String fileName = basename(cachedFile.path);
     String ?  newFilePath = await _ioService.copyToDownloads(cachedFile);
 
