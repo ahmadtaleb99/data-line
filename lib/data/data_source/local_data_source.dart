@@ -19,8 +19,8 @@ abstract class LocalDataSource  {
   List<Submission> getSubmissions(String formName);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
-  Future<String> saveFileToCache(String path,int SubmissionId,String formName);
-  Future<void> deleteFileFromCache(String path);
+  // Future<String> saveFileToCache(String path,int SubmissionId,String formName);
+  // Future<void> deleteFileFromCache(String path);
 
  //  HomeResponse getHomeData();
  // void saveHomeToCache(HomeResponse homeResponse);
@@ -105,16 +105,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await   _hiveDatabase.updateSubmission(submission);
   }
 
-  @override
-  Future<void> deleteFileFromCache(String path) {
-    // TODO: implement deleteFileFromCache
-    throw UnimplementedError();
-  }
 
-  @override
-  Future<String> saveFileToCache(String path,int SubmissionId,String formName) async {
-   return await _ioService.cacheFile(File(''), 'SubmissionId, formName');
-  }
 
 
 

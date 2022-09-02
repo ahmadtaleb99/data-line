@@ -20,39 +20,46 @@ class NewSubmitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: UniqueKey(),
-      appBar: AppBar(
-
-      ),
+      appBar: AppBar(),
       floatingActionButton: BlocBuilder<FormsBloc, FormsState>(
         builder: (context, state) {
           return ElevatedButton(
             onPressed: () {
               if (_key.currentState!.validate()) {
-
                 _key.currentState!.save();
 
-
-
-
-                  context.read<FormsBloc>().add(FormSubmitted(formModel));
+                // context.read<FormsBloc>().add(FormSubmitted(formModel));
               }
             },
             child: const Text(AppStrings.submit),
           );
         },
       ),
-      body: BlocBuilder<FormsBloc, FormsState>(
+      body: BlocConsumer<FormsBloc, FormsState>(
+        listener: (context, state) {
+          if(state.allSaved)      context.read<FormsBloc>().add(FormSubmitted(formModel));
+
+        },
         buildWhen: (p, c) => p.newFlowState != c.newFlowState,
         builder: (context, state) {
           if (state.newFlowState != null) {
-            var widget =
-            state.newFlowState.getWidget(
-                context, NewWidget(formModel: formModel, formKey: _key,), () {
-              context.read<FormsBloc>().add(AssignedFormsRequested());
+            var widget = state.newFlowState.getWidget(
+                context,
+                NewWidget(
+                  formModel: formModel,
+                  formKey: _key,
+                ), () {
+             if(state.newFlowState is SuccessState)
+               context.read<FormsBloc>().add(NewFormRequested(formModel));
+
+            else context.read<FormsBloc>().add(AssignedFormsRequested());
             });
             return widget;
           } else {
-            return NewWidget(formModel: formModel, formKey: _key,);
+            return NewWidget(
+              formModel: formModel,
+              formKey: _key,
+            );
           }
         },
       ),
@@ -72,6 +79,10 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(key: formKey, child: BuildForm(formModel: formModel,));
+    return Form(
+        key: formKey,
+        child: BuildForm(
+          formModel: formModel,
+        ));
   }
 }

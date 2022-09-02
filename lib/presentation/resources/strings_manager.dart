@@ -28,6 +28,7 @@ class AppStrings{
 
   static const String retryAgain = "retry_again";
   static const String ok = "ok";
+  static const String formSubmittedSuccess = "Form has been submitted successfully.";
   static const String loading = "loading";
   static const String skip = "skip";
   static const String resendEmail = "Didn’t recieve email ? Resesnd";

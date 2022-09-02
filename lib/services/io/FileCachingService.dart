@@ -2,10 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:form_builder_test/data/network/error_handler.dart';
+import 'package:form_builder_test/data/network/failure.dart';
 import 'package:form_builder_test/model/FormModel.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:path/path.dart';
 
 import 'dart:typed_data';
@@ -84,20 +88,27 @@ void _listenToPort(){
     _writeSink.close();
 
   }
-  Future<String> cacheFile(File file,String fileToCachePath) async {
+  Future<Either<Failure,String>> cacheFile(File file,String fileToCachePath) async {
     /*caching picked file to appDirectory/filePickerCache/submissionId-FormName
     example: app dir -> /data/'app name'/app-flutter/filePickerCache/5-Third Form/
      */
-    String fileName = basename(file.path);
+
+    try{
+      String fileName = basename(file.path);
 
 
-    String newFilePath = '$_base/$fileToCachePath';
+      String newFilePath = '$_base/$fileToCachePath';
 
-    var newDir = await Directory(newFilePath).create(recursive: true);
-    var newPath = '$newFilePath/${fileName}';
+      var newDir = await Directory(newFilePath).create(recursive: true);
+      var newPath = '$newFilePath/${fileName}';
 
-    await file.copy(newPath);
-    return newPath;
+      await file.copy(newPath);
+      return Right(newPath);
+    }
+    catch (e){
+      return Left(Failure(-5,ResponseMessage.CACHE_ERROR));
+    }
+
   }
 
   Future<String?> copyToDownloads(File file) async {

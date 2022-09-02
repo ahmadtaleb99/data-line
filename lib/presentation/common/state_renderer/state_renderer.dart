@@ -1,8 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
 
+import 'dart:developer';
+
 import 'package:analyzer/error/error.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/data/network/error_handler.dart';
 import 'package:form_builder_test/presentation/resources/assets_manager.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
@@ -40,10 +43,11 @@ class StateRenderer extends StatelessWidget {
     switch (stateRendererType) {
       case StateRendererType.POPUP_LOADING:
 
-        return _getPopUpDialog(context, [_getAnimatedImage(AnimationAssets.loading)]);
+        return getPopUpDialog(context, [_getAnimatedImage(AnimationAssets.loading)]);
 
       case StateRendererType.POPUP_ERROR:
-        return _getPopUpDialog(context, [
+        log(code.toString()+'coded');
+        return getPopUpDialog(context, [
         code == ResponseCode.NO_INTERNET_CONNECTION ?
         _getAnimatedImage(AnimationAssets.noInternet):
         _getAnimatedImage(AnimationAssets.error),
@@ -71,7 +75,7 @@ class StateRenderer extends StatelessWidget {
 
 
       case StateRendererType.POPUP_SUCCESS:
-        return _getPopUpDialog(context, [
+        return getPopUpDialog(context, [
           _getAnimatedImage(AnimationAssets.success),
           _getMessage(message),
           _getRetryButton(AppStrings.ok, context)
@@ -81,7 +85,9 @@ class StateRenderer extends StatelessWidget {
   }
 
 
-  Widget _getPopUpDialog(BuildContext context, List<Widget> children) {
+
+
+  Widget getPopUpDialog(BuildContext context, List<Widget> children) {
     return Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s14)),
@@ -112,6 +118,9 @@ class StateRenderer extends StatelessWidget {
   }
 
 
+
+
+
   Widget _getAnimatedImage(String animation, {double? height, double? width}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -132,26 +141,33 @@ class StateRenderer extends StatelessWidget {
   }
 
   Widget _getMessage(String message) {
-    return Text(
-      message,
-      style: getRegularStyle(color: ColorManager.black, fontSize: FontSize.s18),
+    return Center(
+      child: Text(
+
+        message,
+        textAlign: TextAlign.center,
+        style: getRegularStyle(color: ColorManager.black, fontSize: FontSize.s18),
+      ),
     );
   }
 
   Widget _getRetryButton(String buttonTitle, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p12),
-      child: ElevatedButton(
-          onPressed: () {
+      child: Container(
+        width: 100.w,
+        child: ElevatedButton(
+            onPressed: () {
 
-            if (this.stateRendererType == StateRendererType.FULLSCREEN_ERROR) {
-              this.onRetryButton.call();
+              if (this.stateRendererType == StateRendererType.FULLSCREEN_ERROR ||this.stateRendererType == StateRendererType.POPUP_SUCCESS ) {
+                this.onRetryButton.call();
 
-            } else {
-              Navigator.pop(context);
-            }
-          },
-          child: Text(buttonTitle)),
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            child: Text(buttonTitle)),
+      ),
     );
   }
 
@@ -162,4 +178,12 @@ class StateRenderer extends StatelessWidget {
     this.code,
     required this.onRetryButton,
   });
+}
+class SuccessDialog extends StatelessWidget {
+  const SuccessDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

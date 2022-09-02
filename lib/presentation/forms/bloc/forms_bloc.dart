@@ -38,7 +38,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
-    allSaved: false,
+    allSaved: true,
             assignedForms: [],
             isFilePicking: {},
             valuesMap: {},
@@ -212,6 +212,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFilePickerPressed(
       FilePickerPressed event, Emitter<FormsState> emit) async {
+
+
     Map<String, dynamic> map = Map.from(state.valuesMap);
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -248,8 +250,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
  Future<void> _onFilePickerSaved(
      FilePickerSaved event, Emitter<FormsState> emit) async {
-
-    try{
       Map<String, dynamic> map = state.valuesMap;
       String? path = map[event.model.name];
       {
@@ -257,7 +257,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
       }
       emit(state.copyWith(
-          newFlowState: LoadingState(
+          newSubmitFlowState: LoadingState(
               stateRendererType: StateRendererType.POPUP_LOADING)));
       String  currentFormName = state.formModel!.name;
 
@@ -266,19 +266,22 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
       String newFilePath = '${submissionId}-${currentFormName}';
       //
-      String newPath = await _ioService.cacheFile(file,newFilePath);
 
-
+      final either = await _ioService.cacheFile(file,newFilePath);
+      either.fold((failure) {
+        emit(state.copyWith(allSaved: false,
+            newSubmitFlowState: ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message:failure.message)));
+      }, (newPath)  {
       map[event.model.name] = newPath;
 
-      log(map[event.model.name] );
+          log(map[event.model.name] );
+
       emit(state.copyWith(
-          newFlowState: ContentState()));
-    }
-  catch(e){
-    emit(state.copyWith(
-        newFlowState: ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message: e.toString())));
-  }
+          newSubmitFlowState: ContentState(),allSaved: true));
+      });
+
+
+
 
   }
 
@@ -378,7 +381,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     });
 
       log(map.toString());
-    emit(state.copyWith(valuesMap:map,formModel: formModel, validationMap: {}));
+    emit(state.copyWith(newSubmitFlowState:ContentState(),valuesMap:map,formModel: formModel, validationMap: {},allSaved: false));
 
     log('_onNewFormRequested ************** emiting state  : ${map.toString()}');
 
@@ -409,8 +412,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map));
 
     await _assignedFormRepository.addSubmission(newSub);
+    emit(state.copyWith(
+      newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),allSaved: false));
 
-    add(NewFormRequested(event.formModel));
+    // add(NewFormRequested(event.formModel));
   }
 
   void _initFieldsUpdate(FormModel formModel, Map valuesMap) {

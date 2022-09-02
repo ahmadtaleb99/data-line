@@ -43,7 +43,7 @@ class FormsState extends Equatable {
     List<Submission>? submissions,
     Submission? currentSubmission,
     FlowState? flowState,
-    FlowState? newFlowState,
+    FlowState? newSubmitFlowState,
     List<FormModel>? assignedForms,
     Map<String,bool>? validationMap,
     Map<String,bool>? isFilePicking,
@@ -57,7 +57,7 @@ class FormsState extends Equatable {
       submissions: submissions ?? this.submissions,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       flowState: flowState ?? this.flowState,
-      newFlowState: newFlowState ?? this.newFlowState,
+      newFlowState: newSubmitFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,
       allSaved: allSaved ?? this.allSaved,
     );
