@@ -51,8 +51,7 @@ class MatrixCheckboxGroup  extends Equatable implements IFormModel {
   @override
   FormElementWidget toWidget() {
     // TODO: implement toWidget
-    return MatrixCheckboxGroupWidget(label: label, name: name, children: values, value: value);
-
+throw Error();
   }
 
   @override

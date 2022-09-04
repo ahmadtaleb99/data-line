@@ -1,6 +1,6 @@
   import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/Widgets/form_element_widget.dart';
-import 'package:form_builder_test/Widgets/Matrix/fields/matrix_radio_group_widget.dart';
+import 'package:form_builder_test/Widgets/Matrix/fields/old_matrix_radio_group_widget.dart';
 import 'package:form_builder_test/model/CheckboxItem.dart';
 import 'package:form_builder_test/model/IFormModel.dart';
 import 'package:form_builder_test/model/RadioItem.dart';
@@ -55,7 +55,7 @@ class MatrixRadioGroup extends Equatable implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    return MatrixRadioGroupWidget(label: label, name: name, children: values, value: value);
+    return oldMatrixRadioGroupWidget(label: label, name: name, children: values, value: value);
   }
 
 

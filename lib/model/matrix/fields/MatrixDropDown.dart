@@ -58,7 +58,7 @@ class MatrixDropDown  extends Equatable implements IFormModel {
   FormElementWidget toWidget() {
 
     // TODO: implement toWidget
-    return MatrixDropDownWidget(label: label, name: name, value: value, values: values);
+    throw Error();
   }
 
 

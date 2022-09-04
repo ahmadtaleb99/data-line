@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../../presentation/form_widgets/matrix_widget/widgets/matrix_date_picker_widget/matrix_date_picker_widget.dart';
 part 'matrix_date_picker_model.g.dart';
 
 @HiveType(typeId: 26)
@@ -39,8 +41,9 @@ class MatrixDatePickerModel extends MatrixFieldModel with EquatableMixin{
   }
 
 
+  @override
   Widget toWidget (){
-    throw UnimplementedError();
+    return MatrixDatePickerWidget(model: this);
   }
 
   @override

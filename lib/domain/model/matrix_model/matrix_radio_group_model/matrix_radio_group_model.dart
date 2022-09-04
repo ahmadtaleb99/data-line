@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../../presentation/form_widgets/matrix_widget/widgets/matrix_radio_group_widget/matrix_radio_group_widget.dart';
+
 part 'matrix_radio_group_model.g.dart';
 
-@HiveType(typeId: 24)
+@HiveType(typeId: 29)
 class MatrixRadioGroupModel extends MatrixFieldModel with EquatableMixin{
 
 
 
 
   @HiveField(4)
-  List<MultipleOptionsModel> values;
+  final List<MultipleOptionsModel> values;
 
   MatrixRadioGroupModel({
     required this.values,
@@ -47,8 +50,9 @@ class MatrixRadioGroupModel extends MatrixFieldModel with EquatableMixin{
   }
 
 
+  @override
   Widget toWidget (){
-    throw UnimplementedError();
+    return MatrixRadioGroupWidget(model:  this);
   }
 
   @override

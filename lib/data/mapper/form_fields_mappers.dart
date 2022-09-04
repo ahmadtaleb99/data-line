@@ -7,6 +7,7 @@ import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dar
 import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
 import 'dart:developer';
+import 'package:form_builder_test/data/mapper/matrix_mappers.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
@@ -245,6 +246,33 @@ extension DropDownMapper on DropDownFieldResponse? {
     );
   }
 }
+
+extension MatrixMapper on MatrixResponse? {
+  MatrixModel toDomain() {
+
+    log(this!.values.toString());
+
+    return MatrixModel(
+      name: this?.name.orEmpty() ?? '',
+      label: this?.label.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
+      deactivate: this?.deactivate ?? false,
+      required: this?.required ?? false,
+
+      isHidden: this?.isHidden ?? false,
+      isReadOnly: this?.isReadOnly ?? false,
+      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
+      showIfIsRequired: this?.showIfIsRequired ?? false,
+      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+      maxRecordsCount: this?.maxRecordsCount.orZero() ?? 0,
+      values: this?.values.map((e) => e.toDomain()).toList() ?? [],
+
+    );
+  }
+}
+
 extension FormMapper on FormResponse? {
   FormModel toDomain() {
     return FormModel(

@@ -39,31 +39,31 @@ class LocalStorageApi  extends form_repository.FormApi{
 
   Future<void> init() async {
     // Hive.registerAdapter(FormModelAdapter());
-    Hive.registerAdapter(CheckboxItemAdapter());
-    Hive.registerAdapter(DropDownItemAdapter());
-    Hive.registerAdapter(IFormCheckBoxGroupAdapter());
-    Hive.registerAdapter(IFormDrawRadioGroupAdapter());
-    Hive.registerAdapter(IFormDropListAdapter());
-    Hive.registerAdapter(IFormEmailAdapter());
-    Hive.registerAdapter(IFormFilePickerAdapter());
-    Hive.registerAdapter(IFormNumberAdapter());
-    Hive.registerAdapter(IFormTextAreaAdapter());
-    Hive.registerAdapter(IFormTextFieldAdapter());
-    Hive.registerAdapter(RadioItemAdapter());
-    Hive.registerAdapter(FileTypeEnumAdapter());
-    Hive.registerAdapter(ExpressionAdapter());
-    // Hive.registerAdapter(OperatorAdapter());
-    Hive.registerAdapter(StarRatingAdapter());
-
-    Hive.registerAdapter(MatrixAdapter());
-    Hive.registerAdapter(MatrixDropDownAdapter());
-    Hive.registerAdapter(MatrixCheckboxAdapter());
-    Hive.registerAdapter(MatrixDatePickerAdapter());
-    Hive.registerAdapter(MatrixCheckboxGroupAdapter());
-    Hive.registerAdapter(MatrixRadioGroupAdapter());
-    Hive.registerAdapter(MatrixNumberAdapter());
-    Hive.registerAdapter(MatrixTextFieldAdapter());
-    Hive.registerAdapter(MatrixRecordModelAdapter());
+    //  Hive.registerAdapter(CheckboxItemAdapter());
+    // Hive.registerAdapter(DropDownItemAdapter());
+    // Hive.registerAdapter(IFormCheckBoxGroupAdapter());
+    // Hive.registerAdapter(IFormDrawRadioGroupAdapter());
+    // Hive.registerAdapter(IFormDropListAdapter());
+    // Hive.registerAdapter(IFormEmailAdapter());
+    // Hive.registerAdapter(IFormFilePickerAdapter());
+    // Hive.registerAdapter(IFormNumberAdapter());
+    // Hive.registerAdapter(IFormTextAreaAdapter());
+    // Hive.registerAdapter(IFormTextFieldAdapter());
+    // Hive.registerAdapter(RadioItemAdapter());
+    // Hive.registerAdapter(FileTypeEnumAdapter());
+    // Hive.registerAdapter(ExpressionAdapter());
+    // // Hive.registerAdapter(OperatorAdapter());
+    // Hive.registerAdapter(StarRatingAdapter());
+    //
+    // Hive.registerAdapter(MatrixAdapter());
+    // Hive.registerAdapter(MatrixDropDownAdapter());
+    // Hive.registerAdapter(MatrixCheckboxAdapter());
+    // Hive.registerAdapter(MatrixDatePickerAdapter());
+    // Hive.registerAdapter(MatrixCheckboxGroupAdapter());
+    // Hive.registerAdapter(MatrixRadioGroupAdapter());
+    // Hive.registerAdapter(MatrixNumberAdapter());
+    // Hive.registerAdapter(MatrixTextFieldAdapter());
+    // Hive.registerAdapter(MatrixRecordModelAdapter());
 
 
 

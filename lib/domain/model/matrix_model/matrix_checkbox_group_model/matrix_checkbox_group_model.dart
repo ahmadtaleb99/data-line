@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
+import 'package:form_builder_test/presentation/form_widgets/matrix_widget/widgets/matrix_checkbox_group_widget/matrix_checkbox_group_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'matrix_checkbox_group_model.g.dart';
 @HiveType(typeId: 24)
@@ -11,7 +12,7 @@ class MatrixCheckboxGroupModel extends MatrixFieldModel with EquatableMixin{
 
 
   @HiveField(4)
-  List<MultipleOptionsModel> values;
+  final  List<MultipleOptionsModel> values;
 
   MatrixCheckboxGroupModel({
     required this.values,
@@ -45,9 +46,9 @@ class MatrixCheckboxGroupModel extends MatrixFieldModel with EquatableMixin{
     );
   }
 
-
+@override
   Widget toWidget (){
-      throw UnimplementedError();
+      return MatrixCheckboxGroupWidget(model: this);
   }
 
   @override

@@ -24,6 +24,8 @@ class AppStrings{
   static const String forgetPassword ='forgot_password_text';
   static const String notAMember ='register_text';
   static const String unknown ='unknown';
+  static const String cancel ='Cancel';
+  static const String addNewRecord ='Add new record';
   static const String username ='username_hint';
   static const String password ='password_hint';
 

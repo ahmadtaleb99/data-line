@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../enums.dart';
 part 'matrix_response.g.dart';
 MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
+
+  log(json.toString());
   switch (json['value']) {
     case 'select':
       return MatrixDropDownResponse.fromJson(json);
@@ -11,6 +15,9 @@ MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
     case 'text':
       return MatrixTextFieldResponse.fromJson(json);
 
+
+    case 'checkbox':
+      return MatrixTextFieldResponse.fromJson(json);
 
     case 'number':
       return MatrixNumberResponse.fromJson(json);
@@ -27,7 +34,7 @@ MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
 
 
     default:
-      return null;
+      throw UnimplementedError('unkown type ${json['value'].toString()}');
   }
 }
 

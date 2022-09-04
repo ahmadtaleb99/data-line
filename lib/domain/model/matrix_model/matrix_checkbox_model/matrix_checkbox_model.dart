@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../../presentation/form_widgets/matrix_widget/widgets/matrix_checkbox_widget/matrix_checkbox_widget.dart';
 part 'matrix_checkbox_model.g.dart';
 
 @HiveType(typeId: 25)
@@ -39,8 +41,9 @@ class MatrixCheckboxModel extends MatrixFieldModel with EquatableMixin{
   }
 
 
+  @override
   Widget toWidget (){
-    throw UnimplementedError();
+    return MatrixCheckboxWidget(model: this);
   }
 
   @override

@@ -8,7 +8,7 @@ import 'package:form_builder_test/validation/bloc/validation__bloc.dart';
 import '../../form_element_widget.dart';
 import '../cubit/matrix_record_cubit.dart';
 
-class MatrixRadioGroupWidget extends FormElementWidget {
+class oldMatrixRadioGroupWidget extends FormElementWidget {
   final String label;
   final String name;
   final List<RadioItem> children;
@@ -43,7 +43,7 @@ class MatrixRadioGroupWidget extends FormElementWidget {
     );
   }
 
-  MatrixRadioGroupWidget({
+  oldMatrixRadioGroupWidget({
     required this.label,
     required this.name,
     required this.children,

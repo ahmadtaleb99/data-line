@@ -60,6 +60,12 @@ class NewSubmitScreen extends StatelessWidget {
               formKey: _key,
             );
           }
+
+
+          return NewWidget(
+            formModel: formModel,
+            formKey: _key,
+          );
         },
       ),
     );

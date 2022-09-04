@@ -25,30 +25,29 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       {bool? forceFromRemote}) async {
 
 
-    //from database
-    // try{
+    // from database
+    try{
 
-    return _getFormsFromRemote();
-      // if(forceFromRemote != null && forceFromRemote) {
-      //   return _getFormsFromRemote();
-      // } else {
-      //   final forms = _localDataSource.getAssignedForms();
-      //   return Right(forms);
-      // }
+      if(forceFromRemote != null && forceFromRemote) {
+        return _getFormsFromRemote();
+      } else {
+        final forms = _localDataSource.getAssignedForms();
+        return Right(forms);
+      }
 
-    // }
+    }
 
     // from api
-    //  on DatabaseException {
-    //   return _getFormsFromRemote();
-    //
-    // }
+     on DatabaseException {
+      return _getFormsFromRemote();
+
+    }
 
 
-    // catch (error){
-    //   // print(error.toString());
-    //   return Left(ErrorHandler.handle(error).failure);
-    // }
+    catch (error){
+      print(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
 
 
 
@@ -58,7 +57,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
   Future<Either<Failure, AssignedForms>> _getFormsFromRemote  ()  async {
 
-    // try{
+    try{
       if(!await _networkInfo.isConnected){
         return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
       }
@@ -71,17 +70,16 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
 
 
-      log(response.data!.first.fields!.first.toDomain().toString() +' t odomat asd');
       //save to database
      await _localDataSource.saveFormsToDataBase(response.toDomain());
       log('saved');
       return Right(response.toDomain());
-    // }
-    //
-    // catch (error){
-    //   // log(error.toString());
-    //   return Left(ErrorHandler.handle(error).failure);
-    // }
+    }
+
+    catch (error){
+      log(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
 
 }
 

@@ -90,7 +90,20 @@ class FormFieldModelAdapter extends TypeAdapter<FormFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    throw Error();
+    return FormFieldModel(
+      name: fields[1] as String,
+      label: fields[2] as String,
+      type: fields[3] as FieldType,
+      deactivate: fields[4] as bool,
+      required: fields[5] as bool,
+      isHidden: fields[6] as bool,
+      isReadOnly: fields[7] as bool,
+      showIfLogicCheckbox: fields[8] as bool,
+      showIfIsRequired: fields[9] as bool,
+      showIfFieldName: fields[11] as String,
+      showIfFieldValue: fields[12] as String,
+      requiredIfLogicCheckbox: fields[10] as bool,
+    );
   }
 
   @override

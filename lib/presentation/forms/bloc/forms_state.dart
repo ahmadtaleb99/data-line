@@ -19,19 +19,22 @@ class FormsState extends Equatable {
   final Map<String,bool> validationMap;
   final Map<String,bool> isFilePicking;
   final bool allSaved;
+  final Map<String,List<MatrixRecord>> matrixValuesMap;
+
 
   @override
-  List<Object?> get props => [allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
     required this.valuesMap,
+    required this.matrixValuesMap,
     required this.validationMap,
     required this.submissions,
     required this.flowState,
     required this.newFlowState,
-    required this.isFilePicking,
+    required this.isFilePicking,,
     required this.allSaved,
     required this.assignedForms,
 
@@ -47,10 +50,12 @@ class FormsState extends Equatable {
     List<FormModel>? assignedForms,
     Map<String,bool>? validationMap,
     Map<String,bool>? isFilePicking,
+    Map<String,List<MatrixRecord>> ? matrixValuesMap,
     bool? allSaved
   }) {
     return FormsState(
       formModel: formModel ?? this.formModel,
+      matrixValuesMap: matrixValuesMap ?? this.matrixValuesMap,
       valuesMap: valuesMap ?? this.valuesMap,
       validationMap: validationMap ?? this.validationMap,
       isFilePicking: isFilePicking ?? this.isFilePicking,

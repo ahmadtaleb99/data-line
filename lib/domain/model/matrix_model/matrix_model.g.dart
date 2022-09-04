@@ -89,8 +89,11 @@ class MatrixFieldModelAdapter extends TypeAdapter<MatrixFieldModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    throw Error();
-
+    return MatrixFieldModel(
+      fieldName: fields[1] as String,
+      label: fields[2] as String,
+      type: fields[3] as FieldType,
+    );
   }
 
   @override

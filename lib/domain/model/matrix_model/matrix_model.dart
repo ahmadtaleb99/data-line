@@ -57,27 +57,40 @@ class MatrixModel extends FormFieldModel with EquatableMixin{
       showIfIsRequired: showIfIsRequired,
       requiredIfLogicCheckbox: requiredIfLogicCheckbox);
 
+  @override
+  Widget toWidget (){
+      return MatrixWidget(model: this);
+  }
+
+  @override
+  List<Object?> get props => super.props..addAll([maxRecordsCount,values]);
+
+
+
   MatrixModel copyWith({
 
+    Operator? operator,
+    int? maxRecordsCount,
+    List<MatrixFieldModel>? values,
     String? name,
     String? label,
     String? showIfFieldName,
     String? showIfFieldValue,
-    int? maxRecordsCount,
     FieldType? type,
     bool? deactivate,
     bool? required,
     bool? isHidden,
     bool? isReadOnly,
-    List<MatrixFieldModel>? values,
     bool? showIfLogicCheckbox,
     bool? showIfIsRequired,
     bool? requiredIfLogicCheckbox,
   }) {
     return MatrixModel(
 
-      maxRecordsCount: maxRecordsCount ?? this.maxRecordsCount,
-      values: values ?? this.values,
+    maxRecordsCount: maxRecordsCount ?? this.maxRecordsCount,
+      values: values ?? this.values.map((dynamic e) => e.copyWith()).toList().cast(),
+
+
       name: name ?? this.name,
       label: label ?? this.label,
       type: type ?? this.type,
@@ -92,18 +105,8 @@ class MatrixModel extends FormFieldModel with EquatableMixin{
       requiredIfLogicCheckbox:
       requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
 
-
     );
   }
-
-  @override
-  Widget toWidget (){
-      return MatrixWidget(model: this);
-  }
-
-  @override
-  List<Object?> get props => super.props..addAll([maxRecordsCount,values]);
-
 }
 
 
@@ -111,10 +114,12 @@ class MatrixModel extends FormFieldModel with EquatableMixin{
 
 
 @HiveType(typeId: 21)
-abstract class MatrixFieldModel with EquatableMixin {
+ class MatrixFieldModel with EquatableMixin {
 
 
-  Widget toWidget();
+  Widget toWidget() {
+    return Text('asd');
+  }
 
   @HiveField(1)
   final String fieldName;
@@ -142,6 +147,17 @@ abstract class MatrixFieldModel with EquatableMixin {
     required this.type,
   });
 
+  MatrixFieldModel copyWith({
+    String? fieldName,
+    String? label,
+    FieldType? type,
+  }) {
+    return MatrixFieldModel(
+      fieldName: fieldName ?? this.fieldName,
+      label: label ?? this.label,
+      type: type ?? this.type,
+    );
+  }
 }
 
 

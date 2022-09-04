@@ -2,6 +2,14 @@ import 'dart:developer';
 
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_checkbox_group_model/matrix_checkbox_group_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_checkbox_model/matrix_checkbox_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_date_picker_model/matrix_date_picker_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_dropdown_model/matrix_dropdown_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_number_model/matrix_number_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_radio_group_model/matrix_radio_group_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_text_field_model/matrix_text_field_model.dart';
 import 'package:form_builder_test/model/matrix/matrix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:collection/collection.dart';
@@ -36,6 +44,20 @@ class HiveDatabase {
 
   late final Box<AssignedForms> _assignedFormsBox;
   Future<void> init() async {
+
+    //matrix
+
+    Hive.registerAdapter(MatrixTextFieldModelAdapter());
+    Hive.registerAdapter(MultipleOptionsModelAdapter());
+    Hive.registerAdapter(MatrixCheckboxGroupModelAdapter());
+    Hive.registerAdapter(MatrixCheckboxModelAdapter());
+    Hive.registerAdapter(MatrixRadioGroupModelAdapter());
+    Hive.registerAdapter(MatrixDropDownModelAdapter());
+    Hive.registerAdapter(MatrixDatePickerModelAdapter());
+    Hive.registerAdapter(MatrixNumberModelAdapter());
+    Hive.registerAdapter(MatrixModelAdapter());
+
+
     Hive.registerAdapter(CheckboxGroupItemModelAdapter());
     Hive.registerAdapter(CheckboxGroupModelAdapter());
     Hive.registerAdapter(DropDownItemModelAdapter());
@@ -57,15 +79,7 @@ class HiveDatabase {
     Hive.registerAdapter(FieldEntryAdapter());
     Hive.registerAdapter(OperatorAdapter());
 
-    //matrix
-    Hive.registerAdapter(MatrixAdapter());
-    Hive.registerAdapter(MatrixTextFieldAdapter());
-    Hive.registerAdapter(MatrixCheckboxGroupAdapter());
-    Hive.registerAdapter(MatrixCheckboxAdapter());
-    Hive.registerAdapter(MatrixRadioGroupAdapter());
-    Hive.registerAdapter(MatrixDropDownAdapter());
-    Hive.registerAdapter(MatrixDatePickerAdapter());
-    Hive.registerAdapter(MatrixNumberAdapter());
+
 
     //
     _assignedFormsBox  = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
@@ -92,7 +106,9 @@ class HiveDatabase {
   }
 
   Future<void> saveAssignedForms (AssignedForms assignedForms) async {
-  await   _assignedFormsBox.put(_assignedForm, assignedForms);
+    log('before save to db : '+ assignedForms.data!.first.fields.first.runtimeType.toString());
+
+    await   _assignedFormsBox.put(_assignedForm, assignedForms);
   }
 
 
@@ -114,6 +130,9 @@ class HiveDatabase {
      var assignedForms =  _assignedFormsBox.get(_assignedForm);
      if (assignedForms == null)
        throw DatabaseException('no forms available');
+
+
+     log('before returning from db : '+ assignedForms.data!.first.fields.first.runtimeType.toString());
 
      return assignedForms;
   }

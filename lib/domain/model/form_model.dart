@@ -88,10 +88,14 @@ extension xFormModel on FormModel {
 }
 
 @HiveType(typeId: 13)
-abstract class FormFieldModel with EquatableMixin {
+ class FormFieldModel with EquatableMixin {
 
 
-  Widget toWidget();
+  Widget toWidget(
+
+      ) {
+    return Text('ads');
+  }
 
   @HiveField(1)
   final String name;
@@ -157,35 +161,40 @@ abstract class FormFieldModel with EquatableMixin {
         showIfLogicCheckbox,
     showIfIsRequired,
     showIfFieldName,
+    showIfFieldValue,
     requiredIfLogicCheckbox,
       ];
 
-  // FormFieldModel copyWith({
-  //   String? name,
-  //   String? label,
-  //   FieldType? type,
-  //   bool? deactivate,
-  //   bool? required,
-  //   bool? isHidden,
-  //   bool? isReadOnly,
-  //   bool? showIfLogicCheckbox,
-  //   bool? showIfIsRequired,
-  //   bool? requiredIfLogicCheckbox,
-  // }) {
-  //   return FormFieldModel(
-  //     name: name ?? this.name,
-  //     label: label ?? this.label,
-  //     type: type ?? this.type,
-  //     deactivate: deactivate ?? this.deactivate,
-  //     required: required ?? this.required,
-  //     isHidden: isHidden ?? this.isHidden,
-  //     isReadOnly: isReadOnly ?? this.isReadOnly,
-  //     showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
-  //     showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
-  //     requiredIfLogicCheckbox:
-  //         requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
-  //   );
-  // }
+  FormFieldModel copyWith({
+    String? name,
+    String? label,
+    FieldType? type,
+    bool? deactivate,
+    bool? required,
+    bool? isHidden,
+    bool? isReadOnly,
+    bool? showIfLogicCheckbox,
+    bool? showIfIsRequired,
+    String? showIfFieldName,
+    String? showIfFieldValue,
+    bool? requiredIfLogicCheckbox,
+  }) {
+    return FormFieldModel(
+      name: name ?? this.name,
+      label: label ?? this.label,
+      type: type ?? this.type,
+      deactivate: deactivate ?? this.deactivate,
+      required: required ?? this.required,
+      isHidden: isHidden ?? this.isHidden,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      showIfLogicCheckbox: showIfLogicCheckbox ?? this.showIfLogicCheckbox,
+      showIfIsRequired: showIfIsRequired ?? this.showIfIsRequired,
+      showIfFieldName: showIfFieldName ?? this.showIfFieldName,
+      showIfFieldValue: showIfFieldValue ?? this.showIfFieldValue,
+      requiredIfLogicCheckbox:
+          requiredIfLogicCheckbox ?? this.requiredIfLogicCheckbox,
+    );
+  }
 }
 
 

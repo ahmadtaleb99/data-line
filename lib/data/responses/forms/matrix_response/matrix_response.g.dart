@@ -7,7 +7,6 @@ part of 'matrix_response.dart';
 // **************************************************************************
 
 
-
 Map<String, dynamic> _$MatrixResponseToJson(MatrixResponse instance) =>
     <String, dynamic>{
       'name': instance.name,

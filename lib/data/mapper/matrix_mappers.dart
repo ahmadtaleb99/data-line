@@ -12,39 +12,16 @@ import 'package:form_builder_test/domain/model/matrix_model/matrix_text_field_mo
 
 
 
-extension MatrixMapper on MatrixResponse? {
-  MatrixModel toDomain() {
-    return MatrixModel(
-
-      name: this?.name.orEmpty() ?? '',
-      label: this?.label.orEmpty() ?? '',
-      type: this?.type ?? FieldType.UNKNOWN,
-      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
-      showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
-      deactivate: this?.deactivate ?? false,
-      required: this?.required ?? false,
-
-      isHidden: this?.isHidden ?? false,
-      isReadOnly: this?.isReadOnly ?? false,
-      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
-      showIfIsRequired: this?.showIfIsRequired ?? false,
-      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-      maxRecordsCount: this?.maxRecordsCount.orZero() ?? 0,
-      values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
-
-    );
-  }
-}
 
 
 extension MatrixFieldMapper on MatrixFieldResponse? {
 
-  MatrixFieldModel toDomain() {
-    var field = _getModelField(this);
+  MatrixFieldModel    toDomain() {
+    var field = _getMatrixModelField(this);
     return field;
   }
 }
-MatrixFieldModel _getModelField (MatrixFieldResponse?  matrixFieldResponse){
+MatrixFieldModel _getMatrixModelField (MatrixFieldResponse?  matrixFieldResponse){
   switch (matrixFieldResponse.runtimeType) {
 
 

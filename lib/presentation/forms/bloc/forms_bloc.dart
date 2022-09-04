@@ -7,6 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:path/path.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/app/form_validation.dart';
@@ -38,6 +39,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
+      matrixValuesMap : {},
     allSaved: true,
             assignedForms: [],
             isFilePicking: {},
@@ -150,7 +152,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         flowState: LoadingState(
             stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
 
-    // try {
+    try {
       var either = await _assignedFormRepository.getAssignedForms();
       either.fold((failure) {
         emit(state.copyWith(
@@ -162,12 +164,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         emit(state.copyWith(
             assignedForms: forms.data, flowState: ContentState()));
       });
-    // } catch (e) {
-    //   emit(state.copyWith(
-    //       flowState: ErrorState(
-    //           stateRendererType: StateRendererType.FULLSCREEN_ERROR,
-    //           message: e.toString())));
-    // }
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
+    }
   }
 
   Future<void> _onAssignedFormsRefreshRequested(
