@@ -150,7 +150,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         flowState: LoadingState(
             stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
 
-    try {
+    // try {
       var either = await _assignedFormRepository.getAssignedForms();
       either.fold((failure) {
         emit(state.copyWith(
@@ -162,12 +162,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         emit(state.copyWith(
             assignedForms: forms.data, flowState: ContentState()));
       });
-    } catch (e) {
-      emit(state.copyWith(
-          flowState: ErrorState(
-              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
-              message: e.toString())));
-    }
+    // } catch (e) {
+    //   emit(state.copyWith(
+    //       flowState: ErrorState(
+    //           stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+    //           message: e.toString())));
+    // }
   }
 
   Future<void> _onAssignedFormsRefreshRequested(
@@ -244,6 +244,62 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     Map<String, bool> newValidationMap = Map.from(state.validationMap);
     newValidationMap[event.model.name] = true;
     emit(state.copyWith(valuesMap: map, validationMap: newValidationMap));
+  }
+
+
+  Future<void> saveForm() async {
+
+    emit(state.copyWith(
+        newSubmitFlowState: LoadingState(
+            stateRendererType: StateRendererType.POPUP_LOADING)));
+
+    try{
+      if(state.formModel!.hasType(FieldType.FILE)){
+        await _saveFilePickerFiles();
+      }
+
+      add(FormSubmitted(state.formModel!));
+
+    }
+    catch(e){
+      emit(state.copyWith(allSaved: false,
+          newSubmitFlowState:
+          ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message:e.toString())));
+    }
+
+
+  }
+  Future<void> _saveFilePickerFiles() async{
+    FormModel form = state.formModel!.copyWith();
+    // if(form.hasType(FieldType.FILE)){
+    //
+    // }
+
+    form.fields.where((field) => field.type == FieldType.FILE).forEach((filePicker) async {
+      Map<String, dynamic> map = state.valuesMap;
+      String? path = map[filePicker.name];
+        if (path == null) return;
+
+
+      String  currentFormName = form.name;
+
+      var file = File(path);
+
+      int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
+      String newFilePath = '${submissionId}-${currentFormName}';
+      //
+
+      final either = await _ioService.cacheFile(file,newFilePath);
+      either.fold((failure) {
+        return;
+      }, (newPath)  {
+        map[filePicker.name] = newPath;
+
+        log(map[filePicker.name] );
+
+      });
+
+    });
   }
 
 

@@ -15,11 +15,16 @@ class ErrorHandler implements Exception{
 
     late Failure failure;
   ErrorHandler.handle(dynamic error){
+
+    log(error.toString());
     //error from api or from dio
     if(error is DioError){
           failure = _handleDioError(error);
           log('dio class : : : : '+error.type.toString());
     }
+
+    else failure =  Failure(ResponseCode.UNKNOWN, ResponseMessage.UNKNOWN);
+
   }
 
 

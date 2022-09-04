@@ -27,7 +27,7 @@ class FilePickerWidget extends StatelessWidget {
           children: [
             FormFieldWidget(
               onSaved: (value){
-                context.read<FormsBloc>().add(FilePickerSaved(model: model));
+                // context.read<FormsBloc>().add(FilePickerSaved(model: model));
               },
                 validator: (value){
                   return context.read<FormsBloc>().validateFile(model);

@@ -133,7 +133,6 @@ class MatrixRecordCubit extends Cubit<MatrixRecordState> {
 
    MatrixRecordModel record =   state.currentRecord!.copyWith() ;
 
-
     final date = await  showDatePicker(firstDate: DateTime(1940)
         , initialDate: DateTime(1999),
         lastDate: DateTime.now(), context: context);

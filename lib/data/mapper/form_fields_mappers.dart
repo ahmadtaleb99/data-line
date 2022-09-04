@@ -1,4 +1,5 @@
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:form_builder_test/data/responses/forms/matrix_response/matrix_response.dart';
 import 'package:form_builder_test/domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';
 import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
 import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
@@ -7,6 +8,7 @@ import 'package:form_builder_test/domain/model/email_text_field_model/email_text
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
 import 'dart:developer';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_item_model/radio_group_item_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
@@ -36,6 +38,7 @@ extension TextFieldMapper on TextFieldResponse? {
     );
   }
 }
+
 
 extension EmailTextFieldMapper on EmailTextFieldResponse? {
   EmailTextFieldModel toDomain() {
@@ -261,6 +264,8 @@ FormFieldModel _getModelField (FormFieldResponse?  formFieldResponse){
   switch (formFieldResponse.runtimeType) {
 
 
+
+
     case DropDownFieldResponse:
       return (formFieldResponse as DropDownFieldResponse).toDomain();
 
@@ -297,7 +302,12 @@ FormFieldModel _getModelField (FormFieldResponse?  formFieldResponse){
     case StarRatingFieldResponse:
       return (formFieldResponse as StarRatingFieldResponse).toDomain();
 
-    default: throw UnimplementedError();
+
+   case MatrixResponse:
+     // log('MatrixResponse');
+      return (formFieldResponse as MatrixResponse).toDomain();
+
+    default: throw UnimplementedError('cant map to domain');
   }
 }
 

@@ -26,29 +26,29 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
 
     //from database
-    try{
+    // try{
 
+    return _getFormsFromRemote();
+      // if(forceFromRemote != null && forceFromRemote) {
+      //   return _getFormsFromRemote();
+      // } else {
+      //   final forms = _localDataSource.getAssignedForms();
+      //   return Right(forms);
+      // }
 
-      if(forceFromRemote != null && forceFromRemote) {
-        return _getFromRemote();
-      } else {
-        final forms = _localDataSource.getAssignedForms();
-        return Right(forms);
-      }
-
-    }
+    // }
 
     // from api
-     on DatabaseException {
-      return _getFromRemote();
+    //  on DatabaseException {
+    //   return _getFormsFromRemote();
+    //
+    // }
 
-    }
 
-
-    catch (error){
-      print(error.toString());
-      return Left(ErrorHandler.handle(error).failure);
-    }
+    // catch (error){
+    //   // print(error.toString());
+    //   return Left(ErrorHandler.handle(error).failure);
+    // }
 
 
 
@@ -56,9 +56,9 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   }
 
 
-  Future<Either<Failure, AssignedForms>> _getFromRemote  ()  async {
+  Future<Either<Failure, AssignedForms>> _getFormsFromRemote  ()  async {
 
-    try{
+    // try{
       if(!await _networkInfo.isConnected){
         return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
       }
@@ -69,15 +69,19 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
         return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
       }
 
-      //save to database
-      _localDataSource.saveFormsToDataBase(response.toDomain());
-      return Right(response.toDomain());
-    }
 
-    catch (error){
-      print(error.toString());
-      return Left(ErrorHandler.handle(error).failure);
-    }
+
+      log(response.data!.first.fields!.first.toDomain().toString() +' t odomat asd');
+      //save to database
+     await _localDataSource.saveFormsToDataBase(response.toDomain());
+      log('saved');
+      return Right(response.toDomain());
+    // }
+    //
+    // catch (error){
+    //   // log(error.toString());
+    //   return Left(ErrorHandler.handle(error).failure);
+    // }
 
 }
 

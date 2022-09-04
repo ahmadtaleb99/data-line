@@ -81,6 +81,10 @@ extension xFormModel on FormModel {
     return fields.where((element) => element is DropDownModel && element.relatedListCheckbox == true).toList().cast();
   }
 
+
+  bool hasType(FieldType fieldType) {
+    return fields.any((field) => field.type == fieldType);
+  }
 }
 
 @HiveType(typeId: 13)
@@ -183,6 +187,9 @@ abstract class FormFieldModel with EquatableMixin {
   //   );
   // }
 }
+
+
+
 
 extension xFormFieldModel on FormFieldModel{
     String getHintName(){

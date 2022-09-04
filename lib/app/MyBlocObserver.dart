@@ -6,7 +6,7 @@ class MyBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    log('******* event created $event *********');
+    // log('******* event created $event *********');
   }
 
   @override

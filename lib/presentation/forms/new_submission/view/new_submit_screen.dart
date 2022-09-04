@@ -21,23 +21,19 @@ class NewSubmitScreen extends StatelessWidget {
     return Scaffold(
       key: UniqueKey(),
       appBar: AppBar(),
-      floatingActionButton: BlocBuilder<FormsBloc, FormsState>(
-        builder: (context, state) {
-          return ElevatedButton(
-            onPressed: () {
-              if (_key.currentState!.validate()) {
-                _key.currentState!.save();
-
-                // context.read<FormsBloc>().add(FormSubmitted(formModel));
-              }
-            },
-            child: const Text(AppStrings.submit),
-          );
+      floatingActionButton: ElevatedButton(
+        onPressed: () async {
+          if (_key.currentState!.validate()) {
+            _key.currentState!.save();
+            // context.read<FormsBloc>().add(FormSubmitted(formModel));
+            await   context.read<FormsBloc>().saveForm();
+          }
         },
+        child: const Text(AppStrings.submit),
       ),
       body: BlocConsumer<FormsBloc, FormsState>(
         listener: (context, state) {
-          if(state.allSaved)      context.read<FormsBloc>().add(FormSubmitted(formModel));
+          // if(state.allSaved)      context.read<FormsBloc>().add(FormSubmitted(formModel));
 
         },
         buildWhen: (p, c) => p.newFlowState != c.newFlowState,
@@ -49,6 +45,9 @@ class NewSubmitScreen extends StatelessWidget {
                   formModel: formModel,
                   formKey: _key,
                 ), () {
+
+                  log(state.newFlowState.toString());
+                  log(state.flowState.toString());
              if(state.newFlowState is SuccessState)
                context.read<FormsBloc>().add(NewFormRequested(formModel));
 

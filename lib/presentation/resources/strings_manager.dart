@@ -13,6 +13,7 @@ class AppStrings{
   static const String onboardingSubTitle3 ='on_boarding_desc3';
   static const String onboardingSubTitle4 ='on_boarding_desc4';
   static const String login ='login_button';
+  static const String addRecord = 'Add Record';
   static const String downloading ='Downloading';
   static const String downloadFileComplete ='Download is complete for file';
   static const String tapToPreview ='Tap to preview';
@@ -26,7 +27,7 @@ class AppStrings{
   static const String username ='username_hint';
   static const String password ='password_hint';
 
-  static const String retryAgain = "retry_again";
+  static const String retryAgain = "Retry again";
   static const String ok = "ok";
   static const String formSubmittedSuccess = "Form has been submitted successfully.";
   static const String loading = "loading";

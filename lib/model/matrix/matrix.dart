@@ -148,7 +148,7 @@ class Matrix extends Equatable  implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    return MatrixWidget(label: label,
+    return oldMatrixWidget(label: label,
         visible: visible,
         required: required,
         name: name,

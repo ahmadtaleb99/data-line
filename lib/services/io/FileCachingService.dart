@@ -33,6 +33,8 @@ try {
     currentBytesWritten += bytes.length;
     _writeSink.add(bytes);
     var percentage = 100 * (currentBytesWritten) / (fileLength);
+      // print(percentage);
+
     sendPort.send(percentage);
 
   }

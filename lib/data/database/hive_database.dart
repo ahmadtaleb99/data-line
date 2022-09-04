@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
+import 'package:form_builder_test/model/matrix/matrix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:collection/collection.dart';
 import '../../domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';
@@ -34,8 +35,6 @@ class HiveDatabase {
 
 
   late final Box<AssignedForms> _assignedFormsBox;
-  late final Box<Submission> _submissionsBox;
-
   Future<void> init() async {
     Hive.registerAdapter(CheckboxGroupItemModelAdapter());
     Hive.registerAdapter(CheckboxGroupModelAdapter());
@@ -57,12 +56,25 @@ class HiveDatabase {
     Hive.registerAdapter(SubmissionAdapter());
     Hive.registerAdapter(FieldEntryAdapter());
     Hive.registerAdapter(OperatorAdapter());
+
+    //matrix
+    Hive.registerAdapter(MatrixAdapter());
+    Hive.registerAdapter(MatrixTextFieldAdapter());
+    Hive.registerAdapter(MatrixCheckboxGroupAdapter());
+    Hive.registerAdapter(MatrixCheckboxAdapter());
+    Hive.registerAdapter(MatrixRadioGroupAdapter());
+    Hive.registerAdapter(MatrixDropDownAdapter());
+    Hive.registerAdapter(MatrixDatePickerAdapter());
+    Hive.registerAdapter(MatrixNumberAdapter());
+
     //
     _assignedFormsBox  = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
     _submissionsBox  = await Hive.openBox<Submission>(submissionBoxKey);
 
 
   }
+
+  late final Box<Submission> _submissionsBox;
 
   Future<void> updateSubmission (Submission submission) async {
     await   _submissionsBox.put(getSubmissionId(submission),submission);

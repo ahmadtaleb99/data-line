@@ -33,19 +33,23 @@ class SubmissionCard extends StatelessWidget {
 
               Row(
                 children: [
-                  // Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries().first.name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
-                  // ),))),
-                  // Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries().first.value,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
+                  Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries().first.name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
+                  ),))),
+                  Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries().first.value,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
 
                 ],),
               if(_getNonNullEntries().length > 1) Opacity(
                 opacity: 0.6,
                 child: Row(
                   children: [
-                    // Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries()[1].name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
-                    // Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries()[1].value.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),))),
+                    Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries()[1].name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
+                    Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries()[1].value.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),))),
 
                   ],),
+              ),
+              if(_getNonNullEntries().length > 2) Opacity(
+                opacity: 0.4,
+                child: Text('. . .',style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -85,7 +89,7 @@ class SubmissionCard extends StatelessWidget {
 
   List<FieldEntry> _getNonNullEntries(){
     List<FieldEntry>  list = [ ];
-    for(int i = 0 ; i<entries.length && list.length < 2 ; i++){
+    for(int i = 0 ; i<entries.length && list.length < 3 ; i++){
       if(entries[i].value != null){
         list.add(entries[i]);
       }

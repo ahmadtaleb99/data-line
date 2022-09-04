@@ -140,7 +140,7 @@ class oldFilePreviewRequested extends ValidationEvent {
 
 class RecordRemoved extends ValidationEvent {
     String matrixName;
-    MatrixRecordWidget matrixRecord;
+    oldMatrixRecordWidget matrixRecord;
     RecordRemoved({required this.matrixName,required this.matrixRecord});
 }
 

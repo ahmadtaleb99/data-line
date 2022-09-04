@@ -567,7 +567,7 @@ var mimi = lookupMimeType(cachedFile.path);
         var radioModel = formModelField as IFormDrawRadioGroup;
         radioModel.isOtherSelected = widgetField.isOtherSelected;
       }
-    if(widgetField is MatrixWidget){
+    if(widgetField is oldMatrixWidget){
 
 
       var matrixModel = formModelField as Matrix;
@@ -639,8 +639,8 @@ var mimi = lookupMimeType(cachedFile.path);
 
 
   void _onRecordAdded(RecordAdded event, Emitter<ValidationState> emit) {
-    MatrixWidget matrix = state.form!.fields.firstWhere((element) =>
-    element.name == event.matrixName) as MatrixWidget;
+    oldMatrixWidget matrix = state.form!.fields.firstWhere((element) =>
+    element.name == event.matrixName) as oldMatrixWidget;
 
     // for(var record in matrix.records){
     //   // record.isLast = false;
@@ -658,8 +658,8 @@ var mimi = lookupMimeType(cachedFile.path);
 
 
   void _onRecordRemoved(RecordRemoved event, Emitter<ValidationState> emit) {
-    MatrixWidget matrix = state.form!.fields.firstWhere((element) =>
-    element.name == event.matrixName) as MatrixWidget;
+    oldMatrixWidget matrix = state.form!.fields.firstWhere((element) =>
+    element.name == event.matrixName) as oldMatrixWidget;
 
 
     // matrix.records.remove(event.matrixRecord);

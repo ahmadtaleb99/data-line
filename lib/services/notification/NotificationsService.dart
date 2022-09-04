@@ -27,7 +27,7 @@ class NotificationService {
               channelGroupkey: 'basic_channel_group',
               channelGroupName: 'Basic group')
         ],
-        debug: true
+        debug: false
     );
   }
 

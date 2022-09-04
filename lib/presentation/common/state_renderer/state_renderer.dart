@@ -75,12 +75,18 @@ class StateRenderer extends StatelessWidget {
 
 
       case StateRendererType.POPUP_SUCCESS:
-        return getPopUpDialog(context, [
-          _getAnimatedImage(AnimationAssets.success),
-          _getMessage(message),
-          _getRetryButton(AppStrings.ok, context)
+        return WillPopScope(
+          onWillPop:() async {
+            this.onRetryButton.call();
+            return true;
+          },
+          child: getPopUpDialog(context, [
+            _getAnimatedImage(AnimationAssets.success),
+            _getMessage(message),
+            _getRetryButton(AppStrings.ok, context)
 
-        ]);
+          ]),
+        );
     }
   }
 
@@ -166,7 +172,7 @@ class StateRenderer extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            child: Text(buttonTitle)),
+            child: FittedBox(child: Text(buttonTitle))),
       ),
     );
   }

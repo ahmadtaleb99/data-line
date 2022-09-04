@@ -56,6 +56,15 @@ enum FieldType {
   @HiveField(10)
   @JsonValue('file')
   FILE,
+
+  @HiveField(11)
+  @JsonValue('matrix')
+  MATRIX,
+
+  @HiveField(12)
+  @JsonValue('date')
+  DATE,
+
   UNKNOWN
 }
 

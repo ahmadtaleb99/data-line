@@ -1,6 +1,8 @@
 import 'package:form_builder_test/data/responses/forms/enums.dart';
+import 'package:form_builder_test/data/responses/forms/matrix_response/matrix_response.dart';
 import 'package:form_builder_test/data/responses/responses.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'forms_response.g.dart';
 
@@ -32,8 +34,8 @@ FormFieldResponse? _getFieldFromType(Map<String, dynamic> json) {
     case 'starrating':
       return StarRatingFieldResponse.fromJson(json);
 
-    // case 'matrix':
-    //   return Matrix.fromJson(json);
+    case 'matrix':
+      return MatrixResponse.fromJson(json);
     default:
       return null;
   }

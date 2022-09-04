@@ -51,6 +51,7 @@ dependencies:
   freezed: ^1.1.0
   flutter_screenutil: ^5.5.3+2
   flutter_spinkit: ^5.1.0
+  percent_indicator: ^4.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

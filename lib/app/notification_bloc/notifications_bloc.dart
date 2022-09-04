@@ -24,9 +24,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc(this._localNotificationService) : super(NotificationsInitial()) {
    _init();
    _onNotificationTapped();
-          on<FileDownloadingNotificationEvent>(_FileDownloadingNotificationEvent);
-          on<FileDownloadedNotificationEvent>(_FileDownloadedNotificationEvent);
-
+          on<FileDownloadingNotificationEvent>(_onFileDownloadingNotificationEvent);
+          on<FileDownloadedNotificationEvent>(_onFileDownloadedNotificationEvent);
 
   }
 
@@ -53,6 +52,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         case NotificationCategory.Navigation:
           break;
         case NotificationCategory.Progress:
+
           break;
 
       }
@@ -60,7 +60,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   }
 
 
-  Future<void> _FileDownloadingNotificationEvent(
+  Future<void> _onFileDownloadingNotificationEvent(
       FileDownloadingNotificationEvent event, Emitter<NotificationsState> emit) async {
 
     String fileName = basename(event.paylaod);
@@ -82,13 +82,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
 
 
-  Future<void> _FileDownloadedNotificationEvent(
+  Future<void> _onFileDownloadedNotificationEvent(
       FileDownloadedNotificationEvent event, Emitter<NotificationsState> emit) async {
 
     String fileName = basename(event.paylaod);
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id:  1,
+            id:  0,
             channelKey: NotificationManager.filesChannel,
             title: ' ${AppStrings.downloadFileComplete} $fileName',
             body: ' ${AppStrings.tapToPreview}',

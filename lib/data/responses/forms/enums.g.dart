@@ -33,6 +33,10 @@ class FieldTypeAdapter extends TypeAdapter<FieldType> {
         return FieldType.RADIO_GROUP;
       case 10:
         return FieldType.FILE;
+      case 11:
+        return FieldType.MATRIX;
+      case 12:
+        return FieldType.DATE;
       default:
         return FieldType.TEXT;
     }
@@ -70,6 +74,12 @@ class FieldTypeAdapter extends TypeAdapter<FieldType> {
         break;
       case FieldType.FILE:
         writer.writeByte(10);
+        break;
+      case FieldType.MATRIX:
+        writer.writeByte(11);
+        break;
+      case FieldType.DATE:
+        writer.writeByte(12);
         break;
     }
   }

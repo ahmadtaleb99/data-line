@@ -82,6 +82,7 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> saveFormsToDataBase(AssignedForms assignedForms) async {
+    log('here');
     await _hiveDatabase.saveAssignedForms(assignedForms);
   }
 

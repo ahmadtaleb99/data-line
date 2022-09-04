@@ -24,7 +24,7 @@ class MatrixRecordModel  extends Equatable implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    return MatrixRecordWidget(
+    return oldMatrixRecordWidget(
         children: this.fields, index: 2, matrixName: this.name);
   }
 

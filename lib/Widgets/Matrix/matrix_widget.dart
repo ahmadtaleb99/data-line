@@ -11,8 +11,8 @@ import '../form_element_widget.dart';
 import 'matrix_record_widget.dart';
 import 'cubit/matrix_record_cubit.dart';
 
-class MatrixWidget extends FormElementWidget {
-  MatrixWidget(
+class oldMatrixWidget extends FormElementWidget {
+  oldMatrixWidget(
       {Key? key,
       required this.label,
       required this.visible,
@@ -93,7 +93,7 @@ class MatrixWidget extends FormElementWidget {
                     ),
                     ...List.generate(
                         matrix.records.length,
-                        (i) => MatrixRecordWidget(
+                        (i) => oldMatrixRecordWidget(
                               children: matrix.records[i].fields,
                               matrixName: this.name,
                               isFirst: true,
