@@ -8,7 +8,7 @@ part of 'forms_bloc.dart';
 
 
 
-class FormsState extends Equatable {
+class   FormsState extends Equatable {
   final   Submission? currentSubmission;
   final   FormModel? formModel;
   final  List<Submission> submissions;
@@ -20,12 +20,13 @@ class FormsState extends Equatable {
   final Map<String,bool> isFilePicking;
   final int? currentRecordIndex ;
   final String? currentMatrixName;
+  final MatrixRecordModel? tempRecord;
   final bool allSaved;
   final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
@@ -36,6 +37,7 @@ class FormsState extends Equatable {
      this.currentMatrixName,
     required this.validationMap,
     required this.submissions,
+     this.tempRecord,
     required this.flowState,
     required this.newFlowState,
     required this.isFilePicking,
@@ -52,6 +54,7 @@ class FormsState extends Equatable {
     FlowState? flowState,
     FlowState? newSubmitFlowState,
     List<FormModel>? assignedForms,
+    MatrixRecordModel? tempRecord,
     Map<String,bool>? validationMap,
      int? currentRecordIndex ,
      String? currentMatrix ,
@@ -69,6 +72,7 @@ class FormsState extends Equatable {
       currentRecordIndex: currentRecordIndex ?? this.currentRecordIndex,
       currentMatrixName: currentMatrix ?? this.currentMatrixName,
       currentSubmission: currentSubmission ?? this.currentSubmission,
+      tempRecord: tempRecord ?? this.tempRecord,
       flowState: flowState ?? this.flowState,
       newFlowState: newSubmitFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,

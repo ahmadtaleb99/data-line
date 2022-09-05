@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 
-class MatrixRecordModel{
+class MatrixRecordModel extends Equatable{
  final   Map<String,dynamic> valuesMap;
 
   MatrixRecordModel({
@@ -15,8 +16,8 @@ class MatrixRecordModel{
     );
   }
 
- @override
-  String toString() {
-    return 'MatrixRecordModel{valuesMap: $valuesMap}';
-  }
+
+
+  @override
+  List<Object?> get props => [valuesMap];
 }

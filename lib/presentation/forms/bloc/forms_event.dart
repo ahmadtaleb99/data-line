@@ -69,6 +69,13 @@ class MatrixRecordAEditRequested extends FormsEvent {
     required this.matrixName,
   });
 }
+class MatrixRecordSubmitted extends FormsEvent {
+
+  @override
+  List<Object?> get props => [];
+
+  const MatrixRecordSubmitted();
+}
 class FilePickerPressed extends FormsEvent {
   final FilePickerModel model;
 
