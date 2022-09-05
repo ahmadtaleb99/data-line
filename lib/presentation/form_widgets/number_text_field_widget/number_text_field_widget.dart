@@ -14,7 +14,6 @@ class NumberTextFieldWidget extends StatelessWidget {
   final NumberFieldModel numberFieldModel;
   @override
   Widget build(BuildContext context) {
-    log('number widget got built ');
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         return FormFieldWidget(

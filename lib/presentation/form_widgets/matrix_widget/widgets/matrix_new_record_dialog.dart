@@ -1,21 +1,23 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/presentation/form_widgets/matrix_widget/widgets/matrix_dialog.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
+import 'package:form_builder_test/presentation/resources/routes_manager.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
-showAddRecordDialog(BuildContext context,MatrixModel model) {
+Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
   FormsBloc bloc = context.read<FormsBloc>();
   model.values.forEach((element) {
     log(element.runtimeType.toString());
   });
-  showDialog(
+  return await showDialog(
       useRootNavigator: false,
       barrierDismissible: false,
       context: context,
@@ -68,8 +70,9 @@ showAddRecordDialog(BuildContext context,MatrixModel model) {
                                 BorderRadius.circular(AppRadius.r20))),
                         onPressed: () {
                           Navigator.pop(context);
-                          bloc.add(
-                              MatrixSubmitCanceled(matrixName: model.name));
+                          // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+                          //   bloc.add(MatrixSubmitCanceled(matrixName: model.name));
+                          // });
                         },
                         child: const Text(AppStrings.cancel),
                       ),

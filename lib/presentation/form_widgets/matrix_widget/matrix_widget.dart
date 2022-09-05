@@ -51,7 +51,10 @@ class MatrixWidget extends StatelessWidget {
                             primary: ColorManager.black),
                         onPressed: () {
                           context.read<FormsBloc>()..add(NewMatrixRecordAddRequested(index: getRecords(state).length, matrixName: model.name));
-                          showAddRecordDialog(context,model);
+                          showAddRecordDialog(context,model).then((value) =>
+                          context.read<FormsBloc>()..add(MatrixSubmitCanceled(matrixName: model.name))
+
+                          );
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

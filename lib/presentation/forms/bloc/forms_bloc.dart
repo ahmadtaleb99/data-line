@@ -224,7 +224,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     Map<String, dynamic> map = Map.from(state.valuesMap);
 
-    final record = getDesiredRecord();
+    final record = _getDesiredRecord();
 
     record.valuesMap[event.fieldName] = event.value;
      // map[event.fieldName] = event.value;
@@ -236,12 +236,22 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   }
 
 
-  MatrixRecordModel getDesiredRecord (){
 
-    if(state.tempRecord != null) return state.tempRecord!;
-    else {
-      Map<String, dynamic> map = Map.from(state.valuesMap);
-      var recordsList  = List<MatrixRecordModel>.from(map[state.currentMatrixName!] )  ;
+  //if temp record is not null, the current opened record is a new one (to be added),
+  // or we get it from the list with the index
+  MatrixRecordModel? _getDesiredRecord (){
+
+    if(state.tempRecord != null) {
+
+      log( ' getDesiredRecord is not null');
+      return state.tempRecord!;
+    } else {
+      Map<String, dynamic> map = Map.from(state.valuesMap) ?? {};
+
+      var recordsList  =  map[state.currentMatrixName!];
+      var recordsList  = List<MatrixRecordModel>.from( )  ;
+
+      log(recordsList.toString() + ' getDesiredRecord');
       return recordsList[state.currentRecordIndex!];
     }
 
@@ -258,7 +268,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     _setCurrentRecord(event.index, event.matrixName);
 
-      emit(state.copyWith(tempRecord: MatrixRecordModel(valuesMap: {})));
+      emit(state.copyWith(tempRecord: () => MatrixRecordModel(valuesMap: {})));
 
 
     // var list  = state.valuesMap[event.matrixName] as List<MatrixRecordModel>? ;
@@ -287,16 +297,18 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   Future<void> _onMatrixRecordSubmitted(
       MatrixRecordSubmitted event, Emitter<FormsState> emit) async {
     var map = Map.from(state.valuesMap);
-    var recordsList  = List<MatrixRecordModel>.from(state.valuesMap[state.currentMatrixName!] )  ;
-    recordsList = recordsList..last.copyWith(
-      valuesMap: Map.from(recordsList.last.valuesMap)
-    ) ;
-    map[state.currentMatrixName!] = recordsList;
-      recordsList.add(state.tempRecord!);
-    log(recordsList.toString());
-    log((state.copyWith(valuesMap: map.cast()) == state).toString());
+    List<MatrixRecordModel>? recordsList = state.valuesMap[state.currentMatrixName!];
+     recordsList ??=  [];
+     recordsList  = List<MatrixRecordModel>.from(recordsList)  ;
 
-    emit(state.copyWith(valuesMap: map.cast()));
+      final tempRecord = state.tempRecord!.copyWith() ;
+    recordsList.add(tempRecord);
+
+    map[state.currentMatrixName!] = recordsList;
+    log((state.copyWith(valuesMap: map.cast()) == state).toString());
+    emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null));
+
+    log(state.tempRecord.toString()+' temp record ;');
   }
 
 
@@ -305,7 +317,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
    //  List<MatrixRecordModel> records  = state.valuesMap[state.currentMatrixName] ;
    // return  records[state.currentRecordIndex!].valuesMap[fieldName];
-    final record = getDesiredRecord();
+    final record = _getDesiredRecord();
+    log(record.toString());
     return  record.valuesMap[fieldName];
 
   }
@@ -647,14 +660,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       MatrixSubmitCanceled event, Emitter<FormsState> emit) async {
 
 
-  var map = Map.from(state.valuesMap);
-     var list =  List<MatrixRecordModel>.from(map[event.matrixName]);
-  list.removeLast() ;
-  map[event.matrixName] = list;
-
-
-  log( map[event.matrixName].toString());
-  emit(state.copyWith(valuesMap: Map.from(map.cast())));
+  emit(state.copyWith(tempRecord: () => null ));
   }
 
   Future<void> _onSubmissionUpdated(
