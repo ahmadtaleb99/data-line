@@ -26,11 +26,11 @@ class MatrixFieldWidget<T> extends StatelessWidget {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value){
 
-              //
-              // if( state.valuesMap[model.name] == null && model.required   )
-              //   return AppStrings.fieldReqired;
-              //
-              // else return validator?.call(value);
+
+              if( context.read<FormsBloc>().getMatrixFieldValue(model.fieldName) == null    )
+                return AppStrings.fieldReqired;
+
+              else return validator?.call(value);
             },
             builder: (fieldState)
             {

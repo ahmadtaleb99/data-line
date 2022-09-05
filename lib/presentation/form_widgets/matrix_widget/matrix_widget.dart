@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
+import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
 import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
 import 'package:form_builder_test/presentation/form_widgets/matrix_widget/matrix_record_widget.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
@@ -31,6 +32,16 @@ class MatrixWidget extends StatelessWidget {
                 ...List.generate(
                     records.length,
                     (index) => MatrixRecordWidget(
+                      onDelete: (){
+                        showWarningDialog(context,
+                            title: AppStrings.warning,
+                            onConfirmBtnTap: (){
+                              context.read<FormsBloc>().add(MatrixRecordDeleted(matrixName: model.name, recordIndex: index));
+                              Navigator.pop(context);
+
+                            },
+                            text: AppStrings.deleteRecordMsg);
+                      },
                       record: state.valuesMap[model.name][index],
                       fields: model.values,
                           onEdit: () {

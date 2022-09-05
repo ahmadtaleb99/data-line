@@ -12,6 +12,7 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class MatrixRecordWidget extends StatefulWidget {
   final void Function()? onEdit;
+  final void Function()? onDelete;
   final List<MatrixFieldModel> fields;
   final MatrixRecordModel record;
   @override
@@ -19,6 +20,7 @@ class MatrixRecordWidget extends StatefulWidget {
 
   MatrixRecordWidget({
     this.onEdit,
+    this.onDelete,
     required this.fields,
     required this.record,
   });
@@ -137,12 +139,8 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
               )),
           Expanded(
             child: IconButton(
+              onPressed: widget.onDelete,
               splashRadius: 15,
-              onPressed: () {
-                showWarningDialog(context,
-                    title: AppStrings.warning,
-                    text: AppStrings.deleteRecordMsg);
-              },
               icon: const Icon(Icons.delete),
             ),
           )

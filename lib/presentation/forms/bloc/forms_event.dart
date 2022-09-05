@@ -76,6 +76,18 @@ class MatrixRecordSubmitted extends FormsEvent {
 
   const MatrixRecordSubmitted();
 }
+class MatrixRecordDeleted extends FormsEvent {
+  final String matrixName;
+  final int recordIndex;
+
+  @override
+  List<Object?> get props => [];
+
+  const MatrixRecordDeleted({
+    required this.matrixName,
+    required this.recordIndex,
+  });
+}
 class FilePickerPressed extends FormsEvent {
   final FilePickerModel model;
 

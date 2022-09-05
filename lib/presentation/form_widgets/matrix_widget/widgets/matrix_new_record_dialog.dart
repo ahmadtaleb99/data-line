@@ -13,6 +13,8 @@ import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
+  final GlobalKey<FormState> _key =  GlobalKey<FormState>();
+
   FormsBloc bloc = context.read<FormsBloc>();
   model.values.forEach((element) {
     log(element.runtimeType.toString());
@@ -37,8 +39,11 @@ Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
                 ),
               ],
             ),
-            content: MatrixDialog(
-              widgets :   model.values.map((e) => e.toWidget()).toList().cast()),
+            content: Form(
+              key:  _key,
+              child: MatrixDialog(
+                widgets :   model.values.map((e) => e.toWidget()).toList().cast()),
+            ),
             actions: [
               Padding(
                 padding: const EdgeInsets.all(AppRadius.r12),
@@ -53,9 +58,12 @@ Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
                                   BorderRadius.circular(AppRadius.r20))),
                           onPressed: () {
 
-                            Navigator.pop(context);
-                            bloc.add(
-                                MatrixRecordSubmitted());
+                            if(_key.currentState!.validate()){
+                              Navigator.pop(context);
+                              bloc.add(
+                                  MatrixRecordSubmitted());
+                            }
+
                           },
                           child: const Text(AppStrings.submit)),
                     ),
