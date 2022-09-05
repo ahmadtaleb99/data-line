@@ -38,28 +38,28 @@ class NewSubmitScreen extends StatelessWidget {
         },
         buildWhen: (p, c) => p.newFlowState != c.newFlowState,
         builder: (context, state) {
-          if (state.newFlowState != null) {
-            var widget = state.newFlowState.getWidget(
-                context,
-                NewWidget(
-                  formModel: formModel,
-                  formKey: _key,
-                ), () {
-
-                  log(state.newFlowState.toString());
-                  log(state.flowState.toString());
-             if(state.newFlowState is SuccessState)
-               context.read<FormsBloc>().add(NewFormRequested(formModel));
-
-            else context.read<FormsBloc>().add(AssignedFormsRequested());
-            });
-            return widget;
-          } else {
-            return NewWidget(
-              formModel: formModel,
-              formKey: _key,
-            );
-          }
+          // if (state.newFlowState != null) {
+          //   var widget = state.newFlowState.getWidget(
+          //       context,
+          //       NewWidget(
+          //         formModel: formModel,
+          //         formKey: _key,
+          //       ), () {
+          //
+          //         log(state.newFlowState.toString());
+          //         log(state.flowState.toString());
+          //    if(state.newFlowState is SuccessState)
+          //      context.read<FormsBloc>().add(NewFormRequested(formModel));
+          //
+          //   else context.read<FormsBloc>().add(AssignedFormsRequested());
+          //   });
+          //   return widget;
+          // } else {
+          //   return NewWidget(
+          //     formModel: formModel,
+          //     formKey: _key,
+          //   );
+          // }
 
 
           return NewWidget(

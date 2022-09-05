@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/data/FormRepository.dart';
 import 'package:form_builder_test/presentation/submission_details_screen/view/submisson_details_screen.dart';
 
-import '../../../Widgets/Matrix/cubit/matrix_record_cubit.dart';
 import '../../../Widgets/form_widget.dart';
 import '../../../validation/bloc/validation__bloc.dart';
 import '../../update_form/view/update_form_screen.dart';
@@ -44,36 +43,9 @@ class SubmittionsPage extends StatelessWidget {
                                     FormUpdateRequested(
                                         formName: state.subedForms![index].name,
                                         index: index));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BlocProvider(
-                                              create: (context) =>
-                                                  MatrixRecordCubit(
-                                                      context.read<
-                                                          OldFormRepository>())
-                                                    ..setCurrentSubmittedForm(
-                                                        index)
-                                                    ..loadMatrices(),
-                                              child: UpdateFormPage(
-                                                  index: index,
-                                                  form:
-                                                      state.subedForms![index]),
-                                            )));
+
                               },
                               onViewCallBack: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BlocProvider(
-                                              create: (context) =>
-                                                  MatrixRecordCubit(
-                                                      context.read<
-                                                          OldFormRepository>()),
-                                              child: SubmittionsDetailsPage(
-                                                  formWidget:
-                                                      state.subedForms![index]),
-                                            )));
                               },
                               onDeleteCallBack: () {
                                 _confirmDeleteDialog(

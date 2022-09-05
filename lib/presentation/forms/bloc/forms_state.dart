@@ -18,23 +18,27 @@ class FormsState extends Equatable {
   final  List<FormModel> assignedForms;
   final Map<String,bool> validationMap;
   final Map<String,bool> isFilePicking;
+  final int? currentRecordIndex ;
+  final String? currentMatrixName;
   final bool allSaved;
-  final Map<String,List<MatrixRecord>> matrixValuesMap;
+  final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
     required this.valuesMap,
     required this.matrixValuesMap,
+     this.currentRecordIndex,
+     this.currentMatrixName,
     required this.validationMap,
     required this.submissions,
     required this.flowState,
     required this.newFlowState,
-    required this.isFilePicking,,
+    required this.isFilePicking,
     required this.allSaved,
     required this.assignedForms,
 
@@ -49,8 +53,10 @@ class FormsState extends Equatable {
     FlowState? newSubmitFlowState,
     List<FormModel>? assignedForms,
     Map<String,bool>? validationMap,
+     int? currentRecordIndex ,
+     String? currentMatrix ,
     Map<String,bool>? isFilePicking,
-    Map<String,List<MatrixRecord>> ? matrixValuesMap,
+    Map<String,List<MatrixRecordModel>> ? matrixValuesMap,
     bool? allSaved
   }) {
     return FormsState(
@@ -60,6 +66,8 @@ class FormsState extends Equatable {
       validationMap: validationMap ?? this.validationMap,
       isFilePicking: isFilePicking ?? this.isFilePicking,
       submissions: submissions ?? this.submissions,
+      currentRecordIndex: currentRecordIndex ?? this.currentRecordIndex,
+      currentMatrixName: currentMatrix ?? this.currentMatrixName,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       flowState: flowState ?? this.flowState,
       newFlowState: newSubmitFlowState ?? this.newFlowState,

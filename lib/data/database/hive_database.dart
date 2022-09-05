@@ -10,7 +10,6 @@ import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_number_model/matrix_number_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_radio_group_model/matrix_radio_group_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_text_field_model/matrix_text_field_model.dart';
-import 'package:form_builder_test/model/matrix/matrix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:collection/collection.dart';
 import '../../domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';

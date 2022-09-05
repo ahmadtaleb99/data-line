@@ -58,12 +58,12 @@ class FormFieldWidget<T> extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(AppPadding.p8),
                           child: Text(model.label,
-                              style: Theme.of(context).textTheme.subtitle1),
+                          style: Theme.of(context).textTheme.subtitle1),
                         ),
                         SizedBox(
                           height: 10.h,
                         ),
-                        widget,
+                        Align(alignment:Alignment.centerLeft,child: widget),
                         if (fieldState.hasError)
                           Padding(
                               padding: const EdgeInsets.only(left: AppPadding.p13,top:AppPadding.p8),

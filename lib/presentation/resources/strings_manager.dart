@@ -6,6 +6,8 @@ class AppStrings{
   static const String onboardingTitle2 ='on_boarding_title2';
   static const String onboardingTitle3 ='on_boarding_title3';
   static const String onboardingTitle4 ='on_boarding_title4';
+  static const String warning ='Warning';
+  static const String deleteRecordMsg ='Are you sure you want to delete this record?';
 
 
   static const String onboardingSubTitle1 ='on_boarding_desc1';
@@ -14,6 +16,7 @@ class AppStrings{
   static const String onboardingSubTitle4 ='on_boarding_desc4';
   static const String login ='login_button';
   static const String addRecord = 'Add Record';
+  static const String editRecord = 'Edit Record';
   static const String downloading ='Downloading';
   static const String downloadFileComplete ='Download is complete for file';
   static const String tapToPreview ='Tap to preview';

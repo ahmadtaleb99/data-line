@@ -17,7 +17,7 @@ MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
 
 
     case 'checkbox':
-      return MatrixTextFieldResponse.fromJson(json);
+      return MatrixCheckboxResponse.fromJson(json);
 
     case 'number':
       return MatrixNumberResponse.fromJson(json);
@@ -27,7 +27,7 @@ MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
 
 
     case 'checkbox-group':
-      return MatrixCheckboxResponse.fromJson(json);
+      return MatrixCheckboxGroupResponse.fromJson(json);
 
     case 'date':
       return MatrixDatePickerResponse.fromJson(json);

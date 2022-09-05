@@ -1,18 +1,27 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
+import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
+import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
-class BuildRecords extends StatefulWidget {
-  const BuildRecords({Key? key}) : super(key: key);
-
+class MatrixRecordWidget extends StatefulWidget {
+  final void Function()? onEdit;
+  final List<MatrixFieldModel> fields;
   @override
-  State<BuildRecords> createState() => _BuildRecordsState();
+  State<MatrixRecordWidget> createState() => _MatrixRecordWidgetState();
+
+  MatrixRecordWidget({
+    this.onEdit,
+    required this.fields,
+  });
 }
 
-class _BuildRecordsState extends State<BuildRecords> {
-
+class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
@@ -22,9 +31,8 @@ class _BuildRecordsState extends State<BuildRecords> {
           Expanded(
               flex: 6,
               child: Padding(
-                padding:  EdgeInsets.only( top: 5.h),
+                padding: EdgeInsets.only(top: 5.h),
                 child: Card(
-
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.r20)),
                   elevation: 5,
@@ -32,68 +40,93 @@ class _BuildRecordsState extends State<BuildRecords> {
                       customBorder: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.r20),
                       ),
-                      onTap: () async {
-
-                      },
-
+                      onTap: widget.onEdit,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(AppRadius.r20),
                         child: ExpansionPanelList(
-                          animationDuration: const  Duration(milliseconds: 600),
+                          animationDuration: const Duration(milliseconds: 600),
                           expansionCallback: (index, isOpen) {
                             setState(() {
-                              _isExpanded = !_isExpanded  ;
+                              _isExpanded = !_isExpanded;
                             });
                           },
                           children: [
                             ExpansionPanel(
-                                canTapOnHeader: false,
-                                body: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
+                              canTapOnHeader: false,
+                              headerBuilder:
+                                  (BuildContext context, bool isExpanded) {
+                                return Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: AppPadding.p13),
+                                      child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
-                                              child: Text('label')),
-                                          Expanded(
                                               child: Text(
-                                                'value',
-                                                overflow:
-                                                TextOverflow.ellipsis,
+                                            widget.fields[0].label,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1,
+                                          )),
+                                          BlocBuilder<FormsBloc,
+                                              FormsState>(
+                                            builder: (context, state) {
+                                              return Expanded(
+                                                  child: Text(
+                                                context.read<FormsBloc>().getMatrixFieldValue(widget.fields[0].fieldName),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1,
+                                                overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.center,
-                                              )),
+                                              ));
+                                            },
+                                          ),
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                isExpanded: _isExpanded,
-                                headerBuilder:
-                                    (BuildContext context, bool isExpanded) {
-
-                                  return Padding(
-                                    padding:
-                                    const EdgeInsets.only(left: 15.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Expanded(
-                                            child: Text(
-                                               'text')),
-                                        Expanded(
-                                            child: Text(
-                                           'value',
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            )),
-                                      ],
-                                    ),
-                                  );
-                                }),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                              body: Column(
+                                children: [
+                                  ...List.generate(
+                                      widget.fields.length - 1,
+                                      (index) => Padding(
+                                            padding:
+                                                EdgeInsets.all(AppPadding.p13),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                    child: Text(
+                                                        widget.fields[index + 1]
+                                                            .label,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle1)),
+                                                Expanded(
+                                                    child: Text(
+                                                  'value',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                )),
+                                              ],
+                                            ),
+                                          )),
+                                ],
+                              ),
+                              isExpanded: _isExpanded,
+                            ),
                           ],
                         ),
                       )),
@@ -103,7 +136,9 @@ class _BuildRecordsState extends State<BuildRecords> {
             child: IconButton(
               splashRadius: 15,
               onPressed: () {
-
+                showWarningDialog(context,
+                    title: AppStrings.warning,
+                    text: AppStrings.deleteRecordMsg);
               },
               icon: const Icon(Icons.delete),
             ),

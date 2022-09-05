@@ -1,17 +1,22 @@
 import 'package:form_builder_test/domain/model/form_model.dart';
 
-class MatrixRecord{
+class MatrixRecordModel{
  final   Map<String,dynamic> valuesMap;
 
-  MatrixRecord({
+  MatrixRecordModel({
     required this.valuesMap,
   });
 
- MatrixRecord copyWith({
-   Map<String,dynamic>? submission,
+ MatrixRecordModel copyWith({
+   Map<String,dynamic>? valuesMap,
   }) {
-    return MatrixRecord(
-      submission: submission ?? this.valuesMap,
+    return MatrixRecordModel(
+      valuesMap: valuesMap ?? this.valuesMap,
     );
+  }
+
+ @override
+  String toString() {
+    return 'MatrixRecordModel{valuesMap: $valuesMap}';
   }
 }

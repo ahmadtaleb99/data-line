@@ -28,6 +28,47 @@ class FieldValueChanged extends FormsEvent {
   @override
   List<Object?> get props => [fieldName,value];
 }
+class MatrixFieldValueChanged extends FormsEvent {
+  final String fieldName;
+  final dynamic value;
+
+  const MatrixFieldValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,value];
+}
+
+
+
+class NewMatrixRecordAddRequested extends FormsEvent {
+  final int index;
+  final String matrixName;
+  @override
+  List<Object?> get props => [index,matrixName];
+
+  const NewMatrixRecordAddRequested({
+    required this.index,
+    required this.matrixName,
+  });
+}
+
+
+
+class MatrixRecordAEditRequested extends FormsEvent {
+  final int index;
+  final String matrixName;
+  @override
+  List<Object?> get props => [index,matrixName];
+
+  const MatrixRecordAEditRequested({
+    required this.index,
+    required this.matrixName,
+  });
+}
 class FilePickerPressed extends FormsEvent {
   final FilePickerModel model;
 
@@ -193,10 +234,14 @@ class SubmissionUpdateRequested extends FormsEvent {
 //
 // }
 
-class SubmitCanceled extends FormsEvent {
+class MatrixSubmitCanceled extends FormsEvent {
+  final matrixName ;
   @override
-  List<Object?> get props =>[];
+  List<Object?> get props =>[matrixName];
 
+  const MatrixSubmitCanceled({
+    required this.matrixName,
+  });
 }
 
 // class SubmissionDeleted extends FormsEvent {

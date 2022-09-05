@@ -12,7 +12,6 @@ import 'package:form_builder_test/model/FormModel.dart';
   import 'package:form_builder_test/model/IFormTextField.dart';
   import 'package:form_builder_test/model/IFormModel.dart';
 
-import '../model/matrix/matrix.dart';
 
 abstract class FormApi {
 
@@ -46,7 +45,6 @@ abstract class FormApi {
         
         
        case 'matrix':
-        return Matrix.fromJson(json);
 
       case 'checkbox-group':
         return IFormCheckBoxGroup.fromJson(json);

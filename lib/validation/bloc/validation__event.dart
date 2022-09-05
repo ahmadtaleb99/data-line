@@ -48,14 +48,6 @@ class NodeChanged extends ValidationEvent {
 
 class MatrixDatePickerChanged extends ValidationEvent {
 
-    BuildContext context;
-    MatrixDatePickerWidget matrixDatePickerWidget;
-    MatrixDatePickerChanged({
-    required this.context,
-    required this.matrixDatePickerWidget,
-
-
-  });
 }
 class FormRequested extends ValidationEvent {
   String formName;
@@ -139,9 +131,6 @@ class oldFilePreviewRequested extends ValidationEvent {
 
 
 class RecordRemoved extends ValidationEvent {
-    String matrixName;
-    oldMatrixRecordWidget matrixRecord;
-    RecordRemoved({required this.matrixName,required this.matrixRecord});
 }
 
 

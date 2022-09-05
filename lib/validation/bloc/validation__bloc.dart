@@ -4,10 +4,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
-import 'package:form_builder_test/Widgets/Matrix/fields/matrix_datepicker_widget.dart';
-import 'package:form_builder_test/Widgets/star_rating_widget.dart';
-import 'package:form_builder_test/model/IFormModel.dart';
-import 'package:form_builder_test/model/matrix/fields/matrix_record.dart';
 import 'package:form_builder_test/model/node/node.dart';
 import 'package:mime/mime.dart';
 
@@ -46,9 +42,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../Widgets/Matrix/matrix_record_widget.dart';
-import '../../Widgets/Matrix/matrix_widget.dart';
-import '../../model/matrix/matrix.dart';
+
 
 part 'validation__event.dart';
 part 'validation__state.dart';
@@ -157,13 +151,6 @@ class ValidationBloc extends Bloc<ValidationEvent, ValidationState> {
 
 
 
-   final date = await  showDatePicker(firstDate: DateTime(1940)
-        , initialDate: DateTime(1999),
-        lastDate: DateTime.now(), context: event.context);
-
-      event.matrixDatePickerWidget.value = date;
-
-   emit(state.copyWith());
 
 
 
@@ -567,15 +554,10 @@ var mimi = lookupMimeType(cachedFile.path);
         var radioModel = formModelField as IFormDrawRadioGroup;
         radioModel.isOtherSelected = widgetField.isOtherSelected;
       }
-    if(widgetField is oldMatrixWidget){
 
 
-      var matrixModel = formModelField as Matrix;
       log('map tto model');
-      matrixModel.records = List<MatrixRecordModel>.from(widgetField.list);
 
-    }
-      formModelField.value = widgetField.value;
     }
   }
 
@@ -639,28 +621,12 @@ var mimi = lookupMimeType(cachedFile.path);
 
 
   void _onRecordAdded(RecordAdded event, Emitter<ValidationState> emit) {
-    oldMatrixWidget matrix = state.form!.fields.firstWhere((element) =>
-    element.name == event.matrixName) as oldMatrixWidget;
-
-    // for(var record in matrix.records){
-    //   // record.isLast = false;
-    // }
-  Matrix model = state.formModel!.fields.firstWhere((element) => element is Matrix && element.name == event.matrixName) as Matrix;
-
-    // matrix.records.add(MatrixRecordWidget(isLast: true,children: model.values.map((e) => e.toWidget()).toList(),index: matrix.records.length,));
-    // matrix.records.last.showRecordDialog(event.context!, state.key);
-
-
-    // matrix.value = matrix.records;
     emit(state.copyWith());
   }
 
 
 
   void _onRecordRemoved(RecordRemoved event, Emitter<ValidationState> emit) {
-    oldMatrixWidget matrix = state.form!.fields.firstWhere((element) =>
-    element.name == event.matrixName) as oldMatrixWidget;
-
 
     // matrix.records.remove(event.matrixRecord);
     // emit(state.copyWith());

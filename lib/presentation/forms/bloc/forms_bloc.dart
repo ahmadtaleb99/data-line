@@ -51,6 +51,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
     on<FieldValueChanged>(_onFieldValueChanged);
+    on<MatrixFieldValueChanged>(_onMatrixFieldValueChanged);
+    on<NewMatrixRecordAddRequested>(_onNewMatrixRecordAddRequested);
+    on<MatrixRecordAEditRequested>(_onMatrixRecordAEditRequested);
     on<TextValueChanged>(_onTextValueChanged);
     on<MultiDropDownValueTapped>(_onMultiDropDownValueTapped);
     on<DropDownValueChanged>(_onDropDownValueChanged);
@@ -61,7 +64,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<RadioGroupValueChanged>(_onRadioGroupValueChanged);
     on<NewFormRequested>(_onNewFormRequested);
     on<SubmissionUpdateRequested>(_onSubmissionUpdateRequested);
-    on<SubmitCanceled>(_onSubmitCanceled);
+    on<MatrixSubmitCanceled>(_onMatrixSubmitCanceled);
     on<FormSubmitted>(_onFormSubmitted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
   }
@@ -201,8 +204,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFieldValueChanged(
       FieldValueChanged event, Emitter<FormsState> emit) async {
-    var dropDown = state.formModel!.fields
-        .firstWhere((element) => element.name == event.fieldName);
+
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
@@ -211,7 +213,57 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     log(map.toString());
     emit(state.copyWith(valuesMap: map, validationMap: newValidationMap));
   }
+  Future<void> _onMatrixFieldValueChanged(
+      MatrixFieldValueChanged event, Emitter<FormsState> emit) async {
 
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+
+    var recordsList  = List<MatrixRecordModel>.from(map[state.currentMatrixName!] )  ;
+    recordsList[state.currentRecordIndex!].valuesMap[event.fieldName] = event.value;
+      map[state.currentMatrixName!] = recordsList;
+     // map[event.fieldName] = event.value;
+
+    // Map<String, bool> newValidationMap = Map.from(state.validationMap);
+    // newValidationMap[event.fieldName] = true;
+    log(map.toString());
+    emit(state.copyWith(valuesMap: map));
+  }
+
+
+  _setCurrentRecord(int currentRecordIndex,String currentMatrix){
+    emit(state.copyWith(currentRecordIndex: currentRecordIndex,currentMatrix: currentMatrix));
+  }
+
+
+  Future<void> _onNewMatrixRecordAddRequested(
+      NewMatrixRecordAddRequested event, Emitter<FormsState> emit) async {
+    var list  = state.valuesMap[event.matrixName] as List<MatrixRecordModel>? ;
+
+    var newRecord = MatrixRecordModel(valuesMap: {});
+    if(list == null) {
+      list = <MatrixRecordModel>[]..add(newRecord);
+    }
+    else list.add(newRecord);
+
+    state.valuesMap[event.matrixName] = list;
+    _setCurrentRecord(event.index, event.matrixName);
+  }
+  Future<void> _onMatrixRecordAEditRequested(
+      MatrixRecordAEditRequested event, Emitter<FormsState> emit) async {
+
+
+    log(state.valuesMap[ event.matrixName].first.valuesMap.toString());
+    _setCurrentRecord(event.index, event.matrixName);
+  }
+
+
+
+  dynamic getMatrixFieldValue (String fieldName) {
+
+    List<MatrixRecordModel> records  = state.valuesMap[state.currentMatrixName] ;
+   return  records[state.currentRecordIndex!].valuesMap[fieldName];
+
+  }
   Future<void> _onFilePickerPressed(
       FilePickerPressed event, Emitter<FormsState> emit) async {
 
@@ -546,9 +598,18 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         validationMap: newValidationMap.cast()));
   }
 
-  Future<void> _onSubmitCanceled(
-      SubmitCanceled event, Emitter<FormsState> emit) async {
-    emit(state.copyWith(valuesMap: {}));
+  Future<void> _onMatrixSubmitCanceled(
+      MatrixSubmitCanceled event, Emitter<FormsState> emit) async {
+
+
+  var map = Map.from(state.valuesMap);
+     var list =  List<MatrixRecordModel>.from(map[event.matrixName]);
+  list.removeLast() ;
+  map[event.matrixName] = list;
+
+
+  log( map[event.matrixName].toString());
+  emit(state.copyWith(valuesMap: Map.from(map.cast())));
   }
 
   Future<void> _onSubmissionUpdated(

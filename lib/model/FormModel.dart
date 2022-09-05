@@ -14,7 +14,6 @@ import 'package:form_builder_test/model/IFormModel.dart';
 import 'package:hive/hive.dart';
 
 import 'StarRating.dart';
-import 'matrix/matrix.dart';
 
 part 'FormModel.g.dart';
 
@@ -50,8 +49,7 @@ class OldFormModel extends HiveObject implements IFormModel {
         case 'starrating':
         return StarRating.fromJson(json);
 
-         case 'matrix':
-        return Matrix.fromJson(json);
+
 
 
       default:
