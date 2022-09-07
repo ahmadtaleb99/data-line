@@ -193,13 +193,25 @@ class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
 
   @override
   FieldEntry read(BinaryReader reader) {
+
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+
+
+    List<MatrixRecordModel>? records = [ ];
+    if(fields[3] == FieldType.MATRIX)
+        {
+          if (fields[2] != null ){
+            records = List<MatrixRecordModel>.from(fields[2]);
+          }
+        }
+
+
     return FieldEntry(
       name: fields[1] as String,
-      value: fields[2] as dynamic,
+      value: records,
       type: fields[3] as FieldType,
     );
   }

@@ -368,7 +368,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     List<MatrixRecordModel>?  records = state.valuesMap[model.name] ?? [];
       log(records.toString() + ' records fro mvalieation ');
-    if(records!.length == model.maxRecordsCount) {
+    if(records!.length > model.maxRecordsCount) {
       Map<String, bool> newValidationMap = Map.from(state.validationMap);
       newValidationMap[model.name] = true;
       log(newValidationMap.toString()+ ' val map ');

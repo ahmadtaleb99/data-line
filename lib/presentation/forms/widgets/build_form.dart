@@ -25,8 +25,7 @@ class BuildForm extends StatelessWidget {
             if(state.newFlowState is SuccessState) {
               if(state.isNewSubmit)
                 context.read<FormsBloc>().add(NewFormRequested(formModel));
-
-
+              else Navigator.pop(context);
 
             }
 

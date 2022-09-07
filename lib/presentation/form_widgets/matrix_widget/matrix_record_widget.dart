@@ -64,6 +64,7 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                               headerBuilder:
                                   (BuildContext context, bool isExpanded) {
                                 return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(

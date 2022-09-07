@@ -15,6 +15,7 @@ import 'package:form_builder_test/presentation/forms/submission_details_screen/v
 import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/widgets/submission_card.dart';
 import 'package:form_builder_test/presentation/forms/update_submisson/view/update_submisson_screen.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
@@ -26,7 +27,9 @@ class SubmissionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(formModel.name+' ${AppStrings.submissions}'),
+      ),
       body: BlocBuilder<SubmissionsBloc, SubmissionsState>(
         buildWhen: (p, c) {
           return p.flowState != c.flowState;

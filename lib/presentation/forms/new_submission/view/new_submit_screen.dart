@@ -20,7 +20,9 @@ class NewSubmitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: UniqueKey(),
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(AppStrings.newSubmission),
+      ),
       floatingActionButton: ElevatedButton(
         onPressed: () async {
           if (_key.currentState!.validate()) {

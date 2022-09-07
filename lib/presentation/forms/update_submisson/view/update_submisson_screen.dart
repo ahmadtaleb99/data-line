@@ -19,6 +19,7 @@ class UpdateSubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(AppStrings.updateSubmission),
 
       ),
       floatingActionButton: ElevatedButton(

@@ -8,6 +8,7 @@ import 'package:form_builder_test/presentation/forms/submission_details_screen/b
 import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/field_widget.dart';
 import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/label_widget.dart';
 import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/value_widget.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class SubmissionDetailsScreen extends StatelessWidget {
@@ -22,6 +23,8 @@ class SubmissionDetailsScreen extends StatelessWidget {
       lazy: false,
       child: Scaffold(
         appBar: AppBar(
+          title: const Text(AppStrings.submissionDetails),
+
         ),
         body: ListView.separated(
           padding: const EdgeInsets.symmetric(

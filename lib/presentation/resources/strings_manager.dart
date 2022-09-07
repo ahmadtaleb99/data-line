@@ -1,3 +1,5 @@
+import 'package:form_builder_test/domain/model/form_model.dart';
+
 class AppStrings{
 
   static const String noRouteFound ='No route found.';
@@ -49,6 +51,10 @@ class AppStrings{
   static const String resendEmail = "Didn’t recieve email ? Resesnd";
 
   static const String home = "Home";
+  static const String newSubmission = "New Submission";
+  static const String updateSubmission = "Update Submission";
+  static const String submissionDetails = "Submission Details";
+  static const String submissions = "Submissions";
   static const String search = "Search";
   static const String checkgroupBoxHint = "(Checkbox Group)";
   static const String radioGroupBoxHint = "(Radio Group)";

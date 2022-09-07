@@ -10,6 +10,7 @@ import 'package:form_builder_test/domain/model/file_picker_model/file_picker_mod
 
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
 import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';

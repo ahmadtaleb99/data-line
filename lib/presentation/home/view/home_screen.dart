@@ -11,6 +11,7 @@ import 'package:form_builder_test/presentation/forms/new_submission/view/new_sub
 import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submissions_screen/submissions_screen.dart';
 import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
@@ -20,7 +21,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text(AppStrings.home),
+        ),
         body: BlocBuilder<FormsBloc, FormsState>(
           buildWhen: (p, c) => p.flowState != c.flowState,
           builder: (context, state) {
