@@ -83,12 +83,19 @@ class MatrixRecordAEditRequested extends FormsEvent {
     required this.matrixName,
   });
 }
-class MatrixRecordSubmitted extends FormsEvent {
+class MatrixNewRecordSubmitted extends FormsEvent {
 
   @override
   List<Object?> get props => [];
 
-  const MatrixRecordSubmitted();
+  const MatrixNewRecordSubmitted();
+}
+class MatrixEditRecordSubmitted extends FormsEvent {
+
+  @override
+  List<Object?> get props => [];
+
+  const MatrixEditRecordSubmitted();
 }
 class MatrixRecordDeleted extends FormsEvent {
   final String matrixName;
@@ -288,6 +295,12 @@ class MatrixSubmitCanceled extends FormsEvent {
   const MatrixSubmitCanceled({
     required this.matrixName,
   });
+}
+class MatrixEditCanceled extends FormsEvent {
+  @override
+  List<Object?> get props =>[];
+
+  const MatrixEditCanceled();
 }
 
 // class SubmissionDeleted extends FormsEvent {

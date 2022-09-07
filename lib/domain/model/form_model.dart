@@ -7,6 +7,9 @@ import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_gro
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
 import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
+
+import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
 import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
 import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';
@@ -231,6 +234,10 @@ extension xFormFieldModel on FormFieldModel{
 
         case TextFieldModel:
           return AppStrings.textFieldHint;
+
+           case MatrixModel:
+          return AppStrings.matrixHint;
+
 
         default:
           return AppStrings.unknown;

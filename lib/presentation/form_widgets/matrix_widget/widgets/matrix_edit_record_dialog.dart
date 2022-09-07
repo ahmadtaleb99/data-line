@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,7 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 import '../../../resources/color_manager.dart';
 
-showEditRecordDialog(BuildContext context, int index,MatrixModel model) {
+showEditRecordDialog(BuildContext context, int index, MatrixModel model) {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   FormsBloc bloc = context.read<FormsBloc>();
@@ -25,69 +26,90 @@ showEditRecordDialog(BuildContext context, int index,MatrixModel model) {
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: bloc,
-          child: WillPopScope(
-            onWillPop: () async {
-                  return false;
-            },
-            child: AlertDialog(
-              title: Row(
-                children: [
-                  const Text(AppStrings.editRecord),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Icon(
-                    Icons.edit,
-                    color: ColorManager.primary,
-                  ),
-                ],
-              ),
-              content: Form(
+          child: Builder(builder: (context) {
+            return WillPopScope(
+              onWillPop: () async {
+                return false;
+              },
+              child: AlertDialog(
+                title: Row(
+                  children: [
+                    const Text(AppStrings.editRecord),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Icon(
+                      Icons.edit,
+                      color: ColorManager.primary,
+                    ),
+                  ],
+                ),
+                content: Form(
                   key: _key,
-                child: MatrixDialog(
-                    widgets : model.values.map((e) => e.toWidget()).toList().cast()),
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(AppRadius.r12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
+                  child: MatrixDialog(
+                      widgets: model.values
+                          .map((e) => e.toWidget())
+                          .toList()
+                          .cast()),
+                ),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppRadius.r12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          AppRadius.r20))),
+                              onPressed: () {
+                                if (_key.currentState!.validate()) {
+                                  context
+                                      .read<FormsBloc>()
+                                      .add(MatrixEditRecordSubmitted());
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text(AppStrings.submit)),
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
-                                    BorderRadius.circular(AppRadius.r20))),
+                                        BorderRadius.circular(AppRadius.r20))),
                             onPressed: () {
-                              if(_key.currentState!.validate()){
-                                Navigator.pop(context);
-                              }
+                              CoolAlert.show(
+                                  context: context,
+                                  type: CoolAlertType.warning,
+                                  showCancelBtn: true,
+                                  text: AppStrings.editCancelMsg,
+                                  title: AppStrings.warning,
+                                  cancelBtnText: AppStrings.back,
+                                  onCancelBtnTap: () =>
+                                      Navigator.pop(context),
+                                  onConfirmBtnTap: () {
 
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+
+                                  });
                             },
-                            child: const Text(AppStrings.submit)),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(AppRadius.r20))),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(AppStrings.cancel),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+                            child: const Text(AppStrings.cancel),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          }),
         );
       });
 }

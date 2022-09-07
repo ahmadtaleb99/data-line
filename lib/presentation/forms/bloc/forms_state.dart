@@ -23,25 +23,28 @@ class   FormsState extends Equatable {
   final   FormModel? formModel;
   final  List<Submission> submissions;
   final Map<String,dynamic> valuesMap;
+  final bool isNewSubmit;
   final FlowState flowState;
   final FlowState newFlowState;
+  final FlowState updateFlowState;
   final  List<FormModel> assignedForms;
   final MatrixState? matrixState;
   final Map<String,bool> validationMap;
   final Map<String,bool> isFilePicking;
   final int? currentRecordIndex ;
   final String? currentMatrixName;
-  final MatrixRecordModel? newTempRecord;
+  final MatrixRecordModel? tempRecord;
   final bool allSaved;
   final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [matrixState,newTempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
+    required this.isNewSubmit,
     required this.valuesMap,
     required this.matrixValuesMap,
      this.currentRecordIndex,
@@ -49,9 +52,10 @@ class   FormsState extends Equatable {
      this.currentMatrixName,
     required this.validationMap,
     required this.submissions,
-       this.newTempRecord,
+       this.tempRecord,
     required this.flowState,
     required this.newFlowState,
+    required this.updateFlowState,
     required this.isFilePicking,
     required this.allSaved,
     required this.assignedForms,
@@ -64,7 +68,10 @@ class   FormsState extends Equatable {
     List<Submission>? submissions,
     Submission? currentSubmission,
     FlowState? flowState,
+    bool? isNewSubmit,
     FlowState? newSubmitFlowState,
+    FlowState? updateFlowState,
+
     List<FormModel>? assignedForms,
     MatrixState? matrixState,
     ValueGetter<MatrixRecordModel?>? tempRecord, //in order to give copyWith method null value
@@ -82,10 +89,12 @@ class   FormsState extends Equatable {
       validationMap: validationMap ?? this.validationMap,
       isFilePicking: isFilePicking ?? this.isFilePicking,
       submissions: submissions ?? this.submissions,
+      updateFlowState: updateFlowState ?? this.updateFlowState,
       currentRecordIndex: currentRecordIndex ?? this.currentRecordIndex,
       currentMatrixName: currentMatrix ?? this.currentMatrixName,
+      isNewSubmit: isNewSubmit ?? this.isNewSubmit,
       currentSubmission: currentSubmission ?? this.currentSubmission,
-      newTempRecord: tempRecord != null ? tempRecord() : this.newTempRecord,
+      tempRecord: tempRecord != null ? tempRecord() : this.tempRecord,
       flowState: flowState ?? this.flowState,
       newFlowState: newSubmitFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,

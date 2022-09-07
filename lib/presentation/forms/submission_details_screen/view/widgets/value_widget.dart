@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/common/value_view_parser.dart';
 import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
 import 'package:form_builder_test/presentation/resources/color_manager.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
+import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 class ValueWidget extends StatelessWidget {
 final FormFieldModel field;
@@ -21,7 +23,7 @@ final FormFieldModel field;
              _getPercent(state) != -1 ?
               Expanded(
                 child: CircularPercentIndicator(
-                  radius: 20.0,
+                  radius: AppRadius.r20,
                   percent:_getPercent(state) / 100 ,
                   center: new Text((_getPercent(state).toInt()).toString()),
                   progressColor: ColorManager.primary,
@@ -56,7 +58,8 @@ final FormFieldModel field;
 
 
 
-      return Text(value.toString() ,
+
+      return Text(ValueViewParser.getValue(value) ,
           overflow: TextOverflow.fade,
           softWrap: true,
         style: Theme.of(context).textTheme.subtitle1,

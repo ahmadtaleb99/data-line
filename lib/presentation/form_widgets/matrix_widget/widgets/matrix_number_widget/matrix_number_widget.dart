@@ -25,7 +25,8 @@ class MatrixNumberWidget extends StatelessWidget with FormValidation{
                 fieldName: model.fieldName, value: text));
           },
           validator: (value){
-            return isNumeric(value.toString()) ? null : AppStrings.mustBeANumber;
+           if(value != null )
+             return isNumeric(value.toString()) ? null : AppStrings.mustBeANumber;
 
           },
         ), model: model,);

@@ -8,7 +8,12 @@ class AppStrings{
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String warning ='Warning';
   static const String error ='Error';
+  static const String matrixHint ='(Matrix)';
+  static const String maxRecordCountErrorMsg ='The maximum number of records is ';
+  static const String editCancelMsg ='New values will not be saved when canceling.';
   static const String selectAValue ='Select a value';
+  static const String back ='Back';
+  static const String records ='Records';
   static const String deleteRecordMsg ='Are you sure you want to delete this record?';
 
 
@@ -38,6 +43,7 @@ class AppStrings{
   static const String retryAgain = "Retry again";
   static const String ok = "ok";
   static const String formSubmittedSuccess = "Form has been submitted successfully.";
+  static const String formUpdatedSuccess = "Form has been updated successfully.";
   static const String loading = "loading";
   static const String skip = "skip";
   static const String resendEmail = "Didn’t recieve email ? Resesnd";

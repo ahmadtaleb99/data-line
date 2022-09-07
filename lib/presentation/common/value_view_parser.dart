@@ -1,4 +1,5 @@
 import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
+import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 
 class ValueViewParser{
  static String getValue (dynamic value){
@@ -8,7 +9,7 @@ class ValueViewParser{
 
 
       case List<MatrixRecordModel>:
-        return 'records: ${(value as List).length}';
+        return '${AppStrings.records}: ${(value as List).length}';
 
 
       default:

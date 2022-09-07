@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/widgets/build_form.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
 class UpdateSubmissionScreen extends StatelessWidget {
-   UpdateSubmissionScreen({Key? key,required this.formModel,required this.submission}) : super(key: key);
+  UpdateSubmissionScreen(
+      {Key? key, required this.formModel, required this.submission})
+      : super(key: key);
   final FormModel formModel;
   final Submission submission;
   final _key = GlobalKey<FormState>();
@@ -20,17 +23,55 @@ class UpdateSubmissionScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-
-          if(          _key.currentState!.validate())  {
-
+          if (_key.currentState!.validate()) {
             _key.currentState!.save();
-            context.read<FormsBloc>().add(SubmissionUpdated(formModel,submission));
-
+            context.read<FormsBloc>().add(
+                SubmissionUpdated(formModel, submission));
           }
         },
         child: const Text(AppStrings.update),
       ),
-      body: Form(key:_key,child: BuildForm(formModel: formModel,)),
+    //   body: BlocBuilder<FormsBloc, FormsState>(
+    //  builder: (context, state) {
+    // if (state.updateFlowState != null) {
+    // var widget = state.updateFlowState.getWidget(
+    // context,
+    // NewWidget(
+    //   formKey: _key,
+    //   formModel: formModel,
+    // ), () {
+    //     Navigator.pop(context);
+    // });
+    // return widget;
+    // } else {
+    // return NewWidget(
+    //   formKey: _key,
+    // formModel: formModel,
+    // );
+    // }
+
+
+          body: NewWidget(
+            formModel: formModel,
+            formKey: _key,
+          )
     );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  NewWidget({
+
+    Key? key,
+    required this.formKey,
+    required this.formModel,
+  }) : super(key: key);
+
+  final GlobalKey<FormState> formKey;
+  final FormModel formModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(key: formKey, child: BuildForm(formModel: formModel,));
   }
 }

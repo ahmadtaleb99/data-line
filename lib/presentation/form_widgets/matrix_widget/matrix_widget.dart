@@ -21,67 +21,81 @@ class MatrixWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<FormsBloc, FormsState>(
+  builder: (context, state) {
+    List<MatrixRecordModel> records = getRecords(state);
+
     return FormFieldWidget(
+
         model: model,
-        widget: BlocBuilder<FormsBloc, FormsState>(
-          builder: (context, state) {
-            List<MatrixRecordModel> records = getRecords(state);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ...List.generate(
-                    records.length,
+        validator: (value){
+        return  context.read<FormsBloc>().validateMatrix(model);
+        },
+        widget: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...List.generate(
+                records.length,
                     (index) => MatrixRecordWidget(
-                      onDelete: (){
-                        showWarningDialog(context,
-                            title: AppStrings.warning,
-                            onConfirmBtnTap: (){
-                              context.read<FormsBloc>().add(MatrixRecordDeleted(matrixName: model.name, recordIndex: index));
-                              Navigator.pop(context);
+                  onDelete: (){
+                    showWarningDialog(context,
+                        title: AppStrings.warning,
+                        onConfirmBtnTap: (){
+                          context.read<FormsBloc>().add(MatrixRecordDeleted(matrixName: model.name, recordIndex: index));
+                          Navigator.pop(context);
 
-                            },
-                            text: AppStrings.deleteRecordMsg);
-                      },
-                      record: state.valuesMap[model.name][index],
-                      fields: model.values,
-                          onEdit: () {
-                            context.read<FormsBloc>().add(
-                                MatrixRecordAEditRequested(
-                                    index: index, matrixName: model.name));
-                            showEditRecordDialog(context, index,model);
-                          },
-                        )),
-                Padding(
-                  padding: const EdgeInsets.only(top: AppPadding.p12),
-                  child: Center(
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppRadius.r20)),
-                            primary: ColorManager.black),
-                        onPressed: () {
-                          context.read<FormsBloc>()..add(NewMatrixRecordAddRequested(index: getRecords(state).length, matrixName: model.name));
-                          showAddRecordDialog(context,model).then((value) =>
-                          context.read<FormsBloc>()..add(MatrixSubmitCanceled(matrixName: model.name))
-
-                          );
                         },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Text(
-                              AppStrings.addRecord,
-                            ),
-                            Icon(Icons.add, color: Colors.white)
-                          ],
-                        )),
-                  ),
-                )
-              ],
-            );
-          },
+                        text: AppStrings.deleteRecordMsg);
+                  },
+                  record: state.valuesMap[model.name][index],
+                  fields: model.values,
+                  onEdit: () {
+                    context.read<FormsBloc>().add(
+                        MatrixRecordAEditRequested(
+                            index: index, matrixName: model.name));
+                    showEditRecordDialog(context, index,model);
+                  },
+                )),
+            Padding(
+              padding: const EdgeInsets.only(top: AppPadding.p12),
+              child: Center(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(AppRadius.r20)),
+                        primary: ColorManager.black),
+                    onPressed: () {
+                      if(context.read<FormsBloc>().validateMatrix(model) == null ) {
+                        log('valiud');
+                        context.read<FormsBloc>()
+                          ..add(NewMatrixRecordAddRequested(
+                              index: getRecords(state).length,
+                              matrixName: model.name));
+                        showAddRecordDialog(context, model).then((value) =>
+                        context.read<FormsBloc>()
+                          ..add(MatrixSubmitCanceled(matrixName: model.name))
+
+
+                        );
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          AppStrings.addRecord,
+                        ),
+                        Icon(Icons.add, color: Colors.white)
+                      ],
+                    )),
+              ),
+            ),
+
+          ],
         ));
+  },
+);
   }
 
 

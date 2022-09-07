@@ -68,7 +68,7 @@ Future showAddRecordDialog(BuildContext context, MatrixModel model) async {
                                             AppRadius.r20))),
                                 onPressed: () {
 
-                                  if(state.newTempRecord!.areAllValuesNull()){
+                                  if(state.tempRecord!.areAllValuesNull()){
                                     CoolAlert.show(context: context,
                                         type: CoolAlertType.error,
                                         title: AppStrings.error,
@@ -77,7 +77,7 @@ Future showAddRecordDialog(BuildContext context, MatrixModel model) async {
                                 else  if (_key.currentState!.validate()) {
                                   Navigator.pop(context);
                                     bloc.add(
-                                        MatrixRecordSubmitted());
+                                        MatrixNewRecordSubmitted());
                                   }
                                 },
                                 child: const Text(AppStrings.submit)),
