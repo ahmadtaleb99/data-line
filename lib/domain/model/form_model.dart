@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_test/data/responses/forms/forms_response.dart';
@@ -256,6 +258,8 @@ class Submission extends HiveObject with EquatableMixin{
   Map<String, dynamic> $toMap(){
     Map<String, dynamic> map =  {};
    fieldEntries.forEach((FieldEntry fieldEntry) {
+
+     log('   fieldEntries.forEach((FieldEntry fieldEntry) {'+fieldEntry.value.runtimeType.toString());
       map[fieldEntry.name] = fieldEntry.value;
     });
    return map;
@@ -271,7 +275,8 @@ class Submission extends HiveObject with EquatableMixin{
     @HiveField(3)
      final int? id;
 
-     Submission( {
+
+  Submission( {
 
      this.id  ,
     required this.formName  ,
@@ -288,7 +293,7 @@ class Submission extends HiveObject with EquatableMixin{
     String? formName  ,
     int? id  ,
     List<FieldEntry>? fieldEntries,
-
+    FieldType? type,
 
   }) {
     return Submission(
@@ -303,21 +308,9 @@ class Submission extends HiveObject with EquatableMixin{
   @override
   List<Object?> get props => [formName,id,fieldEntries];
 
-  Map<String, dynamic> toJson() {
-    return {
-      'formName': this.formName,
-      'fieldEntries': this.fieldEntries.map((e) => e.toJson()).toList(),
-      'id': this.id,
-    };
-  }
 
-  factory Submission.fromJson(Map<String, dynamic> map) {
-    return Submission(
-      formName: map['formName'] as String,
-      fieldEntries: map['fieldEntries'] as List<FieldEntry>,
-      id: map['id'] as int,
-    );
-  }
+
+
 }
 
 @HiveType(typeId: 18)
@@ -329,30 +322,22 @@ class FieldEntry extends Equatable{
   @HiveField(2)
   final dynamic value;
 
+   @HiveField(3)
+  final FieldType type;
+
+
   const FieldEntry({
     required this.name,
     required this.value,
+    required this.type,
   });
 
-  @override
-  String toString() {
-    return 'FieldEntry{name: $name, value: $value}';
-  }
+
 
   @override
-  List<Object?> get props => [name,value];
+  List<Object?> get props => [name,value,type];
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': this.name,
-      'value': this.value,
-    };
-  }
 
-  factory FieldEntry.fromJson(Map<String, dynamic> json) {
-    return FieldEntry(
-      name: json['name'] as String,
-      value: json['value'] as dynamic,
-    );
-  }
+
+
 }

@@ -200,17 +200,20 @@ class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
     return FieldEntry(
       name: fields[1] as String,
       value: fields[2] as dynamic,
+      type: fields[3] as FieldType,
     );
   }
 
   @override
   void write(BinaryWriter writer, FieldEntry obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.value);
+      ..write(obj.value)
+      ..writeByte(3)
+      ..write(obj.type);
   }
 
   @override

@@ -49,7 +49,9 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                       onTap: widget.onEdit,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(AppRadius.r20),
-                        child: ExpansionPanelList(
+                        child: BlocBuilder<FormsBloc, FormsState>(
+  builder: (context, state) {
+    return ExpansionPanelList(
                           animationDuration: const Duration(milliseconds: 600),
                           expansionCallback: (index, isOpen) {
                             setState(() {
@@ -68,27 +70,27 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                                           left: AppPadding.p13),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               child: Text(
-                                            widget.fields[0].label,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1,
-                                          )),
+                                                widget.fields[0].label,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1,
+                                              )),
                                           BlocBuilder<FormsBloc,
                                               FormsState>(
                                             builder: (context, state) {
                                               return Expanded(
                                                   child: Text(
                                                     _getFieldValue(0) ?? '',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.center,
-                                              ));
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.center,
+                                                  ));
                                             },
                                           ),
                                         ],
@@ -101,40 +103,42 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                                 children: [
                                   ...List.generate(
                                       widget.fields.length - 1,
-                                      (index) => Padding(
-                                            padding:
-                                                EdgeInsets.all(AppPadding.p13),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                    child: Text(
-                                                        widget.fields[index + 1]
-                                                            .label,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .subtitle1)),
-                                                Expanded(
-                                                    child: Text(
-                                                      _getFieldValue(index+1),
+                                          (index) => Padding(
+                                        padding:
+                                        EdgeInsets.all(AppPadding.p13),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Expanded(
+                                                child: Text(
+                                                    widget.fields[index + 1]
+                                                        .label,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1)),
+                                            Expanded(
+                                                child: Text(
+                                                  _getFieldValue(index+1),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .subtitle1,
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                   textAlign: TextAlign.center,
                                                 )),
-                                              ],
-                                            ),
-                                          )),
+                                          ],
+                                        ),
+                                      )),
                                 ],
                               ),
                               isExpanded: _isExpanded,
-                            ),
+                            )
                           ],
-                        ),
+                        );
+  },
+),
                       )),
                 ),
               )),

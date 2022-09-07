@@ -7,6 +7,7 @@ class AppStrings{
   static const String onboardingTitle3 ='on_boarding_title3';
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String warning ='Warning';
+  static const String error ='Error';
   static const String selectAValue ='Select a value';
   static const String deleteRecordMsg ='Are you sure you want to delete this record?';
 
@@ -19,6 +20,7 @@ class AppStrings{
   static const String addRecord = 'Add Record';
   static const String editRecord = 'Edit Record';
   static const String downloading ='Downloading';
+  static const String cantSubmitEmptyRecordMsg ='you cannot submit an empty record.';
   static const String downloadFileComplete ='Download is complete for file';
   static const String tapToPreview ='Tap to preview';
   static const String fileChannel ='Files Management Channel';

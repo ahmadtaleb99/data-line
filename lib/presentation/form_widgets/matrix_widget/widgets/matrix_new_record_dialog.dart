@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +13,8 @@ import 'package:form_builder_test/presentation/resources/routes_manager.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
 
-Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
-  final GlobalKey<FormState> _key =  GlobalKey<FormState>();
+Future showAddRecordDialog(BuildContext context, MatrixModel model) async {
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   FormsBloc bloc = context.read<FormsBloc>();
   model.values.forEach((element) {
@@ -26,69 +27,86 @@ Future showAddRecordDialog(BuildContext context,MatrixModel model) async {
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: bloc,
-          child: AlertDialog(
-            title: Row(
-              children: [
-                const Text(AppStrings.addNewRecord),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Icon(
-                  Icons.add,
-                  color: ColorManager.primary,
-                ),
-              ],
-            ),
-            content: Form(
-              key:  _key,
-              child: MatrixDialog(
-                widgets :   model.values.map((e) => e.toWidget()).toList().cast()),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(AppRadius.r12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(AppRadius.r20))),
-                          onPressed: () {
+          child: WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: BlocBuilder<FormsBloc, FormsState>(
+              builder: (context, state) {
+                return AlertDialog(
+                  title: Row(
+                    children: [
+                      const Text(AppStrings.addNewRecord),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Icon(
+                        Icons.add,
+                        color: ColorManager.primary,
+                      ),
+                    ],
+                  ),
+                  content: Form(
+                    key: _key,
+                    child: MatrixDialog(
+                        widgets: model.values.map((e) => e.toWidget())
+                            .toList()
+                            .cast()),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(AppRadius.r12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            AppRadius.r20))),
+                                onPressed: () {
 
-                            if(_key.currentState!.validate()){
-                              Navigator.pop(context);
-                              bloc.add(
-                                  MatrixRecordSubmitted());
-                            }
-
-                          },
-                          child: const Text(AppStrings.submit)),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(AppRadius.r20))),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-                          //   bloc.add(MatrixSubmitCanceled(matrixName: model.name));
-                          // });
-                        },
-                        child: const Text(AppStrings.cancel),
+                                  if(state.newTempRecord!.areAllValuesNull()){
+                                    CoolAlert.show(context: context,
+                                        type: CoolAlertType.error,
+                                        title: AppStrings.error,
+                                        text: AppStrings.cantSubmitEmptyRecordMsg);
+                                  }
+                                else  if (_key.currentState!.validate()) {
+                                  Navigator.pop(context);
+                                    bloc.add(
+                                        MatrixRecordSubmitted());
+                                  }
+                                },
+                                child: const Text(AppStrings.submit)),
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(AppRadius.r20))),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+                                //   bloc.add(MatrixSubmitCanceled(matrixName: model.name));
+                                // });
+                              },
+                              child: const Text(AppStrings.cancel),
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
-                ),
-              )
-            ],
+                );
+              },
+            ),
           ),
         );
       });

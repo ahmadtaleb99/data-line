@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:form_builder_test/app/extenstions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -247,8 +248,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   }
 
     void _changeRecordValue (String fieldName,dynamic value){
-    if(state.tempRecord != null ){
-      var record = state.tempRecord!.copyWith();
+    if(state.newTempRecord != null ){
+      var record = state.newTempRecord!.copyWith();
       emit(state.copyWith(tempRecord: () => _setRecordValue(record, fieldName, value)));
     }
     else {
@@ -259,6 +260,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       recordsList[state.currentRecordIndex!] = _setRecordValue(record, fieldName, value);
       valuesMap[state.currentMatrixName!] = recordsList;
 
+
+
+      log((state.copyWith(valuesMap: valuesMap) == state).toString());
       emit(state.copyWith(valuesMap: valuesMap));
 
     }
@@ -274,10 +278,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   // or we get it from the list with the index
   MatrixRecordModel? _getDesiredRecord (){
 
-    if(state.tempRecord != null) {
+    if(state.newTempRecord != null) {
 
       log( ' getDesiredRecord is not null');
-      return state.tempRecord!.copyWith();
+      return state.newTempRecord!.copyWith();
     } else {
       Map<String, dynamic> map = Map.from(state.valuesMap) ;
 
@@ -315,16 +319,22 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onMatrixRecordSubmitted(
       MatrixRecordSubmitted event, Emitter<FormsState> emit) async {
-    var map = Map.from(state.valuesMap);
-    List<MatrixRecordModel>? recordsList = state.valuesMap[state.currentMatrixName!];
-     recordsList ??=  [];
-     recordsList  = List<MatrixRecordModel>.from(recordsList)  ;
+    final tempRecord = state.newTempRecord!.copyWith() ;
+      if(tempRecord.areAllValuesNull()){
+            emit(state.copyWith(matrixState: MatrixState(MatrixStatus.error, AppStrings.cantSubmitEmptyRecordMsg)));
+      } else {
+        var map = Map.from(state.valuesMap);
+        List<MatrixRecordModel>? recordsList = state.valuesMap[state.currentMatrixName!];
+        recordsList ??=  [];
+        recordsList  = List<MatrixRecordModel>.from(recordsList)  ;
 
-      final tempRecord = state.tempRecord!.copyWith() ;
-    recordsList.add(tempRecord);
+        recordsList.add(tempRecord);
 
-    map[state.currentMatrixName!] = recordsList;
-    emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null));
+        map[state.currentMatrixName!] = recordsList;
+        emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null,matrixState:  MatrixState(MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
+      }
+
+
 
     // log(map[state.currentMatrixName!].runtimeType.toString()+' temp record ;');
   }
@@ -345,7 +355,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
 
     final record = _getDesiredRecord();
-    log(record.toString());
     return  record?.valuesMap[fieldName];
 
   }
@@ -434,7 +443,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       }, (newPath)  {
         map[filePicker.name] = newPath;
 
-        log(map[filePicker.name] );
 
       });
 
@@ -600,6 +608,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   }
 
+  getFieldType (String fieldName){
+
+  }
+
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
     Map map = state.valuesMap;
@@ -703,22 +715,31 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     // newSubmissions[index] = newSub;
     await _assignedFormRepository.updateSubmission(newSub);
 
-    // emit(state.copyWith(submissions: newSubmissions));
+    // emit(state.copyWith(submissions: newSubmissions));    log(s.first.fieldEntries.first.value.runtimeType.toString());
   }
 
 
-  Submission _mapValuesToSubmission(Map submissionMap, Submission submission) {
-    List<FieldEntry> entries = submissionMap.entries
-        .map((e) => FieldEntry(name: e.key, value: e.value))
-        .toList();
-    submission = submission.copyWith(fieldEntries: entries);
+  // Submission _mapValuesToSubmission(Map submissionMap, Submission submission) {
+  //   List<FieldEntry> entries = submissionMap.entries
+  //       .map((e) => FieldEntry(name: e.key, value: e.value))
+  //       .toList();
+  //   submission = submission.copyWith(fieldEntries: entries);
+  //
+  //   return submission;
+  // }
 
-    return submission;
+
+  FieldType _getFieldTypeFromName(String fieldName){
+    FormFieldModel? field =  state.formModel!.fields.firstWhereOrNull((element) => element.name == fieldName);
+
+    log(field.toString());
+    return field != null ? field.type : FieldType.UNKNOWN;
   }
-
   List<FieldEntry> _mapValuesToEntries(Map valuesMap) {
+
+
     List<FieldEntry> entries = valuesMap.entries
-        .map((e) => FieldEntry(name: e.key, value: e.value))
+        .map((e) => FieldEntry(name: e.key, value: e.value,type: _getFieldTypeFromName(e.key)))
         .toList();
 
     return entries;

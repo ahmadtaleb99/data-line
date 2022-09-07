@@ -25,6 +25,7 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
     };
 
 
+
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{
       'name': instance.name,

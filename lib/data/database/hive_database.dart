@@ -9,6 +9,7 @@ import 'package:form_builder_test/domain/model/matrix_model/matrix_dropdown_mode
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_number_model/matrix_number_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_radio_group_model/matrix_radio_group_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_text_field_model/matrix_text_field_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:collection/collection.dart';
@@ -55,6 +56,7 @@ class HiveDatabase {
     Hive.registerAdapter(MatrixDatePickerModelAdapter());
     Hive.registerAdapter(MatrixNumberModelAdapter());
     Hive.registerAdapter(MatrixModelAdapter());
+    Hive.registerAdapter(MatrixRecordModelAdapter());
 
 
     Hive.registerAdapter(CheckboxGroupItemModelAdapter());

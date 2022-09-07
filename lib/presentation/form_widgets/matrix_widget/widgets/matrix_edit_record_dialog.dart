@@ -12,6 +12,8 @@ import 'package:form_builder_test/presentation/resources/values_manager.dart';
 import '../../../resources/color_manager.dart';
 
 showEditRecordDialog(BuildContext context, int index,MatrixModel model) {
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   FormsBloc bloc = context.read<FormsBloc>();
   model.values.forEach((element) {
     log(element.runtimeType.toString());
@@ -23,29 +25,53 @@ showEditRecordDialog(BuildContext context, int index,MatrixModel model) {
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: bloc,
-          child: AlertDialog(
-            title: Row(
-              children: [
-                const Text(AppStrings.editRecord),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Icon(
-                  Icons.edit,
-                  color: ColorManager.primary,
-                ),
-              ],
-            ),
-            content: MatrixDialog(
-                widgets : model.values.map((e) => e.toWidget()).toList().cast()),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(AppRadius.r12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
+          child: WillPopScope(
+            onWillPop: () async {
+                  return false;
+            },
+            child: AlertDialog(
+              title: Row(
+                children: [
+                  const Text(AppStrings.editRecord),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Icon(
+                    Icons.edit,
+                    color: ColorManager.primary,
+                  ),
+                ],
+              ),
+              content: Form(
+                  key: _key,
+                child: MatrixDialog(
+                    widgets : model.values.map((e) => e.toWidget()).toList().cast()),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(AppRadius.r12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(AppRadius.r20))),
+                            onPressed: () {
+                              if(_key.currentState!.validate()){
+                                Navigator.pop(context);
+                              }
+
+                            },
+                            child: const Text(AppStrings.submit)),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius:
@@ -53,27 +79,14 @@ showEditRecordDialog(BuildContext context, int index,MatrixModel model) {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Text(AppStrings.submit)),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(AppRadius.r20))),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(AppStrings.cancel),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                          child: const Text(AppStrings.cancel),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       });

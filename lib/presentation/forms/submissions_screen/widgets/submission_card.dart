@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/common/value_view_parser.dart';
 
 import '../../../resources/values_manager.dart';
 
@@ -14,7 +15,6 @@ class SubmissionCard extends StatelessWidget {
   final  void Function()? onUpdate;
   @override
   Widget build(BuildContext context) {
-    log(entries.toString());
     return Container(
       margin: const EdgeInsets.all(AppPadding.p20),
       height: 150.h,
@@ -35,7 +35,7 @@ class SubmissionCard extends StatelessWidget {
                 children: [
                   Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries().first.name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
                   ),))),
-                  Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries().first.value,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
+                  Expanded(child: Align(alignment:Alignment.center,child: Text(ValueViewParser.getValue(_getNonNullEntries().first.value),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
 
                 ],),
               if(_getNonNullEntries().length > 1) Opacity(
@@ -88,12 +88,19 @@ class SubmissionCard extends StatelessWidget {
 
 
   List<FieldEntry> _getNonNullEntries(){
+
+    log(entries.first.value.runtimeType.toString() + '&&&&&&&&');
+
     List<FieldEntry>  list = [ ];
     for(int i = 0 ; i<entries.length && list.length < 3 ; i++){
       if(entries[i].value != null){
         list.add(entries[i]);
+
+        log(list.first.value.runtimeType.toString() + '&&&&&&&&');
+
       }
     }
+
 
     return list;
   }
