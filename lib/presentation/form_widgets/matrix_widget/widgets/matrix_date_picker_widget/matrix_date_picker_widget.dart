@@ -20,19 +20,18 @@ class MatrixDatePickerWidget extends StatelessWidget {
         // return context.read<FormsBloc>().validateNumber(numberFieldModel,state.valuesMap[numberFieldModel.name]);
       }, widget: BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        log('buld');
+        final String initialDate = context.read<FormsBloc>().getMatrixFieldValue(model.fieldName) ?? '' ;
         return TextFormField(
                     readOnly: true,
           onTap: () async{
-            print('ores');
-            final date = await getDate(context);
+            final date = await getDate(context,DateTime.tryParse(initialDate));
             if(date != null)    context.read<FormsBloc>().add(MatrixFieldValueChanged(
-                fieldName: model.fieldName, value: date));
+                fieldName: model.fieldName, value: date.toString()));
           },
           key: UniqueKey(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          initialValue: context.read<FormsBloc>().getMatrixFieldValue(
-              model.fieldName).toString(),
+          initialValue: initialDate.isNotEmpty ? DateFormat('d - MMMM - y').format(DateTime.parse(initialDate)) : '',
+
           // initialValue: state.tempRecord!.valuesMap[model.fieldName].toString(),
         );
       },
@@ -40,9 +39,9 @@ class MatrixDatePickerWidget extends StatelessWidget {
   }
 
 
-  Future<DateTime?> getDate (BuildContext context) async {
+  Future<DateTime?> getDate (BuildContext context,DateTime? initialDate) async {
    return await  showDatePicker(firstDate: DateTime(1940)
-        , initialDate: DateTime(1999),
+        , initialDate: initialDate ?? DateTime(1999,2,15),
         lastDate: DateTime.now(), context: context);
 
 

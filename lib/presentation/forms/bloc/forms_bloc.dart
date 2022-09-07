@@ -49,6 +49,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             newFlowState: ContentState(),
             validationMap: {})) {
     on<MatrixFieldValueChanged>(_onMatrixFieldValueChanged);
+    on<MatrixCheckboxGroupValueChanged>(_onMatrixCheckboxGroupValueChanged);
+    on<MatrixTextValueChanged>(_onMatrixTextValueChanged);
     on<NewMatrixRecordAddRequested>(_onNewMatrixRecordAddRequested);
     on<MatrixRecordAEditRequested>(_onMatrixRecordAEditRequested);
     on<MatrixRecordSubmitted>(_onMatrixRecordSubmitted);
@@ -222,24 +224,31 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   }
   Future<void> _onMatrixFieldValueChanged(
       MatrixFieldValueChanged event, Emitter<FormsState> emit) async {
-
-    Map<String, dynamic> map = Map.from(state.valuesMap);
-
+    _changeRecordValue(event.fieldName, event.value);
+  }
+  Future<void> _onMatrixTextValueChanged(
+      MatrixTextValueChanged event, Emitter<FormsState> emit) async {
     final record = _getDesiredRecord();
-
-    changeRecordValue(event.fieldName, event.value);
-    log('values map :: '+ state.valuesMap.toString());
-    log(state.tempRecord.toString()+ 'recorrd');
-
-
+    if(record != null ) record.valuesMap[event.fieldName] = event.value;
   }
 
-    void changeRecordValue (String fieldName,dynamic value){
+
+  Future<void> _onMatrixCheckboxGroupValueChanged(
+      MatrixCheckboxGroupValueChanged event, Emitter<FormsState> emit) async {
+
+
+    List<String>? groupValuesList = List<String>.from(getMatrixFieldValue(event.fieldName) ?? []);
+    if (event.isChecked)
+      groupValuesList.add(event.value);
+    else
+      groupValuesList.remove(event.value);
+
+    _changeRecordValue(event.fieldName, groupValuesList);
+  }
+
+    void _changeRecordValue (String fieldName,dynamic value){
     if(state.tempRecord != null ){
-
       var record = state.tempRecord!.copyWith();
-      // _setRecordValue(record, fieldName, value);
-
       emit(state.copyWith(tempRecord: () => _setRecordValue(record, fieldName, value)));
     }
     else {
@@ -250,8 +259,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       recordsList[state.currentRecordIndex!] = _setRecordValue(record, fieldName, value);
       valuesMap[state.currentMatrixName!] = recordsList;
 
-
-      log((state.copyWith(valuesMap: valuesMap) == state).toString());
       emit(state.copyWith(valuesMap: valuesMap));
 
     }
@@ -336,8 +343,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   dynamic getMatrixFieldValue (String fieldName) {
 
-   //  List<MatrixRecordModel> records  = state.valuesMap[state.currentMatrixName] ;
-   // return  records[state.currentRecordIndex!].valuesMap[fieldName];
+
     final record = _getDesiredRecord();
     log(record.toString());
     return  record?.valuesMap[fieldName];
@@ -629,7 +635,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
-    Map<String, dynamic> map = event.submission.toMap();
+    Map<String, dynamic> map = event.submission.$toMap();
     var form = event.formModel.copyWith();
     _initFieldsUpdate(form, map);
     emit(state.copyWith(formModel: form, valuesMap: map, validationMap: {}));

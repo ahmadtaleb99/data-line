@@ -42,7 +42,21 @@ class MatrixFieldValueChanged extends FormsEvent {
   List<Object?> get props => [fieldName,value];
 }
 
+class MatrixCheckboxGroupValueChanged extends FormsEvent {
+  final String fieldName;
+  final bool isChecked;
+  final String value;
 
+  const MatrixCheckboxGroupValueChanged({
+    required this.fieldName,
+    required this.isChecked,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,isChecked,value];
+}
 
 class NewMatrixRecordAddRequested extends FormsEvent {
   final int index;
@@ -118,6 +132,19 @@ class TextValueChanged extends FormsEvent {
   final dynamic value;
 
   const TextValueChanged({
+    required this.fieldName,
+    required this.value,
+  });
+
+
+  @override
+  List<Object?> get props => [fieldName,value];
+}
+class MatrixTextValueChanged extends FormsEvent {
+  final String fieldName;
+  final dynamic value;
+
+  const MatrixTextValueChanged({
     required this.fieldName,
     required this.value,
   });

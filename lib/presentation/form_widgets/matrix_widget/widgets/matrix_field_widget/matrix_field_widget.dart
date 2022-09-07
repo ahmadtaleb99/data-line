@@ -14,6 +14,7 @@ class MatrixFieldWidget<T> extends StatelessWidget {
   final MatrixFieldModel model;
   final String? Function(T?)? validator;
   final Function(T?)? onSaved;
+  final bool? showLabel;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
@@ -25,12 +26,11 @@ class MatrixFieldWidget<T> extends StatelessWidget {
             enabled: true,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value){
-
-
-              if( context.read<FormsBloc>().getMatrixFieldValue(model.fieldName) == null    )
-                return AppStrings.fieldReqired;
-
-              else return validator?.call(value);
+              // if( context.read<FormsBloc>().getMatrixFieldValue(model.fieldName) == null    )
+              //   return AppStrings.fieldReqired;
+              //
+              // else
+                return validator?.call(value);
             },
             builder: (fieldState)
             {
@@ -42,13 +42,17 @@ class MatrixFieldWidget<T> extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(AppPadding.p8),
-                    child: Text(model.label,
-                        style: Theme.of(context).textTheme.subtitle1),
-                  ),
-                  SizedBox(
-                    height: 10.h,
+                 if(showLabel!) Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(AppPadding.p8),
+                        child: Text(model.label,
+                            style: Theme.of(context).textTheme.subtitle1),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ],
                   ),
                   widget,
                   if (fieldState.hasError)
@@ -74,6 +78,7 @@ class MatrixFieldWidget<T> extends StatelessWidget {
     required this.model,
     this.validator,
     this.onSaved,
+    this.showLabel = true,
   });
 
 }

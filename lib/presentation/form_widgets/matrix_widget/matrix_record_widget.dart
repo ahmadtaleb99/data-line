@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
+import 'package:form_builder_test/presentation/common/value_view_parser.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/resources/strings_manager.dart';
 import 'package:form_builder_test/presentation/resources/values_manager.dart';
@@ -117,7 +118,7 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                                                             .subtitle1)),
                                                 Expanded(
                                                     child: Text(
-                                                  'value',
+                                                      _getFieldValue(index+1),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .subtitle1,
@@ -151,6 +152,7 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
   }
 
   _getFieldValue(int index){
-    return widget.record.valuesMap[widget.fields[index].fieldName];
+    var value =  widget.record.valuesMap[widget.fields[index].fieldName] ;
+    return ValueViewParser.getValue(value);
   }
 }

@@ -253,7 +253,7 @@ extension xFormFieldModel on FormFieldModel{
 class Submission extends HiveObject with EquatableMixin{
 
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> $toMap(){
     Map<String, dynamic> map =  {};
    fieldEntries.forEach((FieldEntry fieldEntry) {
       map[fieldEntry.name] = fieldEntry.value;
@@ -302,6 +302,22 @@ class Submission extends HiveObject with EquatableMixin{
 
   @override
   List<Object?> get props => [formName,id,fieldEntries];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'formName': this.formName,
+      'fieldEntries': this.fieldEntries.map((e) => e.toJson()).toList(),
+      'id': this.id,
+    };
+  }
+
+  factory Submission.fromJson(Map<String, dynamic> map) {
+    return Submission(
+      formName: map['formName'] as String,
+      fieldEntries: map['fieldEntries'] as List<FieldEntry>,
+      id: map['id'] as int,
+    );
+  }
 }
 
 @HiveType(typeId: 18)
@@ -324,6 +340,19 @@ class FieldEntry extends Equatable{
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [name,value];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'value': this.value,
+    };
+  }
+
+  factory FieldEntry.fromJson(Map<String, dynamic> json) {
+    return FieldEntry(
+      name: json['name'] as String,
+      value: json['value'] as dynamic,
+    );
+  }
 }

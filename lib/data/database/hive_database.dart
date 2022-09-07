@@ -105,7 +105,6 @@ class HiveDatabase {
   }
 
   Future<void> saveAssignedForms (AssignedForms assignedForms) async {
-    log('before save to db : '+ assignedForms.data!.first.fields.first.runtimeType.toString());
 
     await   _assignedFormsBox.put(_assignedForm, assignedForms);
   }

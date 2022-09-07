@@ -7,6 +7,7 @@ class AppStrings{
   static const String onboardingTitle3 ='on_boarding_title3';
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String warning ='Warning';
+  static const String selectAValue ='Select a value';
   static const String deleteRecordMsg ='Are you sure you want to delete this record?';
 
 
