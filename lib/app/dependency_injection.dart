@@ -100,9 +100,9 @@ Future<void> initAppModules() async {
 }
 
 void initFormModule (){
+  if(!getIT.isRegistered<FormsBloc>())
   getIT.registerLazySingleton<FormsBloc>(() => FormsBloc(getIT<AssignedFormRepository>()));
 }
-
 
 
 

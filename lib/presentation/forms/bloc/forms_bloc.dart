@@ -8,8 +8,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
 import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
+import 'package:form_builder_test/domain/model/text_area_model/text_area_model.dart';
 import 'package:path/path.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/app/form_validation.dart';
@@ -35,16 +37,16 @@ part 'forms_state.dart';
 
 class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   final stateBloc = getIT<StateRendererBloc>();
-  final  _ioService = getIT<FileCachingService>();
+  final _ioService = getIT<FileCachingService>();
   final _hiveDatabase = getIT<HiveDatabase>();
 
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)
       : super(FormsState(
-    isNewSubmit:  true,
-      matrixValuesMap : {},
-      updateFlowState: ContentState(),
-    allSaved: true,
+            isNewSubmit: true,
+            matrixValuesMap: {},
+            updateFlowState: ContentState(),
+            allSaved: true,
             assignedForms: [],
             isFilePicking: {},
             valuesMap: {},
@@ -61,9 +63,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<MatrixEditRecordSubmitted>(_onMatrixEditRecordSubmitted);
     on<MatrixRecordDeleted>(_onMatrixRecordDeleted);
     on<MatrixEditCanceled>(_onMatrixEditCanceled);
-
-
-
 
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
@@ -85,6 +84,25 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   }
   bool _isRequired(FormFieldModel model) {
     return model.showIfIsRequired || model.required;
+  }
+
+  String? validateTextArea(TextAreaModel model) {
+    String value = state.valuesMap[model.name] ?? '';
+    if (value.length < model.minLength || value.length > model.maxLength  ) {
+      return AppStrings.mustBeBetween +
+          model.minLength.toString() + ' '+
+          AppStrings.and + ' '+
+          model.maxLength.toString()+ ' '+ AppStrings.character;
+    }
+    return null;
+  }
+
+  String? validateEmail(EmailTextFieldModel model) {
+    String value = state.valuesMap[model.name] ?? '';
+    if (!isValidEmail(value.trim())) {
+      return AppStrings.mustBeAValidEmail;
+    }
+    return null;
   }
 
   String? validateNumber(String value, NumberFieldModel model) {
@@ -124,8 +142,11 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     return null;
   }
 
-  String? validateFile(FilePickerModel model) {
+  bool hasValues() {
+    return state.valuesMap.values.any((element) => element != null);
+  }
 
+  String? validateFile(FilePickerModel model) {
     String? path = state.valuesMap[model.name];
     if (_isRequired(model) && path == null)
       return AppStrings.fieldReqired;
@@ -219,7 +240,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFieldValueChanged(
       FieldValueChanged event, Emitter<FormsState> emit) async {
-
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.value;
 
@@ -228,22 +248,22 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     log(map.toString());
     emit(state.copyWith(valuesMap: map, validationMap: newValidationMap));
   }
+
   Future<void> _onMatrixFieldValueChanged(
       MatrixFieldValueChanged event, Emitter<FormsState> emit) async {
     _changeRecordValue(event.fieldName, event.value);
   }
+
   Future<void> _onMatrixTextValueChanged(
       MatrixTextValueChanged event, Emitter<FormsState> emit) async {
     final record = _getDesiredRecord();
-    if(record != null ) record.valuesMap[event.fieldName] = event.value;
+    if (record != null) record.valuesMap[event.fieldName] = event.value;
   }
-
 
   Future<void> _onMatrixCheckboxGroupValueChanged(
       MatrixCheckboxGroupValueChanged event, Emitter<FormsState> emit) async {
-
-
-    List<String>? groupValuesList = List<String>.from(getMatrixFieldValue(event.fieldName) ?? []);
+    List<String>? groupValuesList =
+        List<String>.from(getMatrixFieldValue(event.fieldName) ?? []);
     if (event.isChecked)
       groupValuesList.add(event.value);
     else
@@ -252,78 +272,71 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     _changeRecordValue(event.fieldName, groupValuesList);
   }
 
-    void _changeRecordValue (String fieldName,dynamic value){
-    if(state.tempRecord != null ){
+  void _changeRecordValue(String fieldName, dynamic value) {
+    if (state.tempRecord != null) {
       var record = state.tempRecord!.copyWith();
-      emit(state.copyWith(tempRecord: () => _setRecordValue(record, fieldName, value)));
-    }
-    else {
-      Map<String, dynamic> valuesMap = Map.from(state.valuesMap) ;
+      emit(state.copyWith(
+          tempRecord: () => _setRecordValue(record, fieldName, value)));
+    } else {
+      Map<String, dynamic> valuesMap = Map.from(state.valuesMap);
 
-      List<MatrixRecordModel> recordsList  =  List<MatrixRecordModel>.from(valuesMap[state.currentMatrixName!]);
+      List<MatrixRecordModel> recordsList =
+          List<MatrixRecordModel>.from(valuesMap[state.currentMatrixName!]);
       var record = recordsList[state.currentRecordIndex!].copyWith();
-      recordsList[state.currentRecordIndex!] = _setRecordValue(record, fieldName, value);
+      recordsList[state.currentRecordIndex!] =
+          _setRecordValue(record, fieldName, value);
       valuesMap[state.currentMatrixName!] = recordsList;
-
-
 
       log((state.copyWith(valuesMap: valuesMap) == state).toString());
       emit(state.copyWith(valuesMap: valuesMap));
+    }
+  }
 
-    }
-    }
-
-     _setRecordValue (MatrixRecordModel record,String fieldName, dynamic value){
-      Map<String,dynamic> newRecordValues = Map.from(record.valuesMap);
-      newRecordValues[fieldName] = value;
-      return record.copyWith(valuesMap: newRecordValues) ;
-    }
+  _setRecordValue(MatrixRecordModel record, String fieldName, dynamic value) {
+    Map<String, dynamic> newRecordValues = Map.from(record.valuesMap);
+    newRecordValues[fieldName] = value;
+    return record.copyWith(valuesMap: newRecordValues);
+  }
 
   //if temp record is not null, the current opened record is a new one (to be added),
   // or we get it from the list with the index
-  MatrixRecordModel? _getDesiredRecord (){
-
-    if(state.tempRecord != null) {
-
-      log( ' getDesiredRecord is not null');
+  MatrixRecordModel? _getDesiredRecord() {
+    if (state.tempRecord != null) {
+      log(' getDesiredRecord is not null');
       return state.tempRecord!.copyWith();
     } else {
-      Map<String, dynamic> map = Map.from(state.valuesMap) ;
+      Map<String, dynamic> map = Map.from(state.valuesMap);
 
-      var recordsList  =  map[state.currentMatrixName!] as List?;
+      var recordsList = map[state.currentMatrixName!] as List?;
 
-      if(recordsList != null )
+      if (recordsList != null)
         //check if index exists or return null
-      return recordsList.firstWhereIndexedOrNull((i, _) => i == state.currentRecordIndex!)?.copyWith();
+        return recordsList
+            .firstWhereIndexedOrNull((i, _) => i == state.currentRecordIndex!)
+            ?.copyWith();
 
       return null;
     }
-
-
   }
 
-  _setCurrentRecord(int currentRecordIndex,String currentMatrix){
-    emit(state.copyWith(currentRecordIndex: currentRecordIndex,currentMatrix: currentMatrix));
+  _setCurrentRecord(int currentRecordIndex, String currentMatrix) {
+    emit(state.copyWith(
+        currentRecordIndex: currentRecordIndex, currentMatrix: currentMatrix));
   }
-
 
   Future<void> _onNewMatrixRecordAddRequested(
       NewMatrixRecordAddRequested event, Emitter<FormsState> emit) async {
-
     _setCurrentRecord(event.index, event.matrixName);
 
-      emit(state.copyWith(tempRecord: () => MatrixRecordModel(valuesMap: {})));
-
+    emit(state.copyWith(tempRecord: () => MatrixRecordModel(valuesMap: {})));
   }
-
 
   Future<void> _onMatrixRecordAEditRequested(
       MatrixRecordAEditRequested event, Emitter<FormsState> emit) async {
-
     _setCurrentRecord(event.index, event.matrixName);
 
-    List<MatrixRecordModel> recordsList = state.valuesMap[state.currentMatrixName];
-
+    List<MatrixRecordModel> recordsList =
+        state.valuesMap[state.currentMatrixName];
 
     final record = recordsList[state.currentRecordIndex!].copyWith();
     emit(state.copyWith(tempRecord: () => record));
@@ -331,89 +344,94 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onMatrixNewRecordSubmitted(
       MatrixNewRecordSubmitted event, Emitter<FormsState> emit) async {
-    final tempRecord = state.tempRecord!.copyWith() ;
-      if(tempRecord.areAllValuesNull()){
-            emit(state.copyWith(matrixState: MatrixState(MatrixStatus.error, AppStrings.cantSubmitEmptyRecordMsg)));
-      } else {
-        var map = Map.from(state.valuesMap);
-        List<MatrixRecordModel>? recordsList = state.valuesMap[state.currentMatrixName!];
-        recordsList ??=  [];
-        recordsList  = List<MatrixRecordModel>.from(recordsList)  ;
+    final tempRecord = state.tempRecord!.copyWith();
+    if (tempRecord.areAllValuesNull()) {
+      emit(state.copyWith(
+          matrixState: MatrixState(
+              MatrixStatus.error, AppStrings.cantSubmitEmptyRecordMsg)));
+    } else {
+      var map = Map.from(state.valuesMap);
+      List<MatrixRecordModel>? recordsList =
+          state.valuesMap[state.currentMatrixName!];
+      recordsList ??= [];
+      recordsList = List<MatrixRecordModel>.from(recordsList);
 
-        recordsList.add(tempRecord);
+      recordsList.add(tempRecord);
 
-        map[state.currentMatrixName!] = recordsList;
-        emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null,matrixState:  MatrixState(MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
-      }
-
-
+      map[state.currentMatrixName!] = recordsList;
+      emit(state.copyWith(
+          valuesMap: map.cast(),
+          tempRecord: () => null,
+          matrixState: MatrixState(
+              MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
+    }
 
     // log(map[state.currentMatrixName!].runtimeType.toString()+' temp record ;');
   }
+
   Future<void> _onMatrixEditRecordSubmitted(
       MatrixEditRecordSubmitted event, Emitter<FormsState> emit) async {
-    final tempRecord = state.tempRecord!.copyWith() ;
+    final tempRecord = state.tempRecord!.copyWith();
     var map = Map.from(state.valuesMap);
-    List<MatrixRecordModel> recordsList = state.valuesMap[state.currentMatrixName!];
+    List<MatrixRecordModel> recordsList =
+        state.valuesMap[state.currentMatrixName!];
 
     recordsList[state.currentRecordIndex!] = tempRecord;
     map[state.currentMatrixName!] = recordsList;
-    emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null,matrixState:  MatrixState(MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
+    emit(state.copyWith(
+        valuesMap: map.cast(),
+        tempRecord: () => null,
+        matrixState: MatrixState(
+            MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
   }
 
-
-
-  String? validateMatrix (MatrixModel model){
-
-
-    List<MatrixRecordModel>?  records = state.valuesMap[model.name] ?? [];
-      log(records.toString() + ' records fro mvalieation ');
-    if(records!.length > model.maxRecordsCount) {
+  String? validateMatrix(MatrixModel model) {
+    List<MatrixRecordModel>? records = state.valuesMap[model.name] ?? [];
+    log(records.toString() + ' records fro mvalieation ');
+    if (records!.length > model.maxRecordsCount) {
       Map<String, bool> newValidationMap = Map.from(state.validationMap);
       newValidationMap[model.name] = true;
-      log(newValidationMap.toString()+ ' val map ');
+      log(newValidationMap.toString() + ' val map ');
       emit(state.copyWith(validationMap: newValidationMap));
-      return AppStrings.maxRecordCountErrorMsg+model.maxRecordsCount.toString();
-    }
-    else return null;
+      return AppStrings.maxRecordCountErrorMsg +
+          model.maxRecordsCount.toString();
+    } else
+      return null;
   }
 
   Future<void> _onMatrixEditCanceled(
       MatrixEditCanceled event, Emitter<FormsState> emit) async {
-    final tempRecord = state.tempRecord!.copyWith() ;
+    final tempRecord = state.tempRecord!.copyWith();
     var map = Map.from(state.valuesMap);
-    List<MatrixRecordModel> recordsList = state.valuesMap[state.currentMatrixName!];
+    List<MatrixRecordModel> recordsList =
+        state.valuesMap[state.currentMatrixName!];
 
     recordsList[state.currentRecordIndex!] = tempRecord;
     map[state.currentMatrixName!] = recordsList;
-    emit(state.copyWith(valuesMap: map.cast(),tempRecord:  () => null,matrixState:  MatrixState(MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
+    emit(state.copyWith(
+        valuesMap: map.cast(),
+        tempRecord: () => null,
+        matrixState: MatrixState(
+            MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
   }
 
- Future<void> _onMatrixRecordDeleted(
-     MatrixRecordDeleted event, Emitter<FormsState> emit) async {
-      Map<String,dynamic> map = Map.from(state.valuesMap);
-      List<MatrixRecordModel> records = List.from(map[event.matrixName]);
-      records.removeAt(event.recordIndex);
-      map[event.matrixName] = records;
+  Future<void> _onMatrixRecordDeleted(
+      MatrixRecordDeleted event, Emitter<FormsState> emit) async {
+    Map<String, dynamic> map = Map.from(state.valuesMap);
+    List<MatrixRecordModel> records = List.from(map[event.matrixName]);
+    records.removeAt(event.recordIndex);
+    map[event.matrixName] = records;
 
-      emit(state.copyWith(valuesMap: map));
+    emit(state.copyWith(valuesMap: map));
   }
 
-
-
-
-
-  dynamic getMatrixFieldValue (String fieldName) {
-
-
+  dynamic getMatrixFieldValue(String fieldName) {
     final record = _getDesiredRecord();
-    return  record?.valuesMap[fieldName];
-
+    return record?.valuesMap[fieldName];
   }
+
   Future<void> _onFilePickerPressed(
       FilePickerPressed event, Emitter<FormsState> emit) async {
-
-
     Map<String, dynamic> map = Map.from(state.valuesMap);
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -446,104 +464,89 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     emit(state.copyWith(valuesMap: map, validationMap: newValidationMap));
   }
 
-
   Future<void> saveForm() async {
-
     emit(state.copyWith(
-        newSubmitFlowState: LoadingState(
-            stateRendererType: StateRendererType.POPUP_LOADING)));
+        newSubmitFlowState:
+            LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
 
-    try{
-      if(state.formModel!.hasType(FieldType.FILE)){
+    try {
+      if (state.formModel!.hasType(FieldType.FILE)) {
         await _saveFilePickerFiles();
       }
 
       add(FormSubmitted(state.formModel!));
-
+    } catch (e) {
+      emit(state.copyWith(
+          allSaved: false,
+          newSubmitFlowState: ErrorState(
+              stateRendererType: StateRendererType.POPUP_ERROR,
+              message: e.toString())));
     }
-    catch(e){
-      emit(state.copyWith(allSaved: false,
-          newSubmitFlowState:
-          ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message:e.toString())));
-    }
-
-
   }
-  Future<void> _saveFilePickerFiles() async{
+
+  Future<void> _saveFilePickerFiles() async {
     FormModel form = state.formModel!.copyWith();
     // if(form.hasType(FieldType.FILE)){
     //
     // }
 
-    form.fields.where((field) => field.type == FieldType.FILE).forEach((filePicker) async {
+    form.fields
+        .where((field) => field.type == FieldType.FILE)
+        .forEach((filePicker) async {
       Map<String, dynamic> map = state.valuesMap;
       String? path = map[filePicker.name];
-        if (path == null) return;
+      if (path == null) return;
 
-
-      String  currentFormName = form.name;
+      String currentFormName = form.name;
 
       var file = File(path);
 
-      int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
+      int submissionId = _hiveDatabase.getLastSubmissionId() + 1;
       String newFilePath = '${submissionId}-${currentFormName}';
       //
 
-      final either = await _ioService.cacheFile(file,newFilePath);
+      final either = await _ioService.cacheFile(file, newFilePath);
       either.fold((failure) {
         return;
-      }, (newPath)  {
+      }, (newPath) {
         map[filePicker.name] = newPath;
-
-
       });
-
     });
   }
 
+  Future<void> _onFilePickerSaved(
+      FilePickerSaved event, Emitter<FormsState> emit) async {
+    Map<String, dynamic> map = state.valuesMap;
+    String? path = map[event.model.name];
+    {
+      if (path == null) return;
+    }
+    emit(state.copyWith(
+        newSubmitFlowState:
+            LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
+    String currentFormName = state.formModel!.name;
 
+    var file = File(path);
 
- Future<void> _onFilePickerSaved(
-     FilePickerSaved event, Emitter<FormsState> emit) async {
-      Map<String, dynamic> map = state.valuesMap;
-      String? path = map[event.model.name];
-      {
-        if (path == null) return;
+    int submissionId = _hiveDatabase.getLastSubmissionId() + 1;
+    String newFilePath = '${submissionId}-${currentFormName}';
+    //
 
-      }
+    final either = await _ioService.cacheFile(file, newFilePath);
+    either.fold((failure) {
       emit(state.copyWith(
-          newSubmitFlowState: LoadingState(
-              stateRendererType: StateRendererType.POPUP_LOADING)));
-      String  currentFormName = state.formModel!.name;
-
-      var file = File(path);
-
-      int submissionId  = _hiveDatabase.getLastSubmissionId()+1;
-      String newFilePath = '${submissionId}-${currentFormName}';
-      //
-
-      final either = await _ioService.cacheFile(file,newFilePath);
-      either.fold((failure) {
-        emit(state.copyWith(allSaved: false,
-            newSubmitFlowState: ErrorState(stateRendererType:StateRendererType.POPUP_ERROR,message:failure.message)));
-      }, (newPath)  {
+          allSaved: false,
+          newSubmitFlowState: ErrorState(
+              stateRendererType: StateRendererType.POPUP_ERROR,
+              message: failure.message)));
+    }, (newPath) {
       map[event.model.name] = newPath;
 
-          log(map[event.model.name] );
+      log(map[event.model.name]);
 
-      emit(state.copyWith(
-          newSubmitFlowState: ContentState(),allSaved: true));
-      });
-
-
-
-
+      emit(state.copyWith(newSubmitFlowState: ContentState(), allSaved: true));
+    });
   }
-
-
-
-
-
 
   Future<void> _onTextValueChanged(
       TextValueChanged event, Emitter<FormsState> emit) async {
@@ -618,30 +621,28 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         formModel: formModel, valuesMap: map, validationMap: newValidationMap));
   }
 
-
-
-
-
-
-
   Future<void> _onNewFormRequested(
       NewFormRequested event, Emitter<FormsState> emit) async {
     var formModel = event.formModel.copyWith();
     _initFields(formModel);
 
     //init values map with fields names with null values;
-    Map<String,dynamic> map = {};
+    Map<String, dynamic> map = {};
     formModel.fields.forEach((field) {
       map[field.name] = null;
     });
 
-      log(map.toString());
-    emit(state.copyWith(isNewSubmit: true,newSubmitFlowState:ContentState(),valuesMap:map,formModel: formModel, validationMap: {},allSaved: false));
+    log(map.toString());
+    emit(state.copyWith(
+        isNewSubmit: true,
+        newSubmitFlowState: ContentState(),
+        valuesMap: map,
+        formModel: formModel,
+        validationMap: {},
+        allSaved: false));
 
     log('_onNewFormRequested ************** emiting state  : ${map.toString()}');
-
   }
-
 
   void _initFields(FormModel formModel) {
     // init drop downs
@@ -649,20 +650,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     childrenDropDowns.forEach((childDropDown) {
       childDropDown = childDropDown.copyWith(values: []);
       formModel.fields[formModel.fields
-          .indexWhere((element) => element.name == childDropDown.name)] =
+              .indexWhere((element) => element.name == childDropDown.name)] =
           childDropDown;
     });
 
-
-
-
     // emit(state.copyWith(valuesMap: map.cast()));
-
   }
 
-  getFieldType (String fieldName){
-
-  }
+  getFieldType(String fieldName) {}
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
@@ -672,7 +667,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     await _assignedFormRepository.addSubmission(newSub);
     emit(state.copyWith(
-      newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),allSaved: false));
+        newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
+        allSaved: false));
 
     // add(NewFormRequested(event.formModel));
   }
@@ -693,16 +689,16 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     });
   }
 
-
-
-
-
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = event.submission.$toMap();
     var form = event.formModel.copyWith();
     _initFieldsUpdate(form, map);
-    emit(state.copyWith(newSubmitFlowState:ContentState(),valuesMap:map,isNewSubmit: false,formModel: event.formModel));
+    emit(state.copyWith(
+        newSubmitFlowState: ContentState(),
+        valuesMap: map,
+        isNewSubmit: false,
+        formModel: event.formModel));
   }
 
   Future<void> _onCheckboxGroupValueChanged(
@@ -719,7 +715,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       groupValuesList.remove(event.value);
 
     map[event.fieldName] = groupValuesList;
-
 
     Map newValidationMap = Map.from(state.validationMap);
     newValidationMap[event.fieldName] = true;
@@ -749,8 +744,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onMatrixSubmitCanceled(
       MatrixSubmitCanceled event, Emitter<FormsState> emit) async {
-
-  emit(state.copyWith(tempRecord: () => null ));
+    emit(state.copyWith(tempRecord: () => null));
   }
 
   Future<void> _onSubmissionUpdated(
@@ -763,27 +757,42 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         submission.copyWith(fieldEntries: _mapValuesToEntries(map));
     log(newSub.fieldEntries.toString());
     await _assignedFormRepository.updateSubmission(newSub);
-    emit(state.copyWith(newSubmitFlowState:SuccessState(AppStrings.formUpdatedSuccess)));
+    emit(state.copyWith(
+        newSubmitFlowState: SuccessState(AppStrings.formUpdatedSuccess)));
     // add(SubmissionUpdateRequested(event.formModel, event.submission));
-
   }
 
-
-
-
-
-  FieldType _getFieldTypeFromName(String fieldName){
-    FormFieldModel? field =  state.formModel!.fields.firstWhereOrNull((element) => element.name == fieldName);
+  FieldType _getFieldTypeFromName(String fieldName) {
+    FormFieldModel? field = state.formModel!.fields
+        .firstWhereOrNull((element) => element.name == fieldName);
 
     log(field.toString());
     return field != null ? field.type : FieldType.UNKNOWN;
   }
+  bool _isFieldVisible(FormFieldModel model) {
+    if (model.showIfLogicCheckbox == false) return true;
+
+    if (state.valuesMap[model.showIfFieldName] ==
+        model.showIfFieldValue) return true;
+
+    return false;
+  }
   List<FieldEntry> _mapValuesToEntries(Map valuesMap) {
+    List<FieldEntry> entries =  [];
+    for(var entry in valuesMap.entries){
 
 
-    List<FieldEntry> entries = valuesMap.entries
-        .map((e) => FieldEntry(name: e.key, value: e.value,type: _getFieldTypeFromName(e.key)))
-        .toList();
+      if(!_isFieldVisible(_getField(state.formModel!, entry.key))){
+        entries.add(FieldEntry(
+            name: entry.key, value: null, type: _getFieldTypeFromName(entry.key)));
+      }
+      else entries.add(FieldEntry(
+          name: entry.key, value: entry.value, type: _getFieldTypeFromName(entry.key)));
+    }
+    // List<FieldEntry> entries = valuesMap.entries
+    //     .map((e) => FieldEntry(
+    //         name: e.key, value: e.value, type: _getFieldTypeFromName(e.key)))
+    //     .toList();
 
     return entries;
   }

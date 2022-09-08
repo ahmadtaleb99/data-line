@@ -200,18 +200,18 @@ class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
     };
 
 
-    List<MatrixRecordModel>? records = [ ];
-    if(fields[3] == FieldType.MATRIX)
-        {
-          if (fields[2] != null ){
-            records = List<MatrixRecordModel>.from(fields[2]);
-          }
-        }
+    // List<MatrixRecordModel>? records;
+    // if(fields[3] == FieldType.MATRIX)
+    //     {
+    //       if (fields[2] != null ){
+    //         records = List<MatrixRecordModel>.from(fields[2]);
+    //       }
+    //     }
 
 
     return FieldEntry(
       name: fields[1] as String,
-      value: records,
+      value: fields[2],
       type: fields[3] as FieldType,
     );
   }

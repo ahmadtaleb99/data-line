@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
@@ -41,8 +42,8 @@ class DropDownWidget extends StatelessWidget {
                       value: state.valuesMap[dropDownModel.name],
                         // isExpanded: true,
                       underline: Container(),
-                      icon: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                      icon:  Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 50.w),
                         child: Icon(Icons.arrow_drop_down),
                       ),
                       // items: hasItems()? [DropdownMenuItem<String>(child: Container(),)] :

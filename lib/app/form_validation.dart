@@ -35,7 +35,7 @@ mixin FormValidation{
 
 
 
-  String? validateTextArea(String text,int minText,int maxText) {
+  String? _validateTextArea(String text,int minText,int maxText) {
 
 
     if(text.length < minText || text.length > maxText ){

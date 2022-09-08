@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:form_builder_test/presentation/common/value_view_parser.dart';
 
 import '../../../resources/values_manager.dart';
@@ -16,6 +17,10 @@ class SubmissionCard extends StatelessWidget {
   final  void Function()? onUpdate;
   @override
   Widget build(BuildContext context) {
+
+    var notNullRecords = _getNonNullEntries();
+
+
     return Container(
       margin: const EdgeInsets.all(AppPadding.p20),
       height: 150.h,
@@ -32,23 +37,23 @@ class SubmissionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              Row(
+              if(!notNullRecords.isEmpty)   Row(
                 children: [
-                  Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries().first.name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
+                  Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(notNullRecords.first.name),overflow: TextOverflow.fade,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
                   ),))),
-                  Expanded(child: Align(alignment:Alignment.center,child: Text(ValueViewParser.getValue(_getNonNullEntries().first.value),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
+                  Expanded(child: Align(alignment:Alignment.center,child: Text(ValueViewParser.getValue(notNullRecords.first.value),overflow: TextOverflow.fade,softWrap:false,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
 
                 ],),
-              if(_getNonNullEntries().length > 1) Opacity(
+              if(notNullRecords.length > 1) Opacity(
                 opacity: 0.6,
                 child: Row(
                   children: [
-                    Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(_getNonNullEntries()[1].name),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
-                    Expanded(child: Align(alignment:Alignment.center,child: Text(_getNonNullEntries()[1].value.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),))),
+                    Expanded(child: Align(alignment:Alignment.center,child: Text(getFieldLabel(notNullRecords[1].name),overflow: TextOverflow.fade,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold),))),
+                    Expanded(child: Align(alignment:Alignment.center,child: Text(notNullRecords[1].value.toString(),overflow: TextOverflow.ellipsis,style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),))),
 
                   ],),
               ),
-              if(_getNonNullEntries().length > 2) Opacity(
+              if(notNullRecords.length > 2) Opacity(
                 opacity: 0.4,
                 child: Text('. . .',style: Theme.of(context).textTheme.subtitle2!.copyWith(color:Colors.white,fontWeight: FontWeight.bold)),
               ),
@@ -95,7 +100,9 @@ class SubmissionCard extends StatelessWidget {
     List<FieldEntry>  list = [ ];
     for(int i = 0 ; i<entries.length && list.length < 3 ; i++){
       if(entries[i].value != null){
-        list.add(entries[i]);
+
+        if(entries[i].type == FieldType.MATRIX) entries[i] = entries[i].copyWith(value: List<MatrixRecordModel>.from(entries[i].value));
+        list.add(entries[i] );
 
         log(list.first.value.runtimeType.toString() + '&&&&&&&&');
 

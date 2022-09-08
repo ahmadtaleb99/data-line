@@ -18,14 +18,13 @@ class TextFieldWidget extends StatelessWidget {
       builder: (context, state) {
         return FormFieldWidget(
           validator: (value) {
-            // return context.read<FormsBloc>().validateNumber(numberFieldModel,state.valuesMap[numberFieldModel.name]);
           }, widget: TextFormField(
           key: UniqueKey(),
           autovalidateMode  : AutovalidateMode.onUserInteraction,
           initialValue: state.valuesMap[model.name],
 
           onChanged: (text) {
-            context.read<FormsBloc>().add(FieldValueChanged(
+            context.read<FormsBloc>().add(TextValueChanged(
                 fieldName: model.name, value: text));
           },
         ), model: model,);

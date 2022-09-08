@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/data/responses/forms/enums.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
 import 'package:form_builder_test/presentation/common/value_view_parser.dart';
@@ -45,13 +46,13 @@ final FormFieldModel field;
 
       return
         RatingBarIndicator(
-          // rating: field.value,
-          itemBuilder: (context, index) => Icon(
+          rating: value,
+          itemBuilder: (context, index) => const Icon(
             Icons.star,
             color: Colors.amber,
           ),
           itemCount: 5,
-          itemSize: 25.0,
+          itemSize: 25.0.w,
           direction: Axis.horizontal,
         );
     }

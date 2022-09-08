@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:form_builder_test/presentation/form_widgets/email_text_field_widget/email_text_field_widget.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';
@@ -75,7 +76,6 @@ class EmailTextFieldModel extends FormFieldModel with EquatableMixin{
 
   @override
   Widget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return EmailTextFieldWidget(model: this);
   }
 }

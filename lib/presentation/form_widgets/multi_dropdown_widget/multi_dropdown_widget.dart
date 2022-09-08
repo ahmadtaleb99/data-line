@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
 import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
@@ -31,49 +32,70 @@ class MultiDropDownWidget extends StatelessWidget {
           },
           widget: Container(
               width: double.infinity,
-              child: Center(
-                child: MultiSelectDialogField<String>(
+              child: Stack(
+                children: [
 
-                  selectedItemsTextStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  barrierColor: Colors.grey.withOpacity(0.2),
-                  key: GlobalKey(),
-                  searchable: true,
-                  decoration: BoxDecoration(
-                    color: ColorManager.primary.withOpacity(0.1),
-                    borderRadius: const BorderRadius.all(Radius.circular(40)),
-                    border: Border.all(
-                      color: ColorManager.primary,
-                      width: 2,
+              Positioned.fill(
+                left: 70.w,
+              top: 10.h,
+              child: Align(
+              alignment: Alignment.topCenter,
+                  child:Row(
+                    children: [
+
+                        Text(dropDownModel.prompt,style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).hintColor),),
+                      SizedBox(width: 47.w,),
+                      Icon(Icons.arrow_drop_down),
+                    ],
+                  )
+              ),
+              ),
+
+                  MultiSelectDialogField<String>(
+                    selectedItemsTextStyle: const TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    barrierColor: Colors.grey.withOpacity(0.2),
+                    key: GlobalKey(),
+                    searchable: true,
+                    decoration: BoxDecoration(
+                      color: ColorManager.primary.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
+                      border: Border.all(
+                        color: ColorManager.primary,
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  chipDisplay: MultiSelectChipDisplay(
-                    textStyle: TextStyle(
-                        color: ColorManager.black, fontWeight: FontWeight.bold),
-                    alignment: Alignment.topCenter,
-                    onTap: (item) {
-                      context.read<FormsBloc>().add(MultiDropDownValueTapped(
-                          fieldName: dropDownModel.name, value: item));
+                    chipDisplay: MultiSelectChipDisplay(
+                      textStyle: TextStyle(
+                          color: ColorManager.black, fontWeight: FontWeight.bold),
+                      alignment: Alignment.topCenter,
+                      onTap: (item) {
+                        context.read<FormsBloc>().add(MultiDropDownValueTapped(
+                            fieldName: dropDownModel.name, value: item));
+                      },
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    dialogHeight: dropDownModel.values.isEmpty ? 5 : null,
+                    dialogWidth: dropDownModel.values.isEmpty ? 5 : null,
+                    // buttonIcon: Icon(Icons.arrow_drop_down),
+                    // buttonText: Text(dropDownModel.prompt),
+                    buttonIcon:   Icon(null),
+                    buttonText: Text(''),
+                    title: Text('Please Select a value'),
+
+                    listType: MultiSelectListType.CHIP,
+                    items: dropDownModel.values
+                        .map((e) => MultiSelectItem<String>(e.value, e.label))
+                        .toList()
+                        .cast(),
+                    initialValue: state.valuesMap[dropDownModel.name],
+                    onConfirm: (values) {
+
+                      context.read<FormsBloc>().add(FieldValueChanged(
+                          fieldName: dropDownModel.name, value: values));
                     },
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  dialogHeight: dropDownModel.values.isEmpty ? 5 : null,
-                  dialogWidth: dropDownModel.values.isEmpty ? 5 : null,
-                  buttonIcon: Icon(Icons.arrow_drop_down),
-                  title: Text('Please Select a value'),
-                  buttonText: Text(dropDownModel.prompt),
-                  listType: MultiSelectListType.CHIP,
-                  items: dropDownModel.values
-                      .map((e) => MultiSelectItem<String>(e.value, e.label))
-                      .toList()
-                      .cast(),
-                  initialValue: state.valuesMap[dropDownModel.name],
-                  onConfirm: (values) {
-
-                    context.read<FormsBloc>().add(FieldValueChanged(
-                        fieldName: dropDownModel.name, value: values));
-                  },
-                ),
+                ],
               )),
           model: dropDownModel,
         );

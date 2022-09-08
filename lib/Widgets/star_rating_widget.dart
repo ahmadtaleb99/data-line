@@ -7,8 +7,8 @@ import 'package:form_builder_test/Widgets/form_field_widget.dart';
 import '../validation/bloc/validation__bloc.dart';
 import 'form_element_widget.dart';
 
-class StarRatingWidget extends FormElementWidget {
-  StarRatingWidget({
+class oldStarRatingWidget extends FormElementWidget {
+  oldStarRatingWidget({
     Key? key,
     required this.label,
     required this.visible,
@@ -43,9 +43,9 @@ class StarRatingWidget extends FormElementWidget {
     print('value [$value] in text field class ');
     return BlocBuilder<ValidationBloc, ValidationState>(
       builder: (context, state) {
-        StarRatingWidget stateField = state.form!.fields
+        oldStarRatingWidget stateField = state.form!.fields
                 .firstWhere((element) => element.name == this.name)
-            as StarRatingWidget;
+            as oldStarRatingWidget;
 
         return khF<double>(
             visible: visible,
@@ -107,7 +107,7 @@ class StarRatingBar extends StatelessWidget {
   }) : super(key: key);
 
   final String name;
-  final StarRatingWidget stateField;
+  final oldStarRatingWidget stateField;
   final void Function(double) onValueChanged;
   final dynamic value;
 

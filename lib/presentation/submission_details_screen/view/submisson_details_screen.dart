@@ -92,7 +92,7 @@ Widget _getFormElementThumbnail(FormElementWidget field) {
   if (field is oldFilePicker) {
     return Container();
   }
-  if (field is StarRatingWidget) {
+  if (field is oldStarRatingWidget) {
     return const FieldHintWidget(text: '(Star Rating)');
   }
   if (field is NumberFieldWidget) {
@@ -155,7 +155,7 @@ class ValueWidget extends StatelessWidget {
             },
             child: const Text('download file'));
     }
-   if ( field is StarRatingWidget){
+   if ( field is oldStarRatingWidget){
       log('field is DrawFilePicker :::::::::::::::::::::::::::: ') ;
       return
         RatingBarIndicator(

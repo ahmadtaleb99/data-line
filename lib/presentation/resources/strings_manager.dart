@@ -10,6 +10,8 @@ class AppStrings{
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String warning ='Warning';
   static const String error ='Error';
+  static const String character ='Character';
+  static const String deleteSubmissionWarningMsg ='Are you sure you want to delete this submission?';
   static const String matrixHint ='(Matrix)';
   static const String maxRecordCountErrorMsg ='The maximum number of records is ';
   static const String editCancelMsg ='New values will not be saved when canceling.';
@@ -48,6 +50,7 @@ class AppStrings{
   static const String formUpdatedSuccess = "Form has been updated successfully.";
   static const String loading = "loading";
   static const String skip = "skip";
+  static const String submitBackWarningMgs = "Some fields have values, if you go back values will be erased";
   static const String resendEmail = "Didn’t recieve email ? Resesnd";
 
   static const String home = "Home";
@@ -73,6 +76,7 @@ class AppStrings{
   static const String services = "services";
   static const String stores = "stores";
   static const String about = "about";
+  static const String mustBeAValidEmail = "Must be a valid email address.";
   static const String banners = "Banners";
   static const String details = "details";
   static const String MB = "MB";

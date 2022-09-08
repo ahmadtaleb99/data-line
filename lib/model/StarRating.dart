@@ -104,7 +104,7 @@ class StarRating implements IFormModel {
 
   @override
   FormElementWidget toWidget() {
-    return StarRatingWidget(
+    return oldStarRatingWidget(
           label: this.label,
           value: this.value,
           required: this.required,

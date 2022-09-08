@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/responses/forms/forms_response.dart';
 import '../../../data/responses/forms/enums.dart';
 import '../form_model.dart';
-
+import 'package:form_builder_test/presentation/form_widgets/text_area_widget/text_area_widget.dart';
 
 part 'text_area_model.g.dart';
 
@@ -89,8 +89,7 @@ class TextAreaModel extends FormFieldModel with EquatableMixin {
 
   @override
   Widget toWidget() {
-    // TODO: implement toWidget
-    throw UnimplementedError();
+    return TextAreaWidget(model: this);
   }
 
 

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_test/app/dependency_injection.dart';
 import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
 import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
 import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
@@ -82,9 +83,13 @@ class NewWidget extends StatelessWidget {
                         .add(SubmissionsRequested(formModel)));
                   },
                   onDelete: () {
-                    context
-                        .read<SubmissionsBloc>()
-                        .add(SubmissionDeleted(state.submissions[index]));
+                    showWarningDialog(context, text: AppStrings.deleteSubmissionWarningMsg,onConfirmBtnTap: (){
+                      context
+                          .read<SubmissionsBloc>()
+                          .add(SubmissionDeleted(state.submissions[index]));
+                      Navigator.pop(context);
+                    });
+
                   },
                   onView: () {
                     Navigator.push(

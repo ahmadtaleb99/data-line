@@ -345,7 +345,15 @@ class FieldEntry extends Equatable{
   @override
   List<Object?> get props => [name,value,type];
 
-
-
-
+  FieldEntry copyWith({
+    String? name,
+    dynamic? value,
+    FieldType? type,
+  }) {
+    return FieldEntry(
+      name: name ?? this.name,
+      value: value ?? this.value,
+      type: type ?? this.type,
+    );
+  }
 }

@@ -31,55 +31,53 @@ class FormFieldWidget<T> extends StatelessWidget {
               ),
           duration: const Duration(milliseconds: 700),
           reverseDuration: const Duration(milliseconds: 100),
-          child: isFieldVisible(state)
-              ? FormField<T>(
-                onSaved: onSaved,
+          child: isFieldVisible(state) ? FormField<T>(
+            onSaved: onSaved,
             enabled: true,
-                  initialValue: initialValue,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value){
+            initialValue: initialValue,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value){
 
 
-                  if( state.valuesMap[model.name] == null && model.required   )
-               return AppStrings.fieldReqired;
+              if( state.valuesMap[model.name] == null && model.required   )
+                return AppStrings.fieldReqired;
 
-                    else return validator?.call(value);
-                  },
-                  builder: (fieldState)
-                  {
-                    if(state.validationMap[model.name] == true) {
-                      log(state.validationMap.toString());
-                      fieldState.validate();
-                    }
-                    return   Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(AppPadding.p8),
-                          child: Text(model.label,
-                          style: Theme.of(context).textTheme.subtitle1),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Align(alignment:Alignment.centerLeft,child: widget),
-                        if (fieldState.hasError)
-                          Padding(
-                              padding: const EdgeInsets.only(left: AppPadding.p13,top:AppPadding.p8),
-                              child: Text(
-                                fieldState.errorText!,
-                                style: TextStyle(
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 13,
-                                    color: Colors.red[700],
-                                    height: 1.5),
-                              ))
-                      ],
-                    );
-                  },
-                )
-              : Container());
+              else return validator?.call(value);
+            },
+            builder: (fieldState)
+            {
+              if(state.validationMap[model.name] == true) {
+                log(state.validationMap.toString());
+                fieldState.validate();
+              }
+              return   Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppPadding.p8),
+                    child: Text(model.label,
+                        style: Theme.of(context).textTheme.subtitle1),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Align(alignment:Alignment.centerLeft,child: widget),
+                  if (fieldState.hasError)
+                    Padding(
+                        padding: const EdgeInsets.only(left: AppPadding.p13,top:AppPadding.p8),
+                        child: Text(
+                          fieldState.errorText!,
+                          style: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 13,
+                              color: Colors.red[700],
+                              height: 1.5),
+                        ))
+                ],
+              );
+            },
+          ) : Container());
     });
   }
 
