@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/app/dependency_injection.dart';
-import 'package:form_builder_test/domain/repository/form_repository.dart';
-import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
-import 'package:form_builder_test/presentation/home/bloc/home_bloc.dart';
-import 'package:form_builder_test/presentation/home/view/home_screen.dart';
-import 'package:form_builder_test/presentation/login/bloc/login_bloc.dart';
-import 'package:form_builder_test/presentation/login/view/login_screen.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
-import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
-import 'package:form_builder_test/presentation/submission_details_screen/view/submisson_details_screen.dart';
-import 'package:form_builder_test/presentation/submissions/view/submissions_screen.dart';
+import 'package:datalines/app/dependency_injection.dart';
+import 'package:datalines/domain/repository/form_repository.dart';
+import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/presentation/home/bloc/home_bloc.dart';
+import 'package:datalines/presentation/home/view/home_screen.dart';
+import 'package:datalines/presentation/login/bloc/login_bloc.dart';
+import 'package:datalines/presentation/login/view/login_screen.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
+import 'package:datalines/presentation/submission_details_screen/view/submisson_details_screen.dart';
+import 'package:datalines/presentation/submissions/view/submissions_screen.dart';
 import 'package:get_it/get_it.dart';
 
 class Routes {

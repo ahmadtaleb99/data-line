@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:datalines/domain/model/form_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 

@@ -161,19 +161,22 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
       id: fields[3] as int?,
       formName: fields[1] as String,
       fieldEntries: (fields[2] as List).cast<FieldEntry>(),
+      node: fields[4] as Node,
     );
   }
 
   @override
   void write(BinaryWriter writer, Submission obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.formName)
       ..writeByte(2)
       ..write(obj.fieldEntries)
       ..writeByte(3)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(4)
+      ..write(obj.node);
   }
 
   @override
@@ -193,25 +196,13 @@ class FieldEntryAdapter extends TypeAdapter<FieldEntry> {
 
   @override
   FieldEntry read(BinaryReader reader) {
-
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-
-
-    // List<MatrixRecordModel>? records;
-    // if(fields[3] == FieldType.MATRIX)
-    //     {
-    //       if (fields[2] != null ){
-    //         records = List<MatrixRecordModel>.from(fields[2]);
-    //       }
-    //     }
-
-
     return FieldEntry(
       name: fields[1] as String,
-      value: fields[2],
+      value: fields[2] as dynamic,
       type: fields[3] as FieldType,
     );
   }

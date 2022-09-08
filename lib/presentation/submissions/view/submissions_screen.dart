@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/data/FormRepository.dart';
-import 'package:form_builder_test/presentation/submission_details_screen/view/submisson_details_screen.dart';
+import 'package:datalines/data/FormRepository.dart';
+import 'package:datalines/presentation/submission_details_screen/view/submisson_details_screen.dart';
 
 import '../../../Widgets/form_widget.dart';
 import '../../../validation/bloc/validation__bloc.dart';

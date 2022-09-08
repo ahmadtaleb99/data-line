@@ -2,18 +2,19 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:form_builder_test/data/responses/forms/forms_response.dart';
-import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
-import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
-import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
-import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
+import 'package:datalines/data/responses/forms/forms_response.dart';
+import 'package:datalines/domain/model/checkbox_group_model/checkbox_group_model.dart';
+import 'package:datalines/domain/model/dropdown_model/dropdown_model.dart';
+import 'package:datalines/domain/model/email_text_field_model/email_text_field_model.dart';
+import 'package:datalines/domain/model/file_picker_model/file_picker_model.dart';
+import 'package:datalines/domain/model/node/node.dart';
 
-import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
-import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
-import 'package:form_builder_test/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
-import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
-import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
-import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';
+import 'package:datalines/domain/model/file_picker_model/file_picker_model.dart';
+import 'package:datalines/domain/model/matrix_model/matrix_model.dart';
+import 'package:datalines/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
+import 'package:datalines/domain/model/number_text_field_model/number_text_field_model.dart';
+import 'package:datalines/domain/model/radio_group_model/radio_group_model.dart';
+import 'package:datalines/domain/model/star_rating_model/star_rating_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -283,18 +284,19 @@ class Submission extends HiveObject with EquatableMixin{
     @HiveField(3)
      final int? id;
 
+    @HiveField(4)
+     final Node node;
+
 
   Submission( {
 
      this.id  ,
     required this.formName  ,
     required this.fieldEntries,
+    required this.node,
   });
 
-  @override
-  String toString() {
-    return 'Submission{formName: $formName, fieldEntries: $fieldEntries}';
-  }
+
 
   Submission copyWith({
 
@@ -302,19 +304,21 @@ class Submission extends HiveObject with EquatableMixin{
     int? id  ,
     List<FieldEntry>? fieldEntries,
     FieldType? type,
+    Node? node
 
   }) {
     return Submission(
       formName: formName ?? this.formName,
       id: id ?? this.id,
       fieldEntries: fieldEntries ?? this.fieldEntries,
+      node: node ?? this.node,
 
 
     );
   }
 
   @override
-  List<Object?> get props => [formName,id,fieldEntries];
+  List<Object?> get props => [node,formName,id,fieldEntries];
 
 
 

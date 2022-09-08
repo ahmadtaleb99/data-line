@@ -1,4 +1,4 @@
-import 'package:form_builder_test/domain/model/form_model.dart';
+import 'package:datalines/domain/model/form_model.dart';
 
 class AppStrings{
 

@@ -4,12 +4,12 @@
 // import 'package:bloc/bloc.dart';
 // import 'package:equatable/equatable.dart';
 // import 'package:flutter/material.dart';
-// import 'package:form_builder_test/app/dependency_injection.dart';
-// import 'package:form_builder_test/domain/model/form_model.dart';
-// import 'package:form_builder_test/domain/repository/form_repository.dart';
-// import 'package:form_builder_test/presentation/common/state_renderer/state_renderer.dart';
-// import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
-// import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
+// import 'package:datalines/app/dependency_injection.dart';
+// import 'package:datalines/domain/model/form_model.dart';
+// import 'package:datalines/domain/repository/form_repository.dart';
+// import 'package:datalines/presentation/common/state_renderer/state_renderer.dart';
+// import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
+// import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 //
 // part 'home_event.dart';
 // part 'home_state.dart';

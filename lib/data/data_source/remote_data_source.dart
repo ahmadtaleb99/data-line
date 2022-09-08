@@ -1,7 +1,8 @@
-import 'package:form_builder_test/data/network/api_client.dart';
-import 'package:form_builder_test/data/requests/requests.dart';
-import 'package:form_builder_test/data/responses/responses.dart';
-import 'package:form_builder_test/data/responses/forms/forms_response.dart';
+import 'package:datalines/data/network/api_client.dart';
+import 'package:datalines/data/requests/requests.dart';
+import 'package:datalines/data/responses/forms/node_response/node_response.dart';
+import 'package:datalines/data/responses/responses.dart';
+import 'package:datalines/data/responses/forms/forms_response.dart';
 
 abstract class RemoteDataSource {
   Future<AuthenticationResponse> login(LoginRequest loginRequest);
@@ -12,6 +13,7 @@ abstract class RemoteDataSource {
   Future<StoreDetailsResponse> getStoreDetails(int id);
 
   Future<AssignedFormsResponse> getAssignedForms();
+  Future<List<NodeResponse>> getNodes();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -54,5 +56,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<AssignedFormsResponse> getAssignedForms() async{
     return await  _apiClient.getAssignedForms();
+  }
+
+  @override
+  Future<List<NodeResponse>> getNodes() async{
+    final nodeResponse =  await _apiClient.getNodes();
+    return nodeResponse.data;
+
+
   }
 }

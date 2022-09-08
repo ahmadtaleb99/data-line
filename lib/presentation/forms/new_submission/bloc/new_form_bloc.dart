@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
 
 part 'new_form_event.dart';
 part 'new_form_state.dart';

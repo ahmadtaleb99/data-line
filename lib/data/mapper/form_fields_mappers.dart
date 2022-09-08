@@ -1,23 +1,25 @@
-import 'package:form_builder_test/data/responses/forms/forms_response.dart';
-import 'package:form_builder_test/data/responses/forms/matrix_response/matrix_response.dart';
-import 'package:form_builder_test/domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';
-import 'package:form_builder_test/domain/model/checkbox_group_model/checkbox_group_model.dart';
-import 'package:form_builder_test/domain/model/dropdown_item_model/dropdown_item_model.dart';
-import 'package:form_builder_test/domain/model/dropdown_model/dropdown_model.dart';
-import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
-import 'package:form_builder_test/domain/model/file_picker_model/file_picker_model.dart';
+import 'package:datalines/data/responses/forms/forms_response.dart';
+import 'package:datalines/data/responses/forms/matrix_response/matrix_response.dart';
+import 'package:datalines/data/responses/forms/node_response/node_response.dart';
+import 'package:datalines/domain/model/checkbox_group_item_model/checkbox_group_item_model.dart';
+import 'package:datalines/domain/model/checkbox_group_model/checkbox_group_model.dart';
+import 'package:datalines/domain/model/dropdown_item_model/dropdown_item_model.dart';
+import 'package:datalines/domain/model/dropdown_model/dropdown_model.dart';
+import 'package:datalines/domain/model/email_text_field_model/email_text_field_model.dart';
+import 'package:datalines/domain/model/file_picker_model/file_picker_model.dart';
 import 'dart:developer';
-import 'package:form_builder_test/data/mapper/matrix_mappers.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/domain/model/matrix_model/matrix_model.dart';
-import 'package:form_builder_test/domain/model/number_text_field_model/number_text_field_model.dart';
-import 'package:form_builder_test/domain/model/radio_group_item_model/radio_group_item_model.dart';
-import 'package:form_builder_test/domain/model/radio_group_model/radio_group_model.dart';
-import 'package:form_builder_test/domain/model/star_rating_model/star_rating_model.dart';
-import 'package:form_builder_test/domain/model/text_area_model/text_area_model.dart';
-import 'package:form_builder_test/domain/model/text_field_model/text_field_model.dart';
-import 'package:form_builder_test/app/extenstions.dart';
+import 'package:datalines/data/mapper/matrix_mappers.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/domain/model/matrix_model/matrix_model.dart';
+import 'package:datalines/domain/model/number_text_field_model/number_text_field_model.dart';
+import 'package:datalines/domain/model/radio_group_item_model/radio_group_item_model.dart';
+import 'package:datalines/domain/model/radio_group_model/radio_group_model.dart';
+import 'package:datalines/domain/model/star_rating_model/star_rating_model.dart';
+import 'package:datalines/domain/model/text_area_model/text_area_model.dart';
+import 'package:datalines/domain/model/text_field_model/text_field_model.dart';
+import 'package:datalines/app/extenstions.dart';
 
+import '../../domain/model/node/node.dart';
 import '../responses/forms/enums.dart';
 
 extension TextFieldMapper on TextFieldResponse? {
@@ -349,4 +351,13 @@ extension AssignedFormMapper on AssignedFormsResponse? {
     return AssignedForms(this?.data?.map((e) => e.toDomain()).toList());
   }
 
+}
+
+extension NodeMapper on NodeResponse? {
+  Node toDomain() {
+    return Node(
+      name: this?.name.orEmpty() ?? '',
+      id: this?.id.orEmpty() ?? '',
+    );
+  }
 }

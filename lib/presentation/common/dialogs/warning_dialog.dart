@@ -1,6 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
 
   void showWarningDialog(BuildContext context,
     { String? title,

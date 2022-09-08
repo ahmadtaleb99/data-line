@@ -1,8 +1,8 @@
-import 'package:form_builder_test/data/network/failure.dart';
-import 'package:form_builder_test/data/requests/requests.dart';
-import 'package:form_builder_test/domain/model/models.dart';
-import 'package:form_builder_test/domain/repository/repository.dart';
-import 'package:form_builder_test/domain/usecase/base_usecase.dart';
+import 'package:datalines/data/network/failure.dart';
+import 'package:datalines/data/requests/requests.dart';
+import 'package:datalines/domain/model/models.dart';
+import 'package:datalines/domain/repository/repository.dart';
+import 'package:datalines/domain/usecase/base_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 class RegisterUseCase

@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/field_widget.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/label_widget.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/view/widgets/value_widget.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
-import 'package:form_builder_test/presentation/resources/values_manager.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/view/widgets/field_widget.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/view/widgets/label_widget.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/view/widgets/value_widget.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/resources/values_manager.dart';
 
 class SubmissionDetailsScreen extends StatelessWidget {
   final List<FormFieldModel> fields;

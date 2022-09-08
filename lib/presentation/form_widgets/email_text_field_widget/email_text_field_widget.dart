@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/domain/model/email_text_field_model/email_text_field_model.dart';
-import 'package:form_builder_test/domain/model/text_area_model/text_area_model.dart';
-import 'package:form_builder_test/presentation/form_widgets/form_field_widget/form_field_widget.dart';
-import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/domain/model/email_text_field_model/email_text_field_model.dart';
+import 'package:datalines/domain/model/text_area_model/text_area_model.dart';
+import 'package:datalines/presentation/form_widgets/form_field_widget/form_field_widget.dart';
+import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
 
 class EmailTextFieldWidget extends StatelessWidget {
   const EmailTextFieldWidget({Key? key, required this.model})

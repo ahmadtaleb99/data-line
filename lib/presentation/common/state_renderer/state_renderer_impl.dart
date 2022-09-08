@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:form_builder_test/presentation/common/state_renderer/state_renderer.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/common/state_renderer/state_renderer.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
 
 abstract class FlowState {
   StateRendererType getStateRendererType();

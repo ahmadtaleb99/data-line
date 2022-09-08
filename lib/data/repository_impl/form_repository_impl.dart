@@ -2,15 +2,16 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
-import 'package:form_builder_test/data/data_source/local_data_source.dart';
-import 'package:form_builder_test/data/data_source/remote_data_source.dart';
-import 'package:form_builder_test/data/database/hive_database.dart';
-import 'package:form_builder_test/data/mapper/form_fields_mappers.dart';
-import 'package:form_builder_test/data/network/error_handler.dart';
-import 'package:form_builder_test/data/network/failure.dart';
-import 'package:form_builder_test/data/network/network_info.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/domain/repository/form_repository.dart';
+import 'package:datalines/data/data_source/local_data_source.dart';
+import 'package:datalines/data/data_source/remote_data_source.dart';
+import 'package:datalines/data/database/hive_database.dart';
+import 'package:datalines/data/mapper/form_fields_mappers.dart';
+import 'package:datalines/data/network/error_handler.dart';
+import 'package:datalines/data/network/failure.dart';
+import 'package:datalines/data/network/network_info.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/domain/model/node/node.dart';
+import 'package:datalines/domain/repository/form_repository.dart';
 
 class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
@@ -23,6 +24,8 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   @override
   Future<Either<Failure, AssignedForms>> getAssignedForms(
       {bool? forceFromRemote}) async {
+
+
 
 
     // from database
@@ -38,7 +41,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
     }
 
     // from api
-     on DatabaseException {
+     on DatabaseDataNotFoundException {
       return _getFormsFromRemote();
 
     }
@@ -110,6 +113,11 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   @override
   Future<void> updateSubmission(Submission submission) async {
   await   _localDataSource.updateSubmission(submission);
+  }
+
+  @override
+  Either<Failure, List<Node>> getNodes() {
+    return _remoteDataSource.getNodes();
   }
 
 

@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import 'package:form_builder_test/data/responses/forms/forms_response.dart';
-import 'package:form_builder_test/data/responses/responses.dart';
-import 'package:form_builder_test/presentation/resources/constants_manager.dart';
+import 'package:datalines/data/responses/forms/forms_response.dart';
+import 'package:datalines/data/responses/forms/node_response/node_response.dart';
+import 'package:datalines/data/responses/responses.dart';
+import 'package:datalines/presentation/resources/constants_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
@@ -37,6 +38,9 @@ abstract class ApiClient {
   @GET('/get-forms')
   Future<AssignedFormsResponse> getAssignedForms();
 
+
+  @GET('/get-nodes')
+  Future<NodeBaseResponse> getNodes();
 
   @GET('/store-details/{id}')
   Future<StoreDetailsResponse> getStoreDetails(@Path() int id);

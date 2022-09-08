@@ -16,7 +16,7 @@ class IFormModelAdapter extends TypeAdapter<IFormModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    throw Error();
+    return IFormModel();
   }
 
   @override

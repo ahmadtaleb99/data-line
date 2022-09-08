@@ -1,7 +1,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:form_builder_test/Widgets/form_element_widget.dart';
+import 'package:datalines/Widgets/form_element_widget.dart';
 import 'package:hive/hive.dart';
 
 part 'IFormModel.g.dart';

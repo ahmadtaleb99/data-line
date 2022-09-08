@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/presentation/submission_details_screen/view/submisson_details_screen.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/presentation/submission_details_screen/view/submisson_details_screen.dart';
 
 class FieldWidget extends StatelessWidget {
   final FormFieldModel field;

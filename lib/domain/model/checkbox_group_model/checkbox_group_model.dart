@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:form_builder_test/presentation/form_widgets/checkbox_group_widget/checkbox_group_widget.dart';
+import 'package:datalines/presentation/form_widgets/checkbox_group_widget/checkbox_group_widget.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/responses/forms/forms_response.dart';

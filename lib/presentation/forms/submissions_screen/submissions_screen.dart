@@ -6,19 +6,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_test/app/dependency_injection.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
-import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
-import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
-import 'package:form_builder_test/presentation/forms/submission_details_screen/view/submission_details_screen.dart';
-import 'package:form_builder_test/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
-import 'package:form_builder_test/presentation/forms/submissions_screen/widgets/submission_card.dart';
-import 'package:form_builder_test/presentation/forms/update_submisson/view/update_submisson_screen.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
-import 'package:form_builder_test/presentation/resources/values_manager.dart';
-import 'package:form_builder_test/presentation/state_renderer_bloc/state_renderer_bloc.dart';
+import 'package:datalines/app/dependency_injection.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/presentation/common/dialogs/warning_dialog.dart';
+import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
+import 'package:datalines/presentation/forms/submission_details_screen/view/submission_details_screen.dart';
+import 'package:datalines/presentation/forms/submissions_screen/bloc/submissions_bloc.dart';
+import 'package:datalines/presentation/forms/submissions_screen/widgets/submission_card.dart';
+import 'package:datalines/presentation/forms/update_submisson/view/update_submisson_screen.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/resources/values_manager.dart';
+import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 class SubmissionsScreen extends StatelessWidget {
   const SubmissionsScreen({Key? key, required this.formModel})

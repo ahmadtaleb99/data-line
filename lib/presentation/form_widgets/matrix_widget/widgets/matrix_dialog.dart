@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_test/presentation/resources/values_manager.dart';
+import 'package:datalines/presentation/resources/values_manager.dart';
 
 class MatrixDialog extends StatelessWidget {
   final List<Widget> widgets;

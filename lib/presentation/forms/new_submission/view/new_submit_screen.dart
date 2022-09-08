@@ -4,16 +4,16 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/app/dependency_injection.dart';
-import 'package:form_builder_test/domain/model/form_model.dart';
-import 'package:form_builder_test/presentation/common/dialogs/warning_dialog.dart';
-import 'package:form_builder_test/presentation/common/state_renderer/state_renderer_impl.dart';
-import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
-import 'package:form_builder_test/presentation/forms/new_submission/bloc/new_form_bloc.dart';
-import 'package:form_builder_test/presentation/forms/widgets/build_form.dart';
-import 'package:form_builder_test/presentation/resources/routes_manager.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
-import 'package:form_builder_test/presentation/resources/values_manager.dart';
+import 'package:datalines/app/dependency_injection.dart';
+import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/presentation/common/dialogs/warning_dialog.dart';
+import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/presentation/forms/new_submission/bloc/new_form_bloc.dart';
+import 'package:datalines/presentation/forms/widgets/build_form.dart';
+import 'package:datalines/presentation/resources/routes_manager.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/resources/values_manager.dart';
 
 class NewSubmitScreen extends StatelessWidget {
   NewSubmitScreen({Key? key, required this.formModel}) : super(key: key);

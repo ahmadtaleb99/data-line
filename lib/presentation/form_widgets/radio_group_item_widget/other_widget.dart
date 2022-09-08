@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_builder_test/app/app_prefs.dart';
-import 'package:form_builder_test/presentation/forms/bloc/forms_bloc.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
+import 'package:datalines/app/app_prefs.dart';
+import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
 
 class RadioOtherWidget extends StatelessWidget {
   const RadioOtherWidget(

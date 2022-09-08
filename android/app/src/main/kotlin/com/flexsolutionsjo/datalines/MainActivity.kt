@@ -1,4 +1,4 @@
-package com.example.form_builder_test
+package com.flexsolutionsjo.datalines
 
 import io.flutter.embedding.android.FlutterActivity
 

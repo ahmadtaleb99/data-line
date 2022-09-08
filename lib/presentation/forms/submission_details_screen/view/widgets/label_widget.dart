@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:form_builder_test/presentation/resources/color_manager.dart';
-import 'package:form_builder_test/presentation/resources/strings_manager.dart';
+import 'package:datalines/presentation/resources/color_manager.dart';
+import 'package:datalines/presentation/resources/strings_manager.dart';
 
 class LabelWidget extends StatelessWidget {
   const LabelWidget({
