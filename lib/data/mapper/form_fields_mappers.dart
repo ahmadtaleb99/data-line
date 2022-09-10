@@ -318,8 +318,8 @@ FormFieldModel _getModelField(FormFieldResponse? formFieldResponse) {
 }
 
 extension AssignedFormMapper on AssignedFormsResponse? {
-  AssignedForms toDomain() {
-    return AssignedForms(this?.data?.map((e) => e.toDomain()).toList());
+    List<FormModel> toDomain() {
+      return this?.data?.map((e) => e.toDomain()).toList() ?? [];
   }
 }
 

@@ -11,6 +11,7 @@ class AppStrings{
   static const String warning ='Warning';
   static const String error ='Error';
   static const String node ='Node';
+  static const String sync ='Sync';
   static const String character ='Character';
   static const String selectNodeWarning ='Select the submission node please!';
   static const String deleteSubmissionWarningMsg ='Are you sure you want to delete this submission?';

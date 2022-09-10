@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:datalines/presentation/home/view/widgets/form_card_widget.dart';
+import 'package:datalines/presentation/home/view/widgets/inactive_form_card_widget.dart';
 import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -43,7 +45,8 @@ class HomeScreen extends StatelessWidget {
 
           },
         )
-//       body: _getWidget(context)
+        // body: const NewWidget()
+
     );
   }
 }
@@ -57,6 +60,7 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
+        final inactiveForms = state.inactiveForms ?? [];
         return RefreshIndicator(
           onRefresh: () async {
             context.read<FormsBloc>().add(FormsPageRefreshRequested());
@@ -64,115 +68,59 @@ class NewWidget extends StatelessWidget {
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
-              itemCount: state.assignedForms.length,
+              itemCount: state.assignedForms.length + inactiveForms.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.all(AppPadding.p20),
-                  child: FormCard(
-                      viewSubmittedCallBack: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider(
-                                          create: (context) =>
-                                          SubmissionsBloc(
-                                              getIT<AssignedFormRepository>())
-                                            ..add(SubmissionsRequested(
-                                                state.assignedForms[index])),
-                                        ),
-                                        BlocProvider.value(
+                  child: index >=
+                          state.assignedForms.length
+                      ? InactiveFormCard(
+                          viewSubmittedCallBack: () {},
+                          formName: 'formName',
+                          submitNewFormCallBack: () {})
+                      : FormCard(
+                          viewSubmittedCallBack: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider(
+                                              create: (context) =>
+                                                  SubmissionsBloc(getIT<
+                                                      AssignedFormRepository>())
+                                                    ..add(SubmissionsRequested(
+                                                        state.assignedForms[
+                                                            index])),
+                                            ),
+                                            BlocProvider.value(
+                                              value: context.read<FormsBloc>(),
+                                            ),
+                                          ],
+                                          child: SubmissionsScreen(
+                                            formModel:
+                                                state.assignedForms[index],
+                                          ),
+                                        )));
+                          },
+                          formName: state.assignedForms[index].name,
+                          submitNewFormCallBack: () {
+                            context.read<FormsBloc>().add(
+                                NewFormRequested(state.assignedForms[index]));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => BlocProvider.value(
                                           value: context.read<FormsBloc>(),
-                                        ),
-                                      ],
-                                      child: SubmissionsScreen(
-                                        formModel: state.assignedForms[index],
-                                      ),
-                                    )));
-                      },
-                      formName: state.assignedForms[index].name,
-                      submitNewFormCallBack: () {
-                        context
-                            .read<FormsBloc>()
-                            .add(NewFormRequested(state.assignedForms[index]));
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    BlocProvider.value(
-                                      value: context.read<FormsBloc>(),
-                                      child: NewSubmitScreen(
-                                          formModel:
-                                          state.assignedForms[index]),
-                                    )));
-                      }),
+                                          child: NewSubmitScreen(
+                                              formModel:
+                                                  state.assignedForms[index]),
+                                        )));
+                          }),
                 );
               }),
         );
       },
-    );
-  }
-}
-
-class FormCard extends StatelessWidget {
-  const FormCard({Key? key,
-    required this.viewSubmittedCallBack,
-    required this.formName,
-    required this.submitNewFormCallBack})
-      : super(key: key);
-  final String formName;
-  final void Function()? viewSubmittedCallBack;
-  final void Function()? submitNewFormCallBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300.w,
-      height: 300.h,
-      decoration: BoxDecoration(
-          color: ColorManager.primary,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(AppRadius.r10)),
-      child: Card(
-        elevation: 10,
-        color: ColorManager.lightPrimary,
-        child: Column(
-          children: [
-            Expanded(
-                flex: 5,
-                child: Center(
-                    child: Text(
-                      formName,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .overline!
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp),
-                    ))),
-            Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        onPressed: submitNewFormCallBack,
-                        icon:  Icon(
-                          Icons.add,
-                          color: ColorManager.white,
-                        )),
-                    IconButton(
-                        onPressed: viewSubmittedCallBack,
-                        icon:  Icon(
-                          Icons.visibility,
-                          color: ColorManager.white,
-                        )),
-                  ],
-                )),
-          ],
-        ),
-      ),
     );
   }
 }

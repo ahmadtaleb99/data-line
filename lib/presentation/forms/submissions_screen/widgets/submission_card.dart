@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:datalines/data/responses/forms/enums.dart';
 import 'package:datalines/domain/model/form_model.dart';
 import 'package:datalines/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
-import 'package:datalines/presentation/common/value_view_parser.dart';
+import 'package:datalines/presentation/forms/value_view_parser.dart';
 
 import '../../../resources/values_manager.dart';
 
@@ -31,9 +31,10 @@ class SubmissionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.r10)),
       child: Card(
         elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.r10)),
         color: ColorManager.lightPrimary,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.all(AppPadding.p8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

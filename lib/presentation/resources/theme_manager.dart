@@ -49,6 +49,14 @@ ThemeData getApplicationTheme() {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s12)))),
 
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: getRegularStyle(
+            color: ColorManager.white, fontSize: FontSize.s17),
+      ),
+
+    ),
+
     // text theme
     textTheme: TextTheme(
 

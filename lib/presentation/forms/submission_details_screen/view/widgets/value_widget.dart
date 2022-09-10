@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:datalines/data/responses/forms/enums.dart';
 import 'package:datalines/domain/model/form_model.dart';
-import 'package:datalines/presentation/common/value_view_parser.dart';
+import 'package:datalines/presentation/forms/value_view_parser.dart';
 import 'package:datalines/presentation/forms/submission_details_screen/bloc/submission_details_bloc.dart';
 import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';

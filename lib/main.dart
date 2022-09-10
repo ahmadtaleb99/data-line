@@ -13,13 +13,10 @@ import 'package:datalines/presentation/home/view/home_screen.dart';
 import 'package:datalines/presentation/resources/assets_manager.dart';
 import 'package:datalines/services/notification/NotificationsService.dart';
 import 'package:datalines/services/notification/NotificationManager.dart';
-import 'package:datalines/validation/bloc/validation__bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'app/dependency_injection.dart';
 import 'app/notification_bloc/notifications_bloc.dart';
-import 'data/FormRepository.dart';
-import 'data/FormRepository.dart';
 import 'package:datalines/services/notification/NotificationManager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

@@ -58,7 +58,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             submissions: [],
             flowState: ContentState(),
             newFlowState: ContentState(),
-            validationMap: {})) {
+            validationMap: {}, inactiveForms: [])) {
     on<MatrixFieldValueChanged>(_onMatrixFieldValueChanged);
     on<MatrixCheckboxGroupValueChanged>(_onMatrixCheckboxGroupValueChanged);
     on<MatrixTextValueChanged>(_onMatrixTextValueChanged);
@@ -209,7 +209,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 message: failure.message)));
       }, (forms) {
         emit(state.copyWith(
-            assignedForms: forms.data, flowState: ContentState()));
+            assignedForms: forms, flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(
@@ -242,6 +242,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
           emit(state.copyWith(flowState: EmptyState('no forms')));
 
     else     emit(state.copyWith(
+            inactiveForms: _assignedFormRepository.getInactiveForms(),
             assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
       });
     } catch (e) {
@@ -267,6 +268,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         emit(state.copyWith(
             flowState: ErrorState(
                 code: failure.code,
+
                 stateRendererType: StateRendererType.POPUP_ERROR,
                 message: failure.message)));
       }, (model) {
@@ -275,6 +277,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
           emit(state.copyWith(flowState: EmptyState('no forms')));
 
     else     emit(state.copyWith(
+            inactiveForms: _assignedFormRepository.getInactiveForms(),
             assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
       });
     } catch (e) {
@@ -302,7 +305,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 message: failure.message)));
       }, (forms) {
         emit(state.copyWith(
-            assignedForms: forms.data, flowState: ContentState()));
+            assignedForms: forms, flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(

@@ -1,3 +1,4 @@
+import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class FieldHintWidget extends StatelessWidget {
@@ -9,7 +10,7 @@ class FieldHintWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: Theme.of(context).textTheme.subtitle1);
+    return Text(text, style: Theme.of(context).textTheme.subtitle1?.copyWith(fontStyle: FontStyle.italic,color: ColorManager.lightPrimary));
 
   }
 }

@@ -15,14 +15,17 @@ abstract class LocalDataSource  {
 
   void saveSubmission(Submission submission);
   Future<void>  addSubmission(Submission submission);
-  AssignedForms getAssignedForms();
-  Future<void> saveFormsToDataBase(AssignedForms assignedForms);
+  List<FormModel>? getAssignedForms();
+  List<FormModel>? getInactiveForms();
+  Future<void> saveFormsToDataBase(List<FormModel> assignedForms);
   List<Submission> getSubmissions(String formName);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
-  List<Node> getNodes();
+  List<Node>? getNodes();
   Future<void> saveNodes(List<Node> nodes);
+  Future<void> saveInactiveForms(List<FormModel> forms);
   bool formHasSubmissions(String formName);
+
   // Future<String> saveFileToCache(String path,int SubmissionId,String formName);
   // Future<void> deleteFileFromCache(String path);
 
@@ -73,7 +76,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  AssignedForms getAssignedForms() {
+  List<FormModel>? getAssignedForms() {
     return _hiveDatabase.getAssignedForms();
 
   }
@@ -85,7 +88,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> saveFormsToDataBase(AssignedForms assignedForms) async {
+  Future<void> saveFormsToDataBase(List<FormModel> assignedForms) async {
     log('here');
     await _hiveDatabase.saveAssignedForms(assignedForms);
   }
@@ -111,7 +114,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  List<Node> getNodes() {
+  List<Node>? getNodes() {
     return   _hiveDatabase.getNodes();
 
   }
@@ -124,6 +127,16 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   bool formHasSubmissions(String formName) {
      return _hiveDatabase.formHasSubmissions(formName);
+  }
+
+  @override
+  Future<void> saveInactiveForms(List<FormModel> forms) async {
+    await _hiveDatabase.addInactiveForms(forms);
+    }
+
+  @override
+  List<FormModel>? getInactiveForms() {
+    return _hiveDatabase.getInactiveForms();
   }
 
 

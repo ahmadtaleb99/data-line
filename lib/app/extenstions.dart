@@ -4,6 +4,13 @@ import 'package:path/path.dart';
 
 extension NotNullString on String?{
   String orEmpty () => this == null ? '' : this!;
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
 }
 
 extension NotEmptyInt on int?{

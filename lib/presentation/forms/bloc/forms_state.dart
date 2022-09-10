@@ -29,6 +29,7 @@ class   FormsState extends Equatable {
   final FlowState newFlowState;
   final FlowState updateFlowState;
   final  List<FormModel> assignedForms;
+  final  List<FormModel> inactiveForms;
   final MatrixState? matrixState;
   final Map<String,bool> validationMap;
   final Map<String,bool> isFilePicking;
@@ -41,7 +42,7 @@ class   FormsState extends Equatable {
 
 
   @override
-  List<Object?> get props => [currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [inactiveForms,currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
@@ -63,6 +64,7 @@ class   FormsState extends Equatable {
     required this.isFilePicking,
     required this.allSaved,
     required this.assignedForms,
+    required this.inactiveForms,
 
   });
 
@@ -77,6 +79,7 @@ class   FormsState extends Equatable {
     FlowState? updateFlowState,
 
     List<FormModel>? assignedForms,
+    List<FormModel>? inactiveForms,
     List<Node>? nodes,
     MatrixState? matrixState,
     ValueGetter<Node?>? currentNode,
@@ -105,6 +108,7 @@ class   FormsState extends Equatable {
       flowState: flowState ?? this.flowState,
       newFlowState: newSubmitFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,
+      inactiveForms: inactiveForms ?? this.inactiveForms,
       nodes: nodes ?? this.nodes,
       matrixState: matrixState ?? this.matrixState,
       allSaved: allSaved ?? this.allSaved,

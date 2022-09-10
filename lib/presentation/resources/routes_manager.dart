@@ -9,8 +9,6 @@ import 'package:datalines/presentation/login/bloc/login_bloc.dart';
 import 'package:datalines/presentation/login/view/login_screen.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
-import 'package:datalines/presentation/submission_details_screen/view/submisson_details_screen.dart';
-import 'package:datalines/presentation/submissions/view/submissions_screen.dart';
 import 'package:get_it/get_it.dart';
 
 class Routes {

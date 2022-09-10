@@ -1,6 +1,4 @@
-import 'package:datalines/Widgets/number_field_widget.dart';
 import 'package:datalines/data/responses/forms/enums.dart';
-import 'package:datalines/utils/expression/Expression.dart';
 
 mixin FormValidation{
 
@@ -44,32 +42,7 @@ mixin FormValidation{
     }
 
 
-    String? validateNumber(int number,Expression expression) {
-
-
-      switch(expression.operator){
-        case Operator.BETWEEN:
-          if(number >= expression.value && number <= expression.value2!){
-            return null;
-          }
-          else return 'number must be between  ${expression.value} and  ${expression.value2}';
-        case Operator.LESS:
-          return  number < expression.value ? null : 'number should be less than ${expression.value}';
-        case Operator.MORE:
-          return  number > expression.value ? null : 'number should be more than ${expression.value}';
-        case Operator.EQUAL:
-          return  number != expression.value ? null : 'number should be equal to ${expression.value}';
-      }
 
 
 
-
-  }
-
-      bool isNumeric(String s) {
-        if (s == null) {
-          return false;
-        }
-        return double.tryParse(s) != null;
-      }
 }

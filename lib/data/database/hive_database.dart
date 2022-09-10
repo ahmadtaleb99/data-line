@@ -33,15 +33,19 @@ class DatabaseDataNotFoundException implements Exception {
 }
 
 class HiveDatabase {
+  static const String inactiveFormsBoxKey = 'inactiveFormsBoxKey';
+  static const String inactiveForms = 'inactiveForms';
+
   static const String assignedFormsBoxKey = 'assignedFormsBoxKey';
   static const String _assignedForm = 'assignedForms';
 
   static const String submissionBoxKey = 'submissionBoxKey';
+
   static const String nodeBoxKey = 'nodeBoxKey';
-  static const String _submissions = 'submissions';
   static const String _nodes = 'nodes';
 
   late final Box<AssignedForms> _assignedFormsBox;
+  late final Box<FormModel> _inactiveFormsBox;
   late final Box<Submission> _submissionsBox;
   late final Box<List<dynamic>> _nodesBox;
 
@@ -87,6 +91,8 @@ class HiveDatabase {
     _assignedFormsBox = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
     _submissionsBox = await Hive.openBox<Submission>(submissionBoxKey);
     _nodesBox = await Hive.openBox<List<dynamic>>(nodeBoxKey);
+    _inactiveFormsBox = await Hive.openBox<FormModel>(inactiveFormsBoxKey);
+
 
   }
 
@@ -110,8 +116,14 @@ class HiveDatabase {
         .toList();
   }
 
-  Future<void> saveAssignedForms(AssignedForms assignedForms) async {
-    await _assignedFormsBox.put(_assignedForm, assignedForms);
+
+  Future<void> addInactiveForms(List<FormModel> forms) async {
+   await _inactiveFormsBox.addAll(forms);
+  }
+
+
+  Future<void> saveAssignedForms(List<FormModel> assignedForms) async {
+    await _assignedFormsBox.put(_assignedForm, AssignedForms(assignedForms));
   }
 
   int getLastSubmissionId() {
@@ -129,32 +141,29 @@ class HiveDatabase {
     return index;
   }
 
-  AssignedForms getAssignedForms() {
-    var assignedForms = _assignedFormsBox.get(_assignedForm);
-    if (assignedForms == null) throw DatabaseDataNotFoundException('no forms available');
+  List<FormModel>? getAssignedForms() {
+    AssignedForms? assignedForms = _assignedFormsBox.get(_assignedForm);
 
-    log('before returning from db : ' +
-        assignedForms.data!.first.fields.first.runtimeType.toString());
+    return assignedForms?.data;
+  }
 
-    return assignedForms;
+
+  List<FormModel>? getInactiveForms() {
+    return  _inactiveFormsBox.values.toList();
   }
 
 
   bool formHasSubmissions(String formName) {
     return _submissionsBox.values.any((element) => element.formName ==formName);
   }
-  List<Node> getNodes() {
+  List<Node>? getNodes() {
 
-    final nodes = _nodesBox.get(_nodes)?.cast();
-    if (nodes == null) throw DatabaseDataNotFoundException('No Nodes available');
 
-    log(nodes.runtimeType.toString()+' geting nodes');
-    return List.castFrom(nodes);
+    return  _nodesBox.get(_nodes)?.cast();
+
   }
 
   Future<void> saveNodes(List<Node> nodes) async {
-
-    log(nodes.runtimeType.toString()+' saving asaodasomd');
     await _nodesBox.put(_nodes, nodes);
   }
 
