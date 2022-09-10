@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../resources/color_manager.dart';
+import '../../../resources/strings_manager.dart';
 import '../../../resources/values_manager.dart';
 
 class FormCard extends StatelessWidget {
@@ -45,18 +46,29 @@ class FormCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                        onPressed: submitNewFormCallBack,
-                        icon:  Icon(
-                          Icons.add,
-                          color: ColorManager.white,
-                        )),
-                    IconButton(
-                        onPressed: viewSubmittedCallBack,
-                        icon:  Icon(
-                          Icons.visibility,
-                          color: ColorManager.white,
-                        )),
+                    Expanded(
+                      child: IconButton(
+                          onPressed: submitNewFormCallBack,
+                          icon:  Icon(
+                            Icons.add,
+                            color: ColorManager.white,
+                          )),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: TextButton(
+                        onPressed: (){},
+                        child: Text(AppStrings.sync,style: TextStyle(color: ColorManager.white),),
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                          onPressed: viewSubmittedCallBack,
+                          icon:  Icon(
+                            Icons.visibility,
+                            color: ColorManager.white,
+                          )),
+                    ),
                   ],
                 )),
           ],
