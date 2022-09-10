@@ -22,6 +22,7 @@ class   FormsState extends Equatable {
   final   Submission? currentSubmission;
   final   FormModel? formModel;
   final  List<Submission> submissions;
+  final List<Node> nodes;
   final Map<String,dynamic> valuesMap;
   final bool isNewSubmit;
   final FlowState flowState;
@@ -33,20 +34,23 @@ class   FormsState extends Equatable {
   final Map<String,bool> isFilePicking;
   final int? currentRecordIndex ;
   final String? currentMatrixName;
+  final Node? currentNode;
   final MatrixRecordModel? tempRecord;
   final bool allSaved;
   final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
     required this.isNewSubmit,
+    required this.currentNode,
     required this.valuesMap,
     required this.matrixValuesMap,
+    required this.nodes,
      this.currentRecordIndex,
      this.matrixState,
      this.currentMatrixName,
@@ -73,7 +77,9 @@ class   FormsState extends Equatable {
     FlowState? updateFlowState,
 
     List<FormModel>? assignedForms,
+    List<Node>? nodes,
     MatrixState? matrixState,
+    ValueGetter<Node?>? currentNode,
     ValueGetter<MatrixRecordModel?>? tempRecord, //in order to give copyWith method null value
     Map<String,bool>? validationMap,
      int? currentRecordIndex ,
@@ -95,9 +101,11 @@ class   FormsState extends Equatable {
       isNewSubmit: isNewSubmit ?? this.isNewSubmit,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       tempRecord: tempRecord != null ? tempRecord() : this.tempRecord,
+      currentNode:  currentNode != null ? currentNode() : this.currentNode,
       flowState: flowState ?? this.flowState,
       newFlowState: newSubmitFlowState ?? this.newFlowState,
       assignedForms: assignedForms ?? this.assignedForms,
+      nodes: nodes ?? this.nodes,
       matrixState: matrixState ?? this.matrixState,
       allSaved: allSaved ?? this.allSaved,
     );

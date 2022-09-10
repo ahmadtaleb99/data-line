@@ -1,4 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 
@@ -13,6 +14,7 @@ import 'package:datalines/presentation/resources/strings_manager.dart';
       type: CoolAlertType.warning,
       text: text,
       showCancelBtn: true,
+      confirmBtnColor: ColorManager.primary,
       onConfirmBtnTap: onConfirmBtnTap,
       onCancelBtnTap: onCancelBtnTap);
 }

@@ -26,6 +26,16 @@ import 'text_field_model/text_field_model.dart';
 
 part 'form_model.g.dart';
 
+class FormsHomeModel {
+  final List<FormModel> forms;
+  final List<Node> nodes;
+
+  const FormsHomeModel({
+    required this.forms,
+    required this.nodes,
+  });
+}
+
 @HiveType(typeId: 15)
 class AssignedForms with EquatableMixin {
 

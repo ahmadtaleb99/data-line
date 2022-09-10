@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cool_alert/cool_alert.dart';
+import 'package:datalines/presentation/forms/widgets/node_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +15,12 @@ import 'package:datalines/presentation/forms/widgets/build_form.dart';
 import 'package:datalines/presentation/resources/routes_manager.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../domain/model/node/node.dart';
+import '../../../common/snackbars/snackbars.dart';
 
 class NewSubmitScreen extends StatelessWidget {
-  NewSubmitScreen({Key? key, required this.formModel}) : super(key: key);
   final FormModel formModel;
   final _key = GlobalKey<FormState>();
 
@@ -24,34 +28,42 @@ class NewSubmitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (context.read<FormsBloc>().hasValues()){
-          showWarningDialog(context,
-              text: AppStrings.submitBackWarningMgs,
+        if (context.read<FormsBloc>().hasValues()) {
+          showWarningDialog(context, text: AppStrings.submitBackWarningMgs,
               onConfirmBtnTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
-              }
-                  );
-        }
-
-        else return true;
+              });
+        } else
+          return true;
 
         return false;
       },
       child: Scaffold(
           key: UniqueKey(),
           appBar: AppBar(
+            actions: [NodeWidget()],
             title: const Text(AppStrings.newSubmission),
           ),
-          floatingActionButton: ElevatedButton(
-            onPressed: () async {
-              if (_key.currentState!.validate()) {
-                _key.currentState!.save();
-                // context.read<FormsBloc>().add(FormSubmitted(formModel));
-                await context.read<FormsBloc>().saveForm();
-              }
+          floatingActionButton: BlocBuilder<FormsBloc, FormsState>(
+            builder: (context, state) {
+
+              return ElevatedButton(
+                onPressed: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  bool isFormValid = _key.currentState!.validate();
+                  if(state.currentNode == null)
+                showSnackBar(context,AppStrings.selectNodeWarning);
+
+
+                  if (isFormValid && state.currentNode != null) {
+                    _key.currentState!.save();
+                    await context.read<FormsBloc>().saveForm();
+                  }
+                },
+                child: const Text(AppStrings.submit),
+              );
             },
-            child: const Text(AppStrings.submit),
           ),
           // body: BlocConsumer<FormsBloc, FormsState>(
           //   listener: (context, state) {
@@ -96,6 +108,10 @@ class NewSubmitScreen extends StatelessWidget {
           )),
     );
   }
+
+  NewSubmitScreen({
+    required this.formModel,
+  });
 }
 
 class NewWidget extends StatelessWidget {

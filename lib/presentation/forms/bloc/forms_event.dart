@@ -9,6 +9,19 @@ class AssignedFormsRequested extends FormsEvent{
 
 }
 
+
+class FormsPageRequested extends FormsEvent{
+  @override
+  List<Object?> get props => [];
+
+}
+
+class FormsPageRefreshRequested extends FormsEvent{
+  @override
+  List<Object?> get props => [];
+
+}
+
 class AssignedFormsRefreshRequested extends FormsEvent{
   @override
   List<Object?> get props => [];
@@ -301,6 +314,15 @@ class MatrixEditCanceled extends FormsEvent {
   List<Object?> get props =>[];
 
   const MatrixEditCanceled();
+}
+class CurrentNodeChanged extends FormsEvent {
+  final Node newNode;
+  @override
+  List<Object?> get props =>[];
+
+  const CurrentNodeChanged({
+    required this.newNode,
+  });
 }
 
 // class SubmissionDeleted extends FormsEvent {

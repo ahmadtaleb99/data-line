@@ -43,7 +43,7 @@ class HiveDatabase {
 
   late final Box<AssignedForms> _assignedFormsBox;
   late final Box<Submission> _submissionsBox;
-  late final Box<Node> _nodesBox;
+  late final Box<List<dynamic>> _nodesBox;
 
   Future<void> init() async {
     //matrix
@@ -86,7 +86,7 @@ class HiveDatabase {
     //
     _assignedFormsBox = await Hive.openBox<AssignedForms>(assignedFormsBoxKey);
     _submissionsBox = await Hive.openBox<Submission>(submissionBoxKey);
-    _nodesBox = await Hive.openBox<Node>(nodeBoxKey);
+    _nodesBox = await Hive.openBox<List<dynamic>>(nodeBoxKey);
 
   }
 
@@ -139,12 +139,23 @@ class HiveDatabase {
     return assignedForms;
   }
 
+
+  bool formHasSubmissions(String formName) {
+    return _submissionsBox.values.any((element) => element.formName ==formName);
+  }
   List<Node> getNodes() {
 
-    final nodes = _nodesBox.values.toList();
+    final nodes = _nodesBox.get(_nodes)?.cast();
     if (nodes == null) throw DatabaseDataNotFoundException('No Nodes available');
 
-    return nodes;
+    log(nodes.runtimeType.toString()+' geting nodes');
+    return List.castFrom(nodes);
+  }
+
+  Future<void> saveNodes(List<Node> nodes) async {
+
+    log(nodes.runtimeType.toString()+' saving asaodasomd');
+    await _nodesBox.put(_nodes, nodes);
   }
 
   Future<void> deleteSubmission(Submission submission) async {

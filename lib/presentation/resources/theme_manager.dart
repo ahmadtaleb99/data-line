@@ -14,6 +14,7 @@ ThemeData getApplicationTheme() {
     primaryColorDark: ColorManager.darkPrimary,
     disabledColor: ColorManager.grey1,
     splashColor: ColorManager.lightPrimary,
+      toggleableActiveColor: ColorManager.primary,
 
 
 
@@ -66,17 +67,17 @@ ThemeData getApplicationTheme() {
 
     //input decoration
     inputDecorationTheme:   InputDecorationTheme(
-        fillColor: Colors.grey,
+        fillColor: ColorManager.grey,
         focusedBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+          borderSide:  BorderSide(color: ColorManager.primary, width: 2.0),
           borderRadius: BorderRadius. circular(25.0),
         ),
         enabledBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+          borderSide:  BorderSide(color: ColorManager.primary, width: 2.0),
           borderRadius: BorderRadius. circular(25.0),
         ),
         errorBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.redAccent, width: 2.0),
+          borderSide:  BorderSide(color: Colors.redAccent, width: 2.0),
           borderRadius: BorderRadius. circular(25.0),
         ),
         focusedErrorBorder:OutlineInputBorder(

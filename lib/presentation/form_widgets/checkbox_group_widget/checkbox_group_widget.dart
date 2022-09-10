@@ -16,7 +16,6 @@ class CheckboxGroupWidget extends StatelessWidget {
       builder: (context, state) {
         return FormFieldWidget<List>(
           validator: (value){
-            log('CheckboxGroupWidget field');
             return context.read<FormsBloc>().validateCheckboxGroup(model);
           },
             model: model,

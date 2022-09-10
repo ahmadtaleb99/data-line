@@ -12,7 +12,8 @@ abstract class AssignedFormRepository{
   Future<void> addSubmission(Submission submission);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
-  Either<Failure,List<Node>> getNodes();
+  Future<Either<Failure,List<Node>>> getNodes();
+  Future<Either<Failure,FormsHomeModel>> getFormsHomeModel({bool? forceFromRemote});
   // int getLastSubmissionId();
 
 }

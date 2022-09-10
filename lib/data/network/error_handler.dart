@@ -78,6 +78,7 @@ enum ErrorTypeEnum {
   SEND_TIMEOUT,
   CACHE_ERROR,
   NO_INTERNET_CONNECTION,
+  UNKNOWN
 }
 
 extension ErrorTypeExtenstion on ErrorTypeEnum {
@@ -125,6 +126,9 @@ extension ErrorTypeExtenstion on ErrorTypeEnum {
       case ErrorTypeEnum.NO_INTERNET_CONNECTION:
         return Failure(ResponseCode.NO_INTERNET_CONNECTION,
             ResponseMessage.NO_INTERNET_CONNECTION);
+
+      case ErrorTypeEnum.UNKNOWN:
+        return Failure(ResponseCode.UNKNOWN, ResponseMessage.UNKNOWN);
     }
   }
 }

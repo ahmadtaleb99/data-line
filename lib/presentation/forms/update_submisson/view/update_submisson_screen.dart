@@ -7,6 +7,9 @@ import 'package:datalines/presentation/forms/widgets/build_form.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
 
+import '../../../../domain/model/node/node.dart';
+import '../../widgets/node_widget.dart';
+
 class UpdateSubmissionScreen extends StatelessWidget {
   UpdateSubmissionScreen(
       {Key? key, required this.formModel, required this.submission})
@@ -19,6 +22,7 @@ class UpdateSubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: const [NodeWidget()],
         title: const Text(AppStrings.updateSubmission),
 
       ),

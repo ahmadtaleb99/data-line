@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'node_response.g.dart';
 
 @JsonSerializable()
-class NodeBaseResponse extends BaseResponse{
+class   NodeBaseResponse extends BaseResponse{
 
   @JsonKey(name: 'data')
-  final   List<NodeResponse> data;
+  final   List<NodeResponse>? data;
 
     NodeBaseResponse(this.data);
 

@@ -5,6 +5,7 @@ import 'package:analyzer/error/error.dart';
 import 'package:datalines/data/database/hive_database.dart';
 import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/domain/model/form_model.dart';
+import 'package:datalines/domain/model/node/node.dart';
 import 'package:datalines/services/io/FileCachingService.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,6 +20,9 @@ abstract class LocalDataSource  {
   List<Submission> getSubmissions(String formName);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
+  List<Node> getNodes();
+  Future<void> saveNodes(List<Node> nodes);
+  bool formHasSubmissions(String formName);
   // Future<String> saveFileToCache(String path,int SubmissionId,String formName);
   // Future<void> deleteFileFromCache(String path);
 
@@ -104,6 +108,22 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<void> updateSubmission (Submission submission) async {
     await   _hiveDatabase.updateSubmission(submission);
+  }
+
+  @override
+  List<Node> getNodes() {
+    return   _hiveDatabase.getNodes();
+
+  }
+
+  @override
+  Future<void> saveNodes(List<Node> nodes) async{
+    return  _hiveDatabase.saveNodes(nodes);
+  }
+
+  @override
+  bool formHasSubmissions(String formName) {
+     return _hiveDatabase.formHasSubmissions(formName);
   }
 
 

@@ -32,7 +32,6 @@ extension TextFieldMapper on TextFieldResponse? {
       showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
-
       isHidden: this?.isHidden ?? false,
       isReadOnly: this?.isReadOnly ?? false,
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
@@ -41,7 +40,6 @@ extension TextFieldMapper on TextFieldResponse? {
     );
   }
 }
-
 
 extension EmailTextFieldMapper on EmailTextFieldResponse? {
   EmailTextFieldModel toDomain() {
@@ -62,10 +60,8 @@ extension EmailTextFieldMapper on EmailTextFieldResponse? {
   }
 }
 
-
 extension TextAreaMapper on TextAreaFieldResponse? {
   TextAreaModel toDomain() {
-
     return TextAreaModel(
       name: this?.name.orEmpty() ?? '',
       label: this?.label.orEmpty() ?? '',
@@ -107,22 +103,21 @@ extension StarRatingMapper on StarRatingFieldResponse? {
 extension NumberTextFieldMapper on NumberFieldResponse? {
   NumberFieldModel toDomain() {
     return NumberFieldModel(
-      name: this?.name.orEmpty() ?? '',
-      label: this?.label.orEmpty() ?? '',
-      type: this?.type ?? FieldType.UNKNOWN,
-      deactivate: this?.deactivate ?? false,
-      required: this?.required ?? false,
-      isHidden: this?.isHidden ?? false,
-      isReadOnly: this?.isReadOnly ?? false,
-      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
-      showIfIsRequired: this?.showIfIsRequired ?? false,
-      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-      expressionsValue: this?.expressionsValue,
-      expressionsValue2: this?.expressionsValue2,
-      operator: this?.operator,
+        name: this?.name.orEmpty() ?? '',
+        label: this?.label.orEmpty() ?? '',
+        type: this?.type ?? FieldType.UNKNOWN,
+        deactivate: this?.deactivate ?? false,
+        required: this?.required ?? false,
+        isHidden: this?.isHidden ?? false,
+        isReadOnly: this?.isReadOnly ?? false,
+        showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
+        showIfIsRequired: this?.showIfIsRequired ?? false,
+        requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+        expressionsValue: this?.expressionsValue,
+        expressionsValue2: this?.expressionsValue2,
+        operator: this?.operator,
         showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
-        showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? ''
-    );
+        showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '');
   }
 }
 
@@ -150,13 +145,11 @@ extension FilerPickerMapper on FilePickerFieldResponse? {
 extension CheckboxGroupMapper on CheckboxGroupFieldResponse? {
   CheckboxGroupModel toDomain() {
     return CheckboxGroupModel(
-
         name: this?.name.orEmpty() ?? '',
         label: this?.label.orEmpty() ?? '',
         type: this?.type ?? FieldType.UNKNOWN,
         showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
         showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
-
         deactivate: this?.deactivate ?? false,
         required: this?.required ?? false,
         isHidden: this?.isHidden ?? false,
@@ -205,22 +198,20 @@ extension RadioGroupItemMapper on RadioGroupItemResponse? {
 extension RadioGroupMapper on RadioGroupFieldResponse? {
   RadioGroupModel toDomain() {
     return RadioGroupModel(
-        name: this?.name.orEmpty() ?? '',
-        label: this?.label.orEmpty() ?? '',
-        type: this?.type ?? FieldType.UNKNOWN,
-
-        deactivate: this?.deactivate ?? false,
-        required: this?.required ?? false,
-        isHidden: this?.isHidden ?? false,
-        isReadOnly: this?.isReadOnly ?? false,
-        showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
-        showIfIsRequired: this?.showIfIsRequired ?? false,
-        requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-        other: this?.other ?? false,
-        values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
-        showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
+      name: this?.name.orEmpty() ?? '',
+      label: this?.label.orEmpty() ?? '',
+      type: this?.type ?? FieldType.UNKNOWN,
+      deactivate: this?.deactivate ?? false,
+      required: this?.required ?? false,
+      isHidden: this?.isHidden ?? false,
+      isReadOnly: this?.isReadOnly ?? false,
+      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
+      showIfIsRequired: this?.showIfIsRequired ?? false,
+      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+      other: this?.other ?? false,
+      values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
+      showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
       showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
-
     );
   }
 }
@@ -228,22 +219,21 @@ extension RadioGroupMapper on RadioGroupFieldResponse? {
 extension DropDownMapper on DropDownFieldResponse? {
   DropDownModel toDomain() {
     return DropDownModel(
-        name: this?.name.orEmpty() ?? '',
-        label: this?.label.orEmpty() ?? '',
+      name: this?.name.orEmpty() ?? '',
+      label: this?.label.orEmpty() ?? '',
       type: this?.type ?? FieldType.UNKNOWN,
-
       deactivate: this?.deactivate ?? false,
-        required: this?.required ?? false,
-        isHidden: this?.isHidden ?? false,
-        isReadOnly: this?.isReadOnly ?? false,
-        showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
-        showIfIsRequired: this?.showIfIsRequired ?? false,
-        requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
-        values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
-        relatedListCheckbox: this?.relatedListCheckbox ?? false,
-        multiple: this?.multiple ?? false,
-        prompt: this?.prompt.orEmpty() ?? '',
-        relatedListFieldName: this?.relatedListFieldName.orEmpty() ?? '',
+      required: this?.required ?? false,
+      isHidden: this?.isHidden ?? false,
+      isReadOnly: this?.isReadOnly ?? false,
+      showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
+      showIfIsRequired: this?.showIfIsRequired ?? false,
+      requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
+      values: this?.values?.map((e) => e.toDomain()).toList() ?? [],
+      relatedListCheckbox: this?.relatedListCheckbox ?? false,
+      multiple: this?.multiple ?? false,
+      prompt: this?.prompt.orEmpty() ?? '',
+      relatedListFieldName: this?.relatedListFieldName.orEmpty() ?? '',
       showIfFieldName: this?.showIfFieldName.orEmpty() ?? '',
       showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
     );
@@ -252,7 +242,6 @@ extension DropDownMapper on DropDownFieldResponse? {
 
 extension MatrixMapper on MatrixResponse? {
   MatrixModel toDomain() {
-
     log(this!.values.toString());
 
     return MatrixModel(
@@ -263,7 +252,6 @@ extension MatrixMapper on MatrixResponse? {
       showIfFieldValue: this?.showIfFieldValue.orEmpty() ?? '',
       deactivate: this?.deactivate ?? false,
       required: this?.required ?? false,
-
       isHidden: this?.isHidden ?? false,
       isReadOnly: this?.isReadOnly ?? false,
       showIfLogicCheckbox: this?.showIfLogicCheckbox ?? false,
@@ -271,7 +259,6 @@ extension MatrixMapper on MatrixResponse? {
       requiredIfLogicCheckbox: this?.requiredIfLogicCheckbox ?? false,
       maxRecordsCount: this?.maxRecordsCount.orZero() ?? 0,
       values: this?.values.map((e) => e.toDomain()).toList() ?? [],
-
     );
   }
 }
@@ -281,25 +268,21 @@ extension FormMapper on FormResponse? {
     return FormModel(
         name: this?.name.orEmpty() ?? '',
         directionality: this?.directionality.orEmpty() ?? '',
-        fields: this?.fields?.map((e) => e.toDomain()).toList() ?? [] ) ;
+        fields: this?.fields?.map((e) => e.toDomain()).toList() ?? []);
   }
 }
+
 extension FormFieldMapper on FormFieldResponse? {
-
   FormFieldModel toDomain() {
-     var field = _getModelField(this);
-     return field;
+    var field = _getModelField(this);
+    return field;
   }
 }
-FormFieldModel _getModelField (FormFieldResponse?  formFieldResponse){
+
+FormFieldModel _getModelField(FormFieldResponse? formFieldResponse) {
   switch (formFieldResponse.runtimeType) {
-
-
-
-
     case DropDownFieldResponse:
       return (formFieldResponse as DropDownFieldResponse).toDomain();
-
 
     case CheckboxGroupFieldResponse:
       return (formFieldResponse as CheckboxGroupFieldResponse).toDomain();
@@ -310,47 +293,40 @@ FormFieldModel _getModelField (FormFieldResponse?  formFieldResponse){
     case TextFieldResponse:
       return (formFieldResponse as TextFieldResponse).toDomain();
 
-
-
     case NumberFieldResponse:
       return (formFieldResponse as NumberFieldResponse).toDomain();
-
 
     case EmailTextFieldResponse:
       return (formFieldResponse as EmailTextFieldResponse).toDomain();
 
-
     case TextAreaFieldResponse:
       return (formFieldResponse as TextAreaFieldResponse).toDomain();
-
-
 
     case FilePickerFieldResponse:
       return (formFieldResponse as FilePickerFieldResponse).toDomain();
 
-
-
     case StarRatingFieldResponse:
       return (formFieldResponse as StarRatingFieldResponse).toDomain();
 
-
-   case MatrixResponse:
-     // log('MatrixResponse');
+    case MatrixResponse:
+      // log('MatrixResponse');
       return (formFieldResponse as MatrixResponse).toDomain();
 
-    default: throw UnimplementedError('cant map to domain');
+    default:
+      throw UnimplementedError('cant map to domain');
   }
 }
-
-
-
-
 
 extension AssignedFormMapper on AssignedFormsResponse? {
   AssignedForms toDomain() {
     return AssignedForms(this?.data?.map((e) => e.toDomain()).toList());
   }
+}
 
+extension NodeResponseMapper on NodeBaseResponse? {
+  List<Node> toDomain() {
+    return this?.data?.map((e) => e.toDomain()).toList() ?? [];
+  }
 }
 
 extension NodeMapper on NodeResponse? {

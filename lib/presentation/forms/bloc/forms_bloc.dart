@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:datalines/app/extenstions.dart';
+import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/domain/model/node/node.dart';
 
 import 'package:bloc/bloc.dart';
@@ -47,9 +48,11 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       : super(FormsState(
             isNewSubmit: true,
             matrixValuesMap: {},
+      currentNode: null,
             updateFlowState: ContentState(),
             allSaved: true,
             assignedForms: [],
+            nodes: [],
             isFilePicking: {},
             valuesMap: {},
             submissions: [],
@@ -65,9 +68,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<MatrixEditRecordSubmitted>(_onMatrixEditRecordSubmitted);
     on<MatrixRecordDeleted>(_onMatrixRecordDeleted);
     on<MatrixEditCanceled>(_onMatrixEditCanceled);
+    on<CurrentNodeChanged>(_onCurrentNodeChanged);
 
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
+    on<FormsPageRequested>(_onFormsPageRequested);
+    on<FormsPageRefreshRequested>(_onFormsPageRefreshRequested);
 
     on<FieldValueChanged>(_onFieldValueChanged);
     on<TextValueChanged>(_onTextValueChanged);
@@ -212,6 +218,72 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
               message: e.toString())));
     }
   }
+  Future<void> _onFormsPageRequested(
+
+      FormsPageRequested event, Emitter<FormsState> emit) async {
+
+
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
+
+    try {
+
+      var either = await _assignedFormRepository.getFormsHomeModel();
+      either.fold((failure) {
+        emit(state.copyWith(
+            flowState: ErrorState(
+                code: failure.code,
+                stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+                message: failure.message)));
+      }, (model) {
+
+        if(model.forms.isEmpty)
+          emit(state.copyWith(flowState: EmptyState('no forms')));
+
+    else     emit(state.copyWith(
+            assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
+    }
+  }
+  Future<void> _onFormsPageRefreshRequested(
+
+      FormsPageRefreshRequested event, Emitter<FormsState> emit) async {
+
+
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.POPUP_LOADING)));
+
+    try {
+
+      var either = await _assignedFormRepository.getFormsHomeModel(forceFromRemote: true);
+      either.fold((failure) {
+        emit(state.copyWith(
+            flowState: ErrorState(
+                code: failure.code,
+                stateRendererType: StateRendererType.POPUP_ERROR,
+                message: failure.message)));
+      }, (model) {
+
+        if(model.forms.isEmpty)
+          emit(state.copyWith(flowState: EmptyState('no forms')));
+
+    else     emit(state.copyWith(
+            assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
+      });
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
+    }
+  }
 
   Future<void> _onAssignedFormsRefreshRequested(
       AssignedFormsRefreshRequested event, Emitter<FormsState> emit) async {
@@ -304,7 +376,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   // or we get it from the list with the index
   MatrixRecordModel? _getDesiredRecord() {
     if (state.tempRecord != null) {
-      log(' getDesiredRecord is not null');
       return state.tempRecord!.copyWith();
     } else {
       Map<String, dynamic> map = Map.from(state.valuesMap);
@@ -415,6 +486,10 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         tempRecord: () => null,
         matrixState: MatrixState(
             MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
+  }
+  Future<void> _onCurrentNodeChanged(
+      CurrentNodeChanged event, Emitter<FormsState> emit) async {
+    emit(state.copyWith(currentNode: () => event.newNode));
   }
 
   Future<void> _onMatrixRecordDeleted(
@@ -640,6 +715,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         newSubmitFlowState: ContentState(),
         valuesMap: map,
         formModel: formModel,
+        currentNode: () => null,
         validationMap: {},
         allSaved: false));
 
@@ -663,15 +739,26 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
-    Map map = state.valuesMap;
-    var newSub = Submission(
-        formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map), node: Node (id:'2',name:'123'));
 
-    await _assignedFormRepository.addSubmission(newSub);
-    emit(state.copyWith(
-        newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
-        allSaved: false));
+    try{
+      Map map = state.valuesMap;
+      var newSub = Submission(
+          formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map), node: state.currentNode!);
 
+      await _assignedFormRepository.addSubmission(newSub);
+      emit(state.copyWith(
+          newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
+          allSaved: false));
+    }
+
+            catch (e)  {
+
+              final failure = ErrorTypeEnum.UNKNOWN.getFailure();
+              emit(state.copyWith( newSubmitFlowState: ErrorState(
+                  code: 0,
+                  stateRendererType: StateRendererType.POPUP_ERROR,
+                  message: failure.message)));
+            }
     // add(NewFormRequested(event.formModel));
   }
 
@@ -699,6 +786,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     emit(state.copyWith(
         newSubmitFlowState: ContentState(),
         valuesMap: map,
+        currentNode: () => event.submission.node,
         isNewSubmit: false,
         formModel: event.formModel));
   }
@@ -756,7 +844,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     int index = state.submissions.indexOf(event.submission);
 
     Submission newSub =
-        submission.copyWith(fieldEntries: _mapValuesToEntries(map));
+        submission.copyWith(fieldEntries: _mapValuesToEntries(map),node: state.currentNode!);
     log(newSub.fieldEntries.toString());
     await _assignedFormRepository.updateSubmission(newSub);
     emit(state.copyWith(

@@ -8,7 +8,6 @@ import 'package:datalines/presentation/form_widgets/form_field_widget/form_field
 import 'package:datalines/presentation/form_widgets/radio_group_item_widget/other_widget.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 
-import '../../../Widgets/form_field_widget.dart';
 import '../../forms/bloc/forms_bloc.dart';
 
 class RadioGroupWidget extends StatelessWidget {

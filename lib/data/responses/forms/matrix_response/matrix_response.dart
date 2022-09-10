@@ -7,7 +7,6 @@ import '../enums.dart';
 part 'matrix_response.g.dart';
 MatrixFieldResponse? _getMatrixFieldFromType(Map<String, dynamic> json) {
 
-  log(json.toString());
   switch (json['value']) {
     case 'select':
       return MatrixDropDownResponse.fromJson(json);

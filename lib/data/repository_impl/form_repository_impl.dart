@@ -9,6 +9,8 @@ import 'package:datalines/data/mapper/form_fields_mappers.dart';
 import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/data/network/failure.dart';
 import 'package:datalines/data/network/network_info.dart';
+import 'package:datalines/data/responses/forms/forms_response.dart';
+import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/domain/model/form_model.dart';
 import 'package:datalines/domain/model/node/node.dart';
 import 'package:datalines/domain/repository/form_repository.dart';
@@ -56,6 +58,8 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
 
   }
+
+
 
 
   Future<Either<Failure, AssignedForms>> _getFormsFromRemote  ()  async {
@@ -116,11 +120,110 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   }
 
   @override
-  Either<Failure, List<Node>> getNodes() {
-    return _remoteDataSource.getNodes();
+  Future<Either<Failure, List<Node>>> getNodes(  {bool? forceFromRemote})  async {
+
+    // from database
+    try{
+
+      if(forceFromRemote != null && forceFromRemote) {
+        // return _getNodesFromRemote();
+      } else {
+        final nodes = _localDataSource.getNodes();
+        return Right(nodes);
+      }
+
+      throw UnimplementedError();
+
+    }
+
+    // from api
+    on DatabaseDataNotFoundException {
+      // return _getNodesFromRemote();
+      throw UnimplementedError();
+
+    }
+
+
+    catch (error){
+      print(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
+
+
+
   }
 
 
 
+
+
+  Future<Either<Failure, FormsHomeModel>> getFormsHomeModel({bool? forceFromRemote}) async {
+
+
+    // from database
+    try{
+
+      if(forceFromRemote != null && forceFromRemote) {
+        return _getFormsHomeModelFromRemote();
+      } else {
+        final forms = _localDataSource.getAssignedForms();
+        final nodes = _localDataSource.getNodes();
+        return Right(FormsHomeModel(forms: forms.data ?? [],nodes: nodes));
+      }
+
+    }
+
+    // from api
+    on DatabaseDataNotFoundException {
+      return _getFormsHomeModelFromRemote();
+
+    }
+
+
+    catch (error){
+      print(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  Future<Either<Failure, FormsHomeModel >> _getFormsHomeModelFromRemote  ()  async {
+
+    try{
+      if(!await _networkInfo.isConnected){
+        return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
+      }
+
+      final request1 =  _remoteDataSource.getAssignedForms();
+      final request2 =  _remoteDataSource.getNodes();
+
+      final responses = await Future.wait([request1,request2]);
+
+      if (responses.any((response) => response.status ==ApiInternal.FAILURE )){
+        final falseResponse = responses.firstWhere((element) => element.status ==ApiInternal.FAILURE);
+        return Left(Failure( ApiInternal.FAILURE, falseResponse.message ?? ResponseMessage.UNKNOWN));
+      }
+
+
+      final forms = responses[0] as AssignedFormsResponse;
+      final nodes = responses[1] as NodeBaseResponse;
+      //save to database
+      final formsModel = forms.toDomain();
+      final nodesModel = nodes.toDomain();
+
+      await  _localDataSource.saveFormsToDataBase(forms.toDomain());
+      await  _localDataSource.saveNodes(nodesModel);
+
+
+      log(nodesModel.toString());
+      log('saved');
+      return Right(FormsHomeModel(forms: formsModel.data ?? [] , nodes: nodesModel));
+    }
+
+    catch (error){
+      log(error.toString());
+      return Left(ErrorHandler.handle(error).failure);
+    }
+
+  }
 
 }

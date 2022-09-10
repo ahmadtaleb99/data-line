@@ -10,7 +10,9 @@ class AppStrings{
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String warning ='Warning';
   static const String error ='Error';
+  static const String node ='Node';
   static const String character ='Character';
+  static const String selectNodeWarning ='Select the submission node please!';
   static const String deleteSubmissionWarningMsg ='Are you sure you want to delete this submission?';
   static const String matrixHint ='(Matrix)';
   static const String maxRecordCountErrorMsg ='The maximum number of records is ';

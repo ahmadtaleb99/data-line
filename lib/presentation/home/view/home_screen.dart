@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:datalines/presentation/home/bloc/home_bloc.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
 import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -57,7 +59,7 @@ class NewWidget extends StatelessWidget {
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            context.read<FormsBloc>().add(AssignedFormsRefreshRequested());
+            context.read<FormsBloc>().add(FormsPageRefreshRequested());
           },
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -127,15 +129,15 @@ class FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
-      height: 300,
+      width: 300.w,
+      height: 300.h,
       decoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
+          color: ColorManager.primary,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: BorderRadius.circular(AppRadius.r10)),
       child: Card(
         elevation: 10,
-        color: Colors.lightBlueAccent,
+        color: ColorManager.lightPrimary,
         child: Column(
           children: [
             Expanded(
@@ -147,7 +149,7 @@ class FormCard extends StatelessWidget {
                           .of(context)
                           .textTheme
                           .overline!
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp),
                     ))),
             Expanded(
                 flex: 2,
@@ -156,15 +158,15 @@ class FormCard extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: submitNewFormCallBack,
-                        icon: const Icon(
+                        icon:  Icon(
                           Icons.add,
-                          color: Colors.white,
+                          color: ColorManager.white,
                         )),
                     IconButton(
                         onPressed: viewSubmittedCallBack,
-                        icon: const Icon(
+                        icon:  Icon(
                           Icons.visibility,
-                          color: Colors.white,
+                          color: ColorManager.white,
                         )),
                   ],
                 )),

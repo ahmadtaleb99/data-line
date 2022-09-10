@@ -17,9 +17,7 @@ Future showAddRecordDialog(BuildContext context, MatrixModel model) async {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   FormsBloc bloc = context.read<FormsBloc>();
-  model.values.forEach((element) {
-    log(element.runtimeType.toString());
-  });
+
   return await showDialog(
       useRootNavigator: false,
       barrierDismissible: false,

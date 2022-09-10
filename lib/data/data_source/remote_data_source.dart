@@ -13,7 +13,7 @@ abstract class RemoteDataSource {
   Future<StoreDetailsResponse> getStoreDetails(int id);
 
   Future<AssignedFormsResponse> getAssignedForms();
-  Future<List<NodeResponse>> getNodes();
+  Future<NodeBaseResponse> getNodes();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -59,9 +59,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<NodeResponse>> getNodes() async{
+  Future<NodeBaseResponse> getNodes() async{
     final nodeResponse =  await _apiClient.getNodes();
-    return nodeResponse.data;
+    return nodeResponse;
 
 
   }

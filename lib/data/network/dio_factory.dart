@@ -39,10 +39,10 @@ class DioFactory {
     if(kReleaseMode){
       dio.interceptors.add(PrettyDioLogger(
         request : true,
-         requestHeader : true,
-         requestBody : true,
-         responseHeader : true,
-         responseBody : true,
+         // requestHeader : true,
+         // requestBody : true,
+         // responseHeader : true,
+         // responseBody : true,
       ));
     }
 

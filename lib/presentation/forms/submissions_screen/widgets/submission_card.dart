@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:datalines/data/responses/forms/enums.dart';
@@ -25,12 +26,12 @@ class SubmissionCard extends StatelessWidget {
       margin: const EdgeInsets.all(AppPadding.p20),
       height: 150.h,
       decoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
+            color: ColorManager.primary,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: BorderRadius.circular(AppRadius.r10)),
       child: Card(
         elevation: 10,
-        color: Colors.lightBlueAccent,
+        color: ColorManager.lightPrimary,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -63,21 +64,22 @@ class SubmissionCard extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: onView,
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.visibility,
-                        color: Colors.white,
+                        color: ColorManager.white,
                       )),
                   IconButton(
                       onPressed: onUpdate,
-                      icon:const  Icon(
+                      icon:  Icon(
                         Icons.edit,
-                        color: Colors.white,
+                        color: ColorManager.white,
+
                       )),
                   IconButton(
                       onPressed: onDelete,
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.delete_rounded,
-                        color: Colors.white,
+                        color: ColorManager.white,
                       )),
                 ],
               ),
