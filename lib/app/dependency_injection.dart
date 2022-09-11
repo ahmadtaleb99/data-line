@@ -9,7 +9,7 @@ import 'package:datalines/data/network/api_client.dart';
 import 'package:datalines/data/network/dio_factory.dart';
 import 'package:datalines/data/network/network_info.dart';
 import 'package:datalines/data/repository_impl/form_repository_impl.dart';
-import 'package:datalines/data/repository_impl/repository_impl.dart';
+import 'package:datalines/data/repository_impl/authentication_repository_impl.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/domain/repository/form_repository.dart';
 import 'package:datalines/domain/repository/repository.dart';

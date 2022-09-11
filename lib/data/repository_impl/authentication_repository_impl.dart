@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 
@@ -13,7 +14,7 @@ import 'package:datalines/domain/model/models.dart';
 import 'package:datalines/domain/repository/repository.dart';
 
 import '../data_source/remote_data_source.dart';
-
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 class AuthenticationRepositoryImpl implements AuthenticationRepository{
 
   final RemoteDataSource _remoteDataSource;
@@ -32,7 +33,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository{
     try {
       final AuthenticationResponse response =  await _remoteDataSource.login(loginRequest);
       if (response.status == ApiInternal.FAILURE){
-        return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+        return Left(Failure( 1, response.message ?? ResponseMessage.UNKNOWN));
       }
 
       return Right(response.toDomain());
@@ -50,7 +51,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository{
      final response = await  _remoteDataSource.forgetPassword(forgetPasswordRequest);
 
      if (response.status == ApiInternal.FAILURE){
-       return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+       return Left(Failure( 1, response.message ?? ResponseMessage.UNKNOWN));
      }
 
 
@@ -71,7 +72,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository{
     try {
       final AuthenticationResponse response =  await _remoteDataSource.register(registerRequest);
       if (response.status == ApiInternal.FAILURE){
-        return Left(Failure( ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+        return Left(Failure( 1, response.message ?? ResponseMessage.UNKNOWN));
       }
 
       return Right(response.toDomain());
@@ -82,6 +83,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository{
   }
 
 
+  final _controller = StreamController<AuthenticationStatus>();
 
+  @override
+  Stream<AuthenticationStatus> get status =>_controller.stream;
+
+  @override
+  void dispose() => _controller.close();
+  Future<void> logIn({
+    required String username,
+    required String password,
+  }) async {
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+          () => _controller.add(AuthenticationStatus.authenticated),
+    );
+  }
+
+  void logOut() {
+    _controller.add(AuthenticationStatus.unauthenticated);
+  }
 
 }

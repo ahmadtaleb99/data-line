@@ -8,11 +8,11 @@ part of 'node_response.dart';
 
 NodeBaseResponse _$NodeBaseResponseFromJson(Map<String, dynamic> json) =>
     NodeBaseResponse(
-      (json['data'] as List<dynamic>)
-          .map((e) => NodeResponse.fromJson(e as Map<String, dynamic>))
+      (json['data'] as List<dynamic>?)
+          ?.map((e) => NodeResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..status = json['status'] as int?
+      ..status = json['status'] as bool?
       ..message = json['message'] as String?;
 
 Map<String, dynamic> _$NodeBaseResponseToJson(NodeBaseResponse instance) =>

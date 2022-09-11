@@ -6,29 +6,20 @@ import 'package:datalines/domain/model/text_field_model/text_field_model.dart';
 
 import '../responses/forms/forms_response.dart';
 
-extension CustomerResponseMapper on CustomerResponse? {
-  Customer toDomain() {
-    return Customer(
+extension CustomerResponseMapper on UserResponse? {
+  toDomain() {
+    return User(
         id: this?.id.orEmpty() ?? '',
         numberOfNotifications: this?.numberOfNotifications.orZero() ?? 0,
         name: this?.name.orEmpty() ?? '');
   }
 }
 
-extension ContactResponseMapper on ContactResponse? {
-  Contact toDomain() {
-    return Contact(
-        address: this?.address.orEmpty() ?? '',
-        phone: this?.phone.orEmpty() ?? '',
-        link: this?.link.orEmpty() ?? '');
-  }
-}
 
 extension AuthenticationMapper on AuthenticationResponse? {
   Authentication toDomain() {
     return Authentication(
-        customer: this?.customerResponse.toDomain(),
-        contact: this?.contactResponse.toDomain());
+        user: this?.userResponse.toDomain());
   }
 }
 

@@ -28,24 +28,24 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text(AppStrings.home),
         ),
-        body: BlocBuilder<FormsBloc, FormsState>(
-          buildWhen: (p, c) => p.flowState != c.flowState,
-          builder: (context, state) {
-            if (state.flowState != null) {
-              var widget =
-              state.flowState.getWidget(context, const NewWidget(), () {
-                context.read<FormsBloc>().add(AssignedFormsRequested());
-              });
-              log(widget.hashCode.toString());
-              return widget;
-            } else {
-              return const NewWidget();
-            }
-
-
-          },
-        )
-        // body: const NewWidget()
+        // body: BlocBuilder<FormsBloc, FormsState>(
+        //   buildWhen: (p, c) => p.flowState != c.flowState,
+        //   builder: (context, state) {
+        //     if (state.flowState != null) {
+        //       var widget =
+        //       state.flowState.getWidget(context, const NewWidget(), () {
+        //         context.read<FormsBloc>().add(AssignedFormsRequested());
+        //       });
+        //       log(widget.hashCode.toString());
+        //       return widget;
+        //     } else {
+        //       return const NewWidget();
+        //     }
+        //
+        //
+        //   },
+        // )
+        body: const NewWidget()
 
     );
   }

@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class SliderPageObject {
   final String title;
   final String subTitle;
@@ -15,18 +17,24 @@ class SliderPageViewObject {
       this.sliderPageObject, this.numberOfPages, this.currentPageIndex);
 }
 
-class Customer {
-  String id;
+class User extends Equatable{
+  final String id;
 
-  int numberOfNotifications;
+    final  int numberOfNotifications;
 
-  String name;
+  final String name;
 
-  Customer({
+ const  User({
     required this.id,
     required this.numberOfNotifications,
     required this.name,
   });
+
+  static const   User  empty =   User(id: '',numberOfNotifications: 0,name: '');
+
+  @override
+  List<Object?> get props => [id,name,numberOfNotifications];
+
 }
 
 class Contact {
@@ -44,12 +52,10 @@ class Contact {
 }
 
 class Authentication {
-  Customer? customer;
-  Contact? contact;
+  User? user;
 
   Authentication({
-    required this.customer,
-    required this.contact,
+    required this.user,
   });
 }
 

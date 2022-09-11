@@ -50,7 +50,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       final response = await _remoteDataSource.getAssignedForms();
       if (response.status == ApiInternal.FAILURE) {
         return Left(Failure(
-            ApiInternal.FAILURE, response.message ?? ResponseMessage.UNKNOWN));
+            1, response.message ?? ResponseMessage.UNKNOWN));
       }
 
       //save to database
@@ -122,7 +122,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       if (responses.any((response) => response.status == ApiInternal.FAILURE)) {
         final falseResponse = responses
             .firstWhere((element) => element.status == ApiInternal.FAILURE);
-        return Left(Failure(ApiInternal.FAILURE,
+        return Left(Failure(1,
             falseResponse.message ?? ResponseMessage.UNKNOWN));
       }
 
@@ -159,6 +159,7 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   List<FormModel>? getInactiveForms() {
     return _localDataSource.getInactiveForms();
   }
+
 
 
 }

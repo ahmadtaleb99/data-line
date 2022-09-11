@@ -1,3 +1,4 @@
+import 'package:datalines/presentation/home/view/widgets/sync_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,10 +7,11 @@ import '../../../resources/strings_manager.dart';
 import '../../../resources/values_manager.dart';
 
 class FormCard extends StatelessWidget {
-  const FormCard({Key? key,
-    required this.viewSubmittedCallBack,
-    required this.formName,
-    required this.submitNewFormCallBack})
+  const FormCard(
+      {Key? key,
+      required this.viewSubmittedCallBack,
+      required this.formName,
+      required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
@@ -18,7 +20,7 @@ class FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300.w,
+        width: 300.w,
       height: 300.h,
       decoration: BoxDecoration(
           color: ColorManager.primary,
@@ -27,20 +29,20 @@ class FormCard extends StatelessWidget {
       child: Card(
         elevation: 10,
         color: ColorManager.lightPrimary,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.r10)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.r10)),
         child: Column(
           children: [
             Expanded(
                 flex: 5,
                 child: Center(
                     child: Text(
-                      formName,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .overline!
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp),
-                    ))),
+                  formName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .overline!
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                ))),
             Expanded(
                 flex: 2,
                 child: Row(
@@ -49,22 +51,20 @@ class FormCard extends StatelessWidget {
                     Expanded(
                       child: IconButton(
                           onPressed: submitNewFormCallBack,
-                          icon:  Icon(
+                          icon: Icon(
                             Icons.add,
                             color: ColorManager.white,
                           )),
                     ),
                     Expanded(
-                      flex: 2,
-                      child: TextButton(
-                        onPressed: (){},
-                        child: Text(AppStrings.sync,style: TextStyle(color: ColorManager.white),),
-                      ),
-                    ),
+                        flex: 2,
+                        child: SyncButtonWidget(
+                          onPressed: () {},
+                        )),
                     Expanded(
                       child: IconButton(
                           onPressed: viewSubmittedCallBack,
-                          icon:  Icon(
+                          icon: Icon(
                             Icons.visibility,
                             color: ColorManager.white,
                           )),

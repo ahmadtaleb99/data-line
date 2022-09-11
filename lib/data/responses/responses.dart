@@ -4,28 +4,27 @@ part 'responses.g.dart';
 @JsonSerializable()
 class BaseResponse {
   @JsonKey(name: 'status')
-  int? status;
+  bool? status;
   @JsonKey(name: 'message')
   String? message;
 }
 
 @JsonSerializable()
 class AuthenticationResponse extends BaseResponse {
-  @JsonKey(name: 'customer')
-  CustomerResponse? customerResponse;
+  @JsonKey(name: 'data')
+  UserResponse? userResponse;
 
-  @JsonKey(name: 'contact')
-  ContactResponse? contactResponse;
+
 
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationResponseFromJson(json);
   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 
-  AuthenticationResponse(this.contactResponse);
+  AuthenticationResponse(this.userResponse);
 }
 
 @JsonSerializable()
-class CustomerResponse {
+class UserResponse {
   @JsonKey(name: 'id')
   String? id;
 
@@ -35,30 +34,13 @@ class CustomerResponse {
   @JsonKey(name: 'name')
   String? name;
 
-  factory CustomerResponse.fromJson(Map<String, dynamic> json) =>
-      _$CustomerResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 
-  CustomerResponse(this.name);
+  UserResponse(this.name);
 }
 
-@JsonSerializable()
-class ContactResponse {
-  @JsonKey(name: 'phone')
-  String? phone;
-
-  @JsonKey(name: 'address')
-  String? address;
-
-  @JsonKey(name: 'link')
-  String? link;
-
-  ContactResponse(this.phone, this.address, this.link);
-
-  factory ContactResponse.fromJson(Map<String, dynamic> json) =>
-      _$ContactResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ContactResponseToJson(this);
-}
 
 @JsonSerializable()
 class ForgetPasswordResponse extends BaseResponse {

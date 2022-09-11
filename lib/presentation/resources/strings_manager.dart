@@ -8,6 +8,8 @@ class AppStrings{
   static const String onboardingTitle2 ='on_boarding_title2';
   static const String onboardingTitle3 ='on_boarding_title3';
   static const String onboardingTitle4 ='on_boarding_title4';
+  static const String permissionRevoked ='Permission Revoked';
+  static const String revoked ='  Revoked';
   static const String warning ='Warning';
   static const String error ='Error';
   static const String node ='Node';

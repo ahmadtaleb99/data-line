@@ -6,8 +6,6 @@ part of 'matrix_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-
-
 Map<String, dynamic> _$MatrixResponseToJson(MatrixResponse instance) =>
     <String, dynamic>{
       'name': instance.name,

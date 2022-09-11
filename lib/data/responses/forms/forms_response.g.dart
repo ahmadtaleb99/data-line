@@ -13,7 +13,7 @@ AssignedFormsResponse _$AssignedFormsResponseFromJson(
           ?.map((e) => FormResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     )
-      ..status = json['status'] as int?
+      ..status = json['status'] as bool?
       ..message = json['message'] as String?;
 
 Map<String, dynamic> _$AssignedFormsResponseToJson(
@@ -22,45 +22,6 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
       'status': instance.status,
       'message': instance.message,
       'data': instance.data,
-    };
-
-
-Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'directionality': instance.directionality,
-      'fields': instance.fields,
-    };
-
-FormFieldResponse _$FormFieldResponseFromJson(Map<String, dynamic> json) =>
-    FormFieldResponse()
-      ..name = json['name'] as String?
-      ..label = json['label'] as String?
-      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
-      ..deactivate = json['deactivate'] as bool?
-      ..required = json['required'] as bool?
-      ..isHidden = json['isHidden'] as bool?
-      ..isReadOnly = json['isReadOnly'] as bool?
-      ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
-      ..showIfFieldName = json['showIfFieldName'] as String?
-      ..showIfFieldValue = json['showIfFieldValue'] as String?
-      ..showIfIsRequired = json['showIfIsRequired'] as bool?
-      ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
-
-Map<String, dynamic> _$FormFieldResponseToJson(FormFieldResponse instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'label': instance.label,
-      'type': _$FieldTypeEnumMap[instance.type],
-      'deactivate': instance.deactivate,
-      'required': instance.required,
-      'isHidden': instance.isHidden,
-      'isReadOnly': instance.isReadOnly,
-      'showIfLogicCheckbox': instance.showIfLogicCheckbox,
-      'showIfFieldName': instance.showIfFieldName,
-      'showIfFieldValue': instance.showIfFieldValue,
-      'showIfIsRequired': instance.showIfIsRequired,
-      'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
 
 const _$FieldTypeEnumMap = {

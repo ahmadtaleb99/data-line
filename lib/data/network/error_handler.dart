@@ -178,7 +178,12 @@ class ResponseMessage {
 
 
 //response coming from api if http req is valid
+// class ApiInternal{
+//   static const int SUCCESS = 0;
+//   static const int FAILURE = 1;
+// }
+//
 class ApiInternal{
-  static const int SUCCESS = 0;
-  static const int FAILURE = 1;
+  static const bool SUCCESS = true;
+  static const bool FAILURE = false;
 }
