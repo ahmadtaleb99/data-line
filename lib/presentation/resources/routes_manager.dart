@@ -1,3 +1,4 @@
+import 'package:datalines/presentation/splash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:datalines/app/dependency_injection.dart';
@@ -13,6 +14,7 @@ import 'package:get_it/get_it.dart';
 
 class Routes {
   static const String homeRoute = "/home";
+  static const String splashRoute = "/splash";
   static const String submissionsRoute = "/submissions";
   static const String submissionDetailsRoute = "/submissionDetails";
   static const String newFormRoute = "/newFormRoute";
@@ -27,7 +29,7 @@ class RouteGenerator {
         initFormModule();
         return MaterialPageRoute(
             builder: (_) =>  MultiBlocProvider(providers: [
-              BlocProvider(create: (context) =>  FormsBloc(getIT<AssignedFormRepository>())
+              BlocProvider(create: (context) =>  FormsBloc(getIt<AssignedFormRepository>())
                 ..add(FormsPageRequested())),
             ], child: const HomeScreen()));
 
@@ -35,6 +37,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
                 create: (context) => LoginBloc(), child: const LoginScreen()));
+
+        case Routes.splashRoute:
+        return MaterialPageRoute(
+            builder: (_) => const SplashScreen());
 
       default:
         return null;

@@ -19,7 +19,7 @@ extension CustomerResponseMapper on UserResponse? {
 extension AuthenticationMapper on AuthenticationResponse? {
   Authentication toDomain() {
     return Authentication(
-        user: this?.userResponse.toDomain());
+        user: this?.userResponse.toDomain(),accessToken: this?.accessToken.orEmpty() ?? '');
   }
 }
 

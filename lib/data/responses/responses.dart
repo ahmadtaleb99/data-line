@@ -11,8 +11,11 @@ class BaseResponse {
 
 @JsonSerializable()
 class AuthenticationResponse extends BaseResponse {
-  @JsonKey(name: 'data')
+  @JsonKey(name: 'user')
   UserResponse? userResponse;
+
+  @JsonKey(name: 'access_token')
+  String? accessToken;
 
 
 
@@ -20,7 +23,7 @@ class AuthenticationResponse extends BaseResponse {
       _$AuthenticationResponseFromJson(json);
   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 
-  AuthenticationResponse(this.userResponse);
+  AuthenticationResponse(this.userResponse,this.accessToken);
 }
 
 @JsonSerializable()

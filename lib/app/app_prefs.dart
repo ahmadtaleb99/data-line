@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../presentation/resources/language_manager.dart';
 
 const String keyLanguage = 'keyLanguage';
+const String keyAccessToken = 'keyAccessToken';
 const String keyIsLoggedIn = 'keyIsLoggedIn';
 const String keyOnboardingScreenViewed = 'keyOnboardingScreenViewed';
 
@@ -64,11 +65,19 @@ class AppPreferences {
   }
 
 
-  void setOnboardingScreenViewed() => _prefs.setBool(keyOnboardingScreenViewed, true);
+  Future setOnboardingScreenViewed() => _prefs.setBool(keyOnboardingScreenViewed, true);
 
   void setIsLoggedIn(bool isLoggedIn ) => _prefs.setBool(keyIsLoggedIn, isLoggedIn);
 
   bool isLoggedIn() => _prefs.getBool(keyIsLoggedIn) ?? false;
+
+
+  Future saveAccessToken(String accessToken) => _prefs.setString(keyAccessToken, accessToken);
+  String? getAccessToken() => _prefs.getString(keyAccessToken);
+
+  Future<void> logout() async {
+    await _prefs.remove(keyAccessToken);
+  }
 
   bool isOnboardingScreenViewed() => _prefs.getBool(keyOnboardingScreenViewed) ?? false;
 }

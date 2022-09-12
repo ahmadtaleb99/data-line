@@ -1,6 +1,9 @@
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/data/repository_impl/authentication_repository_impl.dart';
 import 'package:datalines/presentation/home/view/widgets/sync_button_widget.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../resources/color_manager.dart';
@@ -53,7 +56,11 @@ class InactiveFormCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SyncButtonWidget(onPressed: (){},)
+                          SyncButtonWidget(onPressed: (){
+                            context.read<AuthenticationBloc>().add(
+                                AuthenticationStatusChanged(
+                                    status: AuthenticationStatus.unauthenticated));
+                          },)
                         ],
                       )),
                 ],

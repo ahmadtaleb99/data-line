@@ -1,6 +1,7 @@
 
 // ignore_for_file: unused_import
 
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
 import 'package:datalines/app/notification_bloc/notifications_bloc.dart';
 import 'package:datalines/data/data_source/local_data_source.dart';
 import 'package:datalines/data/data_source/remote_data_source.dart';
@@ -22,7 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_prefs.dart';
 
-final getIT = GetIt.instance;
+final getIt = GetIt.instance;
 
 
 
@@ -40,27 +41,27 @@ Future<void> initAppModules() async {
 
   //shared prefs
   final _prefs = await SharedPreferences.getInstance();
-  getIT.registerLazySingleton<SharedPreferences>(() => _prefs);
+  getIt.registerLazySingleton<SharedPreferences>(() => _prefs);
 
 
   //app prefs
-  final _appPreferences = AppPreferences(getIT<SharedPreferences>());
-  getIT.registerLazySingleton<AppPreferences>(() => _appPreferences);
+  final _appPreferences = AppPreferences(getIt<SharedPreferences>());
+  getIt.registerLazySingleton<AppPreferences>(() => _appPreferences);
 
   //network info
-  getIT.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
   //dio Factoty
-  getIT.registerLazySingleton(() => DioFactory(getIT<AppPreferences>()));
+  getIt.registerLazySingleton(() => DioFactory(getIt<AppPreferences>()));
 
-  final dio = await getIT<DioFactory>().getDio();
+  final dio = await getIt<DioFactory>().getDio();
 
   //api client
-  getIT.registerLazySingleton<ApiClient>(() => ApiClient(dio));
+  getIt.registerLazySingleton<ApiClient>(() => ApiClient(dio));
 
   //remote data source
 
-  getIT.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(getIT<ApiClient>()));
+  getIt.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(getIt<ApiClient>()));
 
 
   //local
@@ -68,43 +69,55 @@ Future<void> initAppModules() async {
 
   FileCachingService _ioService = FileCachingService();
   await _ioService.init();
-  getIT.registerLazySingleton<FileCachingService>(() => _ioService);
+  getIt.registerLazySingleton<FileCachingService>(() => _ioService);
 
   HiveDatabase _hiveDatabase = HiveDatabase();
   await _hiveDatabase.init();
-  getIT.registerLazySingleton<HiveDatabase>(() => _hiveDatabase);
-  getIT.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIT<HiveDatabase>(),getIT<FileCachingService>()));
+  getIt.registerLazySingleton<HiveDatabase>(() => _hiveDatabase);
+  getIt.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(getIt<HiveDatabase>(),getIt<FileCachingService>()));
+
+/////////////////////
+//Authentication
+
+
+  ///////////////////////////////////////
 
 
 
   //notifications
-  getIT.registerLazySingleton<NotificationsBloc>(() => NotificationsBloc(NotificationService()));
+  getIt.registerLazySingleton<NotificationsBloc>(() => NotificationsBloc(NotificationService()));
 
 
 
 
   //repository
-  getIT.registerLazySingleton<AssignedFormRepository>(() => AssignedFormRepositoryImpl(getIT<RemoteDataSource>(),
-      getIT<NetworkInfo>(),
-      getIT<LocalDataSource>()
-  ));
-  getIT.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(getIT<RemoteDataSource>(),
-      getIT<NetworkInfo>(),
-      getIT<LocalDataSource>()
+  getIt.registerLazySingleton<AssignedFormRepository>(() => AssignedFormRepositoryImpl(getIt<RemoteDataSource>(),
+      getIt<NetworkInfo>(),
+      getIt<LocalDataSource>()
   ));
 
 
-  getIT.registerLazySingleton<StateRendererBloc>(() => StateRendererBloc());
+
 
 
 }
 
 void initFormModule (){
-  if(!getIT.isRegistered<FormsBloc>())
-  getIT.registerLazySingleton<FormsBloc>(() => FormsBloc(getIT<AssignedFormRepository>()));
+  if(!getIt.isRegistered<FormsBloc>())
+  getIt.registerLazySingleton<FormsBloc>(() => FormsBloc(getIt<AssignedFormRepository>()));
 }
 
 
 
+AuthenticationBloc initAuthModule (){
+  getIt.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(getIt<RemoteDataSource>(),
+      getIt<NetworkInfo>(),
+      getIt<LocalDataSource>()
+  ));
 
+  getIt.registerLazySingleton<AuthenticationBloc>(() => AuthenticationBloc(getIt<AuthenticationRepository>()));
+
+
+  return getIt<AuthenticationBloc>();
+}
 

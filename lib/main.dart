@@ -2,6 +2,8 @@
 
 import 'dart:developer';
 
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/domain/repository/repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,8 +37,13 @@ Future<void> main() async {
       runApp(EasyLocalization(
         supportedLocales: const [englishLocale, arabicLocale],
         path: LanguageAssets.languageAssetBase,
-        child: BlocProvider.value(
-          value: getIT<NotificationsBloc>(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: getIt<NotificationsBloc>(),
+            ),
+
+          ],
           child: MyApp(),
         ),));
     },

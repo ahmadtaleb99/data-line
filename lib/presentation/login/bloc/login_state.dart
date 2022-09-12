@@ -6,15 +6,17 @@ class LoginState extends Equatable {
  final bool allValid ;
  final bool isPasswordValid ;
  final bool isUsernameValid;
+ final FlowState flowState;
 
  final bool hasLoggedIn;
 
 
   @override
-  List<Object> get props => [allValid,isPasswordValid,isUsernameValid,hasLoggedIn];
+  List<Object> get props => [flowState,allValid,isPasswordValid,isUsernameValid,hasLoggedIn];
 
  const LoginState({
     required this.allValid,
+    required this.flowState,
     required this.isPasswordValid,
     required this.isUsernameValid,
 
@@ -25,6 +27,7 @@ class LoginState extends Equatable {
     bool? allValid,
     bool? isPasswordValid,
     bool? isUsernameValid,
+   FlowState? flowState,
 
     bool? hasLoggedIn,
   }) {
@@ -32,6 +35,8 @@ class LoginState extends Equatable {
       allValid: allValid ?? this.allValid,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       isUsernameValid: isUsernameValid ?? this.isUsernameValid,
+      flowState: flowState ?? this.flowState,
+
 
       hasLoggedIn: hasLoggedIn ?? this.hasLoggedIn,
     );

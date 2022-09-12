@@ -39,9 +39,8 @@ part 'forms_event.dart';
 part 'forms_state.dart';
 
 class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
-  final stateBloc = getIT<StateRendererBloc>();
-  final _ioService = getIT<FileCachingService>();
-  final _hiveDatabase = getIT<HiveDatabase>();
+  final _ioService = getIt<FileCachingService>();
+  final _hiveDatabase = getIt<HiveDatabase>();
 
   final AssignedFormRepository _assignedFormRepository;
   FormsBloc(this._assignedFormRepository)

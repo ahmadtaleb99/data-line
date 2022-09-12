@@ -52,10 +52,11 @@ class Contact {
 }
 
 class Authentication {
-  User? user;
-
+  final User? user;
+  final String accessToken;
   Authentication({
     required this.user,
+    required this.accessToken,
   });
 }
 

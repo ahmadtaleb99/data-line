@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:datalines/data/repository_impl/authentication_repository_impl.dart';
@@ -17,21 +18,26 @@ AuthenticationBloc(this._authenticationRepository) : super(const AuthenticationS
   on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
   on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
       _subscription = _authenticationRepository.status.listen((AuthenticationStatus status) {
-        add(AuthenticationStatusChanged(status));
+        log('first LISTEN');
+        add(AuthenticationStatusChanged(status: status));
       });
 
   }
+
 
   Future<void> _onAuthenticationStatusChanged(
       AuthenticationStatusChanged event,
       Emitter<AuthenticationState> emit,
       ) async {
     switch (event.status) {
+
+
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
+        log('asdasdoas-kds--kads');
         return emit(
-             AuthenticationState.authenticated(user)
+             AuthenticationState.authenticated(event.user ?? User.empty)
         );
       case AuthenticationStatus.unknown:
         return emit(const AuthenticationState.unknown());
@@ -41,8 +47,9 @@ AuthenticationBloc(this._authenticationRepository) : super(const AuthenticationS
   void _onAuthenticationLogoutRequested(
       AuthenticationLogoutRequested event,
       Emitter<AuthenticationState> emit,
-      ) {
-    _authenticationRepository.logOut();
+      ) async {
+
+    await _authenticationRepository.logout();
   }
 
 

@@ -18,7 +18,7 @@ part 'submission_details_event.dart';
 part 'submission_details_state.dart';
 
 class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetailsState> {
-  final _ioService = getIT<FileCachingService>();
+  final _ioService = getIt<FileCachingService>();
   int prog = 0;
   SubmissionDetailsBloc() : super(SubmissionDetailsState(fileDownloadProgress: {})) {
 
@@ -54,12 +54,12 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
       emit(state.copyWith(fileDownloadProgress: Map.from(map)));
 
 
-      getIT<NotificationsBloc>().add(FileDownloadedNotificationEvent(paylaod: newFilePath.toString()));
+      getIt<NotificationsBloc>().add(FileDownloadedNotificationEvent(paylaod: newFilePath.toString()));
 
 
     }
 
-    getIT<NotificationsBloc>().add(FileDownloadedNotificationEvent(paylaod: newFilePath.toString()));
+    getIt<NotificationsBloc>().add(FileDownloadedNotificationEvent(paylaod: newFilePath.toString()));
 
 
 

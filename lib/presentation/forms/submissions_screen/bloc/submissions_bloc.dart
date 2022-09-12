@@ -18,7 +18,7 @@ part 'submissions_state.dart';
 
 class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
   final AssignedFormRepository _assignedFormRepository;
-  final _ioService = getIT<FileCachingService>();
+  final _ioService = getIt<FileCachingService>();
 
     SubmissionsBloc(this._assignedFormRepository) : super(SubmissionsState(flowState: ContentState(),submissions: [])) {
     on<SubmissionsRequested>(_onSubmissionsRequested);

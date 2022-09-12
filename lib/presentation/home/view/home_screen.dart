@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/presentation/common/buttons/custom_button_widget.dart';
 import 'package:datalines/presentation/home/view/widgets/form_card_widget.dart';
 import 'package:datalines/presentation/home/view/widgets/inactive_form_card_widget.dart';
 import 'package:datalines/presentation/resources/color_manager.dart';
@@ -65,60 +67,73 @@ class NewWidget extends StatelessWidget {
           onRefresh: () async {
             context.read<FormsBloc>().add(FormsPageRefreshRequested());
           },
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: state.assignedForms.length + inactiveForms.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.all(AppPadding.p20),
-                  child: index >=
-                          state.assignedForms.length
-                      ? InactiveFormCard(
-                          viewSubmittedCallBack: () {},
-                          formName: 'formName',
-                          submitNewFormCallBack: () {})
-                      : FormCard(
-                          viewSubmittedCallBack: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => MultiBlocProvider(
-                                          providers: [
-                                            BlocProvider(
-                                              create: (context) =>
-                                                  SubmissionsBloc(getIT<
-                                                      AssignedFormRepository>())
-                                                    ..add(SubmissionsRequested(
-                                                        state.assignedForms[
-                                                            index])),
-                                            ),
-                                            BlocProvider.value(
-                                              value: context.read<FormsBloc>(),
-                                            ),
-                                          ],
-                                          child: SubmissionsScreen(
-                                            formModel:
-                                                state.assignedForms[index],
-                                          ),
-                                        )));
-                          },
-                          formName: state.assignedForms[index].name,
-                          submitNewFormCallBack: () {
-                            context.read<FormsBloc>().add(
-                                NewFormRequested(state.assignedForms[index]));
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => BlocProvider.value(
-                                          value: context.read<FormsBloc>(),
-                                          child: NewSubmitScreen(
-                                              formModel:
-                                                  state.assignedForms[index]),
-                                        )));
-                          }),
-                );
-              }),
+          child: Column(
+            children: [
+              SizedBox(
+                height:   MediaQuery.of(context).size.height / 1.5,
+                child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
+                    itemCount: state.assignedForms.length + inactiveForms.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.all(AppPadding.p20),
+                        child: index >=
+                                state.assignedForms.length
+                            ? InactiveFormCard(
+                                viewSubmittedCallBack: () {},
+                                formName: 'formName',
+                                submitNewFormCallBack: () {})
+                            : FormCard(
+                                viewSubmittedCallBack: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => MultiBlocProvider(
+                                                providers: [
+                                                  BlocProvider(
+                                                    create: (context) =>
+                                                        SubmissionsBloc(getIt<
+                                                            AssignedFormRepository>())
+                                                          ..add(SubmissionsRequested(
+                                                              state.assignedForms[
+                                                                  index])),
+                                                  ),
+                                                  BlocProvider.value(
+                                                    value: context.read<FormsBloc>(),
+                                                  ),
+                                                ],
+                                                child: SubmissionsScreen(
+                                                  formModel:
+                                                      state.assignedForms[index],
+                                                ),
+                                              )));
+                                },
+                                formName: state.assignedForms[index].name,
+                                submitNewFormCallBack: () {
+                                  context.read<FormsBloc>().add(
+                                      NewFormRequested(state.assignedForms[index]));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => BlocProvider.value(
+                                                value: context.read<FormsBloc>(),
+                                                child: NewSubmitScreen(
+                                                    formModel:
+                                                        state.assignedForms[index]),
+                                              )));
+                                }),
+                      );
+                    }),
+              ),
+              CustomButtonWidget(
+                text: AppStrings.logout,
+                onPressed: (){
+                  context.read<AuthenticationBloc>().add(AuthenticationLogoutRequested());
+                },
+              )
+            ],
+          ),
         );
       },
     );

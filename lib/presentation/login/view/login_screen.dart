@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/data/repository_impl/authentication_repository_impl.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,21 +20,22 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<StateRendererBloc, StateRendererState>(
-      builder: (context, state) {
-        if (state.flowState != null) {
-          var widget = state.flowState.getWidget(context, NewWidget(), () {
-            context.read<LoginBloc>().add(UserLoggedIn());
-          });
-          log(widget.hashCode.toString());
-          return widget;
-        } else {
-          log('else');
-          return NewWidget();
-        }
-      },
-    )
-//       body: _getWidget(context)
+    return Scaffold(
+        body: BlocBuilder<LoginBloc, LoginState>(
+          buildWhen: (p, c) => p.flowState != c.flowState,
+          builder: (context, state) {
+            log('has been built ${state.flowState.runtimeType.toString()}');
+            if (state.flowState != null) {
+              log('has been built   if (state.flowState != null) {');
+
+              var widget = state.flowState.getWidget(context, NewWidget(), () {});
+              return widget;
+            } else {
+              return NewWidget();
+            }
+          },
+        )
+        // body: NewWidget()
         );
   }
 }
@@ -45,14 +48,13 @@ class NewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
-  listener: (context, state) {
-    if(state.hasLoggedIn) {
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        Navigator.pushReplacementNamed(context, Routes.homeRoute);
-      });
-    }
-
-  },
+      listener: (context, state) {
+        if (state.hasLoggedIn) {
+          context.read<AuthenticationBloc>().add(
+              AuthenticationStatusChanged(
+                  status: AuthenticationStatus.authenticated));
+        }
+      },
   child: SingleChildScrollView(
       child: Center(
         child: Form(
@@ -105,9 +107,11 @@ class NewWidget extends StatelessWidget {
                   child: BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
                       return ElevatedButton(
-                          onPressed: state.allValid ? () {
-                            context.read<LoginBloc>().add(UserLoggedIn());
-                          } :  null ,
+                          onPressed: state.allValid
+                              ? () {
+                                  context.read<LoginBloc>().add(UserLoggedIn());
+                                }
+                              : null,
                           child: Text(
                             AppStrings.login.tr(),
                           ));

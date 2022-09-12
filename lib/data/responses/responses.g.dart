@@ -19,9 +19,11 @@ Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
 AuthenticationResponse _$AuthenticationResponseFromJson(
         Map<String, dynamic> json) =>
     AuthenticationResponse(
-      json['data'] == null
+      json['user'] == null
           ? null
-          : UserResponse.fromJson(json['data'] as Map<String, dynamic>),
+          : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
+      json['access_token'] as String?,
+
     )
       ..status = json['status'] as bool?
       ..message = json['message'] as String?;

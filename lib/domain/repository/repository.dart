@@ -7,6 +7,7 @@ import 'package:dartz/dartz.dart';
 abstract class AuthenticationRepository   {
 
   Future<Either<Failure,Authentication>> login(LoginRequest loginRequest);
+  Future<void> logout();
   Future<Either<Failure,ForgetPassword>> forgetPassword(ForgetPasswordRequest forgetPasswordRequest);
   Future<Either<Failure,Authentication>> register(RegisterRequest registerRequest);
   Stream<AuthenticationStatus> get status ;
