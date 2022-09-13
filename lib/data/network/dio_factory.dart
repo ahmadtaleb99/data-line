@@ -1,5 +1,6 @@
 
 import 'package:datalines/app/app_prefs.dart';
+import 'package:datalines/data/network/dio_interceptors/auth_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:datalines/presentation/resources/constants_manager.dart';
@@ -36,14 +37,14 @@ class DioFactory {
 
 
     //loggging in debug mode
-    if(kReleaseMode){
-      dio.interceptors.add(PrettyDioLogger(
-        request : true,
-         // requestHeader : true,
+    if(!kReleaseMode){
+      dio.interceptors.addAll([AuthInterceptor(),PrettyDioLogger(
+        // request : true,
+        //  requestHeader : true,
          // requestBody : true,
          // responseHeader : true,
          // responseBody : true,
-      ));
+      )]);
     }
 
 

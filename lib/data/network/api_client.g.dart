@@ -19,7 +19,9 @@ class _ApiClient implements ApiClient {
   Future<AuthenticationResponse> login(username, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+    'requiresToken' : false
+    };
     final _data = {'username': username, 'password': password};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(

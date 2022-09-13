@@ -56,6 +56,7 @@ class AssignedFormsResponse extends BaseResponse {
 @JsonSerializable()
 class FormResponse {
   String? name;
+  String? id;
 
   String? directionality;
 
@@ -64,6 +65,7 @@ class FormResponse {
   factory FormResponse.fromJson(Map<String, dynamic> json) {
     return FormResponse(
       json['name'] as String?,
+      json['id'] as String?,
       json['directionality'] as String?,
       (json['fields'] as List<dynamic>?)
           ?.map((e) => _getFieldFromType(e)!)
@@ -71,7 +73,7 @@ class FormResponse {
     );
   }
 
-  FormResponse(this.name, this.directionality, this.fields);
+  FormResponse(this.name,this.id, this.directionality, this.fields);
 }
 
 @JsonSerializable()

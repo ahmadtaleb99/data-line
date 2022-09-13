@@ -46,7 +46,6 @@ class StateRenderer extends StatelessWidget {
         return getPopUpDialog(context, [_getAnimatedImage(AnimationAssets.loading)]);
 
       case StateRendererType.POPUP_ERROR:
-        log(code.toString()+'coded');
         return getPopUpDialog(context, [
         code == ResponseCode.NO_INTERNET_CONNECTION ?
         _getAnimatedImage(AnimationAssets.noInternet):

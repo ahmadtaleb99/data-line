@@ -24,7 +24,7 @@ class MyBlocObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    log('******* bloc  ${transition.toString()} *********');
+    // log('******* bloc  ${transition.toString()} *********');
   }
 
   @override

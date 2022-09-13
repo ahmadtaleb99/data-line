@@ -76,6 +76,7 @@ class NewWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 46.w),
                 child: TextFormField(
+                  initialValue: 'test',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: (username) =>
                       context.read<LoginBloc>().add(UsernameChanged(username)),
@@ -90,6 +91,7 @@ class NewWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 46.w),
                 child: TextFormField(
+                  initialValue: 'test',
                   onChanged: (username) =>
                       context.read<LoginBloc>().add(PasswordChanged(username)),
                   style: Theme.of(context).textTheme.headline1,

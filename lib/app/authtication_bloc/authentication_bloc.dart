@@ -15,6 +15,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   late StreamSubscription<AuthenticationStatus> _subscription;
 AuthenticationBloc(this._authenticationRepository) : super(const AuthenticationState.unknown()) {
 
+
   on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
   on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
       _subscription = _authenticationRepository.status.listen((AuthenticationStatus status) {

@@ -1,98 +1,73 @@
+import 'dart:developer';
+
 import 'package:datalines/app/app_prefs.dart';
+import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
 import 'package:datalines/app/dependency_injection.dart';
+import 'package:datalines/data/network/error_handler.dart';
+import 'package:datalines/domain/repository/repository.dart';
 import 'package:dio/dio.dart';
 
 
-class AuthInterceptor extends Interceptor {
-  final Dio _dio;
-
-  final _appPrefs = getIt<AppPreferences>(); // helper class to access your local storage
-
-  AuthInterceptor(this._dio);
+class AuthInterceptor extends QueuedInterceptor {
+  final _appPrefs = getIt<AppPreferences>();
+  AuthInterceptor();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    if (options.headers["requiresToken"] == false) {
-      // if the request doesn't need token, then just continue to the next interceptor
-      options.headers.remove("requiresToken"); //remove the auxiliary header
-      return handler.next(options);
-    }
+    log('on request ');
+    // if (options.headers["requiresToken"] == false) {
+    //   // if the request doesn't need token, then just continue to the next interceptor
+    //   options.headers.remove("requiresToken"); //remove the auxiliary header
+    //   return handler.next(options);
+    // }
 
-    // get tokens from local storage, you can use Hive or flutter_secure_storage
     final accessToken = _appPrefs.getAccessToken();
-    final refreshToken = _appPrefs.getRefreshToken();
+    //
+    // if (accessToken == null ) {
+    //
+    //   // create custom dio error
+    //   options.extra["tokenErrorType"] = TokenErrorType.tokenNotFound;
+    //
+    //   final error = DioError(requestOptions: options, type: DioErrorType.other);
+    //   _logout();
+    //   return handler.reject(error);
+    // }
 
-    if (accessToken == null || refreshToken == null) {
-      _performLogout(_dio);
 
-      // create custom dio error
-      options.extra["tokenErrorType"] = TokenErrorType.tokenNotFound; // I use enum type, you can chage it to string
-      final error = DioError(requestOptions: options, type: DioErrorType.other);
-      return handler.reject(error);
-    }
-
-    // check if tokens have already expired or not
-    // I use jwt_decoder package
-    // Note: ensure your tokens has "exp" claim
-    final accessTokenHasExpired = JwtDecoder.isExpired(accessToken);
-    final refreshTokenHasExpired = JwtDecoder.isExpired(refreshToken);
-
-    var _refreshed = true;
-
-    if (refreshTokenHasExpired) {
-      _performLogout(_dio);
-
-      // create custom dio error
-      options.extra["tokenErrorType"] = TokenErrorType.refreshTokenHasExpired;
-      final error = DioError(requestOptions: options, type: DioErrorType.other);
-
-      return handler.reject(error);
-    } else if (accessTokenHasExpired) {
-      // regenerate access token
-      _dio.interceptors.requestLock.lock();
-      _refreshed = await _regenerateAccessToken();
-      _dio.interceptors.requestLock.unlock();
-    }
-
-    if (_refreshed) {
+    // else  {
       // add access token to the request header
-      options.headers["Authorization"] = "Bearer $accessToken";
+      options.headers["Authorization"] = "$accessToken";
       return handler.next(options);
-    } else {
-      // create custom dio error
-      options.extra["tokenErrorType"] = TokenErrorType.failedToRegenerateAccessToken;
-      final error = DioError(requestOptions: options, type: DioErrorType.other);
-      return handler.reject(error);
-    }
+    // }
+
   }
+
+
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+
+    log('interceptor onError');
     if (err.response?.statusCode == 403 || err.response?.statusCode == 401) {
       // for some reasons the token can be invalidated before it is expired by the backend.
       // then we should navigate the user back to login page
 
-      _performLogout(_dio);
 
       // create custom dio error
       err.type = DioErrorType.other;
-      err.requestOptions.extra["tokenErrorType"] = TokenErrorType.invalidAccessToken;
+      err.requestOptions.extra["tokenErrorType"] = TokenErrorType.failedToRegenerateAccessToken;
+      handler.reject(err);
+      _logout();
+
     }
+
 
     return handler.next(err);
   }
 
-  void _logout(Dio dio) {
-    _dio.interceptors.requestLock.clear();
-    _dio.interceptors.requestLock.lock();
-
-    _appPrefs.removeTokens(); // remove token from local storage
-
-    // back to login page without using context
-    // check this https://stackoverflow.com/a/53397266/9101876
-    navigatorKey.currentState?.pushReplacementNamed(LoginPage.routeName);
-
-    _dio.interceptors.requestLock.unlock();
+  Future<void> _logout() async {
+   await getIt<AuthenticationRepository>().logout();
+    // await Future.delayed(Duration.zero,() =>  );
   }
 
   /// return true if it is successfully regenerate the access token
@@ -115,7 +90,7 @@ class AuthInterceptor extends Interceptor {
   //       return true;
   //     } else if (response.statusCode == 401 || response.statusCode == 403) {
   //       // it means your refresh token no longer valid now, it may be revoked by the backend
-  //       _performLogout(_dio);
+  //       _logout(_dio);
   //       return false;
   //     } else {
   //       print(response.statusCode);

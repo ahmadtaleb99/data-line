@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) {
           return BlocProvider(
             create: (context) {
-             return initAuthModule();
+             return registerAuthBloc();
             },
             child: MaterialApp(
               navigatorKey: _navigatorKey,

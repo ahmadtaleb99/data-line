@@ -21,15 +21,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with FormValidation {
   bool _isUsernameValid(String user) => user.isNotEmpty;
   final _authbloc = getIt<AuthenticationBloc>();
   final _authentication = getIt<AuthenticationRepository>();
-  String _username = '';
-  String _password = '';
+  String _username = 'test';
+  String _password = 'test';
 
   LoginBloc()
       : super(LoginState(
             flowState: ContentState(),
             isPasswordValid: false,
             isUsernameValid: false,
-            allValid: false,
+            allValid: true,
             hasLoggedIn: false)) {
     on<UserLoggedIn>(_onUserLoggedIn);
     on<UsernameChanged>(_onUserChanged);

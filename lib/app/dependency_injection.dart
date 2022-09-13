@@ -31,11 +31,6 @@ final getIt = GetIt.instance;
 
 
 
-Future<void> initHiveDatabase() async {
-
-
-
-}
 
 Future<void> initAppModules() async {
 
@@ -78,7 +73,10 @@ Future<void> initAppModules() async {
 
 /////////////////////
 //Authentication
-
+  getIt.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(getIt<RemoteDataSource>(),
+      getIt<NetworkInfo>(),
+      getIt<LocalDataSource>()
+  ));
 
   ///////////////////////////////////////
 
@@ -109,15 +107,9 @@ void initFormModule (){
 
 
 
-AuthenticationBloc initAuthModule (){
-  getIt.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(getIt<RemoteDataSource>(),
-      getIt<NetworkInfo>(),
-      getIt<LocalDataSource>()
-  ));
-
-  getIt.registerLazySingleton<AuthenticationBloc>(() => AuthenticationBloc(getIt<AuthenticationRepository>()));
-
-
+AuthenticationBloc registerAuthBloc (){
+  if(!getIt.isRegistered<AuthenticationBloc>())
+    getIt.registerLazySingleton<AuthenticationBloc>(() => AuthenticationBloc(getIt<AuthenticationRepository>()));
   return getIt<AuthenticationBloc>();
 }
 

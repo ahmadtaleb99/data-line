@@ -267,6 +267,7 @@ extension FormMapper on FormResponse? {
   FormModel toDomain() {
     return FormModel(
         name: this?.name.orEmpty() ?? '',
+        id: this?.id.orEmpty() ?? '',
         directionality: this?.directionality.orEmpty() ?? '',
         fields: this?.fields?.map((e) => e.toDomain()).toList() ?? []);
   }

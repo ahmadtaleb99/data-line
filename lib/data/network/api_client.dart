@@ -4,8 +4,8 @@ import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/data/responses/responses.dart';
 import 'package:datalines/presentation/resources/constants_manager.dart';
-import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import 'package:dio/dio.dart'  ;
+import 'package:retrofit/http.dart' ;
 
 part 'api_client.g.dart';
 
@@ -13,6 +13,7 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
+  
   @POST('/customer/login')
   Future<AuthenticationResponse> login(
       @Field('username') String username, @Field('password') String password);

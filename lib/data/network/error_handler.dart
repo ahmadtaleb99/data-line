@@ -44,7 +44,13 @@ class ErrorHandler implements Exception{
         return ErrorTypeEnum.CANCEL.getFailure();
 
       case DioErrorType.other:
-        return ErrorTypeEnum.CONNECT_TIMEOUT.getFailure();
+        if(error.response?.statusCode == 401)
+        return ErrorTypeEnum.UNAUTHORISED.getFailure();
+
+        if(error.response?.statusCode == 403)
+          return ErrorTypeEnum.FORBIDDEN.getFailure();
+
+          else return ErrorTypeEnum.CONNECT_TIMEOUT.getFailure();
 
       case DioErrorType.response:
         if(error.response != null && error.response?.statusCode != null && error.response?.statusMessage != null) {
@@ -132,7 +138,11 @@ extension ErrorTypeExtenstion on ErrorTypeEnum {
     }
   }
 }
-
+enum TokenErrorType {
+  tokenNotFound,
+  refreshTokenHasExpired,
+  failedToRegenerateAccessToken,
+}
 class ResponseCode {
   static const int SUCCESS = 200; // success with data
   static const int NO_CONTENT = 201; // success with no data (no content)

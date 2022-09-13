@@ -62,23 +62,28 @@ class FormModel with EquatableMixin {
   final List<FormFieldModel> fields;
 
 
+  @HiveField(4)
+  final String id;
 
   const FormModel({
     required this.name,
     required this.directionality,
     required this.fields,
+    required this.id,
   });
 
   @override
-  List<Object?> get props => [name, directionality, fields];
+  List<Object?> get props => [id,name, directionality, fields];
 
   FormModel copyWith({
     String? name,
     String? directionality,
+    String? id,
     List<FormFieldModel>? fields,
   }) {
     return FormModel(
       name: name ?? this.name,
+      id: id ?? this.id,
       directionality: directionality ?? this.directionality,
       fields: fields ?? this.fields.map((dynamic e) => e.copyWith()).toList().cast(),
     );

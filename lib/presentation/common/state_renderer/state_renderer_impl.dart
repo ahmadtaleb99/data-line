@@ -95,7 +95,6 @@ extension xFlowState on FlowState {
 
       case ErrorState:
         if (getStateRendererType() == StateRendererType.POPUP_ERROR) {
-          print('error state ');
           dismissOpenedDialog(context);
 
           // show popup error
