@@ -22,6 +22,17 @@ class FormsPageRefreshRequested extends FormsEvent{
 
 }
 
+
+class FormDataSyncRequested extends FormsEvent{
+ final String formId;
+  @override
+  List<Object?> get props => [formId];
+
+  const FormDataSyncRequested({
+    required this.formId,
+  });
+}
+
 class AssignedFormsRefreshRequested extends FormsEvent{
   @override
   List<Object?> get props => [];

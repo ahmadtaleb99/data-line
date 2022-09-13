@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/data/responses/responses.dart';
@@ -45,5 +46,8 @@ abstract class ApiClient {
 
   @GET('/store-details/{id}')
   Future<StoreDetailsResponse> getStoreDetails(@Path() int id);
+
+  @GET('/sync-form')
+  Future<SyncFormBaseResponse> syncForm(@Body()  FormSyncRequest formSyncRequest);
 
 }

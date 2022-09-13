@@ -42,6 +42,32 @@ FormFieldResponse? _getFieldFromType(Map<String, dynamic> json) {
 }
 
 @JsonSerializable()
+class SyncFormBaseResponse extends BaseResponse {
+  @JsonKey(name: 'data')
+  SyncFormResponse data;
+
+  SyncFormBaseResponse(this.data);
+
+  factory SyncFormBaseResponse.fromJson(Map<String, dynamic> json) =>
+      _$SyncFormBaseResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SyncFormBaseResponseToJson(this);
+}
+
+@JsonSerializable()
+class SyncFormResponse  {
+  @JsonKey(name: 'has_submit_permission')
+  bool? hasSubmitPermission;
+
+  SyncFormResponse(this.hasSubmitPermission);
+
+  factory SyncFormResponse.fromJson(Map<String, dynamic> json) =>
+      _$SyncFormResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SyncFormResponseToJson(this);
+}
+
+
+
+@JsonSerializable()
 class AssignedFormsResponse extends BaseResponse {
   @JsonKey(name: 'data')
   List<FormResponse>? data;
@@ -306,6 +332,10 @@ class StarRatingFieldResponse extends FormFieldResponse {
 
   StarRatingFieldResponse();
 }
+
+
+
+
 
 @JsonSerializable()
 class FilePickerFieldResponse extends FormFieldResponse {

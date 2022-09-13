@@ -27,4 +27,13 @@ extension ListExtensions<T> on List<T> {
     assert(this != null);
     return index >= 0 && this.length > index && this[index] == value;
   }
+
+  List<List<T>> asChunks(int chunkSize){
+    List<List<T>> chunksList = [];
+    for (var i = 0; i < this.length; i += chunkSize) {
+      chunksList.add(this.sublist(i, i+chunkSize > this.length ? this.length : i + chunkSize));
+    }
+    return chunksList;
+
+  }
 }

@@ -110,9 +110,9 @@ class HiveDatabase {
     await _submissionsBox.add(sub);
   }
 
-  List<Submission>? getAllSubmissions(String formName) {
+  List<Submission>? getAllSubmissions(String formId) {
     return _submissionsBox.values
-        .where((element) => element.formName == formName)
+        .where((element) => element.formId == formId)
         .toList();
   }
 
@@ -154,7 +154,7 @@ class HiveDatabase {
 
 
   bool formHasSubmissions(String formName) {
-    return _submissionsBox.values.any((element) => element.formName ==formName);
+    return _submissionsBox.values.any((element) => element.formId ==formName);
   }
   List<Node>? getNodes() {
 

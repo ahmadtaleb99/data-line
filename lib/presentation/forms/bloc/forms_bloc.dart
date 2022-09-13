@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:datalines/app/extenstions.dart';
 import 'package:datalines/data/network/error_handler.dart';
+import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/domain/model/node/node.dart';
 
 import 'package:bloc/bloc.dart';
@@ -47,7 +48,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       : super(FormsState(
             isNewSubmit: true,
             matrixValuesMap: {},
-      currentNode: null,
+            currentNode: null,
             updateFlowState: ContentState(),
             allSaved: true,
             assignedForms: [],
@@ -57,7 +58,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             submissions: [],
             flowState: ContentState(),
             newFlowState: ContentState(),
-            validationMap: {}, inactiveForms: [])) {
+            validationMap: {},
+            inactiveForms: [])) {
     on<MatrixFieldValueChanged>(_onMatrixFieldValueChanged);
     on<MatrixCheckboxGroupValueChanged>(_onMatrixCheckboxGroupValueChanged);
     on<MatrixTextValueChanged>(_onMatrixTextValueChanged);
@@ -88,6 +90,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<MatrixSubmitCanceled>(_onMatrixSubmitCanceled);
     on<FormSubmitted>(_onFormSubmitted);
     on<SubmissionUpdated>(_onSubmissionUpdated);
+
+    on<FormDataSyncRequested>(_onFormDataSyncRequested);
   }
   bool _isRequired(FormFieldModel model) {
     return model.showIfIsRequired || model.required;
@@ -95,11 +99,15 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   String? validateTextArea(TextAreaModel model) {
     String value = state.valuesMap[model.name] ?? '';
-    if (value.length < model.minLength || value.length > model.maxLength  ) {
+    if (value.length < model.minLength || value.length > model.maxLength) {
       return AppStrings.mustBeBetween +
-          model.minLength.toString() + ' '+
-          AppStrings.and + ' '+
-          model.maxLength.toString()+ ' '+ AppStrings.character;
+          model.minLength.toString() +
+          ' ' +
+          AppStrings.and +
+          ' ' +
+          model.maxLength.toString() +
+          ' ' +
+          AppStrings.character;
     }
     return null;
   }
@@ -207,8 +215,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 stateRendererType: StateRendererType.FULLSCREEN_ERROR,
                 message: failure.message)));
       }, (forms) {
-        emit(state.copyWith(
-            assignedForms: forms, flowState: ContentState()));
+        emit(state.copyWith(assignedForms: forms, flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(
@@ -217,17 +224,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
               message: e.toString())));
     }
   }
+
   Future<void> _onFormsPageRequested(
-
       FormsPageRequested event, Emitter<FormsState> emit) async {
-
-
     emit(state.copyWith(
         flowState: LoadingState(
             stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
 
     try {
-
       var either = await _assignedFormRepository.getFormsHomeModel();
       either.fold((failure) {
         emit(state.copyWith(
@@ -236,13 +240,14 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 stateRendererType: StateRendererType.FULLSCREEN_ERROR,
                 message: failure.message)));
       }, (model) {
-
-        if(model.forms.isEmpty)
+        if (model.forms.isEmpty)
           emit(state.copyWith(flowState: EmptyState('no forms')));
-
-    else     emit(state.copyWith(
-            inactiveForms: _assignedFormRepository.getInactiveForms(),
-            assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
+        else
+          emit(state.copyWith(
+              inactiveForms: _assignedFormRepository.getInactiveForms(),
+              assignedForms: model.forms,
+              nodes: model.nodes,
+              flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(
@@ -251,33 +256,31 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
               message: e.toString())));
     }
   }
+
   Future<void> _onFormsPageRefreshRequested(
-
       FormsPageRefreshRequested event, Emitter<FormsState> emit) async {
-
-
     emit(state.copyWith(
-        flowState: LoadingState(
-            stateRendererType: StateRendererType.POPUP_LOADING)));
+        flowState:
+            LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
 
     try {
-
-      var either = await _assignedFormRepository.getFormsHomeModel(forceFromRemote: true);
+      var either = await _assignedFormRepository.getFormsHomeModel(
+          forceFromRemote: true);
       either.fold((failure) {
         emit(state.copyWith(
             flowState: ErrorState(
                 code: failure.code,
-
                 stateRendererType: StateRendererType.POPUP_ERROR,
                 message: failure.message)));
       }, (model) {
-
-        if(model.forms.isEmpty)
+        if (model.forms.isEmpty)
           emit(state.copyWith(flowState: EmptyState('no forms')));
-
-    else     emit(state.copyWith(
-            inactiveForms: _assignedFormRepository.getInactiveForms(),
-            assignedForms: model.forms,nodes: model.nodes, flowState: ContentState()));
+        else
+          emit(state.copyWith(
+              inactiveForms: _assignedFormRepository.getInactiveForms(),
+              assignedForms: model.forms,
+              nodes: model.nodes,
+              flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(
@@ -303,8 +306,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 stateRendererType: StateRendererType.POPUP_ERROR,
                 message: failure.message)));
       }, (forms) {
-        emit(state.copyWith(
-            assignedForms: forms, flowState: ContentState()));
+        emit(state.copyWith(assignedForms: forms, flowState: ContentState()));
       });
     } catch (e) {
       emit(state.copyWith(
@@ -489,6 +491,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         matrixState: MatrixState(
             MatrixStatus.success, AppStrings.cantSubmitEmptyRecordMsg)));
   }
+
   Future<void> _onCurrentNodeChanged(
       CurrentNodeChanged event, Emitter<FormsState> emit) async {
     emit(state.copyWith(currentNode: () => event.newNode));
@@ -576,12 +579,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       String? path = map[filePicker.name];
       if (path == null) return;
 
-      String currentFormName = form.name;
+      String currentFormId = form.id;
 
       var file = File(path);
 
       int submissionId = _hiveDatabase.getLastSubmissionId() + 1;
-      String newFilePath = '${submissionId}-${currentFormName}';
+      String newFilePath = '${submissionId}-${currentFormId}';
       //
 
       final either = await _ioService.cacheFile(file, newFilePath);
@@ -681,7 +684,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     children.map((childDropDown) {
       childDropDown = childDropDown.copyWith(
           values: (state.assignedForms
-                  .firstWhere((element) => formModel.name == element.name)
+                  .firstWhere((element) => formModel.id == element.id)
                   .getField(childDropDown.name) as DropDownModel)
               .values
               .where((item) => item.parent == event.value)
@@ -741,26 +744,27 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
-
-    try{
+    try {
       Map map = state.valuesMap;
       var newSub = Submission(
-          formName: event.formModel.name, fieldEntries: _mapValuesToEntries(map), node: state.currentNode!);
+
+          formId: event.formModel.id,
+          fieldEntries: _mapValuesToEntries(map),
+          node: state.currentNode!,
+          submittedAt: DateTime.now());
 
       await _assignedFormRepository.addSubmission(newSub);
       emit(state.copyWith(
           newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
           allSaved: false));
+    } catch (e) {
+      final failure = ErrorTypeEnum.UNKNOWN.getFailure();
+      emit(state.copyWith(
+          newSubmitFlowState: ErrorState(
+              code: 0,
+              stateRendererType: StateRendererType.POPUP_ERROR,
+              message: failure.message)));
     }
-
-            catch (e)  {
-
-              final failure = ErrorTypeEnum.UNKNOWN.getFailure();
-              emit(state.copyWith( newSubmitFlowState: ErrorState(
-                  code: 0,
-                  stateRendererType: StateRendererType.POPUP_ERROR,
-                  message: failure.message)));
-            }
     // add(NewFormRequested(event.formModel));
   }
 
@@ -782,7 +786,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onSubmissionUpdateRequested(
       SubmissionUpdateRequested event, Emitter<FormsState> emit) async {
-    Map<String, dynamic> map = event.submission.$toMap();
+    Map<String, dynamic> map = event.submission.entriesAsMap();
     var form = event.formModel.copyWith();
     _initFieldsUpdate(form, map);
     emit(state.copyWith(
@@ -845,13 +849,48 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     Submission submission = event.submission;
     int index = state.submissions.indexOf(event.submission);
 
-    Submission newSub =
-        submission.copyWith(fieldEntries: _mapValuesToEntries(map),node: state.currentNode!);
+    Submission newSub = submission.copyWith(
+      updatedAt: DateTime.now(),
+        fieldEntries: _mapValuesToEntries(map), node: state.currentNode!,);
     log(newSub.fieldEntries.toString());
     await _assignedFormRepository.updateSubmission(newSub);
     emit(state.copyWith(
         newSubmitFlowState: SuccessState(AppStrings.formUpdatedSuccess)));
     // add(SubmissionUpdateRequested(event.formModel, event.submission));
+  }
+
+  Future<void> _onFormDataSyncRequested(
+      FormDataSyncRequested event, Emitter<FormsState> emit) async {
+    emit(state.copyWith(
+        flowState: LoadingState(
+            stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
+
+    try {
+      final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
+      getSubs.fold((failure) {
+
+      }, (submissions) async {
+
+        final request = FormSyncRequest(formId: event.formId, submissions:submissions);
+        var either = await _assignedFormRepository.syncForm(request);
+        either.fold((failure) {
+          emit(state.copyWith(
+              flowState: ErrorState(
+                  code: failure.code,
+                  stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+                  message: failure.message)));
+        }, (success) {
+          emit(state.copyWith( flowState: SuccessState(' form has been synced')));
+        });
+      });
+
+    
+    } catch (e) {
+      emit(state.copyWith(
+          flowState: ErrorState(
+              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              message: e.toString())));
+    }
   }
 
   FieldType _getFieldTypeFromName(String fieldName) {
@@ -861,25 +900,29 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     log(field.toString());
     return field != null ? field.type : FieldType.UNKNOWN;
   }
+
   bool _isFieldVisible(FormFieldModel model) {
     if (model.showIfLogicCheckbox == false) return true;
 
-    if (state.valuesMap[model.showIfFieldName] ==
-        model.showIfFieldValue) return true;
+    if (state.valuesMap[model.showIfFieldName] == model.showIfFieldValue)
+      return true;
 
     return false;
   }
+
   List<FieldEntry> _mapValuesToEntries(Map valuesMap) {
-    List<FieldEntry> entries =  [];
-    for(var entry in valuesMap.entries){
-
-
-      if(!_isFieldVisible(_getField(state.formModel!, entry.key))){
+    List<FieldEntry> entries = [];
+    for (var entry in valuesMap.entries) {
+      if (!_isFieldVisible(_getField(state.formModel!, entry.key))) {
         entries.add(FieldEntry(
-            name: entry.key, value: null, type: _getFieldTypeFromName(entry.key)));
-      }
-      else entries.add(FieldEntry(
-          name: entry.key, value: entry.value, type: _getFieldTypeFromName(entry.key)));
+            name: entry.key,
+            value: null,
+            type: _getFieldTypeFromName(entry.key)));
+      } else
+        entries.add(FieldEntry(
+            name: entry.key,
+            value: entry.value,
+            type: _getFieldTypeFromName(entry.key)));
     }
     // List<FieldEntry> entries = valuesMap.entries
     //     .map((e) => FieldEntry(

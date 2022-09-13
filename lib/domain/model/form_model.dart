@@ -26,6 +26,15 @@ import 'text_field_model/text_field_model.dart';
 
 part 'form_model.g.dart';
 
+
+class SyncForm {
+ final bool hasSubmitPermission;
+
+ const SyncForm({
+    required this.hasSubmitPermission,
+  });
+}
+
 class FormsHomeModel {
   final List<FormModel> forms;
   final List<Node> nodes;
@@ -281,7 +290,7 @@ extension xFormFieldModel on FormFieldModel{
 class Submission extends HiveObject with EquatableMixin{
 
 
-  Map<String, dynamic> $toMap(){
+  Map<String, dynamic> entriesAsMap(){
     Map<String, dynamic> map =  {};
    fieldEntries.forEach((FieldEntry fieldEntry) {
 
@@ -293,7 +302,7 @@ class Submission extends HiveObject with EquatableMixin{
 
 
     @HiveField(1)
-    final String formName;
+    final String formId;
 
     @HiveField(2)
     final List<FieldEntry> fieldEntries;
@@ -305,14 +314,33 @@ class Submission extends HiveObject with EquatableMixin{
      final Node node;
 
 
+    @HiveField(5)
+    final DateTime submittedAt;
+
+  @HiveField(5)
+  final DateTime? updatedAt;
+
+
   Submission( {
 
      this.id  ,
-    required this.formName  ,
+    required this.formId  ,
     required this.fieldEntries,
     required this.node,
+    required this.submittedAt,
+     this.updatedAt,
+
   });
 
+  Map<String, dynamic> nonNullEntriesAsMap(){
+    Map<String, dynamic> map =  {};
+    fieldEntries.forEach((FieldEntry fieldEntry) {
+
+      if(fieldEntry.value != null)
+      map[fieldEntry.name] = fieldEntry.value;
+    });
+    return map;
+  }
 
 
   Submission copyWith({
@@ -321,21 +349,25 @@ class Submission extends HiveObject with EquatableMixin{
     int? id  ,
     List<FieldEntry>? fieldEntries,
     FieldType? type,
-    Node? node
+    Node? node,
+    DateTime? submittedAt,
+    DateTime? updatedAt
 
   }) {
     return Submission(
-      formName: formName ?? this.formName,
+      formId: formName ?? this.formId,
       id: id ?? this.id,
       fieldEntries: fieldEntries ?? this.fieldEntries,
       node: node ?? this.node,
+      submittedAt: submittedAt ?? this.submittedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
 
 
     );
   }
 
   @override
-  List<Object?> get props => [node,formName,id,fieldEntries];
+  List<Object?> get props => [node,formId,id,fieldEntries];
 
 
 

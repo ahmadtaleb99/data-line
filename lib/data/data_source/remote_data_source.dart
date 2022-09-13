@@ -1,4 +1,5 @@
 import 'package:datalines/data/network/api_client.dart';
+import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/data/requests/requests.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/data/responses/responses.dart';
@@ -14,6 +15,9 @@ abstract class RemoteDataSource {
 
   Future<AssignedFormsResponse> getAssignedForms();
   Future<NodeBaseResponse> getNodes();
+  Future<SyncFormBaseResponse> syncForm(  FormSyncRequest formSyncRequest);
+
+
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -64,5 +68,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return nodeResponse;
 
 
+  }
+
+  @override
+  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest) async {
+    return await _apiClient.syncForm(formSyncRequest);
   }
 }

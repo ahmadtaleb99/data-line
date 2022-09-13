@@ -19,9 +19,7 @@ class _ApiClient implements ApiClient {
   Future<AuthenticationResponse> login(username, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-    'requiresToken' : false
-    };
+    final _headers = <String, dynamic>{};
     final _data = {'username': username, 'password': password};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(
@@ -133,6 +131,23 @@ class _ApiClient implements ApiClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = StoreDetailsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SyncFormBaseResponse> syncForm(formSyncRequest) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(formSyncRequest.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SyncFormBaseResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/sync-form',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SyncFormBaseResponse.fromJson(_result.data!);
     return value;
   }
 

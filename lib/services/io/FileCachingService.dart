@@ -90,7 +90,7 @@ void _listenToPort(){
 
   }
   Future<Either<Failure,String>> cacheFile(File file,String fileToCachePath) async {
-    /*caching picked file to appDirectory/filePickerCache/submissionId-FormName
+    /*caching picked file to appDirectory/filePickerCache/submissionId-formId
     example: app dir -> /data/'app name'/app-flutter/filePickerCache/5-Third Form/
      */
 

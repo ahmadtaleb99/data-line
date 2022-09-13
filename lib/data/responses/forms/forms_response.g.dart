@@ -6,6 +6,32 @@ part of 'forms_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+SyncFormBaseResponse _$SyncFormBaseResponseFromJson(
+        Map<String, dynamic> json) =>
+    SyncFormBaseResponse(
+      SyncFormResponse.fromJson(json['data'] as Map<String, dynamic>),
+    )
+      ..status = json['status'] as bool?
+      ..message = json['message'] as String?;
+
+Map<String, dynamic> _$SyncFormBaseResponseToJson(
+        SyncFormBaseResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'data': instance.data,
+    };
+
+SyncFormResponse _$SyncFormResponseFromJson(Map<String, dynamic> json) =>
+    SyncFormResponse(
+      json['has_submit_permission'] as bool?,
+    );
+
+Map<String, dynamic> _$SyncFormResponseToJson(SyncFormResponse instance) =>
+    <String, dynamic>{
+      'has_submit_permission': instance.hasSubmitPermission,
+    };
+
 AssignedFormsResponse _$AssignedFormsResponseFromJson(
         Map<String, dynamic> json) =>
     AssignedFormsResponse(
@@ -22,6 +48,45 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
       'status': instance.status,
       'message': instance.message,
       'data': instance.data,
+    };
+
+Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'id': instance.id,
+      'directionality': instance.directionality,
+      'fields': instance.fields,
+    };
+
+FormFieldResponse _$FormFieldResponseFromJson(Map<String, dynamic> json) =>
+    FormFieldResponse()
+      ..name = json['name'] as String?
+      ..label = json['label'] as String?
+      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
+      ..deactivate = json['deactivate'] as bool?
+      ..required = json['required'] as bool?
+      ..isHidden = json['isHidden'] as bool?
+      ..isReadOnly = json['isReadOnly'] as bool?
+      ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
+      ..showIfFieldName = json['showIfFieldName'] as String?
+      ..showIfFieldValue = json['showIfFieldValue'] as String?
+      ..showIfIsRequired = json['showIfIsRequired'] as bool?
+      ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
+
+Map<String, dynamic> _$FormFieldResponseToJson(FormFieldResponse instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'label': instance.label,
+      'type': _$FieldTypeEnumMap[instance.type],
+      'deactivate': instance.deactivate,
+      'required': instance.required,
+      'isHidden': instance.isHidden,
+      'isReadOnly': instance.isReadOnly,
+      'showIfLogicCheckbox': instance.showIfLogicCheckbox,
+      'showIfFieldName': instance.showIfFieldName,
+      'showIfFieldValue': instance.showIfFieldValue,
+      'showIfIsRequired': instance.showIfIsRequired,
+      'requiredIfLogicCheckbox': instance.requiredIfLogicCheckbox,
     };
 
 const _$FieldTypeEnumMap = {

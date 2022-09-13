@@ -23,7 +23,6 @@ AuthenticationResponse _$AuthenticationResponseFromJson(
           ? null
           : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
       json['access_token'] as String?,
-
     )
       ..status = json['status'] as bool?
       ..message = json['message'] as String?;
@@ -33,7 +32,8 @@ Map<String, dynamic> _$AuthenticationResponseToJson(
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'data': instance.userResponse,
+      'user': instance.userResponse,
+      'access_token': instance.accessToken,
     };
 
 UserResponse _$UserResponseFromJson(Map<String, dynamic> json) => UserResponse(

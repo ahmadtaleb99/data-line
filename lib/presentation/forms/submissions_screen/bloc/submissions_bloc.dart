@@ -31,7 +31,7 @@ class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
   Future<void> _onSubmissionsRequested(
       SubmissionsRequested event, Emitter<SubmissionsState> emit) async {
     final either =
-    _assignedFormRepository.getFormSubmissions(event.formModel.name);
+    _assignedFormRepository.getFormSubmissions(event.formModel.id);
     either.fold((failure) {}, (submissions) {
      submissions.forEach((element) {
        log(element.id.toString() +' sub id : : ');
@@ -51,7 +51,7 @@ Future<void> _onSubmissionDeleted(
     SubmissionDeleted event, Emitter<SubmissionsState> emit) async {
   Map<String, dynamic> map = {};
   await _assignedFormRepository.deleteSubmission(event.submission);
-  await _ioService.deleteSubmissionCache('/${event.submission.id}-${event.submission.formName}');
+  await _ioService.deleteSubmissionCache('/${event.submission.id}-${event.submission.formId}');
 
   List<Submission> submissions = List.from(state.submissions);
   submissions.remove(event.submission);

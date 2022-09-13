@@ -18,7 +18,7 @@ abstract class LocalDataSource  {
   List<FormModel>? getAssignedForms();
   List<FormModel>? getInactiveForms();
   Future<void> saveFormsToDataBase(List<FormModel> assignedForms);
-  List<Submission> getSubmissions(String formName);
+  List<Submission> getSubmissions(String formId);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission (Submission submission) ;
   List<Node>? getNodes();
@@ -82,8 +82,8 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  List<Submission> getSubmissions(String formName) {
-    return _hiveDatabase.getAllSubmissions(formName) ?? [ ];
+  List<Submission> getSubmissions(String formId) {
+    return _hiveDatabase.getAllSubmissions(formId) ?? [ ];
 
   }
 

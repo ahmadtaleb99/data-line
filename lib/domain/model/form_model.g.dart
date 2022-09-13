@@ -54,19 +54,22 @@ class FormModelAdapter extends TypeAdapter<FormModel> {
       name: fields[1] as String,
       directionality: fields[2] as String,
       fields: (fields[3] as List).cast<FormFieldModel>(),
+      id: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, FormModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
       ..write(obj.directionality)
       ..writeByte(3)
-      ..write(obj.fields);
+      ..write(obj.fields)
+      ..writeByte(4)
+      ..write(obj.id);
   }
 
   @override
@@ -159,7 +162,7 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
     };
     return Submission(
       id: fields[3] as int?,
-      formName: fields[1] as String,
+      formId: fields[1] as String,
       fieldEntries: (fields[2] as List).cast<FieldEntry>(),
       node: fields[4] as Node,
     );
@@ -170,7 +173,7 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
     writer
       ..writeByte(4)
       ..writeByte(1)
-      ..write(obj.formName)
+      ..write(obj.formId)
       ..writeByte(2)
       ..write(obj.fieldEntries)
       ..writeByte(3)

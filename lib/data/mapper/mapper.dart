@@ -1,5 +1,6 @@
 import 'package:datalines/data/responses/responses.dart';
 import 'package:datalines/data/responses/responses.dart';
+import 'package:datalines/domain/model/form_model.dart';
 import 'package:datalines/domain/model/models.dart';
 import 'package:datalines/app/extenstions.dart';
 import 'package:datalines/domain/model/text_field_model/text_field_model.dart';
@@ -22,6 +23,24 @@ extension AuthenticationMapper on AuthenticationResponse? {
         user: this?.userResponse.toDomain(),accessToken: this?.accessToken.orEmpty() ?? '');
   }
 }
+
+
+extension SyncResponse on SyncFormBaseResponse? {
+
+  SyncForm toDomain() {
+    return SyncForm(
+      hasSubmitPermission: this?.data.hasSubmitPermission ?? false,
+    );
+  }
+}
+
+// extension SyncFormMapper on SyncFormResponse? {
+//   SyncForm toDomain() {
+//     return SyncForm(
+//       hasSubmitPermission: this?.hasSubmitPermission ?? false,
+//     );
+//   }
+// }
 
 extension ForgetPasswordMapper on ForgetPasswordResponse? {
   ForgetPassword toDomain() {
