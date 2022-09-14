@@ -50,14 +50,6 @@ Map<String, dynamic> _$AssignedFormsResponseToJson(
       'data': instance.data,
     };
 
-FormResponse _$FormResponseFromJson(Map<String, dynamic> json) => FormResponse(
-      json['name'] as String?,
-      json['id'] as String?,
-      json['directionality'] as String?,
-      (json['fields'] as List<dynamic>?)
-          ?.map((e) => FormFieldResponse.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
 
 Map<String, dynamic> _$FormResponseToJson(FormResponse instance) =>
     <String, dynamic>{

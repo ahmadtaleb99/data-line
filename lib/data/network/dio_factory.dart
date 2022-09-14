@@ -1,5 +1,6 @@
 
 import 'package:datalines/app/app_prefs.dart';
+import 'package:datalines/data/network/api_constants.dart';
 import 'package:datalines/data/network/dio_interceptors/auth_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -30,10 +31,10 @@ class DioFactory {
     };
 
     dio.options = BaseOptions(
-        baseUrl: AppConstants.baseUrl,
+        baseUrl: ApiConstants.baseUrl,
         headers: headers,
-        receiveTimeout: AppConstants.apiTimeOut,
-        sendTimeout: AppConstants.apiTimeOut);
+        receiveTimeout: ApiConstants.apiTimeOut,
+        sendTimeout: ApiConstants.apiTimeOut);
 
 
     //loggging in debug mode

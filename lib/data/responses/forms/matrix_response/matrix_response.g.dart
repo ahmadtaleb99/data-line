@@ -6,26 +6,6 @@ part of 'matrix_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MatrixResponse _$MatrixResponseFromJson(Map<String, dynamic> json) =>
-    MatrixResponse(
-      json['maxRecordsCount'] as int?,
-      (json['values'] as List<dynamic>)
-          .map((e) => MatrixFieldResponse.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    )
-      ..name = json['name'] as String?
-      ..label = json['label'] as String?
-      ..type = $enumDecodeNullable(_$FieldTypeEnumMap, json['type'])
-      ..deactivate = json['deactivate'] as bool?
-      ..required = json['required'] as bool?
-      ..isHidden = json['isHidden'] as bool?
-      ..isReadOnly = json['isReadOnly'] as bool?
-      ..showIfLogicCheckbox = json['showIfLogicCheckbox'] as bool?
-      ..showIfFieldName = json['showIfFieldName'] as String?
-      ..showIfFieldValue = json['showIfFieldValue'] as String?
-      ..showIfIsRequired = json['showIfIsRequired'] as bool?
-      ..requiredIfLogicCheckbox = json['requiredIfLogicCheckbox'] as bool?;
-
 Map<String, dynamic> _$MatrixResponseToJson(MatrixResponse instance) =>
     <String, dynamic>{
       'name': instance.name,
