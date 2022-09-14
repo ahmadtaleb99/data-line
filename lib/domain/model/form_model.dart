@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
@@ -332,12 +333,24 @@ class Submission extends HiveObject with EquatableMixin{
 
   });
 
-  Map<String, dynamic> nonNullEntriesAsMap(){
-    Map<String, dynamic> map =  {};
-    fieldEntries.forEach((FieldEntry fieldEntry) {
 
-      if(fieldEntry.value != null)
-      map[fieldEntry.name] = fieldEntry.value;
+
+
+  Future<Map<String, dynamic>> entriesToRequest() async{
+    Map<String, dynamic> map =  {};
+    fieldEntries.forEach((FieldEntry fieldEntry) async {
+
+      if(fieldEntry.value != null) {
+      if(fieldEntry.type == FieldType.FILE) {
+        map[fieldEntry.name] =  await MultipartFile.fromFile(fieldEntry.value);
+
+          log((map[fieldEntry.name] as MultipartFile).length.toString());
+
+      }
+
+        map[fieldEntry.name] = fieldEntry.value;
+
+      }
     });
     return map;
   }

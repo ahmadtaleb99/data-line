@@ -530,6 +530,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     if (result != null) {
       File pickedFile = File(result.files.single.path!);
+      log(pickedFile.path.toString());
       map[event.model.name] = pickedFile.path;
     } else {
       // User canceled the picker
@@ -585,6 +586,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       either.fold((failure) {
         return;
       }, (newPath) {
+        log('cached path : '+newFilePath.toString());
         map[filePicker.name] = newPath;
       });
     });

@@ -12,7 +12,7 @@ import 'package:dio/dio.dart'  ;
 part  'api_client_impl.dart';
 
 abstract class ApiClient {
-  factory ApiClient(Dio dio, {String baseUrl}) = ApiClientImpl;
+  factory ApiClient(Dio dio) = ApiClientImpl;
 
 
   Future<AuthenticationResponse> login(
@@ -38,6 +38,6 @@ abstract class ApiClient {
   Future<NodeBaseResponse> getNodes();
 
 
-  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest);
+  Future<SyncFormBaseResponse>  syncForm(FormSyncRequest formSyncRequest);
 
 }

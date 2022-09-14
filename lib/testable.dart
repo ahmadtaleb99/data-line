@@ -1,12 +1,20 @@
-import 'dart:developer';
+import 'dart:io';
 
-import 'package:datalines/app/extenstions.dart';
+import 'package:dio/dio.dart';
 
 Future<void> main() async {
-   final numbers = <int>[1, 2, 3, 4, 5, 6,7];
-      var chunks = numbers.asChunks(2);
-      print(chunks.toString());
+  var file =
+      File('');
+  print(file.existsSync());
+  final dio = Dio();
+  var formData = FormData.fromMap({
+    'name': 'wendux',
+    'age': 25,
+    'file': await MultipartFile.fromFile(
+        '1.jpg')
+  });
+  var response =
+      await dio.post('https://ahmdataleb.mocklab.io/sync-form', data: formData);
+
+  print(response.toString());
 }
-
-
-

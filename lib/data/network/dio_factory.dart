@@ -41,8 +41,8 @@ class DioFactory {
     if(!kReleaseMode){
       dio.interceptors.addAll([AuthInterceptor(),PrettyDioLogger(
         request : true,
-        //  requestHeader : true,
-         // requestBody : true,
+         requestHeader : true,
+         requestBody : true,
          // responseHeader : true,
          // responseBody : true,
       )]);

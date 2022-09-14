@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
 import 'package:datalines/domain/repository/repository.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ import 'presentation/resources/language_manager.dart';
 
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
   await Hive.initFlutter();

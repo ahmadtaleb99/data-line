@@ -12,13 +12,15 @@ class FormSyncRequest {
     required this.submissions,
   });
 
+
+
     Map<String, dynamic> toJson() {
       //     'updated_at': submission.updatedAt.toString(),
       // 'submitted_at': submission.submittedAt.toString(),
      var map =  {
       'formId': this.formId,
-      'submissions': this.submissions.map((submission) =>
-      submission.nonNullEntriesAsMap()
+      'submissions': this.submissions.map((submission) async =>
+     await  submission.entriesToRequest()
         ..['node'] =submission.node.id,
       ).toList(),
     };
