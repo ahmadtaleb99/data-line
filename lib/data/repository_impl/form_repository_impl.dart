@@ -175,6 +175,8 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       List<List<Submission>> submissionsChunks = submissions.asChunks(chunkSize);
        SyncForm? syncForm;
       for (int i = 0 ; i < submissionsChunks.length ; i++) {
+
+
         final request =
         formSyncRequest.copyWith(submissions: List.from(submissionsChunks[i]));
 
@@ -191,11 +193,13 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
 
       }
+
+      log('rightttttttttttttttt');
       return Right(syncForm!);
     }
 
     catch (error) {
-      log(error.toString());
+       log('repo catched error'+ error.toString());
       return Left(ErrorHandler.handle(error).failure);
     }
 

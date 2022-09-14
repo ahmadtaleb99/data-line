@@ -10,12 +10,14 @@ class FormCard extends StatelessWidget {
   const FormCard(
       {Key? key,
       required this.viewSubmittedCallBack,
+      required this.onSync,
       required this.formName,
       required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
   final void Function()? submitNewFormCallBack;
+  final void Function()? onSync;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class FormCard extends StatelessWidget {
                     Expanded(
                         flex: 2,
                         child: SyncButtonWidget(
-                          onPressed: () {},
+                          onPressed: onSync,
                         )),
                     Expanded(
                       child: IconButton(

@@ -165,13 +165,15 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
       formId: fields[1] as String,
       fieldEntries: (fields[2] as List).cast<FieldEntry>(),
       node: fields[4] as Node,
+      submittedAt: fields[5] as DateTime,
+      updatedAt: fields[6] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Submission obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.formId)
       ..writeByte(2)
@@ -179,7 +181,11 @@ class SubmissionAdapter extends TypeAdapter<Submission> {
       ..writeByte(3)
       ..write(obj.id)
       ..writeByte(4)
-      ..write(obj.node);
+      ..write(obj.node)
+      ..writeByte(5)
+      ..write(obj.submittedAt)
+      ..writeByte(6)
+      ..write(obj.updatedAt);
   }
 
   @override

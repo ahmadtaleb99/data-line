@@ -14,12 +14,14 @@ class InactiveFormCard extends StatelessWidget {
   const InactiveFormCard(
       {Key? key,
       required this.viewSubmittedCallBack,
+      required this.onSync,
       required this.formName,
       required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
   final void Function()? submitNewFormCallBack;
+  final void Function()? onSync;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +58,7 @@ class InactiveFormCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SyncButtonWidget(onPressed: (){
-                            context.read<AuthenticationBloc>().add(
-                                AuthenticationStatusChanged(
-                                    status: AuthenticationStatus.unauthenticated));
-                          },)
+                          SyncButtonWidget(onPressed: onSync,)
                         ],
                       )),
                 ],

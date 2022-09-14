@@ -83,10 +83,14 @@ class NewWidget extends StatelessWidget {
                         child: index >=
                                 state.assignedForms.length
                             ? InactiveFormCard(
+                          onSync: (){},
                                 viewSubmittedCallBack: () {},
                                 formName: 'formName',
                                 submitNewFormCallBack: () {})
                             : FormCard(
+                          onSync: (){
+                            context.read<FormsBloc>().add(FormDataSyncRequested(formId: state.assignedForms[index].id));
+                          },
                                 viewSubmittedCallBack: () {
                                   Navigator.push(
                                       context,

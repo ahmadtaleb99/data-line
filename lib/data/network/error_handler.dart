@@ -50,6 +50,9 @@ class ErrorHandler implements Exception{
         if(error.response?.statusCode == 403)
           return ErrorTypeEnum.FORBIDDEN.getFailure();
 
+        if(error.response?.statusCode == 404)
+          return ErrorTypeEnum.NOT_FOUND.getFailure();
+
           else return ErrorTypeEnum.CONNECT_TIMEOUT.getFailure();
 
       case DioErrorType.response:

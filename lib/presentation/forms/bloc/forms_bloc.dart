@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart';
-import 'package:datalines/app/extenstions.dart';
 import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/domain/model/node/node.dart';
@@ -16,7 +14,6 @@ import 'package:datalines/domain/model/email_text_field_model/email_text_field_m
 import 'package:datalines/domain/model/matrix_model/matrix_model.dart';
 import 'package:datalines/domain/model/matrix_model/matrix_record/matrix_record_model.dart';
 import 'package:datalines/domain/model/text_area_model/text_area_model.dart';
-import 'package:path/path.dart';
 import 'package:datalines/app/dependency_injection.dart';
 import 'package:datalines/app/form_validation.dart';
 import 'package:datalines/data/database/hive_database.dart';
@@ -29,10 +26,7 @@ import 'package:datalines/domain/repository/form_repository.dart';
 import 'package:datalines/presentation/common/state_renderer/state_renderer.dart';
 import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 import 'package:datalines/services/io/FileCachingService.dart';
-import 'package:datalines/utils/constants.dart';
-
 import '../../../domain/model/checkbox_group_model/checkbox_group_model.dart';
 import '../../../domain/model/number_text_field_model/number_text_field_model.dart';
 
@@ -745,15 +739,21 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
     try {
+      //2022-09-14 08:58:22.229
       Map map = state.valuesMap;
       var newSub = Submission(
+        formId: event.formModel.id,
+        fieldEntries: _mapValuesToEntries(map),
+        node: state.currentNode!,
+        // submittedAt: DateTime.now());
+        submittedAt: DateTime.parse('2022-09-14 08:58:22.229'),
+        updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
+      );
 
-          formId: event.formModel.id,
-          fieldEntries: _mapValuesToEntries(map),
-          node: state.currentNode!,
-          submittedAt: DateTime.now());
 
-      await _assignedFormRepository.addSubmission(newSub);
+      for(int i = 0  ; i < 15 ; i++){
+        await _assignedFormRepository.addSubmission(newSub);
+      }
       emit(state.copyWith(
           newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
           allSaved: false));
@@ -851,7 +851,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     Submission newSub = submission.copyWith(
       updatedAt: DateTime.now(),
-        fieldEntries: _mapValuesToEntries(map), node: state.currentNode!,);
+      fieldEntries: _mapValuesToEntries(map),
+      node: state.currentNode!,
+    );
     log(newSub.fieldEntries.toString());
     await _assignedFormRepository.updateSubmission(newSub);
     emit(state.copyWith(
@@ -862,33 +864,31 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
   Future<void> _onFormDataSyncRequested(
       FormDataSyncRequested event, Emitter<FormsState> emit) async {
     emit(state.copyWith(
-        flowState: LoadingState(
-            stateRendererType: StateRendererType.FULLSCREEN_LOADING)));
+        flowState:
+            LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
 
     try {
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
-      getSubs.fold((failure) {
-
-      }, (submissions) async {
-
-        final request = FormSyncRequest(formId: event.formId, submissions:submissions);
-        var either = await _assignedFormRepository.syncForm(request);
-        either.fold((failure) {
+     await  getSubs.fold((failure) async  {}, (submissions)  async {
+        final request =
+            FormSyncRequest(formId: event.formId, submissions: submissions);
+        await _assignedFormRepository.syncForm(request).then((either) => either.fold((failure) {
           emit(state.copyWith(
               flowState: ErrorState(
                   code: failure.code,
-                  stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+                  stateRendererType: StateRendererType.POPUP_ERROR,
                   message: failure.message)));
         }, (success) {
-          emit(state.copyWith( flowState: SuccessState(' form has been synced')));
-        });
-      });
+          emit(
+              state.copyWith(flowState: SuccessState(' data has been synced')));
+        }));
 
-    
+      }
+      );
     } catch (e) {
       emit(state.copyWith(
           flowState: ErrorState(
-              stateRendererType: StateRendererType.FULLSCREEN_ERROR,
+              stateRendererType: StateRendererType.POPUP_ERROR,
               message: e.toString())));
     }
   }

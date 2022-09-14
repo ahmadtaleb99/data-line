@@ -317,7 +317,7 @@ class Submission extends HiveObject with EquatableMixin{
     @HiveField(5)
     final DateTime submittedAt;
 
-  @HiveField(5)
+  @HiveField(6)
   final DateTime? updatedAt;
 
 
@@ -367,7 +367,7 @@ class Submission extends HiveObject with EquatableMixin{
   }
 
   @override
-  List<Object?> get props => [node,formId,id,fieldEntries];
+  List<Object?> get props => [submittedAt,updatedAt,node,formId,id,fieldEntries];
 
 
 

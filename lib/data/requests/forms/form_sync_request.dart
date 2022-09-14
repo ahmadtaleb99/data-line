@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:datalines/domain/model/form_model.dart';
 
 class FormSyncRequest {
@@ -11,16 +13,17 @@ class FormSyncRequest {
   });
 
     Map<String, dynamic> toJson() {
-
-    return {
+      //     'updated_at': submission.updatedAt.toString(),
+      // 'submitted_at': submission.submittedAt.toString(),
+     var map =  {
       'formId': this.formId,
-      'submissions': this.submissions.map((submission) => {
-        submission.nonNullEntriesAsMap(),
-      }..add({'updated_at': submission.updatedAt.toString(),
-        'submitted_at': submission.submittedAt.toString(),
-        'node': submission.node,
-      })).toList(),
+      'submissions': this.submissions.map((submission) =>
+      submission.nonNullEntriesAsMap()
+        ..['node'] =submission.node.id,
+      ).toList(),
     };
+
+     return map;
   }
 
     FormSyncRequest copyWith({

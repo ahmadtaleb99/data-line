@@ -26,37 +26,46 @@ class SubmissionDetailsScreen extends StatelessWidget {
           title: const Text(AppStrings.submissionDetails),
 
         ),
-        body: ListView.separated(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppPadding.p20,
-          ),
-          itemCount: fields.length + 1,
+        body: Column(
 
-          itemBuilder: (context, index) {
-            return index == 0
-                ? const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppPadding.p37),
-              child: LabelWidget(),
-            )
-                : submission.fieldEntries[index - 1].value != null ? Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: AppPadding.p14, horizontal: AppPadding.p12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: FieldWidget(field: fields[index - 1],), flex: 3,),
-                  Expanded(child: ValueWidget(field: fields[index - 1],
-                      value: submission.fieldEntries[index - 1].value),
-                    flex: 2,)
-                ],
+          children: [
+            Text('submitted at : '+submission.submittedAt.toString()),
+           if(submission.updatedAt!= null) Text('updated at : '+submission.updatedAt.toString()),
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppPadding.p20,
+                ),
+                itemCount: fields.length + 1,
+
+                itemBuilder: (context, index) {
+                  return index == 0
+                      ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.p37),
+                    child: LabelWidget(),
+                  )
+                      : submission.fieldEntries[index - 1].value != null ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: AppPadding.p14, horizontal: AppPadding.p12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: FieldWidget(field: fields[index - 1],), flex: 3,),
+                        Expanded(child: ValueWidget(field: fields[index - 1],
+                            value: submission.fieldEntries[index - 1].value),
+                          flex: 2,)
+                      ],
+                    ),
+                  ) : Container();
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                submission.fieldEntries[index].value != null
+                    ? const Divider(thickness: 2)
+                    : SizedBox(),
               ),
-            ) : Container();
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-          submission.fieldEntries[index].value != null
-              ? const Divider(thickness: 2)
-              : SizedBox(),
+            ),
+          ],
         ),
       ),
     );

@@ -39,7 +39,7 @@ class DioFactory {
     //loggging in debug mode
     if(!kReleaseMode){
       dio.interceptors.addAll([AuthInterceptor(),PrettyDioLogger(
-        // request : true,
+        request : true,
         //  requestHeader : true,
          // requestBody : true,
          // responseHeader : true,

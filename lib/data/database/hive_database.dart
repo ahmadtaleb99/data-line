@@ -106,14 +106,16 @@ class HiveDatabase {
   Future<void> addSubmission(Submission submission) async {
     var sub = submission.copyWith(id: getLastSubmissionId() + 1);
     log(sub.fieldEntries.first.value.runtimeType.toString());
-    log('addSubmission subid ${sub.id.toString()}  subKey: ${sub.key.toString()}');
+    log('addSubmission subid ${sub.id.toString()}  subKey: ${sub.key.toString()} submitted at :  ${sub.submittedAt.toString()}');
     await _submissionsBox.add(sub);
   }
 
   List<Submission>? getAllSubmissions(String formId) {
-    return _submissionsBox.values
+    var list = _submissionsBox.values
         .where((element) => element.formId == formId)
         .toList();
+    log(list.toString());
+    return list;
   }
 
 

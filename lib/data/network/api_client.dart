@@ -47,7 +47,8 @@ abstract class ApiClient {
   @GET('/store-details/{id}')
   Future<StoreDetailsResponse> getStoreDetails(@Path() int id);
 
-  @GET('/sync-form')
-  Future<SyncFormBaseResponse> syncForm(@Body()  FormSyncRequest formSyncRequest);
+  @POST('/sync-form')
+  @FormUrlEncoded()
+  Future<SyncFormBaseResponse> syncForm(@Part() FormSyncRequest formSyncRequest);
 
 }
