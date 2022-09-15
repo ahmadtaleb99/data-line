@@ -38,7 +38,6 @@ class HomeScreen extends StatelessWidget {
           builder: (context, state) {
             if (state.flowState != null) {
 
-            log('☺0');
               log(state.flowState.toString());
               var widget =
               state.flowState.getWidget(context, const NewWidget(), () {
@@ -68,15 +67,28 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormsBloc, FormsState>(
+    return BlocListener<FormsBloc, FormsState>(
+      listenWhen: (p,c) => p.isFormSyncing != c.isFormSyncing,
+  listener: (context, state) {
+
+    if(state.isFormSyncing){
+      Future.delayed(Duration.zero,() => showDialog(
+          context: context,
+          builder: (_) => BlocProvider.value(
+  value: context.read<FormsBloc>(),
+  child: SyncLoadingDialog(),
+)));
+
+
+    }
+  },
+  child: BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
         final inactiveForms = state.inactiveForms ?? [];
         return RefreshIndicator(
           onRefresh: () async {
-            // context.read<FormsBloc>().add(FormsPageRefreshRequested());
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => SyncLoadingDialog());
+            context.read<FormsBloc>().add(FormsPageRefreshRequested());
+
           },
           child: Column(
             children: [
@@ -99,6 +111,7 @@ class NewWidget extends StatelessWidget {
                             : FormCard(
                           onSync: (){
                             context.read<FormsBloc>().add(FormDataSyncRequested(formId: state.assignedForms[index].id));
+
                           },
                                 viewSubmittedCallBack: () {
                                   Navigator.push(
@@ -151,6 +164,7 @@ class NewWidget extends StatelessWidget {
           ),
         );
       },
-    );
+    ),
+);
   }
 }

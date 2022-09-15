@@ -38,22 +38,26 @@ class   FormsState extends Equatable {
   final Node? currentNode;
   final MatrixRecordModel? tempRecord;
   final bool allSaved;
+  final bool isFormSyncing;
+  final  SyncFormProgress syncFormProgress;
   final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [inactiveForms,currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [syncFormProgress,isFormSyncing,inactiveForms,currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
     required this.isNewSubmit,
+     this.syncFormProgress = const SyncFormProgress(submissionsChunksProgress:0, submissionSyncPercent: 0),
     required this.currentNode,
     required this.valuesMap,
     required this.matrixValuesMap,
     required this.nodes,
      this.currentRecordIndex,
      this.matrixState,
+     this.isFormSyncing = false,
      this.currentMatrixName,
     required this.validationMap,
     required this.submissions,
@@ -75,10 +79,12 @@ class   FormsState extends Equatable {
     Submission? currentSubmission,
     FlowState? flowState,
     bool? isNewSubmit,
+    bool? isFormSyncing,
     FlowState? newSubmitFlowState,
     FlowState? updateFlowState,
 
     List<FormModel>? assignedForms,
+    SyncFormProgress? syncFormProgress,
     List<FormModel>? inactiveForms,
     List<Node>? nodes,
     MatrixState? matrixState,
@@ -100,8 +106,10 @@ class   FormsState extends Equatable {
       submissions: submissions ?? this.submissions,
       updateFlowState: updateFlowState ?? this.updateFlowState,
       currentRecordIndex: currentRecordIndex ?? this.currentRecordIndex,
+      syncFormProgress: syncFormProgress ?? this.syncFormProgress,
       currentMatrixName: currentMatrix ?? this.currentMatrixName,
       isNewSubmit: isNewSubmit ?? this.isNewSubmit,
+      isFormSyncing: isFormSyncing ?? this.isFormSyncing,
       currentSubmission: currentSubmission ?? this.currentSubmission,
       tempRecord: tempRecord != null ? tempRecord() : this.tempRecord,
       currentNode:  currentNode != null ? currentNode() : this.currentNode,

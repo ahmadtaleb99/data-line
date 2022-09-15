@@ -7,6 +7,7 @@ import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/domain/model/node/node.dart';
 
 import 'package:bloc/bloc.dart';
+import 'package:datalines/presentation/forms/bloc/view_objects/sync_form_progress.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -862,38 +863,55 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     // add(SubmissionUpdateRequested(event.formModel, event.submission));
   }
 
+  double _getPercentage(int send, int total) {
+    return 100 * (send / total);
+  }
+
   Future<void> _onFormDataSyncRequested(
       FormDataSyncRequested event, Emitter<FormsState> emit) async {
-    emit(state.copyWith(
-        flowState:
-            LoadingState(stateRendererType: StateRendererType.POPUP_LOADING)));
+    emit(state.copyWith(isFormSyncing: true));
 
     try {
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
       await getSubs.fold((failure) async {}, (submissions) async {
         final request =
             FormSyncRequest(formId: event.formId, submissions: submissions);
-        await _assignedFormRepository
-            .syncForm(request,
-                onDataChunkProgress: (send, total) =>
-                    print('send $send  total:$total'),
-                onSyncProgress: (send, total) {
-                  print(send.toString());
-                },
-                chunkSize: 5)
+        await _assignedFormRepository.syncForm(request,
+            onDataChunkProgress: (send, total) {
+          final percent = _getPercentage(send, total).toInt();
+        log(percent.toString()+ '_assignedFormRepository   submissionsChunksProgress' );
+          // emit(state.copyWith(
+          //     syncFormProgress: state.syncFormProgress
+          //         .copyWith(submissionsChunksProgress: percent)));
+        },
+
+            onSyncProgress: (send, total) {
+          final percent = _getPercentage(send, total).toInt();
+
+          log(percent.toString()+ '_assignedFormRepository   submissionSyncPercent' );
+          emit(state.copyWith(
+              syncFormProgress: state.syncFormProgress
+                  .copyWith(submissionSyncPercent: percent)));
+
+          log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
+        }, chunkSize: 5)
+
             .then((either) => either.fold((failure) {
-                  emit(state.copyWith(
-                      flowState: ErrorState(
-                          code: failure.code,
-                          stateRendererType: StateRendererType.POPUP_ERROR,
-                          message: failure.message)));
-                }, (success) {
-                  emit(state.copyWith(
-                      flowState: SuccessState(' data has been synced')));
-                }));
+              emit(state.copyWith(
+                  isFormSyncing: false,
+                  flowState: ErrorState(
+                      code: failure.code,
+                      stateRendererType: StateRendererType.POPUP_ERROR,
+                      message: failure.message)));
+            }, (success) {
+              emit(state.copyWith(
+                  isFormSyncing: false,
+                  flowState: SuccessState(' data has been synced')));
+            }));
       });
     } catch (e) {
       emit(state.copyWith(
+          isFormSyncing: false,
           flowState: ErrorState(
               stateRendererType: StateRendererType.POPUP_ERROR,
               message: e.toString())));

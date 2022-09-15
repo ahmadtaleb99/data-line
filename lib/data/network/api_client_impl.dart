@@ -71,6 +71,8 @@ class ApiClientImpl implements ApiClient {
      headers: headers
     ),
       onSendProgress: (send,total){
+
+      log('onvoked');
         onSyncProgress?.call(send,total);
       }
     );
