@@ -12,7 +12,7 @@ abstract class RemoteDataSource {
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
   Future<AssignedFormsResponse> getAssignedForms();
   Future<NodeBaseResponse> getNodes();
-  Future<SyncFormBaseResponse> syncForm(  FormSyncRequest formSyncRequest);
+  Future<SyncFormBaseResponse> syncForm(  FormSyncRequest formSyncRequest,{void Function(int, int)?  onSyncProgress});
 
 
 }
@@ -60,7 +60,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest) async {
-    return await _apiClient.syncForm(formSyncRequest);
+  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest,{void Function(int, int)?  onSyncProgress}) async {
+    return await _apiClient.syncForm(formSyncRequest,onSyncProgress:onSyncProgress);
   }
 }

@@ -338,20 +338,22 @@ class Submission extends HiveObject with EquatableMixin{
 
   Future<Map<String, dynamic>> entriesToRequest() async{
     Map<String, dynamic> map =  {};
-    fieldEntries.forEach((FieldEntry fieldEntry) async {
 
+    for (FieldEntry fieldEntry in fieldEntries)  {
       if(fieldEntry.value != null) {
-      if(fieldEntry.type == FieldType.FILE) {
-        map[fieldEntry.name] =  await MultipartFile.fromFile(fieldEntry.value);
+        if(fieldEntry.type == FieldType.FILE) {
+          map[fieldEntry.name] =  await MultipartFile.fromFile(fieldEntry.value);
 
-          log((map[fieldEntry.name] as MultipartFile).length.toString());
+          log((map[fieldEntry.name] as MultipartFile).length.toString()+ 'map[fieldEntry.name] length');
+          log(map[fieldEntry.name].toString() );
+
+        }
+
+        else  map[fieldEntry.name] = fieldEntry.value;
 
       }
+    }
 
-        map[fieldEntry.name] = fieldEntry.value;
-
-      }
-    });
     return map;
   }
 

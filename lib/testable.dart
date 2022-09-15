@@ -11,7 +11,7 @@ Future<void> main() async {
     'name': 'wendux',
     'age': 25,
     'file': await MultipartFile.fromFile(
-        '1.jpg')
+        '/data/user/0/com.flexsolutionsjo.datalines/app_flutter/filePickerCache/63-2/1.jpg')
   });
   var response =
       await dio.post('https://ahmdataleb.mocklab.io/sync-form', data: formData);

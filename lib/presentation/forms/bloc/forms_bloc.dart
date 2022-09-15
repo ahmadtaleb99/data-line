@@ -458,11 +458,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   String? validateMatrix(MatrixModel model) {
     List<MatrixRecordModel>? records = state.valuesMap[model.name] ?? [];
-    log(records.toString() + ' records fro mvalieation ');
     if (records!.length > model.maxRecordsCount) {
       Map<String, bool> newValidationMap = Map.from(state.validationMap);
       newValidationMap[model.name] = true;
-      log(newValidationMap.toString() + ' val map ');
       emit(state.copyWith(validationMap: newValidationMap));
       return AppStrings.maxRecordCountErrorMsg +
           model.maxRecordsCount.toString();
@@ -563,14 +561,13 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _saveFilePickerFiles() async {
     FormModel form = state.formModel!.copyWith();
-    // if(form.hasType(FieldType.FILE)){
-    //
-    // }
 
-    form.fields
-        .where((field) => field.type == FieldType.FILE)
-        .forEach((filePicker) async {
-      Map<String, dynamic> map = state.valuesMap;
+    log('enter saving func');
+
+    final filePickersFields =
+        form.fields.where((field) => field.type == FieldType.FILE);
+    for (var filePicker in filePickersFields) {
+      Map<String, dynamic> map = Map.from(state.valuesMap);
       String? path = map[filePicker.name];
       if (path == null) return;
 
@@ -579,17 +576,19 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       var file = File(path);
 
       int submissionId = _hiveDatabase.getLastSubmissionId() + 1;
-      String newFilePath = '${submissionId}-${currentFormId}';
+      String newFilePath = '$submissionId-$currentFormId';
       //
 
-      final either = await _ioService.cacheFile(file, newFilePath);
-      either.fold((failure) {
-        return;
-      }, (newPath) {
-        log('cached path : '+newFilePath.toString());
-        map[filePicker.name] = newPath;
-      });
-    });
+      final newPath = await _ioService.cacheFile(file, newFilePath);
+      log('cached path : ' + newPath.toString());
+      map[filePicker.name] = newPath;
+
+      emit(state.copyWith(valuesMap: map));
+
+      log(map.toString() + ' map from file picker saving');
+    }
+
+    log('end saving func');
   }
 
   Future<void> _onFilePickerSaved(
@@ -611,19 +610,18 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     //
 
     final either = await _ioService.cacheFile(file, newFilePath);
-    either.fold((failure) {
-      emit(state.copyWith(
-          allSaved: false,
-          newSubmitFlowState: ErrorState(
-              stateRendererType: StateRendererType.POPUP_ERROR,
-              message: failure.message)));
-    }, (newPath) {
-      map[event.model.name] = newPath;
-
-      log(map[event.model.name]);
-
-      emit(state.copyWith(newSubmitFlowState: ContentState(), allSaved: true));
-    });
+    // either.fold((failure) {
+    //   emit(state.copyWith(
+    //       allSaved: false,
+    //       newSubmitFlowState: ErrorState(
+    //           stateRendererType: StateRendererType.POPUP_ERROR,
+    //           message: failure.message)));
+    // }, (newPath) {
+    //   map[event.model.name] = newPath;
+    //
+    //
+    //   emit(state.copyWith(newSubmitFlowState: ContentState(), allSaved: true));
+    // });
   }
 
   Future<void> _onTextValueChanged(
@@ -633,7 +631,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     Map<String, bool> newValidationMap = state.validationMap;
     newValidationMap[event.fieldName] = true;
-    log(map.toString());
     // emit(state.copyWith(valuesMap: map,validationMap: newValidationMap  ));
   }
 
@@ -752,10 +749,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
       );
 
+      // for(int i = 0  ; i < 15 ; i++){
+      // }
 
-      for(int i = 0  ; i < 15 ; i++){
-        await _assignedFormRepository.addSubmission(newSub);
-      }
+      log('sub to be added');
+      await _assignedFormRepository.addSubmission(newSub);
+
       emit(state.copyWith(
           newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
           allSaved: false));
@@ -871,22 +870,28 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     try {
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
-     await  getSubs.fold((failure) async  {}, (submissions)  async {
+      await getSubs.fold((failure) async {}, (submissions) async {
         final request =
             FormSyncRequest(formId: event.formId, submissions: submissions);
-        await _assignedFormRepository.syncForm(request).then((either) => either.fold((failure) {
-          emit(state.copyWith(
-              flowState: ErrorState(
-                  code: failure.code,
-                  stateRendererType: StateRendererType.POPUP_ERROR,
-                  message: failure.message)));
-        }, (success) {
-          emit(
-              state.copyWith(flowState: SuccessState(' data has been synced')));
-        }));
-
-      }
-      );
+        await _assignedFormRepository
+            .syncForm(request,
+                onDataChunkProgress: (send, total) =>
+                    print('send $send  total:$total'),
+                onSyncProgress: (send, total) {
+                  print(send.toString());
+                },
+                chunkSize: 5)
+            .then((either) => either.fold((failure) {
+                  emit(state.copyWith(
+                      flowState: ErrorState(
+                          code: failure.code,
+                          stateRendererType: StateRendererType.POPUP_ERROR,
+                          message: failure.message)));
+                }, (success) {
+                  emit(state.copyWith(
+                      flowState: SuccessState(' data has been synced')));
+                }));
+      });
     } catch (e) {
       emit(state.copyWith(
           flowState: ErrorState(
@@ -899,7 +904,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     FormFieldModel? field = state.formModel!.fields
         .firstWhereOrNull((element) => element.name == fieldName);
 
-    log(field.toString());
     return field != null ? field.type : FieldType.UNKNOWN;
   }
 

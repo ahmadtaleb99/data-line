@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/presentation/common/animation/animation_box.dart';
 import 'package:datalines/presentation/common/buttons/custom_button_widget.dart';
+import 'package:datalines/presentation/common/dialogs/custom_Dialog.dart';
 import 'package:datalines/presentation/home/view/widgets/form_card_widget.dart';
 import 'package:datalines/presentation/home/view/widgets/inactive_form_card_widget.dart';
+import 'package:datalines/presentation/home/view/widgets/sync_dialog.dart';
 import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,8 +21,8 @@ import 'package:datalines/presentation/forms/submissions_screen/submissions_scre
 import 'package:datalines/presentation/home/bloc/home_bloc.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:datalines/presentation/resources/assets_manager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -55,6 +58,9 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+
+
+
 class NewWidget extends StatelessWidget {
   const NewWidget({
     Key? key,
@@ -67,7 +73,10 @@ class NewWidget extends StatelessWidget {
         final inactiveForms = state.inactiveForms ?? [];
         return RefreshIndicator(
           onRefresh: () async {
-            context.read<FormsBloc>().add(FormsPageRefreshRequested());
+            // context.read<FormsBloc>().add(FormsPageRefreshRequested());
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => SyncLoadingDialog());
           },
           child: Column(
             children: [

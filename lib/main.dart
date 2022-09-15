@@ -3,6 +3,8 @@
 import 'dart:developer';
 
 import 'package:datalines/app/authtication_bloc/authentication_bloc.dart';
+import 'package:datalines/data/network/api_constants.dart';
+import 'package:datalines/data/network/dio_factory.dart';
 import 'package:datalines/domain/repository/repository.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,6 +31,26 @@ import 'presentation/resources/language_manager.dart';
 
 Future<void> main() async {
 
+ //  final dio = Dio();
+ //  var formData = FormData.fromMap({
+ //    'name': 'wendux',
+ //    'age': 25,
+ //    'fasdsaile': await MultipartFile.fromFile(
+ //        '/data/user/0/com.flexsolutionsjo.datalines/app_flutter/filePickerCache/65-2/Caerte_van_Oostlant_4MB (1).jpg'),
+ //      'a':'s'
+ //
+ //  });
+ //
+ //  final headers = DioFactory.getDefaultHeaders;
+ //  headers[CONTENT_TYPE] = MULTIPART_FORMDATA;
+ //  var response =
+ // await dio.post(ApiConstants.baseUrl+ApiConstants.syncFormUrl, data: formData,options: Options(
+ //   headers: {
+ //     'Accept' : 'json'
+ //   }
+ // ));
+ //
+ //  print(response.toString());
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
   await Hive.initFlutter();

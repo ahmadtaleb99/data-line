@@ -7,16 +7,23 @@ import 'package:datalines/domain/model/form_model.dart';
 import 'package:datalines/domain/model/models.dart';
 import 'package:datalines/domain/model/node/node.dart';
 
-abstract class AssignedFormRepository{
+abstract class AssignedFormRepository {
+  Future<Either<Failure, List<FormModel>>> getAssignedForms(
+      {bool? forceFromRemote});
+  Either<Failure, List<Submission>> getFormSubmissions(String formId);
+  Future<Either<Failure, SyncForm>> syncForm(
+      FormSyncRequest formSyncRequest,
 
-  Future<Either<Failure,List<FormModel>>> getAssignedForms({bool? forceFromRemote});
-  Either<Failure,List<Submission>> getFormSubmissions(String formId);
-  Future<Either<Failure,SyncForm>> syncForm(  FormSyncRequest formSyncRequest);
+      {
+  int chunkSize,
+        void Function(int, int)? onSyncProgress,
+      void Function(int, int)? onDataChunkProgress});
 
   Future<void> addSubmission(Submission submission);
   Future<void> deleteSubmission(Submission submission);
-  Future<void> updateSubmission (Submission submission) ;
-  Future<Either<Failure,FormsHomeModel>> getFormsHomeModel({bool? forceFromRemote});
+  Future<void> updateSubmission(Submission submission);
+  Future<Either<Failure, FormsHomeModel>> getFormsHomeModel(
+      {bool? forceFromRemote});
   List<FormModel>? getInactiveForms();
   // int getLastSubmissionId();
 

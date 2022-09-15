@@ -33,6 +33,7 @@ class AnimationAssets{
   static const String empty = '$_animationBase/empty.json';
   static const String success = '$_animationBase/success.json';
   static const String noInternet = '$_animationBase/no_internet.json';
+  static const String sync = '$_animationBase/sync.json';
 
 
 }

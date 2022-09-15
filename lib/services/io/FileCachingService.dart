@@ -89,7 +89,7 @@ void _listenToPort(){
     _writeSink.close();
 
   }
-  Future<Either<Failure,String>> cacheFile(File file,String fileToCachePath) async {
+ Future<String> cacheFile(File file,String fileToCachePath) async {
     /*caching picked file to appDirectory/filePickerCache/submissionId-formId
     example: app dir -> /data/'app name'/app-flutter/filePickerCache/5-Third Form/
      */
@@ -104,10 +104,10 @@ void _listenToPort(){
       var newPath = '$newFilePath/${fileName}';
 
       await file.copy(newPath);
-      return Right(newPath);
+      return newPath;
     }
     catch (e){
-      return Left(Failure(-5,ResponseMessage.CACHE_ERROR));
+     throw CacheException('cant cache file ');
     }
 
   }

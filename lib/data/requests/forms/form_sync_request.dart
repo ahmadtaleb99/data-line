@@ -14,15 +14,18 @@ class FormSyncRequest {
 
 
 
-    Map<String, dynamic> toJson() {
+    Future<Map<String, dynamic>> toMultiPartMapRequest() async {
       //     'updated_at': submission.updatedAt.toString(),
       // 'submitted_at': submission.submittedAt.toString(),
+      List submissions = [];
+      for(var s in this.submissions){
+        submissions.add(await s.entriesToRequest()..['node'] =s.node.id,
+        );
+      }
+
      var map =  {
       'formId': this.formId,
-      'submissions': this.submissions.map((submission) async =>
-     await  submission.entriesToRequest()
-        ..['node'] =submission.node.id,
-      ).toList(),
+      'submissions': submissions
     };
 
      return map;

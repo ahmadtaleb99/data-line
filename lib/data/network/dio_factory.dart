@@ -11,28 +11,45 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 
 const String APPLICATION_JSON = "application/json";
+const String MULTIPART_FORMDATA = "multipart/form-data";
 // ignore: constant_identifier_names
 const String CONTENT_TYPE = "content-type";
 const String ACCEPT = "accept";
 const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "langauge";
-class DioFactory {
-  
-  final AppPreferences _appPrefs ;
-  Future<Dio> getDio () async {
 
+
+class DioFactory {
+
+static   Map<String, String> _headers = {};
+  final AppPreferences _appPrefs ;
+
+
+
+
+  static Map<String, String>  get  getDefaultHeaders  => _headers;
+
+
+
+
+  Future<Dio> getDio () async {
     final  dio= Dio();
     final appLanguage = _appPrefs.getAppLanguage();
-    Map<String, String> headers = {
+    _headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: "SEND TOKEN HERE",
       DEFAULT_LANGUAGE: appLanguage
     };
 
+
+
+
+
+
     dio.options = BaseOptions(
         baseUrl: ApiConstants.baseUrl,
-        headers: headers,
+        headers: _headers,
         receiveTimeout: ApiConstants.apiTimeOut,
         sendTimeout: ApiConstants.apiTimeOut);
 

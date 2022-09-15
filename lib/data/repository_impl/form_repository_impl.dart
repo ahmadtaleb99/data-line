@@ -164,24 +164,34 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   }
 
   @override
-  Future<Either<Failure, SyncForm>> syncForm(
-      FormSyncRequest formSyncRequest) async {
+  Future<Either<Failure, SyncForm>> syncForm(FormSyncRequest formSyncRequest,
+      {int chunkSize = 5,
+      void Function(int send, int total)? onSyncProgress,
+      void Function(int send, int total)? onDataChunkProgress}) async {
     if (!await _networkInfo.isConnected) {
       return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
     }
-    try{
+    try {
       final submissions = formSyncRequest.submissions;
-      const int chunkSize = 10;
-      List<List<Submission>> submissionsChunks = submissions.asChunks(chunkSize);
-       SyncForm? syncForm;
-      for (int i = 0 ; i < submissionsChunks.length ; i++) {
+
+      List<List<Submission>> submissionsChunks =
+          submissions.asChunks(chunkSize);
+      SyncForm? syncForm;
 
 
-        final request =
-        formSyncRequest.copyWith(submissions: List.from(submissionsChunks[i]));
+       int hasBeenSyncedNumber = 0 ;
 
-        final response = await _remoteDataSource.syncForm(request);
+      for (int submissionChunkIndex = 0;
+          submissionChunkIndex < submissionsChunks.length;
+          submissionChunkIndex++) {
 
+         hasBeenSyncedNumber += submissionsChunks[submissionChunkIndex].length;
+
+        final request = formSyncRequest.copyWith(
+            submissions: List.from(submissionsChunks[submissionChunkIndex]));
+
+        final response = await _remoteDataSource.syncForm(request,
+            onSyncProgress: onSyncProgress);
 
         //status false
         if (response.status == ApiInternal.FAILURE) {
@@ -190,18 +200,16 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
         //status true
         syncForm = response.toDomain();
+        onDataChunkProgress?.call(hasBeenSyncedNumber,submissions.length);
 
 
       }
 
       log('rightttttttttttttttt');
       return Right(syncForm!);
-    }
-
-    catch (error) {
-       log('repo catched error'+ error.toString());
+    } catch (error) {
+      log('repo catched error' + error.toString());
       return Left(ErrorHandler.handle(error).failure);
     }
-
   }
 }

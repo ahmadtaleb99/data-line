@@ -5,6 +5,8 @@ class ApiClientImpl implements ApiClient {
 
   final Dio _dio;
 
+
+
   @override
   Future<AuthenticationResponse> login(username, password) async {
     final _data = {'username': username, 'password': password};
@@ -53,13 +55,25 @@ class ApiClientImpl implements ApiClient {
   }
 
   @override
-  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest) async {
+  Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest,
+      {void Function(int, int)?  onSyncProgress}) async {
 
 
+    final headers = DioFactory.getDefaultHeaders;
+    headers[CONTENT_TYPE] = MULTIPART_FORMDATA;
 
 
-    final _data = FormData.fromMap(formSyncRequest.toJson());
-    final _result = await _dio.post(ApiConstants.syncFormUrl, data: _data);
+    var  map = await formSyncRequest.toMultiPartMapRequest();
+
+    final _data = FormData.fromMap(map  );
+
+    final _result = await _dio.post(ApiConstants.syncFormUrl, data: _data,options: Options(
+     headers: headers
+    ),
+      onSendProgress: (send,total){
+        onSyncProgress?.call(send,total);
+      }
+    );
     final value = SyncFormBaseResponse.fromJson(_result.data!);
     return value;
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:datalines/data/network/api_constants.dart';
+import 'package:datalines/data/network/dio_factory.dart';
 import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
@@ -38,6 +39,6 @@ abstract class ApiClient {
   Future<NodeBaseResponse> getNodes();
 
 
-  Future<SyncFormBaseResponse>  syncForm(FormSyncRequest formSyncRequest);
+  Future<SyncFormBaseResponse>  syncForm(FormSyncRequest formSyncRequest,{void Function(int, int)?  onSyncProgress});
 
 }
