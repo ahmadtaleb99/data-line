@@ -105,7 +105,6 @@ class HiveDatabase {
 
   Future<void> addSubmission(Submission submission) async {
     var sub = submission.copyWith(id: getLastSubmissionId() + 1);
-    log(sub.fieldEntries[3].value.toString()+ ' file value to be added to db');
     log('addSubmission subid ${sub.id.toString()}  subKey: ${sub.key.toString()} submitted at :  ${sub.submittedAt.toString()}');
     await _submissionsBox.add(sub);
   }
@@ -153,8 +152,8 @@ class HiveDatabase {
   }
 
 
-  bool formHasSubmissions(String formName) {
-    return _submissionsBox.values.any((element) => element.formId ==formName);
+  bool formHasSubmissions(String formId) {
+    return _submissionsBox.values.any((element) => element.formId ==formId);
   }
   List<Node>? getNodes() {
 

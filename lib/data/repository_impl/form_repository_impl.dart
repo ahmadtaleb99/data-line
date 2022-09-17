@@ -212,4 +212,9 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       return Left(ErrorHandler.handle(error).failure);
     }
   }
+
+  @override
+  bool formHasSubmissions(String formId) {
+    return _localDataSource.formHasSubmissions(formId);
+  }
 }

@@ -39,20 +39,22 @@ class   FormsState extends Equatable {
   final MatrixRecordModel? tempRecord;
   final bool allSaved;
   final bool isFormSyncing;
+  final Map<String,bool> formHasSubmissions;
   final  SyncFormProgress syncFormProgress;
   final Map<String,List<MatrixRecordModel>> matrixValuesMap;
 
 
   @override
-  List<Object?> get props => [syncFormProgress,isFormSyncing,inactiveForms,currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
+  List<Object?> get props => [formHasSubmissions,syncFormProgress,isFormSyncing,inactiveForms,currentNode,nodes,isNewSubmit,updateFlowState,matrixState,tempRecord,currentMatrixName,currentRecordIndex,matrixValuesMap,allSaved,newFlowState,valuesMap,submissions,isFilePicking,formModel,currentSubmission,flowState,assignedForms,validationMap];
 
   const FormsState({
     this.formModel,
     this.currentSubmission,
     required this.isNewSubmit,
-     this.syncFormProgress = const SyncFormProgress(submissionsChunksProgress:0, submissionSyncPercent: 0),
+     this.syncFormProgress = const SyncFormProgress(submissionsChunksProgress:0, submissionUploadProgress: 0,requiresUploadProgress: false),
     required this.currentNode,
     required this.valuesMap,
+    required this.formHasSubmissions,
     required this.matrixValuesMap,
     required this.nodes,
      this.currentRecordIndex,
@@ -84,6 +86,7 @@ class   FormsState extends Equatable {
     FlowState? updateFlowState,
 
     List<FormModel>? assignedForms,
+    Map<String,bool>? formHasSubmissions,
     SyncFormProgress? syncFormProgress,
     List<FormModel>? inactiveForms,
     List<Node>? nodes,
@@ -100,6 +103,7 @@ class   FormsState extends Equatable {
     return FormsState(
       formModel: formModel ?? this.formModel,
       matrixValuesMap: matrixValuesMap ?? this.matrixValuesMap,
+      formHasSubmissions: formHasSubmissions ?? this.formHasSubmissions,
       valuesMap: valuesMap ?? this.valuesMap,
       validationMap: validationMap ?? this.validationMap,
       isFilePicking: isFilePicking ?? this.isFilePicking,

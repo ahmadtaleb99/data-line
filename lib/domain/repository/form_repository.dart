@@ -11,14 +11,11 @@ abstract class AssignedFormRepository {
   Future<Either<Failure, List<FormModel>>> getAssignedForms(
       {bool? forceFromRemote});
   Either<Failure, List<Submission>> getFormSubmissions(String formId);
-  Future<Either<Failure, SyncForm>> syncForm(
-      FormSyncRequest formSyncRequest,
-
-      {
-  int chunkSize,
-        void Function(int, int)? onSyncProgress,
+  Future<Either<Failure, SyncForm>> syncForm(FormSyncRequest formSyncRequest,
+      {int chunkSize,
+      void Function(int, int)? onSyncProgress,
       void Function(int, int)? onDataChunkProgress});
-
+  bool formHasSubmissions(String formName);
   Future<void> addSubmission(Submission submission);
   Future<void> deleteSubmission(Submission submission);
   Future<void> updateSubmission(Submission submission);

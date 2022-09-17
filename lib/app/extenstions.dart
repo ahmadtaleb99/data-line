@@ -13,8 +13,10 @@ extension NotNullString on String?{
   }
 }
 
-extension NotEmptyInt on int?{
+extension xInt on int?{
   int orZero () => this == null ? 0 : this!;
+
+  double toMb() => this.orZero() / 1000000;
 }
 extension xFile on File{
   String getName(){

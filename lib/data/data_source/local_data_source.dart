@@ -24,7 +24,7 @@ abstract class LocalDataSource  {
   List<Node>? getNodes();
   Future<void> saveNodes(List<Node> nodes);
   Future<void> saveInactiveForms(List<FormModel> forms);
-  bool formHasSubmissions(String formName);
+  bool formHasSubmissions(String formId);
 
   // Future<String> saveFileToCache(String path,int SubmissionId,String formName);
   // Future<void> deleteFileFromCache(String path);

@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/data/requests/forms/form_sync_request.dart';
 import 'package:datalines/domain/model/node/node.dart';
-
+import 'package:datalines/app/extenstions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:datalines/presentation/forms/bloc/view_objects/sync_form_progress.dart';
 import 'package:equatable/equatable.dart';
@@ -54,7 +54,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             flowState: ContentState(),
             newFlowState: ContentState(),
             validationMap: {},
-            inactiveForms: [])) {
+            inactiveForms: [], formHasSubmissions: {})) {
     on<MatrixFieldValueChanged>(_onMatrixFieldValueChanged);
     on<MatrixCheckboxGroupValueChanged>(_onMatrixCheckboxGroupValueChanged);
     on<MatrixTextValueChanged>(_onMatrixTextValueChanged);
@@ -237,12 +237,25 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       }, (model) {
         if (model.forms.isEmpty)
           emit(state.copyWith(flowState: EmptyState('no forms')));
+
+
         else
-          emit(state.copyWith(
-              inactiveForms: _assignedFormRepository.getInactiveForms(),
-              assignedForms: model.forms,
-              nodes: model.nodes,
-              flowState: ContentState()));
+          {
+
+            final hasSubmissionsMap = Map.from(state.formHasSubmissions);
+            for(final form in model.forms){
+              if(_assignedFormRepository.formHasSubmissions(form.id))
+                hasSubmissionsMap[form.id] = true;
+
+            }
+            emit(state.copyWith(
+                inactiveForms: _assignedFormRepository.getInactiveForms(),
+                formHasSubmissions: hasSubmissionsMap.cast(),
+                assignedForms: model.forms,
+                nodes: model.nodes,
+                flowState: ContentState()));
+          }
+
       });
     } catch (e) {
       emit(state.copyWith(
@@ -750,16 +763,21 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
       );
 
-      // for(int i = 0  ; i < 15 ; i++){
-      // }
+      for(int i = 0  ; i < 15 ; i++){
+        await _assignedFormRepository.addSubmission(newSub);
+
+      }
+      // await _assignedFormRepository.addSubmission(newSub);
 
       log('sub to be added');
-      await _assignedFormRepository.addSubmission(newSub);
 
       emit(state.copyWith(
           newSubmitFlowState: SuccessState(AppStrings.formSubmittedSuccess),
           allSaved: false));
     } catch (e) {
+
+
+      log(e.toString());
       final failure = ErrorTypeEnum.UNKNOWN.getFailure();
       emit(state.copyWith(
           newSubmitFlowState: ErrorState(
@@ -869,32 +887,44 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFormDataSyncRequested(
       FormDataSyncRequested event, Emitter<FormsState> emit) async {
-    emit(state.copyWith(isFormSyncing: true));
+    emit(state.copyWith(isFormSyncing: true,syncFormProgress: state.syncFormProgress.copyWith(submissionsChunksProgress: 0,submissionSyncPercent: 0,requiresUploadProgress: false)));
 
     try {
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
       await getSubs.fold((failure) async {}, (submissions) async {
+
         final request =
             FormSyncRequest(formId: event.formId, submissions: submissions);
         await _assignedFormRepository.syncForm(request,
-            onDataChunkProgress: (send, total) {
+            onDataChunkProgress: (send, total) async {
           final percent = _getPercentage(send, total).toInt();
-        log(percent.toString()+ '_assignedFormRepository   submissionsChunksProgress' );
-          // emit(state.copyWith(
-          //     syncFormProgress: state.syncFormProgress
-          //         .copyWith(submissionsChunksProgress: percent)));
+
+        // log(percent.toString()+ '_assignedFormRepository   submissionsChunksProgress' );
+              emit(state.copyWith(
+              syncFormProgress: state.syncFormProgress
+                  .copyWith(submissionsChunksProgress: percent)));
         },
 
-            onSyncProgress: (send, total) {
-          final percent = _getPercentage(send, total).toInt();
+            onSyncProgress: (send, total) async {
 
-          log(percent.toString()+ '_assignedFormRepository   submissionSyncPercent' );
-          emit(state.copyWith(
-              syncFormProgress: state.syncFormProgress
-                  .copyWith(submissionSyncPercent: percent)));
 
-          log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
-        }, chunkSize: 5)
+
+
+                  print(total.toMb());
+          //if submission upload size bigger than 5mb then we show a progress for it
+
+            final percent = _getPercentage(send, total).toInt();
+            log('total $total');
+            emit(state.copyWith(
+
+                syncFormProgress: state.syncFormProgress
+                    .copyWith(submissionSyncPercent: percent,requiresUploadProgress: total.toMb() > 2)));
+
+
+
+
+          // log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
+        }, chunkSize: 2)
 
             .then((either) => either.fold((failure) {
               emit(state.copyWith(
@@ -906,7 +936,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             }, (success) {
               emit(state.copyWith(
                   isFormSyncing: false,
-                  flowState: SuccessState(' data has been synced')));
+                  flowState: SuccessState(AppStrings.syncSuccessMsg)));
             }));
       });
     } catch (e) {

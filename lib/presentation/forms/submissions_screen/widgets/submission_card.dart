@@ -98,7 +98,6 @@ class SubmissionCard extends StatelessWidget {
 
   List<FieldEntry> _getNonNullEntries(){
 
-    log(entries.first.value.runtimeType.toString() + '&&&&&&&&');
 
     List<FieldEntry>  list = [ ];
     for(int i = 0 ; i<entries.length && list.length < 3 ; i++){
@@ -107,7 +106,6 @@ class SubmissionCard extends StatelessWidget {
         if(entries[i].type == FieldType.MATRIX) entries[i] = entries[i].copyWith(value: List<MatrixRecordModel>.from(entries[i].value));
         list.add(entries[i] );
 
-        log(list.first.value.runtimeType.toString() + '&&&&&&&&');
 
       }
     }

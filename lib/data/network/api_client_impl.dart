@@ -57,22 +57,16 @@ class ApiClientImpl implements ApiClient {
   @override
   Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest,
       {void Function(int, int)?  onSyncProgress}) async {
-
-
     final headers = DioFactory.getDefaultHeaders;
     headers[CONTENT_TYPE] = MULTIPART_FORMDATA;
-
-
     var  map = await formSyncRequest.toMultiPartMapRequest();
-
+    final cancelToken = CancelToken();
     final _data = FormData.fromMap(map  );
 
-    final _result = await _dio.post(ApiConstants.syncFormUrl, data: _data,options: Options(
+    final _result = await _dio.post(ApiConstants.syncFormUrl,cancelToken: cancelToken, data: _data,options: Options(
      headers: headers
     ),
       onSendProgress: (send,total){
-
-      log('onvoked');
         onSyncProgress?.call(send,total);
       }
     );
@@ -80,3 +74,4 @@ class ApiClientImpl implements ApiClient {
     return value;
   }
 }
+

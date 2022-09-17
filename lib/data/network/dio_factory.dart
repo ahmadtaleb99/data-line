@@ -10,13 +10,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 
 
-const String APPLICATION_JSON = "application/json";
-const String MULTIPART_FORMDATA = "multipart/form-data";
-// ignore: constant_identifier_names
-const String CONTENT_TYPE = "content-type";
-const String ACCEPT = "accept";
-const String AUTHORIZATION = "authorization";
-const String DEFAULT_LANGUAGE = "langauge";
+
 
 
 class DioFactory {
@@ -57,9 +51,9 @@ static   Map<String, String> _headers = {};
     //loggging in debug mode
     if(!kReleaseMode){
       dio.interceptors.addAll([AuthInterceptor(),PrettyDioLogger(
-        request : true,
-         requestHeader : true,
-         requestBody : true,
+        // request : true,
+        //  requestHeader : true,
+        //  requestBody : true,
          // responseHeader : true,
          // responseBody : true,
       )]);

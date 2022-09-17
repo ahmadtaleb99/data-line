@@ -12,12 +12,14 @@ class FormCard extends StatelessWidget {
       required this.viewSubmittedCallBack,
       required this.onSync,
       required this.formName,
+      required this.showSyncButton ,
       required this.submitNewFormCallBack})
       : super(key: key);
   final String formName;
   final void Function()? viewSubmittedCallBack;
   final void Function()? submitNewFormCallBack;
   final void Function()? onSync;
+  final bool showSyncButton ;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +60,7 @@ class FormCard extends StatelessWidget {
                             color: ColorManager.white,
                           )),
                     ),
-                    Expanded(
+                 if(showSyncButton)   Expanded(
                         flex: 2,
                         child: SyncButtonWidget(
                           onPressed: onSync,

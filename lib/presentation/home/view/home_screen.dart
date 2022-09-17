@@ -87,7 +87,13 @@ class NewWidget extends StatelessWidget {
         final inactiveForms = state.inactiveForms ?? [];
         return RefreshIndicator(
           onRefresh: () async {
-            context.read<FormsBloc>().add(FormsPageRefreshRequested());
+            // context.read<FormsBloc>().add(FormsPageRefreshRequested());
+            Future.delayed(Duration.zero,() => showDialog(
+                context: context,
+                builder: (_) => BlocProvider.value(
+                  value: context.read<FormsBloc>(),
+                  child: SyncLoadingDialog(),
+                )));
 
           },
           child: Column(
@@ -150,7 +156,7 @@ class NewWidget extends StatelessWidget {
                                                     formModel:
                                                         state.assignedForms[index]),
                                               )));
-                                }),
+                                }, showSyncButton: _showSyncButton(state, index) ,),
                       );
                     }),
               ),
@@ -166,5 +172,10 @@ class NewWidget extends StatelessWidget {
       },
     ),
 );
+  }
+
+
+  bool _showSyncButton(FormsState state,int index){
+    return state.formHasSubmissions[state.assignedForms[index].id] == true;
   }
 }
