@@ -767,7 +767,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
       );
       //
-      for(int i = 0  ; i < 15 ; i++){
+      for(int i = 0  ; i < 20 ; i++){
         await _assignedFormRepository.addSubmission(newSub);
 
       }
@@ -947,10 +947,11 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 flowState = WarningState('Sync Process Has been Stopped');
               }
 
-              emit(state.copyWith(isFormSyncing: false, flowState: flowState));
+              emit(state.copyWith(isFormSyncing: false, flowState: flowState,inactiveForms: _assignedFormRepository.getInactiveForms()  ));
             }, (success) {
               emit(state.copyWith(
                   isFormSyncing: false,
+                  inactiveForms: _assignedFormRepository.getInactiveForms(),
                   formHasSubmissions: _changeFormHasSubmissionMap(event.formId, false),
                   flowState: SuccessState(AppStrings.syncSuccessMsg)));
             }));

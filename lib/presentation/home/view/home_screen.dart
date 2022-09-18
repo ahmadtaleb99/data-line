@@ -87,13 +87,7 @@ class NewWidget extends StatelessWidget {
         final inactiveForms = state.inactiveForms ;
         return RefreshIndicator(
           onRefresh: () async {
-            // context.read<FormsBloc>().add(FormsPageRefreshRequested());
-            Future.delayed(Duration.zero,() => showDialog(
-                context: context,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<FormsBloc>(),
-                  child: SyncLoadingDialog(),
-                )));
+            context.read<FormsBloc>().add(FormsPageRefreshRequested());
 
           },
           child: Column(
@@ -110,7 +104,9 @@ class NewWidget extends StatelessWidget {
                         child: index >=
                                 state.assignedForms.length
                             ? InactiveFormCard(
-                          onSync: (){},
+                          onSync: (){
+                            context.read<FormsBloc>().add(FormDataSyncRequested(formId: inactiveForms[index-state.assignedForms.length].id));
+                            },
                                 viewSubmittedCallBack: () {},
                                 formName: 'formName',
                                 submitNewFormCallBack: () {})

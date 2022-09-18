@@ -116,28 +116,35 @@ class HiveDatabase {
   }
 
 
-  int _getInactiveFormKey (String formId){
-    return _inactiveFormsBox.toMap().entries.firstWhere((element) => element.value.id == formId).key;
+  int? _getInactiveFormKey (String formId){
+    return _inactiveFormsBox.toMap().entries.firstWhereOrNull((element) => element.value.id == formId)?.key;
   }
-  Future<void> addInactiveForm(FormModel form) async {
-    // _inactiveFormsBox.put(key, value)
-    await _inactiveFormsBox.add(form);
+
+
+  Future<void> saveInactiveForm(FormModel form) async {
+
+    final key = _getInactiveFormKey(form.id);
+    if(key == null)
+      await _inactiveFormsBox.add(form);
+
+   else await _inactiveFormsBox.put(_getInactiveFormKey(form.id),form);
   }
 
 
   Future<void> deleteForm(FormModel form) async {
       var   assignedForms = getAssignedForms();
       if (assignedForms == null)
-        throw DatabaseDataNotFoundException('No Form Found');
+        return;
+
       assignedForms.removeWhere((element) => element.id == form.id);
 
     await  saveAssignedForms(assignedForms);
   }
 
 
-  Future<void> deleteInactiveForm(FormModel form) async {
+  Future<void> deleteInactiveForm(String formId) async {
 
-   await  _inactiveFormsBox.delete(_getInactiveFormKey(form.id));
+   await  _inactiveFormsBox.delete(_getInactiveFormKey(formId));
   }
 
   Future<void> saveAssignedForms(List<FormModel> assignedForms) async {
@@ -196,11 +203,11 @@ class HiveDatabase {
     await _submissionsBox.delete(getSubmissionId(submission));
   }
 
-  FormModel getForm(String formId) {
+  FormModel? getForm(String formId) {
     final assignedForms = _assignedFormsBox.get(_assignedForm);
     if (assignedForms == null)
       throw DatabaseDataNotFoundException('No Form Found');
 
-    return assignedForms.data!.firstWhere((element) => element.id == formId);
+    return assignedForms.data!.firstWhereOrNull((element) => element.id == formId);
   }
 }

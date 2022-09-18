@@ -205,8 +205,11 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
         if(!syncForm.hasSubmitPermission) {
           final form = _localDataSource.getForm(request.formId);
-          await _localDataSource.addInactiveForm(form);
-          await _localDataSource.deleteForm(form).catchError(() => null);
+          if(form != null ){
+            await _localDataSource.saveInactiveForm(form);
+            await _localDataSource.deleteForm(form);
+          }
+
         }
         onChunksTotalProgress?.call(hasBeenSyncedNumber,submissions.length);
 
@@ -214,7 +217,10 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
       }
 
-      log('rightttttttttttttttt');
+      log('all forms synced');
+    if(!syncForm!.hasSubmitPermission) {
+      await _localDataSource.deleteInactiveForm(formSyncRequest.formId);
+    }
       return Right(syncForm!);
     } catch (error) {
 

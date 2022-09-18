@@ -18,7 +18,7 @@ abstract class LocalDataSource  {
   Future<void>  addSubmission(Submission submission);
   List<FormModel>? getAssignedForms();
   List<FormModel>? getInactiveForms();
-  FormModel getForm(String formId);
+  FormModel? getForm(String formId);
   Future<void> saveFormsToDataBase(List<FormModel> assignedForms);
   List<Submission> getSubmissions(String formId);
   Future<void> deleteSubmission(Submission submission);
@@ -27,8 +27,8 @@ abstract class LocalDataSource  {
   List<Node>? getNodes();
   Future<void> saveNodes(List<Node> nodes);
   Future<void> saveInactiveForms(List<FormModel> forms);
-  Future<void> addInactiveForm(FormModel form);
-  Future<void> deleteInactiveForm(FormModel form);
+  Future<void> saveInactiveForm(FormModel form);
+  Future<void> deleteInactiveForm(String formId);
   Future<void> deleteForm(FormModel form);
   bool formHasSubmissions(String formId);
 
@@ -151,18 +151,18 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  FormModel getForm(String formId) {
+  FormModel? getForm(String formId) {
    return _hiveDatabase.getForm(formId);
   }
 
   @override
-  Future<void> addInactiveForm(FormModel form) async{
-    await _hiveDatabase.addInactiveForm(form);
+  Future<void> saveInactiveForm(FormModel form) async{
+    await _hiveDatabase.saveInactiveForm(form);
   }
 
   @override
-  Future<void> deleteInactiveForm(FormModel form) async{
-    await _hiveDatabase.deleteInactiveForm(form);
+  Future<void> deleteInactiveForm(String formId) async{
+    await _hiveDatabase.deleteInactiveForm(formId);
   }
 
   @override
