@@ -767,8 +767,9 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
       );
       //
-      for (int i = 0; i < 15; i++) {
+      for(int i = 0  ; i < 15 ; i++){
         await _assignedFormRepository.addSubmission(newSub);
+
       }
       // await _assignedFormRepository.addSubmission(newSub);
 
@@ -900,7 +901,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     return 100 * (send / total);
   }
 
-  void _onChunkUploadProgress(int send, int total, Emitter<FormsState> emit) async{
+
+  void _onChunkUploadProgress(int send, int total) {
     //if submission upload size bigger than 5mb then we show a progress for it
     final percent = _getPercentage(send, total).toInt();
     emit(state.copyWith(
@@ -911,15 +913,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     // log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
   }
 
-  void _onChunksTotalProgress(int send, int total, Emitter<FormsState> emit) async{
-    //if submission upload size bigger than 5mb then we show a progress for it
+  void _onChunksTotalProgress(int send, int total) {
     final percent = _getPercentage(send, total).toInt();
-    emit(state.copyWith(
-        syncFormProgress: state.syncFormProgress.copyWith(
-            submissionSyncPercent: percent,
-            requiresUploadProgress: total.toMb() > 2)));
 
-    // log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
+    emit(state.copyWith(
+        syncFormProgress: state.syncFormProgress
+            .copyWith(submissionsChunksProgress: percent)));
   }
 
   Future<void> _onFormDataSyncRequested(
@@ -933,41 +932,28 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
     try {
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
-      await getSubs.fold((failure) async {
-        return;
-      }, (submissions) async {
+      await getSubs.fold((failure) async {}, (submissions) async {
         final request =
             FormSyncRequest(formId: event.formId, submissions: submissions);
-        await _assignedFormRepository
-            .syncForm(request,
-                onChunksTotalProgress: (send,total) {
-                  final percent = _getPercentage(send, total).toInt();
-                  emit(state.copyWith(
-                      syncFormProgress: state.syncFormProgress.copyWith(
-                          submissionSyncPercent: percent,
-                          requiresUploadProgress: total.toMb() > 2)));
-                },
-                onChunkUploadProgress:(send,total) =>  _onChunkUploadProgress(send, total, emit),
-                chunkSize: 2)
-            .then((either) => either.fold((failure) {
-                  FlowState flowState = ErrorState(
-                      code: failure.code,
-                      stateRendererType: StateRendererType.POPUP_ERROR,
-                      message: failure.message);
+        await _assignedFormRepository.syncForm(request,
+            onChunksTotalProgress: _onChunksTotalProgress,
+            onChunkUploadProgress: _onChunkUploadProgress, chunkSize: 2).then((either) => either.fold((failure) {
+              FlowState flowState = ErrorState(
+                  code: failure.code,
+                  stateRendererType: StateRendererType.POPUP_ERROR,
+                  message: failure.message);
 
-                  if (failure.code == ResponseCode.CANCEL) {
-                    flowState = WarningState('Sync Process Has been Stopped');
-                  }
+              if (failure.code == ResponseCode.CANCEL) {
+                flowState = WarningState('Sync Process Has been Stopped');
+              }
 
-                  emit(state.copyWith(
-                      isFormSyncing: false, flowState: flowState));
-                }, (success) {
-                  emit(state.copyWith(
-                      isFormSyncing: false,
-                      formHasSubmissions:
-                          _changeFormHasSubmissionMap(event.formId, false),
-                      flowState: SuccessState(AppStrings.syncSuccessMsg)));
-                }));
+              emit(state.copyWith(isFormSyncing: false, flowState: flowState));
+            }, (success) {
+              emit(state.copyWith(
+                  isFormSyncing: false,
+                  formHasSubmissions: _changeFormHasSubmissionMap(event.formId, false),
+                  flowState: SuccessState(AppStrings.syncSuccessMsg)));
+            }));
       });
     } catch (e) {
       emit(state.copyWith(

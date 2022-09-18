@@ -84,7 +84,6 @@ class HiveDatabase {
     Hive.registerAdapter(FieldEntryAdapter());
     Hive.registerAdapter(OperatorAdapter());
 
-
     Hive.registerAdapter(NodeAdapter());
 
     //
@@ -92,12 +91,7 @@ class HiveDatabase {
     _submissionsBox = await Hive.openBox<Submission>(submissionBoxKey);
     _nodesBox = await Hive.openBox<List<dynamic>>(nodeBoxKey);
     _inactiveFormsBox = await Hive.openBox<FormModel>(inactiveFormsBoxKey);
-
-
   }
-
-
-
 
   Future<void> updateSubmission(Submission submission) async {
     await _submissionsBox.put(getSubmissionId(submission), submission);
@@ -117,11 +111,34 @@ class HiveDatabase {
     return list;
   }
 
-
   Future<void> addInactiveForms(List<FormModel> forms) async {
-   await _inactiveFormsBox.addAll(forms);
+    await _inactiveFormsBox.addAll(forms);
   }
 
+
+  int _getInactiveFormKey (String formId){
+    return _inactiveFormsBox.toMap().entries.firstWhere((element) => element.value.id == formId).key;
+  }
+  Future<void> addInactiveForm(FormModel form) async {
+    // _inactiveFormsBox.put(key, value)
+    await _inactiveFormsBox.add(form);
+  }
+
+
+  Future<void> deleteForm(FormModel form) async {
+      var   assignedForms = getAssignedForms();
+      if (assignedForms == null)
+        throw DatabaseDataNotFoundException('No Form Found');
+      assignedForms.removeWhere((element) => element.id == form.id);
+
+    await  saveAssignedForms(assignedForms);
+  }
+
+
+  Future<void> deleteInactiveForm(FormModel form) async {
+
+   await  _inactiveFormsBox.delete(_getInactiveFormKey(form.id));
+  }
 
   Future<void> saveAssignedForms(List<FormModel> assignedForms) async {
     await _assignedFormsBox.put(_assignedForm, AssignedForms(assignedForms));
@@ -146,33 +163,29 @@ class HiveDatabase {
     return assignedForms?.data;
   }
 
-
-
-  Future<void> deleteSubmissionsRage (String formId,int startIndex,int endIndex) async {
-
-
+  Future<void> deleteSubmissionsRage(
+      String formId, int startIndex, int endIndex) async {
     var allFormSubmissions = getAllSubmissions(formId);
 
-    if(allFormSubmissions != null){
-      final submissionsRange = allFormSubmissions.sublist(startIndex,endIndex);
+    if (allFormSubmissions != null) {
+      final submissionsRange = allFormSubmissions.sublist(startIndex, endIndex);
       final List<dynamic> keys = submissionsRange.map((e) => e.key).toList();
       await _submissionsBox.deleteAll(keys);
     }
-
   }
+
   List<FormModel>? getInactiveForms() {
-    return  _inactiveFormsBox.values.toList();
-  }
 
+    log(_inactiveFormsBox.keys.toList().toString());
+    return _inactiveFormsBox.values.toList();
+  }
 
   bool formHasSubmissions(String formId) {
-    return _submissionsBox.values.any((element) => element.formId ==formId);
+    return _submissionsBox.values.any((element) => element.formId == formId);
   }
+
   List<Node>? getNodes() {
-
-
-    return  _nodesBox.get(_nodes)?.cast();
-
+    return _nodesBox.get(_nodes)?.cast();
   }
 
   Future<void> saveNodes(List<Node> nodes) async {
@@ -181,5 +194,13 @@ class HiveDatabase {
 
   Future<void> deleteSubmission(Submission submission) async {
     await _submissionsBox.delete(getSubmissionId(submission));
+  }
+
+  FormModel getForm(String formId) {
+    final assignedForms = _assignedFormsBox.get(_assignedForm);
+    if (assignedForms == null)
+      throw DatabaseDataNotFoundException('No Form Found');
+
+    return assignedForms.data!.firstWhere((element) => element.id == formId);
   }
 }

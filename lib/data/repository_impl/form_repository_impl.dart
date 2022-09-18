@@ -202,6 +202,12 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
         //status true
         syncForm = response.toDomain();
+
+        if(!syncForm.hasSubmitPermission) {
+          final form = _localDataSource.getForm(request.formId);
+          await _localDataSource.addInactiveForm(form);
+          await _localDataSource.deleteForm(form).catchError(() => null);
+        }
         onChunksTotalProgress?.call(hasBeenSyncedNumber,submissions.length);
 
         _localDataSource.deleteSubmissionsRange(formSyncRequest.formId, 0, currentChunkSize);
