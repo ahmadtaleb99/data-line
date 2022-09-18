@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:datalines/data/network/api_constants.dart';
+import 'package:datalines/data/network/cancel_tokens.dart';
 import 'package:datalines/data/network/dio_factory.dart';
 import 'package:datalines/data/requests/forms/form_sync_request.dart';
+import 'package:datalines/data/requests/requests.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/data/responses/responses.dart';
@@ -13,7 +15,6 @@ import 'package:dio/dio.dart'  ;
 part  'api_client_impl.dart';
 
 abstract class ApiClient {
-  factory ApiClient(Dio dio) = ApiClientImpl;
 
 
   Future<AuthenticationResponse> login(
@@ -38,6 +39,8 @@ abstract class ApiClient {
 
   Future<NodeBaseResponse> getNodes();
 
+
+  void cancelRequest(RequestType request);
 
   Future<SyncFormBaseResponse>  syncForm(FormSyncRequest formSyncRequest,{void Function(int, int)?  onSyncProgress});
 

@@ -34,6 +34,7 @@ class AnimationAssets{
   static const String success = '$_animationBase/success.json';
   static const String noInternet = '$_animationBase/no_internet.json';
   static const String sync = '$_animationBase/sync.json';
+  static const String warning = '$_animationBase/warning.json';
 
 
 }

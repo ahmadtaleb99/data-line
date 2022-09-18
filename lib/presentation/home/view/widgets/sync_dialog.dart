@@ -18,8 +18,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../../../common/dialogs/custom_dialog.dart';
 
 class SyncLoadingDialog extends StatelessWidget {
-  // final double submissionChunkPercent;
-  // final double submissionSyncPercent;
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,9 @@ class SyncLoadingDialog extends StatelessWidget {
                       child: CustomButtonWidget(
                         color: ColorManager.lightPrimary,
                         text: AppStrings.stopProcess,
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<FormsBloc>().add(const FormSyncRequestCanceled());
+                        },
                       ))
                 ],
               ),
@@ -95,10 +96,7 @@ class SyncLoadingDialog extends StatelessWidget {
     ]);
   }
 
-  // const SyncLoadingDialog({
-  //   required this.submissionChunkPercent,
-  //   required this.submissionSyncPercent,
-  // });
+  
 }
 
 class ProgressCustomWidget extends StatelessWidget {

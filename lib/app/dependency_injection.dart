@@ -7,6 +7,7 @@ import 'package:datalines/data/data_source/local_data_source.dart';
 import 'package:datalines/data/data_source/remote_data_source.dart';
 import 'package:datalines/data/database/hive_database.dart';
 import 'package:datalines/data/network/api_client.dart';
+import 'package:datalines/data/network/cancel_tokens.dart';
 import 'package:datalines/data/network/dio_factory.dart';
 import 'package:datalines/data/network/network_info.dart';
 import 'package:datalines/data/repository_impl/form_repository_impl.dart';
@@ -52,7 +53,7 @@ Future<void> initAppModules() async {
   final dio = await getIt<DioFactory>().getDio();
 
   //api client
-  getIt.registerLazySingleton<ApiClient>(() => ApiClient(dio));
+  getIt.registerLazySingleton<ApiClient>(() => ApiClientImpl(dio,CancelTokenHandler()));
 
   //remote data source
 

@@ -33,9 +33,7 @@ class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
     final either =
     _assignedFormRepository.getFormSubmissions(event.formModel.id);
     either.fold((failure) {}, (submissions) {
-     submissions.forEach((element) {
-       log(element.id.toString() +' sub id : : ');
-     });
+
       if (submissions.isEmpty)
         emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
       else {
@@ -49,14 +47,15 @@ class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
 
 Future<void> _onSubmissionDeleted(
     SubmissionDeleted event, Emitter<SubmissionsState> emit) async {
-  Map<String, dynamic> map = {};
   await _assignedFormRepository.deleteSubmission(event.submission);
   await _ioService.deleteSubmissionCache('/${event.submission.id}-${event.submission.formId}');
 
   List<Submission> submissions = List.from(state.submissions);
   submissions.remove(event.submission);
   if (submissions.isEmpty)
-    emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs)));
-  emit(state.copyWith(submissions: submissions));
+    emit(state.copyWith(flowState: EmptyState(AppStrings.emptySubs),submissions: submissions));
+
+
+  else emit(state.copyWith(submissions: submissions));
 }
 }

@@ -21,6 +21,7 @@ enum StateRendererType {
   POPUP_LOADING,
   POPUP_ERROR,
   POPUP_SUCCESS,
+  POPUP_WARNING,
 
   FULLSCREEN_LOADING,
   FULLSCREEN_ERROR,
@@ -92,6 +93,14 @@ class StateRenderer extends StatelessWidget {
             _getMessage(message),
             _getRetryButton(AppStrings.ok, context)
           ]),
+        );
+      case StateRendererType.POPUP_WARNING:
+        return CustomDialog(
+          children: [
+           AnimationBox(AnimationAssets.warning),
+            _getMessage(message),
+            _getRetryButton(AppStrings.ok, context)
+          ],
         );
     }
   }

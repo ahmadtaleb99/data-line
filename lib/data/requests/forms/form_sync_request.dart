@@ -1,13 +1,16 @@
 
 import 'dart:developer';
 
+import 'package:datalines/data/requests/requests.dart';
 import 'package:datalines/domain/model/form_model.dart';
 
-class FormSyncRequest {
-    final String formId;
+class FormSyncRequest extends BaseRequest{
+
+
+  final String formId;
     final List<Submission> submissions;
 
-    const FormSyncRequest({
+     FormSyncRequest({
     required this.formId,
     required this.submissions,
   });
@@ -41,6 +44,7 @@ class FormSyncRequest {
       submissions: submissions ?? this.submissions,
     );
   }
+
 }
 
 

@@ -11,6 +11,7 @@ import 'package:datalines/data/network/error_handler.dart';
 import 'package:datalines/data/network/failure.dart';
 import 'package:datalines/data/network/network_info.dart';
 import 'package:datalines/data/requests/forms/form_sync_request.dart';
+import 'package:datalines/data/requests/requests.dart';
 import 'package:datalines/data/responses/forms/forms_response.dart';
 import 'package:datalines/data/responses/forms/node_response/node_response.dart';
 import 'package:datalines/domain/model/form_model.dart';
@@ -137,6 +138,9 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
       List<FormModel>? oldForms = _localDataSource.getAssignedForms();
       if (oldForms != null) {
+
+        //if the old form does not exist in any of the new forms
+        // and has no submissions, then its considered inactive.
         List<FormModel> inactiveForms = oldForms
             .where((oldForm) =>
                 !formsModel.any((newForm) => newForm.name == oldForm.name) &&
@@ -166,8 +170,8 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   @override
   Future<Either<Failure, SyncForm>> syncForm(FormSyncRequest formSyncRequest,
       {int chunkSize = 5,
-      void Function(int send, int total)? onSyncProgress,
-      void Function(int send, int total)? onDataChunkProgress}) async {
+      void Function(int send, int total)? onChunkUploadProgress,
+      void Function(int send, int total)? onChunksTotalProgress}) async {
     if (!await _networkInfo.isConnected) {
       return Left(ErrorTypeEnum.NO_INTERNET_CONNECTION.getFailure());
     }
@@ -177,21 +181,19 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
       List<List<Submission>> submissionsChunks =
           submissions.asChunks(chunkSize);
       SyncForm? syncForm;
-
-
        int hasBeenSyncedNumber = 0 ;
 
       for (int submissionChunkIndex = 0;
           submissionChunkIndex < submissionsChunks.length;
           submissionChunkIndex++) {
-
-         hasBeenSyncedNumber += submissionsChunks[submissionChunkIndex].length;
+         int currentChunkSize = submissionsChunks[submissionChunkIndex].length;
+         hasBeenSyncedNumber += currentChunkSize;
 
         final request = formSyncRequest.copyWith(
             submissions: List.from(submissionsChunks[submissionChunkIndex]));
 
         final response = await _remoteDataSource.syncForm(request,
-            onSyncProgress: onSyncProgress);
+            onSyncProgress: onChunkUploadProgress);
 
         //status false
         if (response.status == ApiInternal.FAILURE) {
@@ -200,14 +202,16 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
 
         //status true
         syncForm = response.toDomain();
-        onDataChunkProgress?.call(hasBeenSyncedNumber,submissions.length);
+        onChunksTotalProgress?.call(hasBeenSyncedNumber,submissions.length);
 
+        _localDataSource.deleteSubmissionsRange(formSyncRequest.formId, 0, currentChunkSize);
 
       }
 
       log('rightttttttttttttttt');
       return Right(syncForm!);
     } catch (error) {
+
       log('repo catched error' + error.toString());
       return Left(ErrorHandler.handle(error).failure);
     }
@@ -216,5 +220,10 @@ class AssignedFormRepositoryImpl implements AssignedFormRepository {
   @override
   bool formHasSubmissions(String formId) {
     return _localDataSource.formHasSubmissions(formId);
+  }
+
+  @override
+  void cancelRequest(RequestType request) {
+    _remoteDataSource.cancelRequest(request);
   }
 }

@@ -147,6 +147,19 @@ class HiveDatabase {
   }
 
 
+
+  Future<void> deleteSubmissionsRage (String formId,int startIndex,int endIndex) async {
+
+
+    var allFormSubmissions = getAllSubmissions(formId);
+
+    if(allFormSubmissions != null){
+      final submissionsRange = allFormSubmissions.sublist(startIndex,endIndex);
+      final List<dynamic> keys = submissionsRange.map((e) => e.key).toList();
+      await _submissionsBox.deleteAll(keys);
+    }
+
+  }
   List<FormModel>? getInactiveForms() {
     return  _inactiveFormsBox.values.toList();
   }

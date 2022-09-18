@@ -16,6 +16,16 @@ class FormsPageRequested extends FormsEvent{
 
 }
 
+class FormSubmissionBecameEmpty extends FormsEvent{
+
+  final String formId;
+  @override
+  List<Object?> get props => [formId];
+
+  const FormSubmissionBecameEmpty(this.formId);
+
+}
+
 class FormsPageRefreshRequested extends FormsEvent{
   @override
   List<Object?> get props => [];
@@ -31,6 +41,14 @@ class FormDataSyncRequested extends FormsEvent{
   const FormDataSyncRequested({
     required this.formId,
   });
+}
+
+
+class FormSyncRequestCanceled extends FormsEvent{
+  @override
+  List<Object?> get props => [];
+
+  const FormSyncRequestCanceled();
 }
 
 class AssignedFormsRefreshRequested extends FormsEvent{

@@ -29,7 +29,7 @@ class SubmissionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(formModel.name+' ${AppStrings.submissions}'),
+        title: Text(formModel.name + ' ${AppStrings.submissions}'),
       ),
       body: BlocBuilder<SubmissionsBloc, SubmissionsState>(
         buildWhen: (p, c) {
@@ -60,7 +60,15 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SubmissionsBloc, SubmissionsState>(
+    return BlocConsumer<SubmissionsBloc, SubmissionsState>(
+
+        listener: (context, state) {
+
+
+          if(state.flowState is EmptyState){
+            context.read<FormsBloc>().add(FormSubmissionBecameEmpty(formModel.id));
+          }
+        },
       builder: (context, state) {
         FormsBloc formsBloc = context.read<FormsBloc>();
 
@@ -83,21 +91,22 @@ class NewWidget extends StatelessWidget {
                         .add(SubmissionsRequested(formModel)));
                   },
                   onDelete: () {
-                    showWarningDialog(context, text: AppStrings.deleteSubmissionWarningMsg,onConfirmBtnTap: (){
+                    showWarningDialog(context,
+                        text: AppStrings.deleteSubmissionWarningMsg,
+                        onConfirmBtnTap: () {
                       context
                           .read<SubmissionsBloc>()
                           .add(SubmissionDeleted(state.submissions[index]));
                       Navigator.pop(context);
                     });
-
                   },
                   onView: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => SubmissionDetailsScreen(
-                                                          fields: formModel.fields,
-                                                          submission: state.submissions[index])));
+                                fields: formModel.fields,
+                                submission: state.submissions[index])));
                   },
                   entries: state.submissions[index].fieldEntries,
                 ),

@@ -84,7 +84,7 @@ class NewWidget extends StatelessWidget {
   },
   child: BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        final inactiveForms = state.inactiveForms ?? [];
+        final inactiveForms = state.inactiveForms ;
         return RefreshIndicator(
           onRefresh: () async {
             // context.read<FormsBloc>().add(FormsPageRefreshRequested());

@@ -62,6 +62,19 @@ class EmptyState extends FlowState {
       StateRendererType.FULLSCREEN_EMPTY;
 }
 
+class WarningState extends FlowState {
+  String message;
+
+  WarningState(this.message);
+
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => StateRendererType.POPUP_WARNING;
+}
+
+
 class SuccessState extends FlowState {
   String message;
 
@@ -110,6 +123,18 @@ extension xFlowState on FlowState {
               onRetryButton: onRetry);
         }
 
+      case WarningState:
+        dismissOpenedDialog(context);
+        if (getStateRendererType() == StateRendererType.POPUP_WARNING) {
+          print('warning state ');
+
+          // show popup sucess
+          showPopup(context, getStateRendererType(), getMessage(),onButtonPressed: onRetry);
+          // show content ui of the screen
+          return widget;
+        }
+        break;
+
       case SuccessState:
         dismissOpenedDialog(context);
         if (getStateRendererType() == StateRendererType.POPUP_SUCCESS) {
@@ -128,6 +153,9 @@ extension xFlowState on FlowState {
               stateRendererType: getStateRendererType(),
               onRetryButton: () {});
         }
+
+
+
 
       case ContentState:
         dismissOpenedDialog(context);

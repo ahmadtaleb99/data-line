@@ -1,11 +1,10 @@
 part of 'api_client.dart';
 
 class ApiClientImpl implements ApiClient {
-  ApiClientImpl(this._dio);
+  ApiClientImpl(this._dio, this._cancelTokens);
 
   final Dio _dio;
-
-
+  final CancelTokenHandler _cancelTokens;
 
   @override
   Future<AuthenticationResponse> login(username, password) async {
@@ -56,22 +55,31 @@ class ApiClientImpl implements ApiClient {
 
   @override
   Future<SyncFormBaseResponse> syncForm(FormSyncRequest formSyncRequest,
-      {void Function(int, int)?  onSyncProgress}) async {
+      {void Function(int, int)? onSyncProgress}) async {
+
+
     final headers = DioFactory.getDefaultHeaders;
     headers[CONTENT_TYPE] = MULTIPART_FORMDATA;
-    var  map = await formSyncRequest.toMultiPartMapRequest();
-    final cancelToken = CancelToken();
-    final _data = FormData.fromMap(map  );
+    var map = await formSyncRequest.toMultiPartMapRequest();
+    final _data = FormData.fromMap(map);
 
-    final _result = await _dio.post(ApiConstants.syncFormUrl,cancelToken: cancelToken, data: _data,options: Options(
-     headers: headers
-    ),
-      onSendProgress: (send,total){
-        onSyncProgress?.call(send,total);
-      }
-    );
+    final _result = await _dio.post(ApiConstants.syncFormUrl,
+        cancelToken: _cancelTokens.syncFormCancelToken,
+        data: _data,
+        options: Options(headers: headers), onSendProgress: (send, total) {
+      onSyncProgress?.call(send, total);
+    });
     final value = SyncFormBaseResponse.fromJson(_result.data!);
     return value;
   }
-}
 
+  @override
+  void cancelRequest(RequestType request) {
+    if(request == RequestType.SYNC_FORM){
+    final token=  _cancelTokens.syncFormCancelToken;
+    token.cancel();
+       _cancelTokens.refreshToken();
+    }
+
+  }
+}
