@@ -21,6 +21,7 @@ class ImageAssets{
   static const String inviteFriendsIcon = '$_imageBase/invite_friends_ic.svg';
   static const String logoutIcon = '$_imageBase/logout_ic.svg';
   static const String flexLogo = '$_imageBase/flex_logo.png';
+  static const String nodeIcon = '$_imageBase/node.svg';
 
 
 

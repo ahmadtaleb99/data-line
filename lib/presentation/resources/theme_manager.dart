@@ -42,7 +42,7 @@ ThemeData getApplicationTheme() {
 
     // elevated button them
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
+          style: ElevatedButton.styleFrom(
             textStyle: getRegularStyle(
                 color: ColorManager.white, fontSize: FontSize.s17),
             primary: ColorManager.primary,

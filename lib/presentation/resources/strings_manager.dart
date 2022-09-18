@@ -27,6 +27,8 @@ class AppStrings{
   static const String submissionsSyncedSuccessfully ='Submissions Synced Successfully';
   static const String uploadProgress ='Upload Progress';
   static const String stopProcess ='Stop Process';
+  static const String submittedAt ='Submitted at';
+  static const String updatedAt ='Updated at';
   static const String syncSuccessMsg ='Data has been synced successfully.';
   static const String deleteRecordMsg ='Are you sure you want to delete this record?';
 

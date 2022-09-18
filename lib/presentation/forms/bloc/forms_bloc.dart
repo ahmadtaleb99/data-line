@@ -762,9 +762,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         formId: event.formModel.id,
         fieldEntries: _mapValuesToEntries(map),
         node: state.currentNode!,
-        // submittedAt: DateTime.now());
-        submittedAt: DateTime.parse('2022-09-14 08:58:22.229'),
-        updatedAt: DateTime.parse('2022-09-14 08:58:22.229'),
+        submittedAt: DateTime.now()
       );
       //
       for(int i = 0  ; i < 20 ; i++){
@@ -917,6 +915,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     final percent = _getPercentage(send, total).toInt();
 
     emit(state.copyWith(
+      inactiveForms: _assignedFormRepository.getInactiveForms(),
         syncFormProgress: state.syncFormProgress
             .copyWith(submissionsChunksProgress: percent)));
   }
@@ -937,7 +936,8 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             FormSyncRequest(formId: event.formId, submissions: submissions);
         await _assignedFormRepository.syncForm(request,
             onChunksTotalProgress: _onChunksTotalProgress,
-            onChunkUploadProgress: _onChunkUploadProgress, chunkSize: 2).then((either) => either.fold((failure) {
+            onChunkUploadProgress: _onChunkUploadProgress, chunkSize: 2)
+            .then((either) => either.fold((failure) {
               FlowState flowState = ErrorState(
                   code: failure.code,
                   stateRendererType: StateRendererType.POPUP_ERROR,
