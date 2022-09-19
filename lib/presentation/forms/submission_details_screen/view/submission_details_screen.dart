@@ -34,7 +34,7 @@ class SubmissionDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            Text('Summery',style: Theme.of(context).textTheme.subtitle2,),
+            Text(AppStrings.summery,style: Theme.of(context).textTheme.subtitle2,),
             Padding(
               padding: const EdgeInsets.all(AppPadding.p20),
               child: Column(
@@ -60,7 +60,7 @@ class SubmissionDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Text('Values',style: Theme.of(context).textTheme.subtitle2,),
+            Text(AppStrings.values,style: Theme.of(context).textTheme.subtitle2,),
 
             Expanded(
               child: ListView.separated(
@@ -105,7 +105,7 @@ class SubmissionDetailsScreen extends StatelessWidget {
                 separatorBuilder: (BuildContext context, int index) =>
                     submission.fieldEntries[index].value != null
                         ? const Divider(thickness: 2)
-                        : SizedBox(),
+                        : const SizedBox(),
               ),
             ),
           ],
@@ -138,7 +138,7 @@ class SummeryField extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.headline1,
           ),
-          Spacer(),
+        const   Spacer(),
           Text(
             value,
             style: Theme.of(context).textTheme.headline1,

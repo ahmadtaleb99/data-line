@@ -67,6 +67,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     on<MatrixRecordDeleted>(_onMatrixRecordDeleted);
     on<MatrixEditCanceled>(_onMatrixEditCanceled);
     on<CurrentNodeChanged>(_onCurrentNodeChanged);
+    on<ContentStateEvent>(_onContentStateEvent);
 
     on<AssignedFormsRequested>(_onAssignedFormsRequested);
     on<AssignedFormsRefreshRequested>(_onAssignedFormsRefreshRequested);
@@ -156,7 +157,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     return null;
   }
 
-  bool hasValues() {
+  bool formHasValues() {
     return state.valuesMap.values.any((element) => element != null);
   }
 
@@ -245,16 +246,19 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 stateRendererType: StateRendererType.FULLSCREEN_ERROR,
                 message: failure.message)));
       }, (model) {
-        if (model.forms.isEmpty)
-          emit(state.copyWith(flowState: EmptyState('no forms')));
+        final inactiveForms = _assignedFormRepository.getInactiveForms();
+        if (model.forms.isEmpty && (inactiveForms == null || inactiveForms.isEmpty))
+          emit(state.copyWith(flowState: EmptyState(AppStrings.noFormAvilable)));
         else {
+          log(model.forms.toString());
+          log(inactiveForms.toString());
           final hasSubmissionsMap = Map.from(state.formHasSubmissions);
           for (final form in model.forms) {
             if (_assignedFormRepository.formHasSubmissions(form.id))
               hasSubmissionsMap[form.id] = true;
           }
           emit(state.copyWith(
-              inactiveForms: _assignedFormRepository.getInactiveForms(),
+              inactiveForms: inactiveForms,
               formHasSubmissions: hasSubmissionsMap.cast(),
               assignedForms: model.forms,
               nodes: model.nodes,
@@ -285,11 +289,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                 stateRendererType: StateRendererType.POPUP_ERROR,
                 message: failure.message)));
       }, (model) {
-        if (model.forms.isEmpty)
-          emit(state.copyWith(flowState: EmptyState('no forms')));
+        final inactiveForms = _assignedFormRepository.getInactiveForms();
+        if (model.forms.isEmpty && (inactiveForms == null || inactiveForms.isEmpty))
+          emit(state.copyWith(flowState: EmptyState(AppStrings.noFormAvilable)));
         else
           emit(state.copyWith(
-              inactiveForms: _assignedFormRepository.getInactiveForms(),
+              inactiveForms: inactiveForms,
               assignedForms: model.forms,
               nodes: model.nodes,
               flowState: ContentState()));
@@ -507,6 +512,12 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     emit(state.copyWith(currentNode: () => event.newNode));
   }
 
+
+  Future<void> _onContentStateEvent(
+      ContentStateEvent event, Emitter<FormsState> emit) async {
+    emit(state.copyWith(flowState: ContentState()));
+  }
+
   Future<void> _onMatrixRecordDeleted(
       MatrixRecordDeleted event, Emitter<FormsState> emit) async {
     Map<String, dynamic> map = Map.from(state.valuesMap);
@@ -669,8 +680,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onMultiDropDownValueChanged(
       MultiDropDownValueChanged event, Emitter<FormsState> emit) async {
-    var dropDown = state.formModel!.fields
-        .firstWhere((element) => element.name == event.fieldName);
+
     Map<String, dynamic> map = Map.from(state.valuesMap);
     map[event.fieldName] = event.values;
 
@@ -751,7 +761,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     // emit(state.copyWith(valuesMap: map.cast()));
   }
 
-  getFieldType(String fieldName) {}
 
   Future<void> _onFormSubmitted(
       FormSubmitted event, Emitter<FormsState> emit) async {
@@ -782,8 +791,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
       log(e.toString());
       final failure = ErrorTypeEnum.UNKNOWN.getFailure();
       emit(state.copyWith(
-          newSubmitFlowState: ErrorState(
-              code: 0,
+          newSubmitFlowState: ErrorState(code: 0,
               stateRendererType: StateRendererType.POPUP_ERROR,
               message: failure.message)));
     }
@@ -856,8 +864,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     Map<String, dynamic> map = Map.from(state.valuesMap);
 
     map[event.fieldName] = event.value;
-    // formModel.fields[formModel.fields.indexWhere((element) => element.name == childDropDown.name)] = childDropDown;
-    // map[childDropDown.name] = null;
+
 
     Map newValidationMap = Map.from(state.validationMap);
     newValidationMap[event.fieldName] = true;
@@ -908,7 +915,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             submissionSyncPercent: percent,
             requiresUploadProgress: total.toMb() > 2)));
 
-    // log (' mn al state : s'+state.syncFormProgress.submissionSyncPercent.toString());
   }
 
   void _onChunksTotalProgress(int send, int total) {
@@ -922,14 +928,16 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
 
   Future<void> _onFormDataSyncRequested(
       FormDataSyncRequested event, Emitter<FormsState> emit) async {
-    emit(state.copyWith(
-        isFormSyncing: true,
-        syncFormProgress: state.syncFormProgress.copyWith(
-            submissionsChunksProgress: 0,
-            submissionSyncPercent: 0,
-            requiresUploadProgress: false)));
+
 
     try {
+
+      emit(state.copyWith(
+          isFormSyncing: true,
+          syncFormProgress: state.syncFormProgress.copyWith(
+              submissionsChunksProgress: 0,
+              submissionSyncPercent: 0,
+              requiresUploadProgress: false)));
       final getSubs = _assignedFormRepository.getFormSubmissions(event.formId);
       await getSubs.fold((failure) async {}, (submissions) async {
         final request =
@@ -944,7 +952,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
                   message: failure.message);
 
               if (failure.code == ResponseCode.CANCEL) {
-                flowState = WarningState('Sync Process Has been Stopped');
+                flowState = WarningState(AppStrings.syncStoppedMsg);
               }
 
               emit(state.copyWith(isFormSyncing: false, flowState: flowState,inactiveForms: _assignedFormRepository.getInactiveForms()  ));
@@ -995,10 +1003,6 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
             value: entry.value,
             type: _getFieldTypeFromName(entry.key)));
     }
-    // List<FieldEntry> entries = valuesMap.entries
-    //     .map((e) => FieldEntry(
-    //         name: e.key, value: e.value, type: _getFieldTypeFromName(e.key)))
-    //     .toList();
 
     return entries;
   }
@@ -1007,15 +1011,7 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
     return formModel.fields.firstWhere((element) => element.name == fieldName);
   }
 
-  List<DropDownModel> _getRelatedDropDowns(
-      FormModel formModel, String fieldName) {
-    return formModel.fields
-        .where((element) => (element is DropDownModel &&
-            element.relatedListCheckbox == true &&
-            element.relatedListFieldName == fieldName))
-        .toList()
-        .cast();
-  }
+
 
   @override
   Future<void> close() {

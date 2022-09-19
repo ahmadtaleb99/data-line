@@ -13,7 +13,6 @@ import 'package:datalines/presentation/resources/assets_manager.dart';
 import 'package:datalines/presentation/resources/routes_manager.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,14 +23,11 @@ class LoginScreen extends StatelessWidget {
         body: BlocBuilder<LoginBloc, LoginState>(
           buildWhen: (p, c) => p.flowState != c.flowState,
           builder: (context, state) {
-            log('has been built ${state.flowState.runtimeType.toString()}');
             if (state.flowState != null) {
-              log('has been built   if (state.flowState != null) {');
-
-              var widget = state.flowState.getWidget(context, NewWidget(), () {});
+              var widget = state.flowState.getWidget(context, const LoginScreenView());
               return widget;
             } else {
-              return NewWidget();
+              return const LoginScreenView();
             }
           },
         )
@@ -40,8 +36,8 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class NewWidget extends StatelessWidget {
-  const NewWidget({
+class LoginScreenView extends StatelessWidget {
+  const LoginScreenView({
     Key? key,
   }) : super(key: key);
 
@@ -51,7 +47,7 @@ class NewWidget extends StatelessWidget {
       listener: (context, state) {
         if (state.hasLoggedIn) {
           context.read<AuthenticationBloc>().add(
-              AuthenticationStatusChanged(
+             const  AuthenticationStatusChanged(
                   status: AuthenticationStatus.authenticated));
         }
       },

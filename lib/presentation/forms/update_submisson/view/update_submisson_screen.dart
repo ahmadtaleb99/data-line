@@ -65,9 +65,9 @@ class UpdateSubmissionScreen extends StatelessWidget {
 }
 
 class NewWidget extends StatelessWidget {
-  NewWidget({
+ const  NewWidget({
 
-    Key? key,
+    final Key? key,
     required this.formKey,
     required this.formModel,
   }) : super(key: key);

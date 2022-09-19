@@ -10,7 +10,6 @@ import 'package:datalines/app/form_validation.dart';
 import 'package:datalines/data/requests/requests.dart';
 import 'package:datalines/domain/repository/repository.dart';
 import 'package:datalines/presentation/common/state_renderer/state_renderer.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 import 'package:datalines/presentation/common/state_renderer/state_renderer_impl.dart';
 
 part 'login_event.dart';
@@ -48,6 +47,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with FormValidation {
         emit(state.copyWith(
             flowState: ErrorState(
                 stateRendererType: StateRendererType.POPUP_ERROR,
+                code: failure.code,
                 message: failure.message)));
       }, (login) {
         emit(state.copyWith(

@@ -25,7 +25,7 @@ class SyncLoadingDialog extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: CustomDialog(children: [
-        AnimationBox(AnimationAssets.sync),
+        const AnimationBox(AnimationAssets.sync),
         BlocSelector<FormsBloc, FormsState, SyncFormProgress>(
           selector: (state) {
             return state.syncFormProgress;

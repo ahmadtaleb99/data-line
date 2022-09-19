@@ -1,4 +1,5 @@
 import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
+import 'package:datalines/presentation/resources/color_manager.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -16,58 +17,62 @@ class NodeWidget extends StatelessWidget {
 
     return BlocBuilder<FormsBloc, FormsState>(
       builder: (context, state) {
-        return  Padding(
-          padding: const EdgeInsets.only(right: 11,left: 18.0,top: 10,bottom: 10),
-          child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius:
-               const  BorderRadius.all(Radius.circular(AppRadius.r20)),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 0.8,
-                ),
-              ),
-              child: Padding(
+        return
+          Container(
+
+            foregroundDecoration: ShapeDecoration(
+
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 1.0,color: ColorManager.white),
+              borderRadius: const BorderRadius.all(Radius.circular(AppRadius.r20)),
+            ),
+          ),
+          margin: EdgeInsets.only(right: 11.w,left: 18.0.w,top: 10.h,bottom: 10.h),
+          child: DropdownButton<String>(
+
+            borderRadius: BorderRadius.circular(AppRadius.r20),
+
+
+            hint:Padding(
+              padding: const EdgeInsets.all(AppPadding.p8),
+              child: Text(AppStrings.node,
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontStyle: FontStyle.italic,
+                      color: ColorManager.white.withOpacity(0.8)
+                  )),
+            ),
+            underline: Container(),
+            value:  state.currentNode?.id,
+            items: state.nodes
+                .map((e) => DropdownMenuItem<String>(
+              child: Text(e.name,
+                  style: Theme.of(context).textTheme.subtitle1),
+              value: e.id,
+            ))
+                .toList(),
+            onChanged: (id) {
+              context.read<FormsBloc>().add(CurrentNodeChanged(newNode: state.nodes.firstWhere((node) => node.id == id)));
+            },
+            selectedItemBuilder: (context){
+              return state.nodes
+                  .map((e) => DropdownMenuItem<String>(
+                child: Padding(
                   padding: const EdgeInsets.all(AppPadding.p8),
-                  child: Center(
-                    child:  DropdownButton<String>(
+                  child: Text(e.name,
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          fontStyle: FontStyle.italic,
+                          color: ColorManager.white
+                      )),
+                ),
+                value: e.id,
+              )).toList();
+            },
 
-                      hint:Text(AppStrings.node,
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.white.withOpacity(0.8)
-                          )),
-                      underline: Container(),
-                      value:  state.currentNode?.id,
-                      items: state.nodes
-                          .map((e) => DropdownMenuItem<String>(
-                        child: Text(e.name,
-                            style: Theme.of(context).textTheme.subtitle1),
-                        value: e.id,
-                      ))
-                          .toList(),
-                      onChanged: (id) {
-                        context.read<FormsBloc>().add(CurrentNodeChanged(newNode: state.nodes.firstWhere((node) => node.id == id)));
-                      },
-                      selectedItemBuilder: (context){
-                        return state.nodes
-                            .map((e) => DropdownMenuItem<String>(
-                          child: Text(e.name,
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.white
-                              )),
-                          value: e.id,
-                        )).toList();
-                      },
-
-                      icon: const Icon(Icons.arrow_drop_down,color: Colors.white,),
-                    ),
-                  ))),
-        )
+            icon:  Icon(Icons.arrow_drop_down,color: ColorManager.white,),
+          ),
+          )
         ;
       },
     );

@@ -33,7 +33,7 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-    CustomDialog({
+    const CustomDialog({
     required this.children,
   });
 }

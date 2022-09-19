@@ -28,7 +28,7 @@ class NewSubmitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (context.read<FormsBloc>().hasValues()) {
+        if (context.read<FormsBloc>().formHasValues()) {
           showWarningDialog(context, text: AppStrings.submitBackWarningMgs,
               onConfirmBtnTap: () {
                 Navigator.pop(context);
@@ -42,7 +42,7 @@ class NewSubmitScreen extends StatelessWidget {
       child: Scaffold(
           key: UniqueKey(),
           appBar: AppBar(
-            actions: [NodeWidget()],
+            actions: const [NodeWidget()],
             title: const Text(AppStrings.newSubmission),
           ),
           floatingActionButton: BlocBuilder<FormsBloc, FormsState>(

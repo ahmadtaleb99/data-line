@@ -18,7 +18,6 @@ import 'package:datalines/presentation/forms/submissions_screen/widgets/submissi
 import 'package:datalines/presentation/forms/update_submisson/view/update_submisson_screen.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 class SubmissionsScreen extends StatelessWidget {
   const SubmissionsScreen({Key? key, required this.formModel})
@@ -38,10 +37,10 @@ class SubmissionsScreen extends StatelessWidget {
         builder: (context, state) {
           if (state.flowState != null) {
             var widget = state.flowState
-                .getWidget(context, NewWidget(formModel: formModel), () {});
+                .getWidget(context, SubmissionsScreenView(formModel: formModel), () {});
             return widget;
           } else {
-            return NewWidget(formModel: formModel);
+            return SubmissionsScreenView(formModel: formModel);
           }
         },
       ),
@@ -50,8 +49,8 @@ class SubmissionsScreen extends StatelessWidget {
   }
 }
 
-class NewWidget extends StatelessWidget {
-  const NewWidget({
+class SubmissionsScreenView extends StatelessWidget {
+  const SubmissionsScreenView({
     Key? key,
     required this.formModel,
   }) : super(key: key);

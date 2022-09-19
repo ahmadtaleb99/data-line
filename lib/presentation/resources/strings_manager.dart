@@ -9,8 +9,10 @@ class AppStrings{
   static const String onboardingTitle3 ='on_boarding_title3';
   static const String onboardingTitle4 ='on_boarding_title4';
   static const String permissionRevoked ='Permission Revoked';
-  static const String revoked ='  Revoked';
+  static const String revoked ='Revoked';
+  static const String summery ='Summery';
   static const String warning ='Warning';
+  static const String syncStoppedMsg ='Sync Process Has been Stopped';
   static const String error ='Error';
   static const String node ='Node';
   static const String inactive ='Inactive';
@@ -23,6 +25,8 @@ class AppStrings{
   static const String editCancelMsg ='New values will not be saved when canceling.';
   static const String selectAValue ='Select a value';
   static const String back ='Back';
+  static const String noFormAvilable ='No Forms Available';
+  static const String values ='Values';
   static const String records ='Records';
   static const String submissionsSyncedSuccessfully ='Submissions Synced Successfully';
   static const String uploadProgress ='Upload Progress';

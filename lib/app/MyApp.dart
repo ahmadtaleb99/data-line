@@ -14,10 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:datalines/presentation/forms/bloc/forms_bloc.dart';
 import 'package:datalines/presentation/resources/routes_manager.dart';
 import 'package:datalines/presentation/resources/theme_manager.dart';
-import 'package:datalines/presentation/state_renderer_bloc/state_renderer_bloc.dart';
 
 class MyApp extends StatefulWidget {
-  MyApp._internal();
+  const MyApp._internal();
 
   static final _instance = MyApp._internal();
 

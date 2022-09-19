@@ -30,7 +30,7 @@ class MultiDropDownWidget extends StatelessWidget {
           validator: (value){
             return context.read<FormsBloc>().validateDropDown(dropDownModel);
           },
-          widget: Container(
+          widget: SizedBox(
               width: double.infinity,
               child: Stack(
                 children: [
@@ -45,7 +45,7 @@ class MultiDropDownWidget extends StatelessWidget {
 
                         Text(dropDownModel.prompt,style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).hintColor),),
                       SizedBox(width: 47.w,),
-                      Icon(Icons.arrow_drop_down),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   )
               ),
@@ -79,9 +79,9 @@ class MultiDropDownWidget extends StatelessWidget {
                     dialogWidth: dropDownModel.values.isEmpty ? 5 : null,
                     // buttonIcon: Icon(Icons.arrow_drop_down),
                     // buttonText: Text(dropDownModel.prompt),
-                    buttonIcon:   Icon(null),
-                    buttonText: Text(''),
-                    title: Text('Please Select a value'),
+                    buttonIcon: const   Icon(null),
+                    buttonText: const  Text(''),
+                    title: const  Text(AppStrings.selectAValue),
 
                     listType: MultiSelectListType.CHIP,
                     items: dropDownModel.values

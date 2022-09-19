@@ -25,7 +25,7 @@ class DropDownWidget extends StatelessWidget {
 
         return FormFieldWidget(
 
-          widget: Container(
+          widget: SizedBox(
               width: double.infinity,
               child: DecoratedBox(
                   decoration: BoxDecoration(
@@ -44,7 +44,7 @@ class DropDownWidget extends StatelessWidget {
                       underline: Container(),
                       icon:  Padding(
                         padding: EdgeInsets.symmetric(horizontal: 50.w),
-                        child: Icon(Icons.arrow_drop_down),
+                        child: const Icon(Icons.arrow_drop_down),
                       ),
                       // items: hasItems()? [DropdownMenuItem<String>(child: Container(),)] :
                       items:

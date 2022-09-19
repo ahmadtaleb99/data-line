@@ -36,7 +36,6 @@ AuthenticationBloc(this._authenticationRepository) : super(const AuthenticationS
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
-        log('asdasdoas-kds--kads');
         return emit(
              AuthenticationState.authenticated(event.user ?? User.empty)
         );

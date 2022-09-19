@@ -1,8 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'dart:developer';
 
-import 'package:analyzer/error/error.dart';
 import 'package:datalines/presentation/common/animation/animation_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +10,6 @@ import 'package:datalines/presentation/resources/font_manager.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/presentation/resources/style_manager.dart';
 import 'package:datalines/presentation/resources/values_manager.dart';
-import 'package:lottie/lottie.dart';
 import 'package:datalines/presentation/resources/assets_manager.dart';
 
 import '../dialogs/custom_dialog.dart';
@@ -35,7 +32,7 @@ class StateRenderer extends StatelessWidget {
   final String title;
   final String message;
   final int? code;
-  final Function onRetryButton;
+  final void Function()? onRetryButton;
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +44,26 @@ class StateRenderer extends StatelessWidget {
     switch (stateRendererType) {
       case StateRendererType.POPUP_LOADING:
 
-            return CustomDialog(
-              children: [
-               AnimationBox(AnimationAssets.loading)
+            return const CustomDialog(
+              children:  [
+                AnimationBox(AnimationAssets.loading)
               ],
             );
       case StateRendererType.POPUP_ERROR:
-        return CustomDialog(
-          children: [
-            code == ResponseCode.NO_INTERNET_CONNECTION
-                ? AnimationBox(AnimationAssets.noInternet)
-                : AnimationBox(AnimationAssets.error),
-            _getMessage(message),
-            _getRetryButton(AppStrings.ok, context)
-          ],
+        return WillPopScope(
+          onWillPop: () async {
+            this.onRetryButton?.call();
+            return true;
+          },
+          child: CustomDialog(
+            children: [
+              code == ResponseCode.NO_INTERNET_CONNECTION
+                  ? const AnimationBox(AnimationAssets.noInternet)
+                  : const AnimationBox(AnimationAssets.error),
+              _getMessage(message),
+              _getRetryButton(AppStrings.ok, context)
+            ],
+          ),
         );
 
       case StateRendererType.FULLSCREEN_LOADING:
@@ -69,7 +72,7 @@ class StateRenderer extends StatelessWidget {
 
       case StateRendererType.FULLSCREEN_ERROR:
         return _getItemsColumn([
-          AnimationBox(AnimationAssets.error),
+         const  AnimationBox(AnimationAssets.error),
           _getMessage(message),
           _getRetryButton(AppStrings.retryAgain, context)
         ]);
@@ -77,7 +80,7 @@ class StateRenderer extends StatelessWidget {
         break;
       case StateRendererType.FULLSCREEN_EMPTY:
         return _getItemsColumn(
-            [AnimationBox(AnimationAssets.empty), _getMessage(message)]);
+            [const AnimationBox(AnimationAssets.empty), _getMessage(message)]);
 
       case StateRendererType.CONTENT_STATE:
         return Container();
@@ -85,11 +88,11 @@ class StateRenderer extends StatelessWidget {
       case StateRendererType.POPUP_SUCCESS:
         return WillPopScope(
           onWillPop: () async {
-            this.onRetryButton.call();
+            this.onRetryButton?.call();
             return true;
           },
           child: CustomDialog(children : [
-            AnimationBox(AnimationAssets.success),
+            const AnimationBox(AnimationAssets.success),
             _getMessage(message),
             _getRetryButton(AppStrings.ok, context)
           ]),
@@ -97,7 +100,7 @@ class StateRenderer extends StatelessWidget {
       case StateRendererType.POPUP_WARNING:
         return CustomDialog(
           children: [
-           AnimationBox(AnimationAssets.warning),
+            const AnimationBox(AnimationAssets.warning),
             _getMessage(message),
             _getRetryButton(AppStrings.ok, context)
           ],
@@ -128,17 +131,11 @@ class StateRenderer extends StatelessWidget {
   Widget _getRetryButton(String buttonTitle, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p12),
-      child: Container(
+      child: SizedBox(
         width: 100.w,
         child: ElevatedButton(
-            onPressed: () {
-              if (this.stateRendererType ==
-                      StateRendererType.FULLSCREEN_ERROR ||
-                  this.stateRendererType == StateRendererType.POPUP_SUCCESS) {
-                this.onRetryButton.call();
-              } else {
-                Navigator.pop(context);
-              }
+            onPressed: onRetryButton ??  () {
+              Navigator.pop(context);
             },
             child: FittedBox(child: Text(buttonTitle))),
       ),

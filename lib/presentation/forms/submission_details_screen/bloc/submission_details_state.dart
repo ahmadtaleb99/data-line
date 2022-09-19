@@ -8,7 +8,7 @@ class SubmissionDetailsState extends Equatable {
   @override
   List<Object?> get props => [fileDownloadProgress];
 
-  SubmissionDetailsState({
+  const SubmissionDetailsState({
     required  this.fileDownloadProgress,
   });
 

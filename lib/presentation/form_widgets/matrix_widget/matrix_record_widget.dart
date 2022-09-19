@@ -19,7 +19,7 @@ class MatrixRecordWidget extends StatefulWidget {
   @override
   State<MatrixRecordWidget> createState() => _MatrixRecordWidgetState();
 
-  MatrixRecordWidget({
+  const MatrixRecordWidget({
     this.onEdit,
     this.onDelete,
     required this.fields,
@@ -106,7 +106,7 @@ class _MatrixRecordWidgetState extends State<MatrixRecordWidget> {
                                       widget.fields.length - 1,
                                           (index) => Padding(
                                         padding:
-                                        EdgeInsets.all(AppPadding.p13),
+                                        const EdgeInsets.all(AppPadding.p13),
                                         child: Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment

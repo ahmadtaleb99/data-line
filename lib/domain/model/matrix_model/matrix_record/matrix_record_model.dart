@@ -12,7 +12,7 @@ class MatrixRecordModel extends Equatable{
   @HiveField(1)
  final   Map<String,dynamic> valuesMap;
 
-  MatrixRecordModel({
+  const MatrixRecordModel({
     required this.valuesMap,
   });
 

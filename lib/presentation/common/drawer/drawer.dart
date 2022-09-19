@@ -25,7 +25,7 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             title: const Text(AppStrings.logout),
-            leading: Icon(Icons.logout),
+            leading: const Icon(Icons.logout),
             onTap: () {
               context.read<AuthenticationBloc>().add(AuthenticationLogoutRequested());
             },

@@ -68,7 +68,7 @@ showEditRecordDialog(BuildContext context, int index, MatrixModel model) {
                                 if (_key.currentState!.validate()) {
                                   context
                                       .read<FormsBloc>()
-                                      .add(MatrixEditRecordSubmitted());
+                                      .add(const MatrixEditRecordSubmitted());
                                   Navigator.pop(context);
                                 }
                               },

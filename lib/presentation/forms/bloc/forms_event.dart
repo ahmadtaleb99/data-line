@@ -10,6 +10,15 @@ class AssignedFormsRequested extends FormsEvent{
 }
 
 
+class ContentStateEvent extends FormsEvent{
+
+  // final StateRendererType stateRendererType;
+  @override
+  List<Object?> get props => [];
+
+}
+
+
 class FormsPageRequested extends FormsEvent{
   @override
   List<Object?> get props => [];
@@ -354,12 +363,3 @@ class CurrentNodeChanged extends FormsEvent {
   });
 }
 
-// class SubmissionDeleted extends FormsEvent {
-//   Submission submission;
-//
-//
-//   SubmissionDeleted(this.submission);
-//   @override
-//   List<Object?> get props =>[submission];
-//
-// }

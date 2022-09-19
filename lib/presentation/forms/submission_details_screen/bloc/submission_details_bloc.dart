@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:datalines/app/dependency_injection.dart';
 import 'package:datalines/app/notification_bloc/notifications_bloc.dart';
+import 'package:datalines/app/extenstions.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 import 'package:datalines/services/io/FileCachingService.dart';
 import 'package:datalines/services/notification/NotificationManager.dart';
@@ -19,7 +20,6 @@ part 'submission_details_state.dart';
 
 class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetailsState> {
   final _ioService = getIt<FileCachingService>();
-  int prog = 0;
   SubmissionDetailsBloc() : super(SubmissionDetailsState(fileDownloadProgress: {})) {
 
 
@@ -40,13 +40,11 @@ class SubmissionDetailsBloc extends Bloc<SubmissionDetailsEvent, SubmissionDetai
     int progress  = 0 ;
 
     Map<String,double> map = Map.from(state.fileDownloadProgress);
-
     //show progress notification if file is large
-    if( await cachedFile.length() / 1000000 > 20) {
+    if( (await cachedFile.length()).toMb()  > 20) {
 
       await for (var progress in _ioService.copyProgress) {
 
-        int intProgress = progress.toInt();
         map[event.filePath] = progress;
         emit(state.copyWith(fileDownloadProgress: Map.from(map)));
       }

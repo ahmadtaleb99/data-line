@@ -10,7 +10,7 @@ class StateChanged extends NewFormEvent{
   @override
   List<Object?> get props => [flowState];
 
-  StateChanged({
+  const StateChanged({
     required this.flowState,
   });
 }

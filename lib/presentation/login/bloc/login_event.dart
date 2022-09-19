@@ -26,7 +26,7 @@ class UsernameChanged extends LoginEvent{
 class PasswordChanged extends LoginEvent{
   final String password;
 
-  PasswordChanged(this.password);
+  const PasswordChanged(this.password);
 
   List<Object?> get props => [password];
 

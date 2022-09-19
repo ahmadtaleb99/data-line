@@ -19,7 +19,7 @@ class LoadingService {
       _overlay = OverlayEntry(
         // replace with your own layout
         builder: (context) => ColoredBox(
-          color: Color(0x80000000),
+          color: const Color(0x80000000),
           child: Center(
             child: SizedBox(
               width: width / 2,

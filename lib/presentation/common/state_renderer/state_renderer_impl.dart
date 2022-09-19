@@ -1,11 +1,10 @@
 import 'dart:developer';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:datalines/presentation/common/state_renderer/state_renderer.dart';
 import 'package:datalines/presentation/resources/strings_manager.dart';
 
-abstract class FlowState extends Equatable{
+abstract class FlowState {
   StateRendererType getStateRendererType();
   String getMessage();
 }
@@ -23,10 +22,6 @@ class LoadingState extends FlowState {
     required this.stateRendererType,
     this.message,
   });
-
-  @override
-  // TODO: implement props
-  List<Object?> get props =>  [message,stateRendererType];
 }
 
 class ErrorState extends FlowState {
@@ -44,9 +39,6 @@ class ErrorState extends FlowState {
     required this.message,
     this.code,
   });
-
-  List<Object?> get props =>  [message,code];
-
 }
 
 class ContentState extends FlowState {
@@ -55,8 +47,6 @@ class ContentState extends FlowState {
 
   @override
   StateRendererType getStateRendererType() => StateRendererType.CONTENT_STATE;
-  List<Object?> get props =>  [];
-
 }
 
 class EmptyState extends FlowState {
@@ -70,9 +60,6 @@ class EmptyState extends FlowState {
   @override
   StateRendererType getStateRendererType() =>
       StateRendererType.FULLSCREEN_EMPTY;
-
-  List<Object?> get props =>  [message];
-
 }
 
 class WarningState extends FlowState {
@@ -85,10 +72,6 @@ class WarningState extends FlowState {
 
   @override
   StateRendererType getStateRendererType() => StateRendererType.POPUP_WARNING;
-
-  List<Object?> get props =>  [message];
-
-
 }
 
 
@@ -102,14 +85,10 @@ class SuccessState extends FlowState {
 
   @override
   StateRendererType getStateRendererType() => StateRendererType.POPUP_SUCCESS;
-
-
-  List<Object?> get props =>  [message];
-
 }
 
 extension xFlowState on FlowState {
-  Widget getWidget(BuildContext context, Widget widget, Function onRetry) {
+  Widget getWidget(BuildContext context, Widget widget,[ void Function()? onRetry]) {
     switch (runtimeType) {
       case LoadingState:
         if (getStateRendererType() == StateRendererType.POPUP_LOADING) {
@@ -133,7 +112,7 @@ extension xFlowState on FlowState {
 
           // show popup error
           showPopup(context, getStateRendererType(), getMessage(),
-              code: (this as ErrorState).code);
+              code: (this as ErrorState).code,onButtonPressed: onRetry);
           // show content ui of the screen
           return widget;
         } else {
@@ -193,14 +172,14 @@ extension xFlowState on FlowState {
 
   showPopup(
       BuildContext context, StateRendererType stateRendererType, String message,
-      {int? code,Function? onButtonPressed}) {
+      {int? code,void Function()? onButtonPressed}) {
     WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(
               stateRendererType: stateRendererType,
               message: message,
               code: code,
-              onRetryButton: onButtonPressed ?? () {},
+              onRetryButton: onButtonPressed ,
             )));
   }
 
