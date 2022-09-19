@@ -22,78 +22,82 @@ class SyncLoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDialog(children: [
-      AnimationBox(AnimationAssets.sync),
-      BlocSelector<FormsBloc, FormsState, SyncFormProgress>(
-        selector: (state) {
-          return state.syncFormProgress;
-        },
-        builder: (context, state) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppStrings.submissionsSyncedSuccessfully + ':',
-                      style: Theme.of(context).textTheme.headline3,
-                      textAlign: TextAlign.start,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: CustomDialog(children: [
+        AnimationBox(AnimationAssets.sync),
+        BlocSelector<FormsBloc, FormsState, SyncFormProgress>(
+          selector: (state) {
+            return state.syncFormProgress;
+          },
+          builder: (context, state) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        AppStrings.submissionsSyncedSuccessfully + ':',
+                        style: Theme.of(context).textTheme.headline3,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
-                  ),
 
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: AppPadding.p12),
-                    child: ProgressCustomWidget(
-                      progress: state.submissionsChunksProgress.toDouble() / 100,
-                      text: state.submissionsChunksProgress.toString()+'%',
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppPadding.p12),
+                      child: ProgressCustomWidget(
+                        progress: state.submissionsChunksProgress.toDouble() / 100,
+                        text: state.submissionsChunksProgress.toString()+'%',
+                      ),
                     ),
-                  ),
-                  if(state.requiresUploadProgress)
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: AppPadding.p12),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            AppStrings.uploadProgress + ':',
-                            style: Theme.of(context).textTheme.headline3,
-                            textAlign: TextAlign.start,
+                    if(state.requiresUploadProgress)
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppPadding.p12),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              AppStrings.uploadProgress + ':',
+                              style: Theme.of(context).textTheme.headline3,
+                              textAlign: TextAlign.start,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        ProgressCustomWidget(
-                          progress: state.submissionUploadProgress.toDouble() / 100,
-                          text: state.submissionUploadProgress.toString()+'%',
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          ProgressCustomWidget(
+                            progress: state.submissionUploadProgress.toDouble() / 100,
+                            text: state.submissionUploadProgress.toString()+'%',
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  SizedBox(
-                      height: 30.h,
-                      child: CustomButtonWidget(
-                        color: ColorManager.lightPrimary,
-                        text: AppStrings.stopProcess,
-                        onPressed: () {
-                          context.read<FormsBloc>().add(const FormSyncRequestCanceled());
-                        },
-                      ))
-                ],
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    SizedBox(
+                        height: 30.h,
+                        child: CustomButtonWidget(
+                          color: ColorManager.lightPrimary,
+                          text: AppStrings.stopProcess,
+                          onPressed: () {
+                            context.read<FormsBloc>().add(const FormSyncRequestCanceled());
+                            Navigator.pop(context);
+                          },
+                        ))
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    ]);
+            );
+          },
+        ),
+      ]),
+    );
   }
 
   

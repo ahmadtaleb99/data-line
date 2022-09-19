@@ -765,11 +765,11 @@ class FormsBloc extends Bloc<FormsEvent, FormsState> with FormValidation {
         submittedAt: DateTime.now()
       );
       //
-      for(int i = 0  ; i < 20 ; i++){
-        await _assignedFormRepository.addSubmission(newSub);
-
-      }
-      // await _assignedFormRepository.addSubmission(newSub);
+      // for(int i = 0  ; i < 20 ; i++){
+      //   await _assignedFormRepository.addSubmission(newSub);
+      //
+      // }
+      await _assignedFormRepository.addSubmission(newSub);
 
       log('sub to be added');
 

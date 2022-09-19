@@ -34,6 +34,7 @@ class SubmissionDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
+            Text('Summery',style: Theme.of(context).textTheme.subtitle2,),
             Padding(
               padding: const EdgeInsets.all(AppPadding.p20),
               child: Column(
@@ -53,10 +54,13 @@ class SubmissionDetailsScreen extends StatelessWidget {
                       icon:   SvgPicture.asset(ImageAssets.nodeIcon),
                       title: AppStrings.node + ':',
                       value: submission.node.name),
+                  Divider(thickness: 2),
+
 
                 ],
               ),
             ),
+            Text('Values',style: Theme.of(context).textTheme.subtitle2,),
 
             Expanded(
               child: ListView.separated(

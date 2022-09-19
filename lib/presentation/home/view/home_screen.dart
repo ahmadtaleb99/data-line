@@ -36,9 +36,13 @@ class HomeScreen extends StatelessWidget {
           title: const Text(AppStrings.home),
         ),
         body: BlocBuilder<FormsBloc, FormsState>(
-          buildWhen: (p, c) => p.flowState != c.flowState,
+          buildWhen: (p, c)  {
+            log((p.flowState == c.flowState).toString());
+            return p.flowState != c.flowState;
+          },
           builder: (context, state) {
             if (state.flowState != null) {
+
               log(state.flowState.toString());
               var widget =
                   state.flowState.getWidget(context, const NewWidget(), () {
